@@ -1,0 +1,71 @@
+--- a/Spec/Altitude.lean
++++ b/Spec/Altitude.lean
+@@ -139,7 +139,9 @@
+ /-- Explicit rs1090-derived compatibility policy, commit 685dfaa, decode/mod.rs
+ `AC13Field::read`: Annex 10 IV (2007) §3.1.2.6.5.4(e) reserves M=1 rather
+ than specifying this overlapping bit extraction or conversion. User authorized
+-this fallback. Preserve the oracle's M/Q rejection and integer truncation. -/
++this fallback. Preserve the oracle's M/Q rejection and integer truncation.
++The pinned gray2alt also rejects negative Gillham heights; binary25 negative
++heights remain available. This is receiver policy, not standard validity. -/
+ def oracleAC13 (word : Nat) : Option Int :=
+   if word ≥ 8192 || word == 0 then none
+   else if bit word 6 == 1 then
+@@ -149,17 +151,22 @@
+       some ((metres * 328084 / 100000 : Nat) : Int)
+   else
+     match decodeAC13 word with
+-    | some (.feet height) => some height
++    | some (.feet height) =>
++        if bit word 4 == 0 && height < 0 then none else some height
+     | _ => none
+ 
+ /-- Explicit rs1090-derived compatibility policy, commit 685dfaa,
+ decode/bds/bds05.rs `decode_ac12`, default bds-infer: >50000 feet is a
+ message-level rejection (outer none); unavailable/invalid height is accepted
+-with missing altitude (some none). Applies to both barometric and GNSS TC. -/
++with missing altitude (some none). Negative Gillham heights are likewise
++missing; negative binary25 heights remain available. Applies to both
++barometric and GNSS TC. -/
+ def oracleAC12 (word : Nat) : Option (Option Int) :=
+   if word ≥ 4096 then none else
+     match decodeAC12 word with
+-    | some height => if height > 50000 then none else some (some height)
++    | some height =>
++        if bit word 4 == 0 && height < 0 then some none
++        else if height > 50000 then none else some (some height)
+     | none => some none
+ 
+ /-- The 25-foot altitude capstone has a concrete ordinary flight-height
+--- a/Spec/AssignmentAltitude.lean
++++ b/Spec/AssignmentAltitude.lean
+@@ -56,7 +56,8 @@
+ 
+ /-- rs1090-derived AC13Field::read, pinned685dfaa: compatibility M conversion
+ uses overlapping bits and truncates to whole feet. Its M=1,Q=1 rejection is
+-not an assertion about the standard metric representation. -/
++not an assertion about the standard metric representation. The pinned
++negative-Gillham rejection is separate from standard representability. -/
+ def compatibility13 (code : Nat) : Option Int :=
+   if code == 0 || code ≥ 8192 then none else
+     if code.testBit 6 then
+@@ -65,14 +66,16 @@
+           orderedBits code [5,4,3,2,1,0]
+         some ((metres*328084/100000 : Nat) : Int)
+     else match altitude13 code with
+-      | some (.feet height) => some height
++      | some (.feet height) =>
++          if !code.testBit 4 && height < 0 then none else some height
+       | _ => none
+ 
+ /-- rs1090-derived bds05.rs, pinned685dfaa: the report's compatible altitude
+ is absent for invalid/unavailable codes and for heights above50000ft. Frame
+-acceptance is a separate predicate, not assumed by this assignment meaning. -/
++acceptance is a separate predicate, not assumed by this assignment meaning.
++Negative Gillham heights are missing; negative binary25 heights remain. -/
+ def compatibility12 (code : Nat) : Option Int :=
+-  (altitude12 code).filter (· ≤ 50000)
++  (altitude12 code).filter (fun height => height ≤ 50000 && (code.testBit 4 || height ≥ 0))
+ 
+ /-- Sun ch.13 published38000ft example has the same literal meaning in the
+ independent field interpreter, including the distinct Gillham encoding. -/

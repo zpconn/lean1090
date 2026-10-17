@@ -1,0 +1,220 @@
+[
+  {
+    "file": "bds/bds05.rs",
+    "line": 110,
+    "bits": 17,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"17\", endian = \"big\")]",
+    "following_source": "\n    /// Encoded Latitude (bits 23-39): Per ICAO Doc 9871 \u00a7C.2.6.  \n    /// 17-bit CPR-encoded latitude value.\n    /// CPR maintains positional accuracy of ~5.1 meters in most case"
+  },
+  {
+    "file": "bds/bds05.rs",
+    "line": 117,
+    "bits": 17,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"17\", endian = \"big\")]",
+    "following_source": "\n    /// Encoded Longitude (bits 40-56): Per ICAO Doc 9871 \u00a7C.2.6.  \n    /// 17-bit CPR-encoded longitude value.\n    /// Requires both even and odd frames for global decoding, or r"
+  },
+  {
+    "file": "bds/bds06.rs",
+    "line": 123,
+    "bits": 17,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"17\", endian = \"big\")]",
+    "following_source": "\n    /// Encoded Latitude (bits 23-39): Per ICAO Doc 9871 \u00a7A.2.3.3.5\n    ///\n    /// Low-order 17 bits of 19-bit CPR-encoded latitude value for surface.\n    /// CPR maintains posit"
+  },
+  {
+    "file": "bds/bds06.rs",
+    "line": 132,
+    "bits": 17,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"17\", endian = \"big\")]",
+    "following_source": "\n    /// Encoded Longitude (bits 40-56): Per ICAO Doc 9871 \u00a7A.2.3.3.5\n    ///\n    /// Low-order 17 bits of 19-bit CPR-encoded longitude value for surface.\n    /// Unambiguous range"
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 129,
+    "bits": 9,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"9\",\n        map = \"|v: u16| -> Result<_, DekuError> {\n            if v == 0 { Ok(None) }\n            else {\n                Ok(Some(vrate_sign.value() * (v as i16 - 1)  * 64))\n            }\n        }\"\n    )]",
+    "following_source": "\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    /// Vertical Rate (bits 38-46): Per ICAO Doc 9871 Table A-2-9a  \n    /// 9-bit value encoding climb/descent rate:\n    ///"
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 238,
+    "bits": 22,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = \"22\")]",
+    "following_source": "\n    pub reserved_data: u32,\n}\n\n#[derive(Debug, PartialEq, DekuRead, Copy, Clone)]\n#[repr(u8)]\n#[deku(id_type = \"u8\", bits = \"1\")]\npub enum Sign {\n    Positive = 0,\n    Negative = ",
+    "field": "ReservedVelocityData.reserved_data",
+    "disposition": "observable-mode-s",
+    "correction": "FC002"
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 319,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|val: u16| -> Result<_, DekuError> {\n            Ok(f64::from((val as i16 - 1) * ew_sign.value()))\n        }\"\n    )]",
+    "following_source": "\n    #[serde(skip)]\n    pub ew_vel: f64,\n    #[serde(skip, default = \"Sign::positive\")]\n    pub ns_sign: Sign,\n    #[serde(skip)]\n    #[deku(\n        endian = \"big\",\n        bits ="
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 331,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|val: u16| -> Result<_, DekuError> {\n            Ok(f64::from((val as i16 - 1) * ns_sign.value()))\n        }\"\n    )]",
+    "following_source": "\n    pub ns_vel: f64,\n    #[deku(\n        skip,\n        default = \"libm::hypot(f64::abs(*ew_vel), f64::abs(*ns_vel))\"\n    )]\n    pub groundspeed: f64,\n    #[deku(\n        skip,\n   "
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 389,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|val: u16| -> Result<_, DekuError> {\n            Ok(if *status_heading { Some(val as f64 * 360. / 1024.) } else { None })\n        }\"\n    )]",
+    "following_source": "\n    /// Magnetic Heading (bits 15-24): Clockwise from magnetic north  \n    /// Formula: heading = value \u00d7 (360/1024) degrees  \n    /// LSB = 360/1024 degrees (\u22480.3516\u00b0)  \n    /// "
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 405,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|value: u16| -> Result<_, DekuError> {\n            if value == 0 { return Ok(None) }\n            Ok(Some(value - 1))\n        }\"\n    )]",
+    "following_source": "\n    /// Airspeed (bits 26-35): IAS or TAS in knots  \n    /// Formula: airspeed = (value - 1) kt  \n    /// value=0 returns None (no information)\n    pub airspeed: Option<u16>,\n}\n\ni"
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 471,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|val: u16| -> Result<_, DekuError> {\n            Ok(if *status_heading { Some(val as f32 * 360. / 1024.) } else { None })\n        }\"\n    )]",
+    "following_source": "\n    /// Magnetic Heading (bits 15-24): Same as subtype 3  \n    /// LSB = 360/1024 degrees (\u22480.3516\u00b0)\n    pub heading: Option<f32>,\n\n    /// Airspeed Type (bit 25): 0=IAS (Indicate"
+  },
+  {
+    "file": "bds/bds09.rs",
+    "line": 485,
+    "bits": 10,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        endian = \"big\",\n        bits = \"10\",\n        map = \"|value: u16| -> Result<_, DekuError> {\n            if value == 0 { return Ok(None) }\n            Ok(Some(4*(value - 1)))\n        }\"\n    )]",
+    "following_source": "\n    /// Airspeed (bits 26-35): IAS or TAS in knots (supersonic resolution)  \n    /// Formula: airspeed = 4 \u00d7 (value - 1) kt  \n    /// LSB = 4 kt for supersonic speeds\n    pub airs"
+  },
+  {
+    "file": "bds/bds10.rs",
+    "line": 279,
+    "bits": 16,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = \"16\")]",
+    "following_source": "\n    pub dte: u16,\n}\n\nfn fail_if_not0(value: u8) -> Result<u8, DekuError> {\n    if value == 0 {\n        Ok(value)\n    } else {\n        Err(DekuError::Assertion(\n            \"Reserv",
+    "field": "DataLinkCapability.dte",
+    "disposition": "observable-mode-s",
+    "correction": "FC003"
+  },
+  {
+    "file": "bds/bds30.rs",
+    "line": 206,
+    "bits": 26,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = \"26\")]",
+    "following_source": "\n        #[serde(skip)]\n        unused: u32,\n    },\n\n    #[deku(id = \"1\")]\n    ThreatAddress(ThreadAddress),\n\n    #[deku(id = \"2\")]\n    ThreatOrientation(ThreatOrientation),\n\n    #",
+    "field": "ThreatType::NoIdentity.unused",
+    "disposition": "serde-skipped-and-not-validated",
+    "correction": null
+  },
+  {
+    "file": "bds/bds30.rs",
+    "line": 219,
+    "bits": 26,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = \"26\")]",
+    "following_source": "\n        #[serde(skip)]\n        unused: u32,\n    },\n}\n\n#[derive(Debug, PartialEq, Serialize, Deserialize, DekuRead, Clone)]\npub struct ThreadAddress {\n    /// Threat identity data ",
+    "field": "ThreatType::NotAssigned.unused",
+    "disposition": "serde-skipped-and-not-validated",
+    "correction": null
+  },
+  {
+    "file": "bds/bds62.rs",
+    "line": 147,
+    "bits": 11,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        bits = \"11\",\n        endian = \"big\",\n        map = \"|altitude: u16| -> Result<_, DekuError> {\n            Ok(\n                if altitude > 1 {Some(((altitude - 1) * 32 + 16) / 100 * 100)}\n                else {None}\n            )\n        }\"\n    )]",
+    "following_source": "\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    pub selected_altitude: Option<u16>,\n\n    /// Barometric Pressure Setting (bits 21-29): Per DO-260B \u00a72.2.3.2.7.1.3.4  \n   "
+  },
+  {
+    "file": "bds/bds62.rs",
+    "line": 174,
+    "bits": 9,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        bits = \"9\",\n        endian = \"big\",\n        map = \"|qnh: u32| -> Result<_, DekuError> {\n            if qnh == 0 { Ok(None) }\n            else { Ok(Some(800.0 + ((qnh - 1) as f32) * 0.8)) }\n        }\"\n    )]",
+    "following_source": "\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    pub barometric_setting: Option<f32>,\n\n    /// Selected Heading Status (bit 30): Per DO-260B \u00a72.2.3.2.7.1.3.5  \n    /// St"
+  },
+  {
+    "file": "bds/bds62.rs",
+    "line": 205,
+    "bits": 9,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        bits = \"9\",\n        endian = \"big\",\n        map = \"|heading: u16| -> Result<_, DekuError> {\n            if *heading_status {Ok(Some(heading as f32 * 180.0 / 256.0))} \n            else {Ok(None)}\n        }\"\n    )]",
+    "following_source": "\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    pub selected_heading: Option<f32>,\n\n    /// NAC_P (bits 40-43): Per DO-260B \u00a72.2.3.2.7.1.3.8  \n    /// Navigation Accurac"
+  },
+  {
+    "file": "cat48.rs",
+    "line": 84,
+    "bits": 24,
+    "endian_attribute": "big",
+    "attribute": "#[deku(\n        cond = \"Self::has_frn(&fspec, 2)\",\n        endian = \"big\",\n        bits = 24,\n        map = \"|v: Option<u32>| -> Result<_, DekuError> { Ok(v.map(|t| t as f64 / 128.0)) }\"\n    )]",
+    "following_source": "\n    #[serde(rename = \"time_of_day\", skip_serializing_if = \"Option::is_none\")]\n    pub time_of_day: Option<f64>,\n\n    /// I048/020: Target Report Descriptor (FRN 3)\n    /// Type an"
+  },
+  {
+    "file": "cat48.rs",
+    "line": 1130,
+    "bits": 10,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = \"10\")]",
+    "following_source": "\n    pub speed_ms: i16,\n}\n\n/// Raw Doppler Speed subfield of I048/120 (6 bytes)\n#[derive(Debug, Clone, PartialEq, DekuRead, Serialize)]\npub struct RawDopplerSpeed {\n    /// DOP: Do",
+    "field": "CalculatedDopplerSpeed.speed_ms",
+    "disposition": "out-of-scope-asterix-cat48",
+    "correction": null
+  },
+  {
+    "file": "cat48.rs",
+    "line": 1160,
+    "bits": 14,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"14\", endian = \"big\")]",
+    "following_source": "\n    pub ara: u16,\n    /// RAC: RA Complement (4 bits)\n    #[deku(bits = \"4\")]\n    pub rac: u8,\n    /// RAT: RA Terminated (1 bit)\n    #[deku(bits = \"1\")]\n    pub ra_terminated: bo"
+  },
+  {
+    "file": "cat48.rs",
+    "line": 1174,
+    "bits": 26,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = \"26\", endian = \"big\")]",
+    "following_source": "\n    pub threat_id: u32,\n}\n\n/// Threat Type Indicator for I048/260\n#[derive(Debug, Clone, Copy, PartialEq, Eq, DekuRead, Serialize)]\n#[deku(id_type = \"u8\", bits = \"2\")]\npub enum Th"
+  },
+  {
+    "file": "flarm.rs",
+    "line": 260,
+    "bits": 24,
+    "endian_attribute": "little",
+    "attribute": "#[deku(endian = \"little\", bits = \"24\")]",
+    "following_source": " u32);\n\nimpl fmt::Display for Address {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        write!(f, \"{:06x}\", self.0)?;\n        Ok(())\n    }\n}\n\nimpl serde::ser"
+  },
+  {
+    "file": "mod.rs",
+    "line": 590,
+    "bits": 24,
+    "endian_attribute": null,
+    "attribute": "#[deku(bits = 24, map = \"|_v: u32| -> Result<_, DekuError> { Ok(crc) }\")]",
+    "following_source": "\n    pub u32,\n);\n\nimpl fmt::Debug for IcaoParity {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        write!(f, \"{:06x}\", self.0)?;\n        Ok(())\n    }\n}\n\nimpl",
+    "field": "IcaoParity.0",
+    "disposition": "read-value-discarded-by-map",
+    "correction": null
+  },
+  {
+    "file": "mod.rs",
+    "line": 643,
+    "bits": 24,
+    "endian_attribute": "big",
+    "attribute": "#[deku(bits = 24, endian = \"big\")]",
+    "following_source": " pub u32);\n\nimpl fmt::Debug for ICAO {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        write!(f, \"{:06x}\", self.0)?;\n        Ok(())\n    }\n}\n\nimpl fmt::Displa"
+  }
+]

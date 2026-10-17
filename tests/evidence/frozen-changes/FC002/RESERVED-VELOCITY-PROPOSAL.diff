@@ -1,0 +1,66 @@
+--- a/Spec/Semantics.lean
++++ b/Spec/Semantics.lean
+@@ -74,6 +74,15 @@
+      ("barometric_setting", adsbBarometricSetting word)]
+   else []
+ 
++/-- rs1090-derived, pinned685dfaa bds09.rs ReservedVelocityData and deku0.20.3:
++its22-bit integer uses native little-endian byte chunks on the pinned target.
++The first8 wire bits are the low byte, the next8 the next byte, and the final6
++are the high bits. This oracle meaning is separate from the raw MSB-first
++reserved_data column; no published standard gives reserved bits a quantity. -/
++def oracleReservedVelocityData (word : Nat) : Nat :=
++  payloadBits word 14 8 + 256 * payloadBits word 22 8 +
++    65536 * payloadBits word 30 6
++
+ /-- rs1090-derived bds05.rs/bds09.rs: compatibility values at documented
+ GNSS altitude, subtype2, zero-component and GNSS-minus-baro discrepancies. -/
+ def adsbOracleValues (word : Nat) : Values :=
+@@ -85,12 +94,14 @@
+   else if tc == 19 then
+     let (ew, ns) := adsbOracleVelocityComponents word
+     let subtype := payloadBits word 6 3
+-    [("east_velocity", if subtype == 1 || subtype == 2 then some ew else none),
++    ([("east_velocity", if subtype == 1 || subtype == 2 then some ew else none),
+      ("north_velocity", if subtype == 1 || subtype == 2 then some ns else none),
+      ("vertical_rate", (adsbVerticalRate word).map (fun n => (n : Rat))),
+      ("geo_minus_baro", (adsbGeoMinusBaro word).map (fun n => (n : Rat))),
+      ("airspeed", if subtype == 3 || subtype == 4 then
+-       (adsbAirspeed word).map (fun n => (n : Rat)) else none)]
++       (adsbAirspeed word).map (fun n => (n : Rat)) else none)] : Values) ++
++      (if subtype == 0 || subtype ≥ 5 then
++        [("reserved_data", some (oracleReservedVelocityData word : Rat))] else [])
+   else adsbStandardValues word
+ 
+ /-- Sun, 2nd ed. (2021), tables4.1/7.1; rs1090-derived bds61/62 enum labels. Internal source
+--- a/Spec/Assignment.lean
++++ b/Spec/Assignment.lean
+@@ -88,7 +88,9 @@
+ 
+ /-- rs1090-derived bds05/bds09 compatibility values, pinned685dfaa: the
+ independent altitude assignment preserves the documented source discrepancy;
+-other numeric code formulas remain explicitly shared source constants. -/
++reserved velocity data uses independent native-little-endian byte chunks
++from bds09.rs/deku0.20.3 on the pinned target. Other numeric code formulas
++remain explicitly shared source constants. -/
+ def adsbCompatibilityValues (word : Nat) : Semantics.Values :=
+   let tc := payloadBits word 1 5
+   if (9 <= tc && tc <= 18) || (20 <= tc && tc <= 22) then
+@@ -98,12 +100,15 @@
+   else if tc == 19 then
+     let (ew, ns) := adsbOracleVelocityComponents word
+     let subtype := payloadBits word 6 3
+-    [("east_velocity", if subtype == 1 || subtype == 2 then some ew else none),
++    ([("east_velocity", if subtype == 1 || subtype == 2 then some ew else none),
+      ("north_velocity", if subtype == 1 || subtype == 2 then some ns else none),
+      ("vertical_rate", (adsbVerticalRate word).map (fun n => (n : Rat))),
+      ("geo_minus_baro", (adsbGeoMinusBaro word).map (fun n => (n : Rat))),
+      ("airspeed", if subtype == 3 || subtype == 4 then
+-       (adsbAirspeed word).map (fun n => (n : Rat)) else none)]
++       (adsbAirspeed word).map (fun n => (n : Rat)) else none)] : Semantics.Values) ++
++      (if subtype == 0 || subtype ≥ 5 then
++        [("reserved_data", some (columnCode word 14 8 +
++          256 * columnCode word 22 8 + 65536 * columnCode word 30 6 : Rat))] else [])
+   else adsbStandardValues word
+ 
+ /-- Sun, second edition (2021), chs.4–8 tables: complete assignment meaning.

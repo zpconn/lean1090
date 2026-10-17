@@ -1,0 +1,1183 @@
+[
+  {
+    "id": "crates/rs1090/src/decode/bds/bds05.rs::test_altitude_decoding_formula",
+    "file": "crates/rs1090/src/decode/bds/bds05.rs",
+    "line": 450,
+    "end_line": 489,
+    "source_sha256": "df0a13eb580a20e4aa9ee1c5c746b83a0e7e1cf5e5610a4789ce990b019587da",
+    "assertions": [
+      {
+        "line": 471,
+        "text": "assert!("
+      },
+      {
+        "line": 483,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_altitude_decoding_formula() {\n        // Test the altitude decoding formula for Q-bit encoding\n        // Formula: altitude = (n * 25) - 1000\n        // where n is extracted from the 12-bit altitude field\n\n        let test_cases = vec![\n            // (alt_field_value, expected_altitude)\n            (0x03a, -350), // n=26: 26*25-1000 = -350\n            (0x03b, -325), // n=27: 27*25-1000 = -325\n            (0x03e, -250), // n=30: 30*25-1000 = -250\n            (0x050, -200), // n=32: 32*25-1000 = -200\n            (0x058, 0),    // n=40: 40*25-1000 = 0\n            (0x070, 200),  // n=48: 48*25-1000 = 200\n            (0x0b0, 1000), // n=80: 80*25-1000 = 1000\n            (0x1f0, 5000), // n=240: 240*25-1000 = 5000\n        ];\n\n        for (alt_field, expected_alt) in test_cases {\n            // Verify Q-bit is set (bit 4)\n            let q_bit = alt_field & 0x10;\n            assert!(\n                q_bit > 0,\n                \"Q-bit should be set for field 0x{:03x}\",\n                alt_field\n            );\n\n            // Extract n value\n            let n = ((alt_field & 0x0fe0) >> 1) | (alt_field & 0x000f);\n\n            // Apply formula\n            let altitude = n * 25 - 1000;\n\n            assert_eq!(\n                altitude, expected_alt,\n                \"Altitude field 0x{:03x} (n={}) should decode to {} ft, got {} ft\",\n                alt_field, n, expected_alt, altitude\n            );\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds05.rs::test_altitude_all_zeros",
+    "file": "crates/rs1090/src/decode/bds/bds05.rs",
+    "line": 491,
+    "end_line": 527,
+    "source_sha256": "df0a13eb580a20e4aa9ee1c5c746b83a0e7e1cf5e5610a4789ce990b019587da",
+    "assertions": [
+      {
+        "line": 514,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_altitude_all_zeros() {\n        // Test that altitude field 0x000 is treated as \"not available\" per DO-260B \u00a72.2.5.1.5\n        // This should return None, NOT -1000 ft\n        // Note: We can't easily test the decode_ac12 function directly since it requires a Reader,\n        // so we test via a full message. We need to construct a message with altitude field = 0x000.\n\n        // Message structure for TC=9 (Airborne Position with barometric altitude):\n        // DF=17 (5 bits) | CA=5 (3 bits) | ICAO (24 bits) | TC=9 (5 bits) | SS (2 bits) | NICb (1 bit) | ALT (12 bits) | ...\n        // Let's create a test message with altitude = 0x000\n\n        // Craft: DF=17, CA=5, ICAO=0x123456, TC=9, SS=0, NICb=0, ALT=0x000, rest zeros\n        // Note: The actual message would fail CRC, but we're testing the altitude decoder\n        let bytes = hex!(\"8d1234564800000000000000000000\"); // Simplified - altitude field is 0x000\n\n        // This message will likely fail to parse or return None for altitude\n        match Message::from_bytes((&bytes, 0)) {\n            Ok((_, msg)) => {\n                if let DF::ExtendedSquitterADSB(ADSB {\n                    message: ME::BDS05 { inner: pos, .. },\n                    ..\n                }) = msg.df\n                {\n                    assert_eq!(\n                        pos.alt, None,\n                        \"Altitude 0x000 should decode to None, not Some(-1000)\"\n                    );\n                } else {\n                    // If it doesn't parse as BDS05, that's also acceptable for this test\n                }\n            }\n            Err(_) => {\n                // If the message fails to parse due to invalid CRC or other reasons, that's acceptable\n                // The important thing is that 0x000 doesn't decode to -1000 ft in the decode_ac12 function\n            }\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds05.rs::test_altitude_minus_1000_valid",
+    "file": "crates/rs1090/src/decode/bds/bds05.rs",
+    "line": 529,
+    "end_line": 552,
+    "source_sha256": "df0a13eb580a20e4aa9ee1c5c746b83a0e7e1cf5e5610a4789ce990b019587da",
+    "assertions": [
+      {
+        "line": 542,
+        "text": "assert!(q_bit > 0, \"Q-bit should be set\");"
+      },
+      {
+        "line": 545,
+        "text": "assert_eq!(n, 0, \"n should be 0 for altitude field 0x010\");"
+      },
+      {
+        "line": 548,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_altitude_minus_1000_valid() {\n        // Test that actual -1000 ft altitude is correctly encoded and decoded\n        // For -1000 ft: n = 0, so altitude field = (0 << 1) | Q-bit | 0 = 0x010\n        // This is Q-bit set (bit 4), with all other bits zero\n\n        // The formula: altitude = n * 25 - 1000\n        // For n=0: altitude = 0 * 25 - 1000 = -1000 ft\n\n        // We need a proper message with altitude field 0x010\n        // Let's verify the formula directly for now\n        let alt_field: u16 = 0x010;\n        let q_bit = alt_field & 0x10;\n        assert!(q_bit > 0, \"Q-bit should be set\");\n\n        let n = ((alt_field & 0x0fe0) >> 1) | (alt_field & 0x000f);\n        assert_eq!(n, 0, \"n should be 0 for altitude field 0x010\");\n\n        let altitude = i32::from(n) * 25 - 1000;\n        assert_eq!(\n            altitude, -1000,\n            \"Altitude field 0x010 should decode to -1000 ft\"\n        );\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds06.rs::test_format",
+    "file": "crates/rs1090/src/decode/bds/bds06.rs",
+    "line": 261,
+    "end_line": 278,
+    "source_sha256": "687d6d39e32161a6591c0c743163ec485fa08352d285abdba3ba35860814978e",
+    "assertions": [
+      {
+        "line": 265,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_format() {\n        let bytes = hex!(\"8c4841753a9a153237aef0f275be\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        assert_eq!(\n            format!(\"{msg}\"),\n            r#\" DF17. Extended Squitter\n  Address:       484175\n  Air/Ground:    ground\n  Surface position (BDS 0,6)\n  Groundspeed:   17 kts\n  Track angle:   92.8125\u00b0\n  CPR parity:    odd\n  CPR latitude:  (39195)\n  CPR longitude: (110320)\n\"#\n        )\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds08.rs::test_format",
+    "file": "crates/rs1090/src/decode/bds/bds08.rs",
+    "line": 384,
+    "end_line": 398,
+    "source_sha256": "3aeefbb66a10ed86ec51980c69b7258700d9bd1289954878e4c39171eaf05e54",
+    "assertions": [
+      {
+        "line": 388,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_format() {\n        let bytes = hex!(\"8d406b902015a678d4d220aa4bda\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        assert_eq!(\n            format!(\"{msg}\"),\n            r#\" DF17. Extended Squitter\n  Address:       406b90\n  Air/Ground:    airborne\n  Aircraft identification and category (BDS 0,8)\n  Callsign:      EZY85MH\n  Category:      No category information\n\"#\n        )\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds09.rs::test_format_groundspeed",
+    "file": "crates/rs1090/src/decode/bds/bds09.rs",
+    "line": 733,
+    "end_line": 750,
+    "source_sha256": "ff064ed77e709b85471e6f4be28dd8058cd31ce8b39e990d574c69c8597dcdd7",
+    "assertions": [
+      {
+        "line": 737,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_format_groundspeed() {\n        let bytes = hex!(\"8D485020994409940838175B284F\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        assert_eq!(\n            format!(\"{msg}\"),\n            r#\" DF17. Extended Squitter\n  Address:       485020\n  Air/Ground:    airborne\n  Airborne velocity over ground (BDS 0,9)\n  Track angle:   183\u00b0\n  Groundspeed:   159 kt\n  Vertical rate: -832 ft/min barometric\n  NACv:          0\n  GNSS delta:    550 ft\n\"#\n        )\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds09.rs::test_format_airspeed",
+    "file": "crates/rs1090/src/decode/bds/bds09.rs",
+    "line": 775,
+    "end_line": 791,
+    "source_sha256": "ff064ed77e709b85471e6f4be28dd8058cd31ce8b39e990d574c69c8597dcdd7",
+    "assertions": [
+      {
+        "line": 779,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_format_airspeed() {\n        let bytes = hex!(\"8DA05F219B06B6AF189400CBC33F\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        assert_eq!(\n            format!(\"{msg}\"),\n            r#\" DF17. Extended Squitter\n  Address:       a05f21\n  Air/Ground:    airborne\n  Airborne velocity over ground (BDS 0,9)\n  TAS:           375 kt\n  Heading:       244\u00b0\n  Vertical rate: -2304 ft/min GNSS\n  NACv:          0\n\"#\n        )\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds21.rs::test_validate_registration",
+    "file": "crates/rs1090/src/decode/bds/bds21.rs",
+    "line": 370,
+    "end_line": 405,
+    "source_sha256": "d2a1834a491144230a72be971b1ed0213f46a8edf7419745b140ed6dcf6c1cdd",
+    "assertions": [
+      {
+        "line": 374,
+        "text": "assert!(validate_registration(\"JA824A\", 0x843a1b));"
+      },
+      {
+        "line": 376,
+        "text": "assert!(validate_registration(\"N706CK\", 0xa4a6fd));"
+      },
+      {
+        "line": 378,
+        "text": "assert!(validate_registration(\"B2487\", 0x780123));"
+      },
+      {
+        "line": 380,
+        "text": "assert!(validate_registration(\"FGZHA\", 0x3950ab));"
+      },
+      {
+        "line": 384,
+        "text": "assert!(validate_registration(\"SQ9VDHA\", 0x76c123));"
+      },
+      {
+        "line": 387,
+        "text": "assert!(validate_registration(\"B2487CA\", 0x780123));"
+      },
+      {
+        "line": 390,
+        "text": "assert!(validate_registration(\"BRB1672\", 0x843a1b));"
+      },
+      {
+        "line": 391,
+        "text": "assert!(validate_registration(\"CIB1800\", 0x843a1b));"
+      },
+      {
+        "line": 395,
+        "text": "assert!(!validate_registration(\"#0NF\", 0x39c422));"
+      },
+      {
+        "line": 396,
+        "text": "assert!(!validate_registration(\"F\", 0x39c422));"
+      },
+      {
+        "line": 402,
+        "text": "assert!(!validate_registration(\"XXXXXX\", 0x843a1b));"
+      },
+      {
+        "line": 404,
+        "text": "assert!(!validate_registration(\"ZZZZZZ\", 0x843a1b)); // Japan range, non-JA"
+      }
+    ],
+    "body": "    #[test]\n    fn test_validate_registration() {\n        // Bucket 1: direct country match\n        // Japan: icao24 0x84xxxx, pattern \"^JA\"\n        assert!(validate_registration(\"JA824A\", 0x843a1b));\n        // US: icao24 0xa0xxxx, pattern \"^N\"\n        assert!(validate_registration(\"N706CK\", 0xa4a6fd));\n        // China: icao24 0x78xxxx, pattern \"^B-\"\n        assert!(validate_registration(\"B2487\", 0x780123));\n        // France: icao24 0x38xxxx, pattern \"^F-\"\n        assert!(validate_registration(\"FGZHA\", 0x3950ab));\n\n        // Bucket 2: airline-prefix strip (3 chars: SQ + 9V-DHA -> 9VDHA)\n        // Singapore: icao24 0x76xxxx, pattern \"^9V-\"\n        assert!(validate_registration(\"SQ9VDHA\", 0x76c123));\n\n        // Bucket 3: airline-suffix strip (2 chars: B2487CA -> B2487)\n        assert!(validate_registration(\"B2487CA\", 0x780123));\n\n        // Bucket 4: callsign shape\n        assert!(validate_registration(\"BRB1672\", 0x843a1b));\n        assert!(validate_registration(\"CIB1800\", 0x843a1b));\n\n        // Reject: leading placeholder and bare country prefix are too weak\n        // to be considered plausible registrations.\n        assert!(!validate_registration(\"#0NF\", 0x39c422));\n        assert!(!validate_registration(\"F\", 0x39c422));\n\n        // Reject: clearly wrong country prefix for icao24 range\n        // Japan range, non-JA\n        // Reject: all-hash (would be caught by the '#' count check upstream,\n        // but validate_registration also rejects non-matching strings)\n        assert!(!validate_registration(\"XXXXXX\", 0x843a1b));\n\n        assert!(!validate_registration(\"ZZZZZZ\", 0x843a1b)); // Japan range, non-JA\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds62.rs::test_format_groundspeed",
+    "file": "crates/rs1090/src/decode/bds/bds62.rs",
+    "line": 472,
+    "end_line": 489,
+    "source_sha256": "82c8605253e1d69ea8e96ef9609424b7d1c24b47852700078642bde1c691cce5",
+    "assertions": [
+      {
+        "line": 476,
+        "text": "assert_eq!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_format_groundspeed() {\n        let bytes = hex!(\"8DA05629EA21485CBF3F8CADAEEB\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        assert_eq!(\n            format!(\"{msg}\"),\n            r#\" DF17. Extended Squitter\n  Address:       a05629\n  Air/Ground:    airborne\n  Target state and status (BDS 6,2)\n  Selected alt:  17000 ft MCP/FCU\n  Selected hdg:  66.8\u00b0\n  QNH:           1012.8 mbar\n  Mode:          autopilot VNAV LNAV\n  TCAS:          on\n\"#\n        )\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds65.rs::test_bds65_version2_surface",
+    "file": "crates/rs1090/src/decode/bds/bds65.rs",
+    "line": 817,
+    "end_line": 856,
+    "source_sha256": "6e3876710cf565f719f583ecdbca62558724b4b0fa60dbca6cf9b310095a8257",
+    "assertions": [
+      {
+        "line": 828,
+        "text": "assert_eq!(surface.version.version_number(), 2);"
+      },
+      {
+        "line": 834,
+        "text": "assert_eq!(v2.nic_a, 0);"
+      },
+      {
+        "line": 835,
+        "text": "assert_eq!(v2.nac_p, 9);"
+      },
+      {
+        "line": 836,
+        "text": "assert_eq!(v2.sil, 0);"
+      },
+      {
+        "line": 837,
+        "text": "assert_eq!(v2.sil_supplement, 0);"
+      },
+      {
+        "line": 838,
+        "text": "assert_eq!(v2.track_angle_or_heading, 0);"
+      },
+      {
+        "line": 839,
+        "text": "assert_eq!(v2.horizontal_reference_direction, 0);"
+      },
+      {
+        "line": 845,
+        "text": "assert_eq!(json[\"version\"], 2);"
+      },
+      {
+        "line": 849,
+        "text": "assert!(display.contains(\"Version 2 (DO-260B)\"));"
+      },
+      {
+        "line": 850,
+        "text": "assert!(display.contains(\"NIC supplement A:\"));"
+      },
+      {
+        "line": 851,
+        "text": "assert!(display.contains(\"NACp:\"));"
+      }
+    ],
+    "body": "    #[test]\n    fn test_bds65_version2_surface() {\n        // Real message from 3a33ff - Surface status, version 2 (DO-260B)\n        // Version: 2, NICa: 0, NACp: 9, SIL: 0, TAH: 0, HRD: 0, SILs: 0\n        let bytes = hex!(\"903a33fff90200040049001ea8e2\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n\n        if let DF::ExtendedSquitterTisB { cf, .. } = msg.df {\n            if let ME::BDS65(AircraftOperationStatus::Surface(surface)) = cf.me\n            {\n                // Check version number method\n                assert_eq!(surface.version.version_number(), 2);\n\n                // Check it's a version 2 message\n                if let ADSBVersionSurface::DOC9871AppendixC(v2) =\n                    surface.version\n                {\n                    assert_eq!(v2.nic_a, 0);\n                    assert_eq!(v2.nac_p, 9);\n                    assert_eq!(v2.sil, 0);\n                    assert_eq!(v2.sil_supplement, 0);\n                    assert_eq!(v2.track_angle_or_heading, 0);\n                    assert_eq!(v2.horizontal_reference_direction, 0);\n                } else {\n                    panic!(\"Expected version 2\");\n                }\n\n                let json = serde_json::to_value(surface).unwrap();\n                assert_eq!(json[\"version\"], 2);\n\n                // Test Display implementation\n                let display = format!(\"{}\", surface.version);\n                assert!(display.contains(\"Version 2 (DO-260B)\"));\n                assert!(display.contains(\"NIC supplement A:\"));\n                assert!(display.contains(\"NACp:\"));\n                return;\n            }\n        }\n        unreachable!();\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds65.rs::test_adsb_version_display_airborne",
+    "file": "crates/rs1090/src/decode/bds/bds65.rs",
+    "line": 858,
+    "end_line": 915,
+    "source_sha256": "6e3876710cf565f719f583ecdbca62558724b4b0fa60dbca6cf9b310095a8257",
+    "assertions": [
+      {
+        "line": 867,
+        "text": "assert!(display.contains(\"Version 0 (DO-260)\"));"
+      },
+      {
+        "line": 868,
+        "text": "assert_eq!(v0.version_number(), 0);"
+      },
+      {
+        "line": 880,
+        "text": "assert!(display.contains(\"Version 1 (DO-260A)\"));"
+      },
+      {
+        "line": 881,
+        "text": "assert!(display.contains(\"NIC supplement:\"));"
+      },
+      {
+        "line": 882,
+        "text": "assert!(display.contains(\"NACp:               9\"));"
+      },
+      {
+        "line": 883,
+        "text": "assert!(display.contains(\"BAQ:                1\"));"
+      },
+      {
+        "line": 884,
+        "text": "assert!(display.contains(\"SIL:                2\"));"
+      },
+      {
+        "line": 885,
+        "text": "assert!(display.contains(\"BAI:                1\"));"
+      },
+      {
+        "line": 886,
+        "text": "assert!(display.contains(\"HRD:                True North\"));"
+      },
+      {
+        "line": 887,
+        "text": "assert_eq!(v1.version_number(), 1);"
+      },
+      {
+        "line": 900,
+        "text": "assert!(display.contains(\"Version 2 (DO-260B)\"));"
+      },
+      {
+        "line": 901,
+        "text": "assert!(display.contains(\"NIC supplement A:   0\"));"
+      },
+      {
+        "line": 902,
+        "text": "assert!(display.contains(\"NACp:               9\"));"
+      },
+      {
+        "line": 903,
+        "text": "assert!(display.contains(\"GVA:                2\"));"
+      },
+      {
+        "line": 904,
+        "text": "assert!(display.contains(\"SIL:                3\"));"
+      },
+      {
+        "line": 905,
+        "text": "assert!(display.contains(\"BAI:                1\"));"
+      },
+      {
+        "line": 906,
+        "text": "assert!(display.contains(\"HRD:                True North\"));"
+      },
+      {
+        "line": 907,
+        "text": "assert!(display.contains(\"SIL supplement:     0\"));"
+      },
+      {
+        "line": 908,
+        "text": "assert_eq!(v2.version_number(), 2);"
+      },
+      {
+        "line": 913,
+        "text": "assert!(display.contains(\"Version 5 (Reserved)\"));"
+      },
+      {
+        "line": 914,
+        "text": "assert_eq!(vr.version_number(), 5);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_adsb_version_display_airborne() {\n        // Test Display implementation for airborne versions\n        // Since TC=31 subtype 1 (airborne) messages are rare in our samples,\n        // we construct the version structures directly to test formatting\n\n        // Test Version 0 (DO-260) - uses Empty struct\n        let v0 = ADSBVersionAirborne::DOC9871AppendixA(Empty {});\n        let display = format!(\"{}\", v0);\n        assert!(display.contains(\"Version 0 (DO-260)\"));\n        assert_eq!(v0.version_number(), 0);\n\n        // Test Version 1 (DO-260A)\n        let v1 = ADSBVersionAirborne::DOC9871AppendixB(AirborneV1 {\n            nic_s: 1,\n            nac_p: 9,\n            barometric_altitude_quality: 1,\n            sil: 2,\n            barometric_altitude_integrity: 1,\n            horizontal_reference_direction: 0,\n        });\n        let display = format!(\"{}\", v1);\n        assert!(display.contains(\"Version 1 (DO-260A)\"));\n        assert!(display.contains(\"NIC supplement:\"));\n        assert!(display.contains(\"NACp:               9\"));\n        assert!(display.contains(\"BAQ:                1\"));\n        assert!(display.contains(\"SIL:                2\"));\n        assert!(display.contains(\"BAI:                1\"));\n        assert!(display.contains(\"HRD:                True North\"));\n        assert_eq!(v1.version_number(), 1);\n\n        // Test Version 2 (DO-260B)\n        let v2 = ADSBVersionAirborne::DOC9871AppendixC(AirborneV2 {\n            nic_a: 0,\n            nac_p: 9,\n            geometry_vertical_accuracy: 2,\n            sil: 3,\n            barometric_altitude_integrity: 1,\n            horizontal_reference_direction: 0,\n            sil_s: 0,\n        });\n        let display = format!(\"{}\", v2);\n        assert!(display.contains(\"Version 2 (DO-260B)\"));\n        assert!(display.contains(\"NIC supplement A:   0\"));\n        assert!(display.contains(\"NACp:               9\"));\n        assert!(display.contains(\"GVA:                2\"));\n        assert!(display.contains(\"SIL:                3\"));\n        assert!(display.contains(\"BAI:                1\"));\n        assert!(display.contains(\"HRD:                True North\"));\n        assert!(display.contains(\"SIL supplement:     0\"));\n        assert_eq!(v2.version_number(), 2);\n\n        // Test Reserved version\n        let vr = ADSBVersionAirborne::Reserved { id: 5 };\n        let display = format!(\"{}\", vr);\n        assert!(display.contains(\"Version 5 (Reserved)\"));\n        assert_eq!(vr.version_number(), 5);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/bds65.rs::test_version_number_method",
+    "file": "crates/rs1090/src/decode/bds/bds65.rs",
+    "line": 917,
+    "end_line": 953,
+    "source_sha256": "6e3876710cf565f719f583ecdbca62558724b4b0fa60dbca6cf9b310095a8257",
+    "assertions": [
+      {
+        "line": 923,
+        "text": "assert_eq!(v0.version_number(), 0);"
+      },
+      {
+        "line": 934,
+        "text": "assert_eq!(v1.version_number(), 1);"
+      },
+      {
+        "line": 946,
+        "text": "assert_eq!(v2.version_number(), 2);"
+      },
+      {
+        "line": 951,
+        "text": "assert_eq!(vr.version_number(), id);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_version_number_method() {\n        // Test the version_number() helper method for all versions\n\n        // Version 0\n        let v0 = ADSBVersionAirborne::DOC9871AppendixA(Empty {});\n        assert_eq!(v0.version_number(), 0);\n\n        // Version 1\n        let v1 = ADSBVersionAirborne::DOC9871AppendixB(AirborneV1 {\n            nic_s: 0,\n            nac_p: 0,\n            barometric_altitude_quality: 0,\n            sil: 0,\n            barometric_altitude_integrity: 0,\n            horizontal_reference_direction: 0,\n        });\n        assert_eq!(v1.version_number(), 1);\n\n        // Version 2\n        let v2 = ADSBVersionAirborne::DOC9871AppendixC(AirborneV2 {\n            nic_a: 0,\n            nac_p: 0,\n            geometry_vertical_accuracy: 0,\n            sil: 0,\n            barometric_altitude_integrity: 0,\n            horizontal_reference_direction: 0,\n            sil_s: 0,\n        });\n        assert_eq!(v2.version_number(), 2);\n\n        // Reserved versions\n        for id in 3..=7 {\n            let vr = ADSBVersionAirborne::Reserved { id };\n            assert_eq!(vr.version_number(), id);\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/density.rs::cruise_bds50_passes",
+    "file": "crates/rs1090/src/decode/bds/density.rs",
+    "line": 182,
+    "end_line": 197,
+    "source_sha256": "a637bbbd0c6abd3450a892cb2c36560ba92902ba75218205e543924c4a599cbd",
+    "assertions": [
+      {
+        "line": 196,
+        "text": "assert!(m > DENSITY_THRESHOLD, \"cruise mean = {m}\");"
+      }
+    ],
+    "body": "    #[test]\n    fn cruise_bds50_passes() {\n        // Field-by-field hand-computed log-densities (un-normalised):\n        //   roll = \u22122\u00b0  \u2192 laplace(0, 10)   = \u22120.20\n        //   trk_rate=0  \u2192 laplace(0, 0.70) =  0.00\n        //   TAS  = 460  \u2192 gauss(413, 120)  = \u22120.0767\n        //   GS   = 470  \u2192 gauss(418, 129)  = \u22120.0813\n        // mean \u2248 \u22120.090, well above \u22123.0.\n        let mut acc = Acc::new();\n        acc.add(laplace(-2.0, 0.0, 10.0));\n        acc.add(laplace(0.0, 0.0, 0.70));\n        acc.add(gauss(460.0, 413.0, 120.0));\n        acc.add(gauss(470.0, 418.0, 129.0));\n        let m = acc.mean().unwrap();\n        assert!(m > DENSITY_THRESHOLD, \"cruise mean = {m}\");\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/density.rs::slow_bds60_fails",
+    "file": "crates/rs1090/src/decode/bds/density.rs",
+    "line": 201,
+    "end_line": 211,
+    "source_sha256": "a637bbbd0c6abd3450a892cb2c36560ba92902ba75218205e543924c4a599cbd",
+    "assertions": [
+      {
+        "line": 210,
+        "text": "assert!(m < DENSITY_THRESHOLD, \"slow mean = {m}\");"
+      }
+    ],
+    "body": "    #[test]\n    fn slow_bds60_fails() {\n        // IAS  = 50   \u2192 gauss(272, 55)    \u2248 \u22128.2\n        // Mach = 0.05 \u2192 gauss(0.69, 0.21) \u2248 \u22122.25\n        // mean \u2248 \u22125.2.\n        let mut acc = Acc::new();\n        acc.add(gauss(50.0, 272.0, 55.0));\n        acc.add(gauss(0.05, 0.69, 0.21));\n        let m = acc.mean().unwrap();\n        assert!(m < DENSITY_THRESHOLD, \"slow mean = {m}\");\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/density.rs::density_at_centre_is_zero",
+    "file": "crates/rs1090/src/decode/bds/density.rs",
+    "line": 214,
+    "end_line": 220,
+    "source_sha256": "a637bbbd0c6abd3450a892cb2c36560ba92902ba75218205e543924c4a599cbd",
+    "assertions": [
+      {
+        "line": 216,
+        "text": "assert_eq!(gauss(1.0, 1.0, 2.0), 0.0);"
+      },
+      {
+        "line": 217,
+        "text": "assert_eq!(laplace(1013.2, 1013.2, 5.4), 0.0);"
+      },
+      {
+        "line": 219,
+        "text": "assert_eq!(laplace(1.0, 0.0, 0.0), 0.0);"
+      }
+    ],
+    "body": "    #[test]\n    fn density_at_centre_is_zero() {\n        assert_eq!(gauss(1.0, 1.0, 2.0), 0.0);\n        assert_eq!(laplace(1013.2, 1013.2, 5.4), 0.0);\n        // Degenerate Laplace (b \u2264 0) returns 0 instead of dividing by zero.\n        assert_eq!(laplace(1.0, 0.0, 0.0), 0.0);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/penalty.rs::cruise_bds50_small_penalty",
+    "file": "crates/rs1090/src/decode/bds/penalty.rs",
+    "line": 72,
+    "end_line": 80,
+    "source_sha256": "458b43904f53d6353a59ceac812012dd6592e09a411bc175e037e55512d6a565",
+    "assertions": [
+      {
+        "line": 78,
+        "text": "assert!(p > -1.0, \"penalty for cruise BDS 50 = {p}\");"
+      }
+    ],
+    "body": "    #[test]\n    fn cruise_bds50_small_penalty() {\n        let payload = hex!(\"A0001838CA3E51B250C38D000000\");\n        let mb = &payload[4..11];\n        if let Ok(d @ DecodedBds::Bds50(_)) = decode_bds(mb, 0x50) {\n            let p = penalty(&d);\n            assert!(p > -1.0, \"penalty for cruise BDS 50 = {p}\");\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/bds/penalty.rs::empty_decoded_bds_no_penalty",
+    "file": "crates/rs1090/src/decode/bds/penalty.rs",
+    "line": 84,
+    "end_line": 90,
+    "source_sha256": "458b43904f53d6353a59ceac812012dd6592e09a411bc175e037e55512d6a565",
+    "assertions": [
+      {
+        "line": 88,
+        "text": "assert_eq!(penalty(&d), 0.0);"
+      }
+    ],
+    "body": "    #[test]\n    fn empty_decoded_bds_no_penalty() {\n        let mb = hex!(\"30000000000000\");\n        if let Ok(d) = decode_bds(&mb, 0x30) {\n            assert_eq!(penalty(&d), 0.0);\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_record_with_bds",
+    "file": "crates/rs1090/src/decode/cat48.rs",
+    "line": 1320,
+    "end_line": 1390,
+    "source_sha256": "581068f2d351466d391ffaaaf857292f4a5ea78f9994cacf0168b44dd273de7c",
+    "assertions": [
+      {
+        "line": 1330,
+        "text": ".expect(\"Failed to parse record\");"
+      },
+      {
+        "line": 1333,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1334,
+        "text": "assert_eq!(record.length, 69);"
+      },
+      {
+        "line": 1335,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0xA3, 0x03, 0x01, 0xB8]);"
+      },
+      {
+        "line": 1338,
+        "text": "assert_eq!(record.sac(), Some(52));"
+      },
+      {
+        "line": 1339,
+        "text": "assert_eq!(record.sic(), Some(1));"
+      },
+      {
+        "line": 1342,
+        "text": "assert!((record.time_of_day.unwrap() - 6784.992).abs() < 0.001);"
+      },
+      {
+        "line": 1346,
+        "text": "assert_eq!(trd.typ, DetectionType::ModeSRollCall);"
+      },
+      {
+        "line": 1347,
+        "text": "assert!(!trd.sim);"
+      },
+      {
+        "line": 1348,
+        "text": "assert_eq!(trd.rdp, 0);"
+      },
+      {
+        "line": 1349,
+        "text": "assert!(!trd.spi);"
+      },
+      {
+        "line": 1350,
+        "text": "assert!(!trd.rab);"
+      },
+      {
+        "line": 1351,
+        "text": "assert!(trd.extension1.is_some());"
+      },
+      {
+        "line": 1352,
+        "text": "assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));"
+      },
+      {
+        "line": 1355,
+        "text": "assert!((record.range_nm().unwrap() - 63.961).abs() < 0.01);"
+      },
+      {
+        "line": 1356,
+        "text": "assert!((record.azimuth_deg().unwrap() - 26.543).abs() < 0.01);"
+      },
+      {
+        "line": 1359,
+        "text": "assert!(record.mode_3a_code.is_none());"
+      },
+      {
+        "line": 1362,
+        "text": "assert_eq!(record.flight_level, Some(36000));"
+      },
+      {
+        "line": 1365,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1371,
+        "text": "assert!(record.has_bds_data());"
+      },
+      {
+        "line": 1373,
+        "text": "assert_eq!(bds.len(), 4);"
+      },
+      {
+        "line": 1374,
+        "text": "assert_eq!(bds[0].bds_code, 0x05);"
+      },
+      {
+        "line": 1375,
+        "text": "assert_eq!(bds[1].bds_code, 0x60);"
+      },
+      {
+        "line": 1376,
+        "text": "assert_eq!(bds[2].bds_code, 0x50);"
+      },
+      {
+        "line": 1377,
+        "text": "assert_eq!(bds[3].bds_code, 0x40);"
+      },
+      {
+        "line": 1381,
+        "text": "assert!(ts.confirmed);"
+      },
+      {
+        "line": 1382,
+        "text": "assert_eq!(ts.sensor_type, SensorType::Combined);"
+      },
+      {
+        "line": 1383,
+        "text": "assert!(!ts.doubtful);"
+      },
+      {
+        "line": 1384,
+        "text": "assert!(!ts.manoeuvring);"
+      },
+      {
+        "line": 1385,
+        "text": "assert_eq!(ts.climb_mode, ClimbMode::Maintaining);"
+      },
+      {
+        "line": 1386,
+        "text": "assert!(ts.extension.is_none()); // No FX extension"
+      },
+      {
+        "line": 1389,
+        "text": "assert_eq!(record.comms_acas, Some(0x0020));"
+      }
+    ],
+    "body": "    #[test]\n    fn test_parse_record_with_bds() {\n        let data = hex::decode(\n            \"300045fda30301b834010d407fa1003ff612e087a105a0780a89\\\n             0458b984034a980805d9ca2933e00ffe60803a6b300004f650\\\n             c6500030a400004000002040210d00919cc2\",\n        )\n        .unwrap();\n\n        let (_, record) = Cat48Record::from_bytes((&data, 0))\n            .expect(\"Failed to parse record\");\n\n        // Basic fields\n        assert_eq!(record.cat, 48);\n        assert_eq!(record.length, 69);\n        assert_eq!(record.fspec, vec![0xFD, 0xA3, 0x03, 0x01, 0xB8]);\n\n        // I048/010: Data Source\n        assert_eq!(record.sac(), Some(52));\n        assert_eq!(record.sic(), Some(1));\n\n        // I048/140: Time of Day\n        assert!((record.time_of_day.unwrap() - 6784.992).abs() < 0.001);\n\n        // I048/020: TRD\n        let trd = record.target_report_descriptor.as_ref().unwrap();\n        assert_eq!(trd.typ, DetectionType::ModeSRollCall);\n        assert!(!trd.sim);\n        assert_eq!(trd.rdp, 0);\n        assert!(!trd.spi);\n        assert!(!trd.rab);\n        assert!(trd.extension1.is_some());\n        assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));\n\n        // I048/040: Position\n        assert!((record.range_nm().unwrap() - 63.961).abs() < 0.01);\n        assert!((record.azimuth_deg().unwrap() - 26.543).abs() < 0.01);\n\n        // I048/070: Mode 3/A (V=1, invalid)\n        assert!(record.mode_3a_code.is_none());\n\n        // I048/090: Flight Level\n        assert_eq!(record.flight_level, Some(36000));\n\n        // I048/220: ICAO\n        assert_eq!(\n            format!(\"{}\", record.aircraft_address.as_ref().unwrap()),\n            \"780a89\"\n        );\n\n        // I048/250: BDS data\n        assert!(record.has_bds_data());\n        let bds = record.bds_records().unwrap();\n        assert_eq!(bds.len(), 4);\n        assert_eq!(bds[0].bds_code, 0x05);\n        assert_eq!(bds[1].bds_code, 0x60);\n        assert_eq!(bds[2].bds_code, 0x50);\n        assert_eq!(bds[3].bds_code, 0x40);\n\n        // I048/170: Track Status (0x00: confirmed, combined, no doubtful/manoeuvre, maintaining)\n        let ts = record.track_status.as_ref().unwrap();\n        assert!(ts.confirmed);\n        assert_eq!(ts.sensor_type, SensorType::Combined);\n        assert!(!ts.doubtful);\n        assert!(!ts.manoeuvring);\n        assert_eq!(ts.climb_mode, ClimbMode::Maintaining);\n        assert!(ts.extension.is_none()); // No FX extension\n\n        // I048/230: Comms/ACAS\n        assert_eq!(record.comms_acas, Some(0x0020));\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_record_without_bds",
+    "file": "crates/rs1090/src/decode/cat48.rs",
+    "line": 1393,
+    "end_line": 1417,
+    "source_sha256": "581068f2d351466d391ffaaaf857292f4a5ea78f9994cacf0168b44dd273de7c",
+    "assertions": [
+      {
+        "line": 1401,
+        "text": ".expect(\"Failed to parse record without BDS\");"
+      },
+      {
+        "line": 1403,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1404,
+        "text": "assert_eq!(record.length, 36);"
+      },
+      {
+        "line": 1405,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0x83, 0x03, 0x01, 0xB8]);"
+      },
+      {
+        "line": 1406,
+        "text": "assert_eq!(record.sac(), Some(0x34));"
+      },
+      {
+        "line": 1407,
+        "text": "assert_eq!(record.sic(), Some(0x01));"
+      },
+      {
+        "line": 1408,
+        "text": "assert!((record.time_of_day.unwrap() - 6785.38).abs() < 0.01);"
+      },
+      {
+        "line": 1409,
+        "text": "assert!((record.range_nm().unwrap() - 191.508).abs() < 0.01);"
+      },
+      {
+        "line": 1410,
+        "text": "assert!((record.azimuth_deg().unwrap() - 40.364).abs() < 0.01);"
+      },
+      {
+        "line": 1411,
+        "text": "assert_eq!(record.flight_level, Some(40000));"
+      },
+      {
+        "line": 1412,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1416,
+        "text": "assert!(!record.has_bds_data());"
+      }
+    ],
+    "body": "    #[test]\n    fn test_parse_record_without_bds() {\n        let data = hex::decode(\n            \"300024fd830301b834010d40b1a100bf821cb48c1a0640c058c000002040210d00919cc9\",\n        )\n        .unwrap();\n\n        let (_, record) = Cat48Record::from_bytes((&data, 0))\n            .expect(\"Failed to parse record without BDS\");\n\n        assert_eq!(record.cat, 48);\n        assert_eq!(record.length, 36);\n        assert_eq!(record.fspec, vec![0xFD, 0x83, 0x03, 0x01, 0xB8]);\n        assert_eq!(record.sac(), Some(0x34));\n        assert_eq!(record.sic(), Some(0x01));\n        assert!((record.time_of_day.unwrap() - 6785.38).abs() < 0.01);\n        assert!((record.range_nm().unwrap() - 191.508).abs() < 0.01);\n        assert!((record.azimuth_deg().unwrap() - 40.364).abs() < 0.01);\n        assert_eq!(record.flight_level, Some(40000));\n        assert_eq!(\n            format!(\"{}\", record.aircraft_address.as_ref().unwrap()),\n            \"c058c0\"\n        );\n        assert!(!record.has_bds_data());\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_croatia_control_sample",
+    "file": "crates/rs1090/src/decode/cat48.rs",
+    "line": 1420,
+    "end_line": 1502,
+    "source_sha256": "581068f2d351466d391ffaaaf857292f4a5ea78f9994cacf0168b44dd273de7c",
+    "assertions": [
+      {
+        "line": 1432,
+        "text": ".expect(\"Failed to parse CroatiaControl sample\");"
+      },
+      {
+        "line": 1435,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1436,
+        "text": "assert_eq!(record.length, 48);"
+      },
+      {
+        "line": 1437,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0xF7, 0x02]);"
+      },
+      {
+        "line": 1440,
+        "text": "assert_eq!(record.sac(), Some(25));"
+      },
+      {
+        "line": 1441,
+        "text": "assert_eq!(record.sic(), Some(201));"
+      },
+      {
+        "line": 1444,
+        "text": "assert!((record.time_of_day.unwrap() - 27354.602).abs() < 0.01);"
+      },
+      {
+        "line": 1448,
+        "text": "assert_eq!(trd.typ, DetectionType::ModeSRollCall);"
+      },
+      {
+        "line": 1449,
+        "text": "assert!(!trd.sim);"
+      },
+      {
+        "line": 1450,
+        "text": "assert!(trd.extension1.is_none()); // No FX extension"
+      },
+      {
+        "line": 1451,
+        "text": "assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));"
+      },
+      {
+        "line": 1454,
+        "text": "assert!((record.range_nm().unwrap() - 197.684).abs() < 0.01);"
+      },
+      {
+        "line": 1455,
+        "text": "assert!((record.azimuth_deg().unwrap() - 340.137).abs() < 0.01);"
+      },
+      {
+        "line": 1458,
+        "text": "assert_eq!(record.mode_3a_code, Some(\"1000\".to_string()));"
+      },
+      {
+        "line": 1461,
+        "text": "assert_eq!(record.flight_level, Some(33000));"
+      },
+      {
+        "line": 1464,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1470,
+        "text": "assert!(record.aircraft_id.is_some());"
+      },
+      {
+        "line": 1474,
+        "text": "assert!(record.has_bds_data());"
+      },
+      {
+        "line": 1476,
+        "text": "assert_eq!(bds.len(), 1);"
+      },
+      {
+        "line": 1477,
+        "text": "assert_eq!(bds[0].bds_code, 0x40);"
+      },
+      {
+        "line": 1478,
+        "text": "assert_eq!(bds[0].payload_hex(), \"c0780031bc0000\");"
+      },
+      {
+        "line": 1481,
+        "text": "assert_eq!(record.track_num(), Some(3563));"
+      },
+      {
+        "line": 1484,
+        "text": "assert!((record.ground_speed_kt().unwrap() - 434.4).abs() < 1.0);"
+      },
+      {
+        "line": 1485,
+        "text": "assert!((record.heading_deg().unwrap() - 124.0).abs() < 0.1);"
+      },
+      {
+        "line": 1489,
+        "text": "assert!(ts.confirmed); // CNF=0"
+      },
+      {
+        "line": 1490,
+        "text": "assert_eq!(ts.sensor_type, SensorType::SsrModeS); // RAD=10"
+      },
+      {
+        "line": 1491,
+        "text": "assert!(!ts.doubtful);"
+      },
+      {
+        "line": 1492,
+        "text": "assert!(!ts.manoeuvring);"
+      },
+      {
+        "line": 1493,
+        "text": "assert_eq!(ts.climb_mode, ClimbMode::Maintaining); // CDM=00"
+      },
+      {
+        "line": 1495,
+        "text": "assert!(!ext.track_end); // TRE=0"
+      },
+      {
+        "line": 1496,
+        "text": "assert!(!ext.ghost); // GHO=0"
+      },
+      {
+        "line": 1497,
+        "text": "assert!(!ext.supplementary); // SUP=0"
+      },
+      {
+        "line": 1498,
+        "text": "assert!(!ext.tcc_slant); // TCC=0"
+      },
+      {
+        "line": 1501,
+        "text": "assert_eq!(record.comms_acas, Some(0x20F5));"
+      }
+    ],
+    "body": "    #[test]\n    fn test_parse_croatia_control_sample() {\n        let data = hex::decode(\n            \"300030fdf70219c9356d4da0c5aff1e00200052\\\n             83c660c10c236d41820\\\n             01c0780031bc000040\\\n             0deb07b9582e41002\\\n             0f5\",\n        )\n        .unwrap();\n\n        let (_, record) = Cat48Record::from_bytes((&data, 0))\n            .expect(\"Failed to parse CroatiaControl sample\");\n\n        // Basic fields\n        assert_eq!(record.cat, 48);\n        assert_eq!(record.length, 48);\n        assert_eq!(record.fspec, vec![0xFD, 0xF7, 0x02]);\n\n        // I048/010: Data Source\n        assert_eq!(record.sac(), Some(25));\n        assert_eq!(record.sic(), Some(201));\n\n        // I048/140: Time of Day (~27354.6 seconds = ~7:35:54 UTC)\n        assert!((record.time_of_day.unwrap() - 27354.602).abs() < 0.01);\n\n        // I048/020: TRD (single byte, no FX)\n        let trd = record.target_report_descriptor.as_ref().unwrap();\n        assert_eq!(trd.typ, DetectionType::ModeSRollCall);\n        assert!(!trd.sim);\n        assert!(trd.extension1.is_none()); // No FX extension\n        assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));\n\n        // I048/040: Position\n        assert!((record.range_nm().unwrap() - 197.684).abs() < 0.01);\n        assert!((record.azimuth_deg().unwrap() - 340.137).abs() < 0.01);\n\n        // I048/070: Mode 3/A = 1000 (octal)\n        assert_eq!(record.mode_3a_code, Some(\"1000\".to_string()));\n\n        // I048/090: Flight Level = 33000 ft\n        assert_eq!(record.flight_level, Some(33000));\n\n        // I048/220: ICAO = 3C660C\n        assert_eq!(\n            format!(\"{}\", record.aircraft_address.as_ref().unwrap()),\n            \"3c660c\"\n        );\n\n        // I048/240: Aircraft Identification (callsign)\n        assert!(record.aircraft_id.is_some());\n        // Callsign decoding - raw bytes: 10 c2 36 d4 18 20\n\n        // I048/250: BDS data (1 record with BDS 40)\n        assert!(record.has_bds_data());\n        let bds = record.bds_records().unwrap();\n        assert_eq!(bds.len(), 1);\n        assert_eq!(bds[0].bds_code, 0x40);\n        assert_eq!(bds[0].payload_hex(), \"c0780031bc0000\");\n\n        // I048/161: Track Number\n        assert_eq!(record.track_num(), Some(3563));\n\n        // I048/200: Track Velocity\n        assert!((record.ground_speed_kt().unwrap() - 434.4).abs() < 1.0);\n        assert!((record.heading_deg().unwrap() - 124.0).abs() < 0.1);\n\n        // I048/170: Track Status (0x41=0b01000001 with FX, 0x00 extension)\n        let ts = record.track_status.as_ref().unwrap();\n        assert!(ts.confirmed); // CNF=0\n        assert_eq!(ts.sensor_type, SensorType::SsrModeS); // RAD=10\n        assert!(!ts.doubtful);\n        assert!(!ts.manoeuvring);\n        assert_eq!(ts.climb_mode, ClimbMode::Maintaining); // CDM=00\n        let ext = ts.extension.as_ref().unwrap();\n        assert!(!ext.track_end); // TRE=0\n        assert!(!ext.ghost); // GHO=0\n        assert!(!ext.supplementary); // SUP=0\n        assert!(!ext.tcc_slant); // TCC=0\n\n        // I048/230: Comms/ACAS\n        assert_eq!(record.comms_acas, Some(0x20F5));\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_json_serialization",
+    "file": "crates/rs1090/src/decode/cat48.rs",
+    "line": 1505,
+    "end_line": 1546,
+    "source_sha256": "581068f2d351466d391ffaaaf857292f4a5ea78f9994cacf0168b44dd273de7c",
+    "assertions": [
+      {
+        "line": 1517,
+        "text": ".expect(\"Failed to parse CroatiaControl sample\");"
+      },
+      {
+        "line": 1528,
+        "text": "assert!((mp[\"rho\"].as_f64().unwrap() - 197.684).abs() < 0.01);"
+      },
+      {
+        "line": 1529,
+        "text": "assert!((mp[\"theta\"].as_f64().unwrap() - 340.137).abs() < 0.01);"
+      },
+      {
+        "line": 1533,
+        "text": "assert!((tv[\"ground_speed\"].as_f64().unwrap() - 434.4).abs() < 1.0);"
+      },
+      {
+        "line": 1534,
+        "text": "assert!((tv[\"heading\"].as_f64().unwrap() - 124.0).abs() < 0.1);"
+      },
+      {
+        "line": 1538,
+        "text": "assert!(ts[\"confirmed\"].as_bool().unwrap()); // CNF=0 means confirmed"
+      },
+      {
+        "line": 1539,
+        "text": "assert_eq!(ts[\"sensor_type\"].as_str().unwrap(), \"SsrModeS\");"
+      },
+      {
+        "line": 1542,
+        "text": "assert_eq!(json_value[\"icao24\"].as_str().unwrap(), \"3c660c\");"
+      },
+      {
+        "line": 1545,
+        "text": "assert!(json_value[\"callsign\"].as_str().is_some());"
+      }
+    ],
+    "body": "    #[test]\n    fn test_json_serialization() {\n        let data = hex::decode(\n            \"300030fdf70219c9356d4da0c5aff1e00200052\\\n             83c660c10c236d41820\\\n             01c0780031bc000040\\\n             0deb07b9582e41002\\\n             0f5\",\n        )\n        .unwrap();\n\n        let (_, record) = Cat48Record::from_bytes((&data, 0))\n            .expect(\"Failed to parse CroatiaControl sample\");\n\n        let json = serde_json::to_string_pretty(&record).unwrap();\n        println!(\"{}\", json);\n\n        // Parse back and verify converted values are in the JSON\n        let json_value: serde_json::Value =\n            serde_json::from_str(&json).unwrap();\n\n        // Check measured_position has converted values (rho in NM, theta in degrees)\n        let mp = &json_value[\"measured_position\"];\n        assert!((mp[\"rho\"].as_f64().unwrap() - 197.684).abs() < 0.01);\n        assert!((mp[\"theta\"].as_f64().unwrap() - 340.137).abs() < 0.01);\n\n        // Check track_velocity has converted values (ground_speed in kt, heading in deg)\n        let tv = &json_value[\"track_velocity\"];\n        assert!((tv[\"ground_speed\"].as_f64().unwrap() - 434.4).abs() < 1.0);\n        assert!((tv[\"heading\"].as_f64().unwrap() - 124.0).abs() < 0.1);\n\n        // Check track_status is properly decoded\n        let ts = &json_value[\"track_status\"];\n        assert!(ts[\"confirmed\"].as_bool().unwrap()); // CNF=0 means confirmed\n        assert_eq!(ts[\"sensor_type\"].as_str().unwrap(), \"SsrModeS\");\n\n        // Verify ICAO is serialized as hex string\n        assert_eq!(json_value[\"icao24\"].as_str().unwrap(), \"3c660c\");\n\n        // Verify callsign is flattened into the top-level object\n        assert!(json_value[\"callsign\"].as_str().is_some());\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_trd_extension2_parsing",
+    "file": "crates/rs1090/src/decode/cat48.rs",
+    "line": 1550,
+    "end_line": 1599,
+    "source_sha256": "581068f2d351466d391ffaaaf857292f4a5ea78f9994cacf0168b44dd273de7c",
+    "assertions": [
+      {
+        "line": 1564,
+        "text": ".expect(\"Failed to parse CAT48 with Extension 2\");"
+      },
+      {
+        "line": 1567,
+        "text": "assert_eq!(record.sac(), Some(0x00));"
+      },
+      {
+        "line": 1568,
+        "text": "assert_eq!(record.sic(), Some(0x01));"
+      },
+      {
+        "line": 1571,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1583,
+        "text": "assert!(ext1.is_some(), \"Extension 1 should be present\");"
+      },
+      {
+        "line": 1587,
+        "text": "assert!(ext2.is_some(), \"Extension 2 should be present\");"
+      },
+      {
+        "line": 1591,
+        "text": "assert!(!ext2_data.adsb.populated);"
+      },
+      {
+        "line": 1592,
+        "text": "assert!(ext2_data.adsb.available);"
+      },
+      {
+        "line": 1594,
+        "text": "assert!(ext2_data.scn.populated);"
+      },
+      {
+        "line": 1595,
+        "text": "assert!(!ext2_data.scn.available);"
+      },
+      {
+        "line": 1597,
+        "text": "assert!(ext2_data.pai.populated);"
+      },
+      {
+        "line": 1598,
+        "text": "assert!(ext2_data.pai.available);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_trd_extension2_parsing() {\n        // Construct a minimal CAT48 record with I048/020 containing Extension 2\n        // CAT: 48, LEN: 9 bytes\n        // FSPEC: 0xA0 (bits for FRN1=I048/010 and FRN3=I048/020)\n        // I048/010: SAC=0x00, SIC=0x01\n        // I048/020:\n        //   Octet 1: TYP=001(PSR) + SIM=0 + RDP=0 + SPI=0 + RAB=0 + FX=1\n        //   Ext 1: TST=0 + spare=0 + XPP=0 + ME=0 + MI=0 + FOE_FRI=00 + FX=1\n        //   Ext 2: ADSB(01: not populated, available) + SCN(10: populated, not available)\n        //          + PAI(11: populated, available) + FX=0 + spare=0\n        let data = hex::decode(\"300009a0000121016c\").unwrap();\n\n        let (_, record) = Cat48Record::from_bytes((&data, 0))\n            .expect(\"Failed to parse CAT48 with Extension 2\");\n\n        // Verify SAC/SIC\n        assert_eq!(record.sac(), Some(0x00));\n        assert_eq!(record.sic(), Some(0x01));\n\n        // Verify TRD basic fields\n        assert_eq!(\n            record.target_report_descriptor.as_ref().unwrap().typ,\n            DetectionType::SinglePsr\n        );\n\n        // Verify Extension 1 exists\n        let ext1 = record\n            .target_report_descriptor\n            .as_ref()\n            .unwrap()\n            .extension1\n            .as_ref();\n        assert!(ext1.is_some(), \"Extension 1 should be present\");\n\n        // Verify Extension 2 exists and contains correct values\n        let ext2 = ext1.unwrap().extension2.as_ref();\n        assert!(ext2.is_some(), \"Extension 2 should be present\");\n\n        let ext2_data = ext2.unwrap();\n        // ADSB: EP=0, VAL=1\n        assert!(!ext2_data.adsb.populated);\n        assert!(ext2_data.adsb.available);\n        // SCN: EP=1, VAL=0\n        assert!(ext2_data.scn.populated);\n        assert!(!ext2_data.scn.available);\n        // PAI: EP=1, VAL=1\n        assert!(ext2_data.pai.populated);\n        assert!(ext2_data.pai.available);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::decode_airporne_position",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 917,
+    "end_line": 971,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 942,
+        "text": "assert_relative_eq!(latitude, 49.81755, max_relative = 1e-3);"
+      },
+      {
+        "line": 943,
+        "text": "assert_relative_eq!(longitude, 6.08442, max_relative = 1e-3);"
+      },
+      {
+        "line": 969,
+        "text": "assert_relative_eq!(latitude, 42.346, max_relative = 1e-3);"
+      },
+      {
+        "line": 970,
+        "text": "assert_relative_eq!(longitude, 0.4347, max_relative = 1e-3);"
+      }
+    ],
+    "body": "    #[test]\n    fn decode_airporne_position() {\n        let b1 = hex!(\"8D40058B58C901375147EFD09357\");\n        let b2 = hex!(\"8D40058B58C904A87F402D3B8C59\");\n        let (_, msg1) = Message::from_bytes((&b1, 0)).unwrap();\n        let (_, msg2) = Message::from_bytes((&b2, 0)).unwrap();\n\n        let (msg1, msg2) = match (msg1.df, msg2.df) {\n            (ExtendedSquitterADSB(msg1), ExtendedSquitterADSB(msg2)) => {\n                match (msg1.message, msg2.message) {\n                    (\n                        ME::BDS05 { inner: m1, .. },\n                        ME::BDS05 { inner: m2, .. },\n                    ) => (m1, m2),\n                    _ => unreachable!(),\n                }\n            }\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = airborne_position(&msg1, &msg2).unwrap();\n\n        assert_relative_eq!(latitude, 49.81755, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 6.08442, max_relative = 1e-3);\n\n        let b3 = hex!(\"8d4d224f58bf07c2d41a9a353d70\");\n        let b4 = hex!(\"8d4d224f58bf003b221b34aa5b8d\");\n\n        let (_, msg1) = Message::from_bytes((&b3, 0)).unwrap();\n        let (_, msg2) = Message::from_bytes((&b4, 0)).unwrap();\n\n        let (msg1, msg2) = match (msg1.df, msg2.df) {\n            (ExtendedSquitterADSB(msg1), ExtendedSquitterADSB(msg2)) => {\n                match (msg1.message, msg2.message) {\n                    (\n                        ME::BDS05 { inner: m1, .. },\n                        ME::BDS05 { inner: m2, .. },\n                    ) => (m1, m2),\n                    _ => unreachable!(),\n                }\n            }\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = airborne_position(&msg1, &msg2).unwrap();\n\n        assert_relative_eq!(latitude, 42.346, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 0.4347, max_relative = 1e-3);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::decode_airporne_position_with_reference",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 973,
+    "end_line": 1012,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 991,
+        "text": "assert_relative_eq!(latitude, 49.82410, max_relative = 1e-3);"
+      },
+      {
+        "line": 992,
+        "text": "assert_relative_eq!(longitude, 6.06785, max_relative = 1e-3);"
+      },
+      {
+        "line": 1010,
+        "text": "assert_relative_eq!(latitude, 49.81755, max_relative = 1e-3);"
+      },
+      {
+        "line": 1011,
+        "text": "assert_relative_eq!(longitude, 6.08442, max_relative = 1e-3);"
+      }
+    ],
+    "body": "    #[test]\n    fn decode_airporne_position_with_reference() {\n        let bytes = hex!(\"8D40058B58C901375147EFD09357\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n\n        let msg = match msg.df {\n            ExtendedSquitterADSB(msg) => match msg.message {\n                ME::BDS05 { inner: me, .. } => me,\n                _ => unreachable!(),\n            },\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = airborne_position_with_reference(&msg, 49.0, 6.0).unwrap();\n\n        assert_relative_eq!(latitude, 49.82410, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 6.06785, max_relative = 1e-3);\n\n        let bytes = hex!(\"8D40058B58C904A87F402D3B8C59\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n\n        let msg = match msg.df {\n            ExtendedSquitterADSB(msg) => match msg.message {\n                ME::BDS05 { inner: me, .. } => me,\n                _ => unreachable!(),\n            },\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = airborne_position_with_reference(&msg, 49.0, 6.0).unwrap();\n\n        assert_relative_eq!(latitude, 49.81755, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 6.08442, max_relative = 1e-3);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::decode_airborne_position_with_reference_numerical_challenge",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 1014,
+    "end_line": 1037,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 1035,
+        "text": "assert_relative_eq!(latitude, 30.50540, max_relative = 1e-3);"
+      },
+      {
+        "line": 1036,
+        "text": "assert_relative_eq!(longitude, 33.44787, max_relative = 1e-3);"
+      }
+    ],
+    "body": "    #[test]\n    fn decode_airborne_position_with_reference_numerical_challenge() {\n        let lat_ref = 30.508474576271183; // Close to (360.0/59.0)*5\n        let lon_ref = 7.2 * 5.0 + 3e-15;\n\n        let bytes = hex!(\"8d06a15358bf17ff7d4a84b47b95\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n\n        let msg = match msg.df {\n            ExtendedSquitterADSB(msg) => match msg.message {\n                ME::BDS05 { inner: me, .. } => me,\n                _ => unreachable!(),\n            },\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = airborne_position_with_reference(&msg, lat_ref, lon_ref).unwrap();\n\n        assert_relative_eq!(latitude, 30.50540, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 33.44787, max_relative = 1e-3);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::decode_surface_position_with_reference",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 1039,
+    "end_line": 1059,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 1057,
+        "text": "assert_relative_eq!(latitude, 52.32061, max_relative = 1e-3);"
+      },
+      {
+        "line": 1058,
+        "text": "assert_relative_eq!(longitude, 4.73473, max_relative = 1e-3);"
+      }
+    ],
+    "body": "    #[test]\n    fn decode_surface_position_with_reference() {\n        let bytes = hex!(\"8c4841753aab238733c8cd4020b1\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n\n        let msg = match msg.df {\n            ExtendedSquitterADSB(msg) => match msg.message {\n                ME::BDS06 { inner: me, .. } => me,\n                _ => unreachable!(),\n            },\n            _ => unreachable!(),\n        };\n\n        let Position {\n            latitude,\n            longitude,\n        } = surface_position_with_reference(&msg, 51.99, 4.375).unwrap();\n\n        assert_relative_eq!(latitude, 52.32061, max_relative = 1e-3);\n        assert_relative_eq!(longitude, 4.73473, max_relative = 1e-3);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::test_regression_50km_threshold_check",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 1069,
+    "end_line": 1135,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 1128,
+        "text": "assert!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_regression_50km_threshold_check() {\n        let icao24 = ICAO::from_str(\"3949e8\").unwrap();\n        let mut aircraft = BTreeMap::new();\n        let mut reference = None;\n\n        // Position 1: Turkey/Iraq border (~39.1\u00b0N, 36.4\u00b0E)\n        // Establish baseline with multiple messages\n        let msgs1 = vec![\n            (hex!(\"8d3949e858ab05a2c11a30c334bf\"), 100.0), // odd\n            (hex!(\"8d3949e858ab0211c74e97f9a5f3\"), 103.0), // even - decodes pos1\n            (hex!(\"8d3949e858ab0211b54ecc0c36dc\"), 106.0), // even\n            (hex!(\"8d3949e890ab05a26b1b2e2b2da0\"), 109.0), // odd - decodes pos1 again\n        ];\n\n        for (msg, ts) in msgs1 {\n            let (_, mut m) = Message::from_bytes((&msg, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = m.df {\n                decode_position(\n                    &mut adsb.message,\n                    ts,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n            }\n        }\n\n        // Position 2: Iraq (~35.45\u00b0N, 44.68\u00b0E) - ~837 km away\n        // Send close together so they pair and decode\n        let msgs2 = vec![\n            (hex!(\"8f3949e86cb503a343e9c6ecf4cd\"), 115.0), // even\n            (hex!(\"8f3949e86cb5073d9daa5f6f9d4c\"), 116.0), // odd\n        ];\n\n        for (msg, ts) in msgs2 {\n            let (_, mut m) = Message::from_bytes((&msg, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = m.df {\n                decode_position(\n                    &mut adsb.message,\n                    ts,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n            }\n        }\n\n        let state = aircraft.get(&icao24).unwrap();\n\n        // Currently the position DOES update to ~35.45\u00b0N\n        // If the 50 km bug were active, it would either:\n        // - Stay at ~39.1\u00b0N (rejected but kept old position)\n        // - Or be None (rejected and cleared)\n        if let Some(last_pos) = state.pos {\n            // Test currently passes - position updates successfully despite >50 km distance\n            // This is GOOD if the bug is fixed, or indicates the check is bypassed\n            assert!(\n                last_pos.latitude > 30.0 && last_pos.latitude < 90.0,\n                \"Position should be valid\"\n            );\n        }\n        // If bug exists, this test documents the expected behavior\n        // If bug is fixed, this test verifies it stays fixed\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::test_regression_position_oscillations_filtered",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 1154,
+    "end_line": 1234,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 1181,
+        "text": "let p0 = state.pos.expect(\"Should have initial position\");"
+      },
+      {
+        "line": 1227,
+        "text": "assert!(distance < 200.0 || time_diff > 600.0,"
+      }
+    ],
+    "body": "    #[test]\n    fn test_regression_position_oscillations_filtered() {\n        let icao24 = ICAO::from_str(\"3949e8\").unwrap();\n        let mut aircraft = BTreeMap::new();\n        let mut reference = None;\n\n        // Establish initial position using real messages\n        let initial_msgs = vec![\n            (hex!(\"8d3949e858ab05a2c11a30c334bf\"), 100.0), // odd, Turkey/Iraq\n            (hex!(\"8d3949e858ab0211c74e97f9a5f3\"), 103.0), // even, Turkey/Iraq\n        ];\n\n        for (msg, ts) in initial_msgs {\n            let (_, mut m) = Message::from_bytes((&msg, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = m.df {\n                decode_position(\n                    &mut adsb.message,\n                    ts,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n            }\n        }\n\n        let state = aircraft.get(&icao24).unwrap();\n        let p0 = state.pos.expect(\"Should have initial position\");\n\n        // Now send messages that decode 500+ km away (real messages from Iraq)\n        // In a well-designed system, this large jump in short time should be questioned\n        let jump_msgs = vec![\n            (hex!(\"8f3949e86cb503a343e9c6ecf4cd\"), 110.0), // even, ~500 km away\n            (hex!(\"8f3949e86cb5073d9daa5f6f9d4c\"), 111.0), // odd, ~500 km away\n        ];\n\n        for (msg, ts) in jump_msgs {\n            let (_, mut m) = Message::from_bytes((&msg, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = m.df {\n                decode_position(\n                    &mut adsb.message,\n                    ts,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n            }\n        }\n\n        // Check the jump distance\n        let state_after = aircraft.get(&icao24).unwrap();\n\n        if let Some(p1) = state_after.pos {\n            let distance =\n                haversine(p0.latitude, p0.longitude, p1.latitude, p1.longitude);\n            let time_diff = 8.0; // seconds between position updates\n            let implied_speed_kmh = (distance / time_diff) * 3600.0;\n\n            // FIXED: Speed validation now filters large jumps (>500 km) in short time (<10s)\n            // - Line 500-508: Speed validation rejects positions requiring >1200 km/h\n            // - Removed line 540: No longer clears latest.pos on failure (prevents cascading failures)\n            //\n            // Real-world impact: Beijing\u2192Paris flight had 3 oscillations with\n            // 690-726 km jumps that immediately reversed (impossible flight path)\n            // These are now correctly filtered by speed validation.\n\n            eprintln!(\n                \"Position jump: {:.0} km in {}s = {:.0} km/h\",\n                distance, time_diff, implied_speed_kmh\n            );\n\n            // With speed validation in place, large jumps should be filtered\n            assert!(distance < 200.0 || time_diff > 600.0,\n                \"Large position jumps should be filtered (got {:.0} km in {:.0}s = {:.0} km/h - physically impossible!)\",\n                distance, time_diff, implied_speed_kmh);\n        } else {\n            // Position was rejected - this is the expected behavior!\n            eprintln!(\"\u2713 Position was correctly rejected (pos=None)\");\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/cpr.rs::test_regression_position_decode_after_large_gap",
+    "file": "crates/rs1090/src/decode/cpr.rs",
+    "line": 1256,
+    "end_line": 1388,
+    "source_sha256": "1b4cd17b156a48f1ee40375bde3e1bf7ae2fa3f6973c82f3dcb92cf7698ec69d",
+    "assertions": [
+      {
+        "line": 1294,
+        "text": "assert!("
+      },
+      {
+        "line": 1301,
+        "text": "state_before.pos.expect(\"Should have position before gap\");"
+      },
+      {
+        "line": 1354,
+        "text": "assert!("
+      },
+      {
+        "line": 1362,
+        "text": "state_after.pos.expect(\"Should have position after gap\");"
+      },
+      {
+        "line": 1371,
+        "text": "assert!("
+      },
+      {
+        "line": 1378,
+        "text": "assert!("
+      },
+      {
+        "line": 1383,
+        "text": "assert!("
+      }
+    ],
+    "body": "    #[test]\n    fn test_regression_position_decode_after_large_gap() {\n        let icao24 = ICAO::from_str(\"39c424\").unwrap();\n        let mut aircraft = BTreeMap::new();\n        let mut reference = None;\n\n        // Messages before the 168-minute gap (over Caspian Sea)\n        let before_gap = vec![\n            (hex!(\"8d39c42469b974b6a05ab914104f\"), 1754260360.77), // odd, 43.8001\u00b0N, 52.9474\u00b0E\n            (hex!(\"8d39c42478b9713304a5e41f6bc1\"), 1754260361.70), // even, 43.7989\u00b0N, 52.9452\u00b0E\n            (hex!(\"8d39c42478b974b6325a6e2724f8\"), 1754260362.74), // odd, 43.7975\u00b0N, 52.9425\u00b0E\n        ];\n\n        let mut positions_before = 0;\n        for (frame, timestamp) in before_gap {\n            let (_, mut msg) = Message::from_bytes((&frame, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = msg.df {\n                decode_position(\n                    &mut adsb.message,\n                    timestamp,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n\n                if let ME::BDS05 {\n                    inner: ref airborne,\n                    ..\n                } = adsb.message\n                {\n                    if airborne.latitude.is_some() {\n                        positions_before += 1;\n                    }\n                }\n            }\n        }\n\n        assert!(\n            positions_before >= 1,\n            \"Should decode at least one position before gap\"\n        );\n\n        let state_before = aircraft.get(&icao24).unwrap();\n        let pos_before =\n            state_before.pos.expect(\"Should have position before gap\");\n\n        eprintln!(\n            \"Position before gap: {:.4}\u00b0N, {:.4}\u00b0E\",\n            pos_before.latitude, pos_before.longitude\n        );\n\n        // --- GAP: 168 minutes / 10,090 seconds ---\n        // During this gap, aircraft traveled ~2,900 km westward\n        // Likely over GPS spoofing zone (Iran/Iraq/Turkey region)\n\n        // Messages after the gap (over Bulgaria/Romania)\n        let after_gap = vec![\n            (hex!(\"8f39c42490c3746e522aed52d00d\"), 1754270452.34), // odd, 43.3692\u00b0N, 26.4329\u00b0E\n            (hex!(\"8f39c42490c3746e722ad4e90929\"), 1754270452.83), // odd, 43.3700\u00b0N, 26.4313\u00b0E\n            (hex!(\"8f39c42490c370ea0050448bbfd0\"), 1754270453.87), // even, 43.3711\u00b0N, 26.4288\u00b0E\n            (hex!(\"8f39c42490c3746ebc2a9937916b\"), 1754270454.31), // odd, 43.3717\u00b0N, 26.4274\u00b0E\n            (hex!(\"8f39c42490c380ea3650192a742d\"), 1754270454.80), // even, 43.3723\u00b0N, 26.4260\u00b0E\n        ];\n\n        let mut positions_after = 0;\n        for (frame, timestamp) in after_gap {\n            let (_, mut msg) = Message::from_bytes((&frame, 0)).unwrap();\n            if let DF::ExtendedSquitterADSB(ref mut adsb) = msg.df {\n                decode_position(\n                    &mut adsb.message,\n                    timestamp,\n                    &icao24,\n                    &mut aircraft,\n                    &mut reference,\n                    &None,\n                );\n\n                if let ME::BDS05 {\n                    inner: ref airborne,\n                    ..\n                } = adsb.message\n                {\n                    if let Some(latitude) = airborne.latitude {\n                        positions_after += 1;\n                        eprintln!(\n                            \"Decoded position after gap: {:.4}\u00b0N, {:.4}\u00b0E\",\n                            latitude,\n                            airborne.longitude.unwrap()\n                        );\n                    }\n                }\n            }\n        }\n\n        // Critical assertion: We must be able to decode positions after the gap\n        // Even though the reference position is 168 minutes old and ~2,900 km away,\n        // global CPR decoding (odd/even pairing) should work\n        assert!(\n            positions_after >= 2,\n            \"Should decode at least 2 positions after gap, got {}\",\n            positions_after\n        );\n\n        let state_after = aircraft.get(&icao24).unwrap();\n        let pos_after =\n            state_after.pos.expect(\"Should have position after gap\");\n\n        eprintln!(\n            \"Position after gap: {:.4}\u00b0N, {:.4}\u00b0E\",\n            pos_after.latitude, pos_after.longitude\n        );\n\n        // Verify the position changed significantly (crossed ~2,900 km)\n        let lon_change = (pos_before.longitude - pos_after.longitude).abs();\n        assert!(\n            lon_change > 20.0,\n            \"Longitude should change significantly after gap (expected ~26\u00b0, got {:.1}\u00b0)\",\n            lon_change\n        );\n\n        // Verify we're in the expected region (Bulgaria/Romania)\n        assert!(\n            pos_after.latitude > 43.0 && pos_after.latitude < 44.0,\n            \"Latitude should be in Bulgaria/Romania region, got {:.4}\u00b0N\",\n            pos_after.latitude\n        );\n        assert!(\n            pos_after.longitude > 26.0 && pos_after.longitude < 27.0,\n            \"Longitude should be in Bulgaria/Romania region, got {:.4}\u00b0E\",\n            pos_after.longitude\n        );\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/flarm.rs::test_flarm",
+    "file": "crates/rs1090/src/decode/flarm.rs",
+    "line": 435,
+    "end_line": 465,
+    "source_sha256": "45bfae8ddb7b9d2e27a59f355422178c7604df05ff644a020e52507beffbb46f",
+    "assertions": [
+      {
+        "line": 444,
+        "text": "assert!(flarm.icao24.0 == 0x38f27b);"
+      },
+      {
+        "line": 445,
+        "text": "assert!(flarm.is_icao24);"
+      },
+      {
+        "line": 446,
+        "text": "assert!(flarm.actype == AircraftType::Glider);"
+      },
+      {
+        "line": 447,
+        "text": "assert_relative_eq!(flarm.latitude, 43.61822, max_relative = 1e-3);"
+      },
+      {
+        "line": 448,
+        "text": "assert_relative_eq!(flarm.longitude, 5.117242, max_relative = 1e-3);"
+      },
+      {
+        "line": 449,
+        "text": "assert!(flarm.geoaltitude == 160);"
+      },
+      {
+        "line": 450,
+        "text": "assert_relative_eq!(flarm.vertical_speed, -1.1, max_relative = 1e-3);"
+      },
+      {
+        "line": 451,
+        "text": "assert_relative_eq!(flarm.groundspeed, 0.7905694, max_relative = 1e-3);"
+      },
+      {
+        "line": 452,
+        "text": "assert_relative_eq!(flarm.track, 198.40446, max_relative = 1e-3);"
+      },
+      {
+        "line": 453,
+        "text": "assert!(!flarm.no_track);"
+      },
+      {
+        "line": 454,
+        "text": "assert!(!flarm.stealth);"
+      },
+      {
+        "line": 455,
+        "text": "assert!(flarm.gps == 3926);"
+      },
+      {
+        "line": 463,
+        "text": "assert_relative_eq!(flarm.latitude, 43.68129, max_relative = 1e-3);"
+      },
+      {
+        "line": 464,
+        "text": "assert_relative_eq!(flarm.longitude, 5.15059, max_relative = 1e-3);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_flarm() {\n        let msg = hex!(\"7bf23810860b7eabb23952252fd4927024b21fd94e9e1ef416f0\");\n        let latlon: [f64; 2] = [43.61924, 5.11755];\n        let ts = 1655274034_u32;\n\n        let flarm = Flarm::from_record(ts, &latlon, &msg).unwrap();\n        //println!(\"{}\", serde_json::to_string(&flarm).unwrap());\n\n        assert!(flarm.icao24.0 == 0x38f27b);\n        assert!(flarm.is_icao24);\n        assert!(flarm.actype == AircraftType::Glider);\n        assert_relative_eq!(flarm.latitude, 43.61822, max_relative = 1e-3);\n        assert_relative_eq!(flarm.longitude, 5.117242, max_relative = 1e-3);\n        assert!(flarm.geoaltitude == 160);\n        assert_relative_eq!(flarm.vertical_speed, -1.1, max_relative = 1e-3);\n        assert_relative_eq!(flarm.groundspeed, 0.7905694, max_relative = 1e-3);\n        assert_relative_eq!(flarm.track, 198.40446, max_relative = 1e-3);\n        assert!(!flarm.no_track);\n        assert!(!flarm.stealth);\n        assert!(flarm.gps == 3926);\n\n        let msg = hex!(\"7bf2381040ccc7e2395ecaa28e033a655d47e1d91d0bf986e1b0\");\n        let ts = 1655279476_u32;\n\n        let flarm = Flarm::from_record(ts, &latlon, &msg).unwrap();\n        //println!(\"{}\", serde_json::to_string(&flarm).unwrap());\n\n        assert_relative_eq!(flarm.latitude, 43.68129, max_relative = 1e-3);\n        assert_relative_eq!(flarm.longitude, 5.15059, max_relative = 1e-3);\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/mod.rs::test_invalid_crc",
+    "file": "crates/rs1090/src/decode/mod.rs",
+    "line": 1181,
+    "end_line": 1193,
+    "source_sha256": "612907d5dcb9e83fe6eaeab5b9d34edf026ec313119100b962a58bb43766715a",
+    "assertions": [],
+    "body": "    #[test]\n    fn test_invalid_crc() {\n        let bytes = hex!(\"8d4ca251204994b1c36e60a5343d\");\n        let res = Message::from_bytes((&bytes, 0));\n        if let Err(e) = res {\n            match e {\n                DekuError::Assertion(_msg) => (),\n                _ => unreachable!(),\n            }\n        } else {\n            unreachable!()\n        }\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/mod.rs::test_df18",
+    "file": "crates/rs1090/src/decode/mod.rs",
+    "line": 1195,
+    "end_line": 1217,
+    "source_sha256": "612907d5dcb9e83fe6eaeab5b9d34edf026ec313119100b962a58bb43766715a",
+    "assertions": [
+      {
+        "line": 1201,
+        "text": "assert_eq!(format!(\"{}\", cf.aa), \"c639ee\");"
+      },
+      {
+        "line": 1202,
+        "text": "assert_eq!(cf.field_type, ControlFieldType::TISB_ADSB_RELAY);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_df18() {\n        // Referred in issue 337\n        let bytes = hex!(\"95c639eefbffffedd5fefbff4f6f\");\n        let (_, msg) = Message::from_bytes((&bytes, 0)).unwrap();\n        if let DF::ExtendedSquitterTisB { cf, .. } = &msg.df {\n            assert_eq!(format!(\"{}\", cf.aa), \"c639ee\");\n            assert_eq!(cf.field_type, ControlFieldType::TISB_ADSB_RELAY);\n            if let ME::BDS65(me) = cf.me {\n                if let AircraftOperationStatus::Reserved { .. } = me {\n                    // ok\n                } else {\n                    panic!(\"Expected Reserved BDS65\");\n                }\n            }\n\n            // this one should not panic\n            let pretty = serde_json::to_string_pretty(&msg).unwrap();\n            println!(\"{}\", pretty);\n            return;\n        }\n        unreachable!();\n    }"
+  },
+  {
+    "id": "crates/rs1090/src/decode/mod.rs::test_mbit_altitude_precision",
+    "file": "crates/rs1090/src/decode/mod.rs",
+    "line": 1219,
+    "end_line": 1290,
+    "source_sha256": "612907d5dcb9e83fe6eaeab5b9d34edf026ec313119100b962a58bb43766715a",
+    "assertions": [
+      {
+        "line": 1244,
+        "text": "assert_ne!(m_bit, 0, \"M-bit should be set\");"
+      },
+      {
+        "line": 1249,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1264,
+        "text": "assert_eq!(test_meters_to_feet(100), 328);"
+      },
+      {
+        "line": 1267,
+        "text": "assert_eq!(test_meters_to_feet(500), 1640);"
+      },
+      {
+        "line": 1270,
+        "text": "assert_eq!(test_meters_to_feet(1000), 3280);"
+      },
+      {
+        "line": 1273,
+        "text": "assert_eq!(test_meters_to_feet(2000), 6561);"
+      },
+      {
+        "line": 1277,
+        "text": "assert_eq!(test_meters_to_feet(1234), 4048);"
+      },
+      {
+        "line": 1280,
+        "text": "assert_eq!(test_meters_to_feet(2047), 6715);"
+      },
+      {
+        "line": 1288,
+        "text": "assert_eq!(feet_integer, 4452);"
+      },
+      {
+        "line": 1289,
+        "text": "assert_eq!(test_meters_to_feet(meters), 4452);"
+      }
+    ],
+    "body": "    #[test]\n    fn test_mbit_altitude_precision() {\n        // Test M-bit (metric) altitude encoding with integer-based conversion\n        // This verifies that we use integer math instead of f32 to avoid precision loss\n        //\n        // This test validates the spec-compliant integer implementation, but\n        // production code should be aware most M-bit messages are likely corrupted.\n\n        // M-bit altitude bit pattern (13 bits total):\n        // Bits [12-7]: upper 5 bits of meters value (bits 10-6 of meters)\n        // Bit 6: M-bit = 1 (indicates metric encoding)\n        // Bits [5-0]: lower 6 bits of meters value\n        // Total: 11 bits for meters (range 0-2047 meters)\n        //\n        // To encode: ac13field = ((meters & 0x7C0) << 2) | 0x40 | (meters & 0x3F)\n        // To decode: meters = ((ac13field & 0x1F80) >> 2) | (ac13field & 0x3F)\n\n        // Helper function to create AC13 field with M-bit and test conversion\n        let test_meters_to_feet = |meters: u16| -> i32 {\n            // Encode meters into AC13 field format with M-bit set\n            let ac13field =\n                ((meters & 0x07C0) << 2) | 0x0040 | (meters & 0x003F);\n\n            // Verify M-bit is set\n            let m_bit = ac13field & 0x0040;\n            assert_ne!(m_bit, 0, \"M-bit should be set\");\n\n            // Decode using the actual implementation logic\n            let decoded_meters =\n                ((ac13field & 0x1f80) >> 2) | (ac13field & 0x3f);\n            assert_eq!(\n                decoded_meters, meters,\n                \"Meters should round-trip correctly: meters={}, ac13=0x{:04x}, decoded={}\",\n                meters, ac13field, decoded_meters\n            );\n\n            // Use the same integer-based conversion as the implementation\n            let feet = ((decoded_meters as i64) * 328084) / 100000;\n            feet as i32\n        };\n\n        // Test various meter values and verify integer precision\n        // Expected values calculated with: meters * 3.28084\n\n        // Test 1: 100 meters = 328.084 feet \u2192 328 feet\n        assert_eq!(test_meters_to_feet(100), 328);\n\n        // Test 2: 500 meters = 1640.42 feet \u2192 1640 feet\n        assert_eq!(test_meters_to_feet(500), 1640);\n\n        // Test 3: 1000 meters = 3280.84 feet \u2192 3280 feet\n        assert_eq!(test_meters_to_feet(1000), 3280);\n\n        // Test 4: 2000 meters = 6561.68 feet \u2192 6561 feet\n        assert_eq!(test_meters_to_feet(2000), 6561);\n\n        // Test 5: Verify precision with value that may differ between f32 and integer\n        // 1234 meters = 4048.4856 feet \u2192 4048 feet\n        assert_eq!(test_meters_to_feet(1234), 4048);\n\n        // Test 6: Maximum 11-bit value: 2047 meters = 6715.87948 feet \u2192 6715 feet\n        assert_eq!(test_meters_to_feet(2047), 6715);\n\n        // Test 7: Compare f32 vs integer for a specific case\n        // This demonstrates why integer math is better\n        let meters = 1357_u16;\n        let feet_integer = ((meters as i64) * 328084) / 100000;\n        let _feet_f32 = (meters as f32 * 3.28084) as i64;\n        // Both should give 4452, but f32 may have rounding differences\n        assert_eq!(feet_integer, 4452);\n        assert_eq!(test_meters_to_feet(meters), 4452);\n    }"
+  }
+]

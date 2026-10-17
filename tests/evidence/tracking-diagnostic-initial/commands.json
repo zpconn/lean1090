@@ -1,0 +1,95 @@
+[
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0013012886047363281,
+    "stderr": "",
+    "stdout": "685dfaa34c5ab186c691bca3cfe2a22e12517d30\n"
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--",
+      "crates/rs1090",
+      "Cargo.toml",
+      "Cargo.lock"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0013875961303710938,
+    "stderr": "",
+    "stdout": ""
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.019006729125976562,
+    "stderr": "",
+    "stdout": "Lock audit: 86 frozen files match SHA-256.\n"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--offline",
+      "--locked",
+      "--profile",
+      "dist",
+      "--manifest-path",
+      "review/tracking/oracle/Cargo.toml",
+      "--target-dir",
+      ".cache/rs1090-target"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.059155941009521484,
+    "stderr": "    Finished `dist` profile [optimized] target(s) in 0.04s\n",
+    "stdout": ""
+  },
+  {
+    "command": [
+      "lake",
+      "build",
+      "Impl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.7293903827667236,
+    "stderr": "",
+    "stdout": "Build completed successfully (19 jobs).\n"
+  },
+  {
+    "command": [
+      "/home/zpconn/code/lean1090/.cache/rs1090-target/dist/lean1090-tracking-oracle"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.050661087036133,
+    "stderr": "",
+    "stdout": null
+  },
+  {
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "review/tracking/Adapter.lean",
+      "/home/zpconn/code/lean1090/tests/evidence/tracking-diagnostic/airports.jsonl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 10.311044931411743,
+    "stderr": "",
+    "stdout": null
+  }
+]

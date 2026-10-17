@@ -1,0 +1,13 @@
++ patch -p1 --input=/home/zpconn/code/lean1090/docs/FC004-DIFFERENTIAL-FREEZE.diff
+patching file scripts/frozen_paths.py
+patching file scripts/check_impl_imports.py
+patching file spec.lock
+exit_code=0
+
++ python3 scripts/check_lock.py
+Lock audit: 86 frozen files match SHA-256.
+exit_code=0
+
++ python3 scripts/test_lock.py
+Lock self-tests: intact copy passes; five frozen-file changes, added Spec code/data files, and duplicate entry rejected; check_all rejects the lock before other work.
+exit_code=0

@@ -1,0 +1,616 @@
+[
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_record_with_bds",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 1330,
+        "text": ".expect(\"Failed to parse record\");"
+      },
+      {
+        "line": 1333,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1334,
+        "text": "assert_eq!(record.length, 69);"
+      },
+      {
+        "line": 1335,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0xA3, 0x03, 0x01, 0xB8]);"
+      },
+      {
+        "line": 1338,
+        "text": "assert_eq!(record.sac(), Some(52));"
+      },
+      {
+        "line": 1339,
+        "text": "assert_eq!(record.sic(), Some(1));"
+      },
+      {
+        "line": 1342,
+        "text": "assert!((record.time_of_day.unwrap() - 6784.992).abs() < 0.001);"
+      },
+      {
+        "line": 1346,
+        "text": "assert_eq!(trd.typ, DetectionType::ModeSRollCall);"
+      },
+      {
+        "line": 1347,
+        "text": "assert!(!trd.sim);"
+      },
+      {
+        "line": 1348,
+        "text": "assert_eq!(trd.rdp, 0);"
+      },
+      {
+        "line": 1349,
+        "text": "assert!(!trd.spi);"
+      },
+      {
+        "line": 1350,
+        "text": "assert!(!trd.rab);"
+      },
+      {
+        "line": 1351,
+        "text": "assert!(trd.extension1.is_some());"
+      },
+      {
+        "line": 1352,
+        "text": "assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));"
+      },
+      {
+        "line": 1355,
+        "text": "assert!((record.range_nm().unwrap() - 63.961).abs() < 0.01);"
+      },
+      {
+        "line": 1356,
+        "text": "assert!((record.azimuth_deg().unwrap() - 26.543).abs() < 0.01);"
+      },
+      {
+        "line": 1359,
+        "text": "assert!(record.mode_3a_code.is_none());"
+      },
+      {
+        "line": 1362,
+        "text": "assert_eq!(record.flight_level, Some(36000));"
+      },
+      {
+        "line": 1365,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1371,
+        "text": "assert!(record.has_bds_data());"
+      },
+      {
+        "line": 1373,
+        "text": "assert_eq!(bds.len(), 4);"
+      },
+      {
+        "line": 1374,
+        "text": "assert_eq!(bds[0].bds_code, 0x05);"
+      },
+      {
+        "line": 1375,
+        "text": "assert_eq!(bds[1].bds_code, 0x60);"
+      },
+      {
+        "line": 1376,
+        "text": "assert_eq!(bds[2].bds_code, 0x50);"
+      },
+      {
+        "line": 1377,
+        "text": "assert_eq!(bds[3].bds_code, 0x40);"
+      },
+      {
+        "line": 1381,
+        "text": "assert!(ts.confirmed);"
+      },
+      {
+        "line": 1382,
+        "text": "assert_eq!(ts.sensor_type, SensorType::Combined);"
+      },
+      {
+        "line": 1383,
+        "text": "assert!(!ts.doubtful);"
+      },
+      {
+        "line": 1384,
+        "text": "assert!(!ts.manoeuvring);"
+      },
+      {
+        "line": 1385,
+        "text": "assert_eq!(ts.climb_mode, ClimbMode::Maintaining);"
+      },
+      {
+        "line": 1386,
+        "text": "assert!(ts.extension.is_none()); // No FX extension"
+      },
+      {
+        "line": 1389,
+        "text": "assert_eq!(record.comms_acas, Some(0x0020));"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_record_without_bds",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 1401,
+        "text": ".expect(\"Failed to parse record without BDS\");"
+      },
+      {
+        "line": 1403,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1404,
+        "text": "assert_eq!(record.length, 36);"
+      },
+      {
+        "line": 1405,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0x83, 0x03, 0x01, 0xB8]);"
+      },
+      {
+        "line": 1406,
+        "text": "assert_eq!(record.sac(), Some(0x34));"
+      },
+      {
+        "line": 1407,
+        "text": "assert_eq!(record.sic(), Some(0x01));"
+      },
+      {
+        "line": 1408,
+        "text": "assert!((record.time_of_day.unwrap() - 6785.38).abs() < 0.01);"
+      },
+      {
+        "line": 1409,
+        "text": "assert!((record.range_nm().unwrap() - 191.508).abs() < 0.01);"
+      },
+      {
+        "line": 1410,
+        "text": "assert!((record.azimuth_deg().unwrap() - 40.364).abs() < 0.01);"
+      },
+      {
+        "line": 1411,
+        "text": "assert_eq!(record.flight_level, Some(40000));"
+      },
+      {
+        "line": 1412,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1416,
+        "text": "assert!(!record.has_bds_data());"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_parse_croatia_control_sample",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 1432,
+        "text": ".expect(\"Failed to parse CroatiaControl sample\");"
+      },
+      {
+        "line": 1435,
+        "text": "assert_eq!(record.cat, 48);"
+      },
+      {
+        "line": 1436,
+        "text": "assert_eq!(record.length, 48);"
+      },
+      {
+        "line": 1437,
+        "text": "assert_eq!(record.fspec, vec![0xFD, 0xF7, 0x02]);"
+      },
+      {
+        "line": 1440,
+        "text": "assert_eq!(record.sac(), Some(25));"
+      },
+      {
+        "line": 1441,
+        "text": "assert_eq!(record.sic(), Some(201));"
+      },
+      {
+        "line": 1444,
+        "text": "assert!((record.time_of_day.unwrap() - 27354.602).abs() < 0.01);"
+      },
+      {
+        "line": 1448,
+        "text": "assert_eq!(trd.typ, DetectionType::ModeSRollCall);"
+      },
+      {
+        "line": 1449,
+        "text": "assert!(!trd.sim);"
+      },
+      {
+        "line": 1450,
+        "text": "assert!(trd.extension1.is_none()); // No FX extension"
+      },
+      {
+        "line": 1451,
+        "text": "assert_eq!(record.target_type(), Some(DetectionType::ModeSRollCall));"
+      },
+      {
+        "line": 1454,
+        "text": "assert!((record.range_nm().unwrap() - 197.684).abs() < 0.01);"
+      },
+      {
+        "line": 1455,
+        "text": "assert!((record.azimuth_deg().unwrap() - 340.137).abs() < 0.01);"
+      },
+      {
+        "line": 1458,
+        "text": "assert_eq!(record.mode_3a_code, Some(\"1000\".to_string()));"
+      },
+      {
+        "line": 1461,
+        "text": "assert_eq!(record.flight_level, Some(33000));"
+      },
+      {
+        "line": 1464,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1470,
+        "text": "assert!(record.aircraft_id.is_some());"
+      },
+      {
+        "line": 1474,
+        "text": "assert!(record.has_bds_data());"
+      },
+      {
+        "line": 1476,
+        "text": "assert_eq!(bds.len(), 1);"
+      },
+      {
+        "line": 1477,
+        "text": "assert_eq!(bds[0].bds_code, 0x40);"
+      },
+      {
+        "line": 1478,
+        "text": "assert_eq!(bds[0].payload_hex(), \"c0780031bc0000\");"
+      },
+      {
+        "line": 1481,
+        "text": "assert_eq!(record.track_num(), Some(3563));"
+      },
+      {
+        "line": 1484,
+        "text": "assert!((record.ground_speed_kt().unwrap() - 434.4).abs() < 1.0);"
+      },
+      {
+        "line": 1485,
+        "text": "assert!((record.heading_deg().unwrap() - 124.0).abs() < 0.1);"
+      },
+      {
+        "line": 1489,
+        "text": "assert!(ts.confirmed); // CNF=0"
+      },
+      {
+        "line": 1490,
+        "text": "assert_eq!(ts.sensor_type, SensorType::SsrModeS); // RAD=10"
+      },
+      {
+        "line": 1491,
+        "text": "assert!(!ts.doubtful);"
+      },
+      {
+        "line": 1492,
+        "text": "assert!(!ts.manoeuvring);"
+      },
+      {
+        "line": 1493,
+        "text": "assert_eq!(ts.climb_mode, ClimbMode::Maintaining); // CDM=00"
+      },
+      {
+        "line": 1495,
+        "text": "assert!(!ext.track_end); // TRE=0"
+      },
+      {
+        "line": 1496,
+        "text": "assert!(!ext.ghost); // GHO=0"
+      },
+      {
+        "line": 1497,
+        "text": "assert!(!ext.supplementary); // SUP=0"
+      },
+      {
+        "line": 1498,
+        "text": "assert!(!ext.tcc_slant); // TCC=0"
+      },
+      {
+        "line": 1501,
+        "text": "assert_eq!(record.comms_acas, Some(0x20F5));"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_json_serialization",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 1517,
+        "text": ".expect(\"Failed to parse CroatiaControl sample\");"
+      },
+      {
+        "line": 1528,
+        "text": "assert!((mp[\"rho\"].as_f64().unwrap() - 197.684).abs() < 0.01);"
+      },
+      {
+        "line": 1529,
+        "text": "assert!((mp[\"theta\"].as_f64().unwrap() - 340.137).abs() < 0.01);"
+      },
+      {
+        "line": 1533,
+        "text": "assert!((tv[\"ground_speed\"].as_f64().unwrap() - 434.4).abs() < 1.0);"
+      },
+      {
+        "line": 1534,
+        "text": "assert!((tv[\"heading\"].as_f64().unwrap() - 124.0).abs() < 0.1);"
+      },
+      {
+        "line": 1538,
+        "text": "assert!(ts[\"confirmed\"].as_bool().unwrap()); // CNF=0 means confirmed"
+      },
+      {
+        "line": 1539,
+        "text": "assert_eq!(ts[\"sensor_type\"].as_str().unwrap(), \"SsrModeS\");"
+      },
+      {
+        "line": 1542,
+        "text": "assert_eq!(json_value[\"icao24\"].as_str().unwrap(), \"3c660c\");"
+      },
+      {
+        "line": 1545,
+        "text": "assert!(json_value[\"callsign\"].as_str().is_some());"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090/src/decode/cat48.rs::test_trd_extension2_parsing",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 1564,
+        "text": ".expect(\"Failed to parse CAT48 with Extension 2\");"
+      },
+      {
+        "line": 1567,
+        "text": "assert_eq!(record.sac(), Some(0x00));"
+      },
+      {
+        "line": 1568,
+        "text": "assert_eq!(record.sic(), Some(0x01));"
+      },
+      {
+        "line": 1571,
+        "text": "assert_eq!("
+      },
+      {
+        "line": 1583,
+        "text": "assert!(ext1.is_some(), \"Extension 1 should be present\");"
+      },
+      {
+        "line": 1587,
+        "text": "assert!(ext2.is_some(), \"Extension 2 should be present\");"
+      },
+      {
+        "line": 1591,
+        "text": "assert!(!ext2_data.adsb.populated);"
+      },
+      {
+        "line": 1592,
+        "text": "assert!(ext2_data.adsb.available);"
+      },
+      {
+        "line": 1594,
+        "text": "assert!(ext2_data.scn.populated);"
+      },
+      {
+        "line": 1595,
+        "text": "assert!(!ext2_data.scn.available);"
+      },
+      {
+        "line": 1597,
+        "text": "assert!(ext2_data.pai.populated);"
+      },
+      {
+        "line": 1598,
+        "text": "assert!(ext2_data.pai.available);"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090/src/decode/flarm.rs::test_flarm",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 444,
+        "text": "assert!(flarm.icao24.0 == 0x38f27b);"
+      },
+      {
+        "line": 445,
+        "text": "assert!(flarm.is_icao24);"
+      },
+      {
+        "line": 446,
+        "text": "assert!(flarm.actype == AircraftType::Glider);"
+      },
+      {
+        "line": 447,
+        "text": "assert_relative_eq!(flarm.latitude, 43.61822, max_relative = 1e-3);"
+      },
+      {
+        "line": 448,
+        "text": "assert_relative_eq!(flarm.longitude, 5.117242, max_relative = 1e-3);"
+      },
+      {
+        "line": 449,
+        "text": "assert!(flarm.geoaltitude == 160);"
+      },
+      {
+        "line": 450,
+        "text": "assert_relative_eq!(flarm.vertical_speed, -1.1, max_relative = 1e-3);"
+      },
+      {
+        "line": 451,
+        "text": "assert_relative_eq!(flarm.groundspeed, 0.7905694, max_relative = 1e-3);"
+      },
+      {
+        "line": 452,
+        "text": "assert_relative_eq!(flarm.track, 198.40446, max_relative = 1e-3);"
+      },
+      {
+        "line": 453,
+        "text": "assert!(!flarm.no_track);"
+      },
+      {
+        "line": 454,
+        "text": "assert!(!flarm.stealth);"
+      },
+      {
+        "line": 455,
+        "text": "assert!(flarm.gps == 3926);"
+      },
+      {
+        "line": 463,
+        "text": "assert_relative_eq!(flarm.latitude, 43.68129, max_relative = 1e-3);"
+      },
+      {
+        "line": 464,
+        "text": "assert_relative_eq!(flarm.longitude, 5.15059, max_relative = 1e-3);"
+      }
+    ]
+  },
+  {
+    "id": "python/tests/test_aircraft.py::test_info",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 6,
+        "text": "assert info == {"
+      }
+    ]
+  },
+  {
+    "id": "python/tests/test_flarm.py::test_flarm",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 18,
+        "text": "assert decoded[\"icao24\"] == \"38f27b\""
+      },
+      {
+        "line": 19,
+        "text": "assert decoded[\"is_icao24\"]"
+      },
+      {
+        "line": 20,
+        "text": "assert decoded[\"actype\"] == \"Glider\""
+      },
+      {
+        "line": 21,
+        "text": "assert decoded[\"latitude\"] == pytest.approx(43.61822)"
+      },
+      {
+        "line": 22,
+        "text": "assert decoded[\"longitude\"] == pytest.approx(5.117242)"
+      },
+      {
+        "line": 23,
+        "text": "assert decoded[\"geoaltitude\"] == 160"
+      },
+      {
+        "line": 24,
+        "text": "assert decoded[\"vertical_speed\"] == pytest.approx(-1.1)"
+      },
+      {
+        "line": 25,
+        "text": "assert decoded[\"groundspeed\"] == pytest.approx(0.7905694)"
+      },
+      {
+        "line": 26,
+        "text": "assert decoded[\"track\"] == pytest.approx(198.40446)"
+      },
+      {
+        "line": 27,
+        "text": "assert not decoded[\"no_track\"]"
+      },
+      {
+        "line": 28,
+        "text": "assert not decoded[\"stealth\"]"
+      },
+      {
+        "line": 29,
+        "text": "assert decoded[\"gps\"] == 3926"
+      }
+    ]
+  },
+  {
+    "id": "python/tests/test_flarm.py::test_full",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 44,
+        "text": "assert sum(1 for x in decoded if x[\"latitude\"] > 47) == 0"
+      },
+      {
+        "line": 45,
+        "text": "assert sum(1 for x in decoded if x[\"latitude\"] < 40) == 0"
+      },
+      {
+        "line": 46,
+        "text": "assert sum(1 for x in decoded if x[\"longitude\"] > 12) == 0"
+      },
+      {
+        "line": 47,
+        "text": "assert sum(1 for x in decoded if x[\"longitude\"] < -2) == 0"
+      },
+      {
+        "line": 49,
+        "text": "assert ("
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090-wasm/tests/src/tests/test_utils.test.ts::patterns",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 7,
+        "text": "expect(info.registration).toBe(\"F-HNAV\");"
+      },
+      {
+        "line": 8,
+        "text": "expect(info.country).toBe(\"France\");"
+      },
+      {
+        "line": 11,
+        "text": "expect(unknown.country).toBe(undefined);"
+      },
+      {
+        "line": 12,
+        "text": "expect(unknown.flag).toBe(undefined);"
+      }
+    ]
+  },
+  {
+    "id": "crates/rs1090-wasm/tests/src/tests/test_utils.test.ts::airports",
+    "reason": "Aircraft/airport databases, FLARM and CAT48 are outside Message::from_bytes/CPR scope.",
+    "assertions": [
+      {
+        "line": 17,
+        "text": "expect(a.length).toBe(11);"
+      },
+      {
+        "line": 18,
+        "text": "expect(a.some((airport: { icao?: string }) => airport.icao === \"LFPG\")).toBe(true);"
+      }
+    ]
+  }
+]

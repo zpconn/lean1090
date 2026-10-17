@@ -1,0 +1,117 @@
+{
+  "status": "passed",
+  "claim": "correctness/protocol validation; no benchmark baseline",
+  "preparation": {
+    "messages": 172432,
+    "timestamps_bit_identical": 172432,
+    "prepared_bytes_identical": 172432,
+    "airports_bit_identical_in_order": 6903
+  },
+  "tracking": {
+    "messages": 172432,
+    "resolved": 11347,
+    "unresolved": 161085,
+    "resolved_bit_identical": 11347,
+    "routed": 50385,
+    "max_error_degrees": 0.0,
+    "aircraft": 29,
+    "tolerance_degrees": 1e-09
+  },
+  "tracking_errors": 0,
+  "protocol": [
+    {
+      "mode": "decode",
+      "commands": [
+        "run",
+        "run",
+        "quit"
+      ],
+      "responses": [
+        "5045540078 0",
+        "5060286169 0"
+      ],
+      "exit_code": 0,
+      "classification": "protocol smoke only; not a baseline"
+    },
+    {
+      "mode": "cpr",
+      "commands": [
+        "run",
+        "run",
+        "quit"
+      ],
+      "responses": [
+        "5344751340 11347",
+        "5360446631 11347"
+      ],
+      "exit_code": 0,
+      "classification": "protocol smoke only; not a baseline"
+    },
+    {
+      "mode": "decode",
+      "commands": [
+        "unknown"
+      ],
+      "responses": [
+        ""
+      ],
+      "exit_code": 1,
+      "classification": "protocol smoke only; not a baseline"
+    },
+    {
+      "mode": "decode",
+      "commands": [
+        "run"
+      ],
+      "responses": [
+        ""
+      ],
+      "exit_code": 1,
+      "classification": "protocol smoke only; not a baseline"
+    }
+  ],
+  "malformed_inputs_rejected": 4,
+  "position_comparator_controls": 3,
+  "source_sha256": {
+    "Bench/WholeDecoder.lean": "ea0b8f3a94dfc801bbf0a8ce9091617f2a3eae4e122752e56de3caa5de40592b",
+    "bench/check_worker.py": "f1e569eb424cc6479248b904b576d4716c2d507d264466c53588535eac29ea37",
+    "spec.lock": "e349a52673522259491c3420dde71980cddfc908fdbe05e81013fefa51fbd3db"
+  },
+  "commands": [
+    [
+      "lake",
+      "-f",
+      "/home/zpconn/code/lean1090/.cache/benchmark-worker-proposal/lakefile.toml",
+      "build",
+      "lean1090-bench"
+    ],
+    [
+      "/home/zpconn/code/lean1090/.lake/build/bin/lean1090-bench",
+      "--audit-inputs",
+      "/home/zpconn/code/lean1090/vendor/rs1090/crates/rs1090/data/long_flight.csv"
+    ],
+    [
+      "/home/zpconn/code/lean1090/.lake/build/bin/lean1090-bench",
+      "--audit-airports",
+      "/home/zpconn/code/lean1090/vendor/rs1090/crates/rs1090/data/long_flight.csv"
+    ],
+    [
+      "/home/zpconn/code/lean1090/.lake/build/bin/lean1090-bench",
+      "--audit-tracking",
+      "/home/zpconn/code/lean1090/vendor/rs1090/crates/rs1090/data/long_flight.csv"
+    ],
+    [
+      "cargo",
+      "build",
+      "--offline",
+      "--locked",
+      "--manifest-path",
+      "differential/tracking-oracle/Cargo.toml",
+      "--profile",
+      "dist"
+    ],
+    [
+      "/home/zpconn/code/lean1090/.cache/rs1090-target/dist/lean1090-tracking-oracle"
+    ]
+  ]
+}

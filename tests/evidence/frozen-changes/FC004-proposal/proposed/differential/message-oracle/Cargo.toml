@@ -1,0 +1,28 @@
+[package]
+name = "lean1090-message-oracle"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+rs1090 = { path = "../../vendor/rs1090/crates/rs1090", default-features = true }
+serde_json = "1"
+libm = "=0.2.16"
+deku = "=0.20.3"
+
+[profile.release]
+lto = "thin"
+overflow-checks = true
+
+[profile.dist]
+inherits = "release"
+lto = true
+strip = true
+
+[[bin]]
+name = "numeric-oracle"
+path = "../../tests/numeric_oracle.rs"
+
+[[bin]]
+name = "commb-oracle"
+path = "src/commb.rs"

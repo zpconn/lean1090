@@ -1,0 +1,17 @@
+[package]
+name = "lean1090-oracle-bench"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+rs1090 = { path = "../../vendor/rs1090/crates/rs1090", default-features = true }
+
+[profile.release]
+lto = "thin"
+overflow-checks = true
+
+[profile.dist]
+inherits = "release"
+lto = true
+strip = true

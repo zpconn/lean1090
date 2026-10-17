@@ -1,0 +1,182 @@
+[
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/inventory.py"
+    ],
+    "exit_code": 0,
+    "stdout": "153 tests 603 assertion sites\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/port.py"
+    ],
+    "exit_code": 0,
+    "stdout": "61 automatic test functions 251 assertions 11 whole-test exclusions\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/rust_port.py"
+    ],
+    "exit_code": 0,
+    "stdout": "53 Rust tests 159 assertions; 33 pending\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/manual.py"
+    ],
+    "exit_code": 0,
+    "stdout": "26 manual functions 180 expanded assertions\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/assemble.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{'pin': '685dfaa34c5ab186c691bca3cfe2a22e12517d30', 'source_tests': 153, 'source_assertion_sites': 603, 'ported_fixture_tests': 140, 'expanded_checks': 1011, 'status_counts': {'ported': 139, 'upstream_empty': 1, 'out_of_scope': 12, 'corpus_runner': 1}}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "lake",
+      "build",
+      "Impl.JSON",
+      "Impl.CPRPolicy"
+    ],
+    "exit_code": 0,
+    "stdout": "Build completed successfully (20 jobs).\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/generated/fixtures.jsonl"
+    ],
+    "exit_code": 0,
+    "stdout": "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/assertions.jsonl",
+    "stderr": "Upstream Lean assertions: 1011, failures: 0\n"
+  },
+  {
+    "argv": [
+      "cargo",
+      "build",
+      "--offline",
+      "--locked",
+      "--manifest-path",
+      "differential/message-oracle/Cargo.toml",
+      "--profile",
+      "dist",
+      "--target-dir",
+      ".cache/rs1090-target",
+      "--bin",
+      "lean1090-message-oracle",
+      "--bin",
+      "commb-oracle"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "    Finished `dist` profile [optimized] target(s) in 0.05s\n"
+  },
+  {
+    "argv": [
+      ".cache/rs1090-target/dist/lean1090-message-oracle"
+    ],
+    "exit_code": 0,
+    "stdout": "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/fresh-frames.jsonl",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      ".cache/rs1090-target/dist/commb-oracle"
+    ],
+    "exit_code": 0,
+    "stdout": "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/fresh-registers.jsonl",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/.cache/upstream-selftest-md751egj/tests.jsonl"
+    ],
+    "exit_code": 1,
+    "stdout": "{\"evaluation\":false,\"expression\":{\"args\":[{\"observation\":0,\"op\":\"get\",\"path\":[\"callsign\"]},{\"op\":\"literal\",\"value\":\"WRONG\"}],\"op\":\"eq\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":0,\"test\":\"selftest\"}\n{\"evaluation\":\"property not found: absent_boolean\",\"expression\":{\"args\":[{\"observation\":0,\"op\":\"get\",\"path\":[\"absent_boolean\"]}],\"op\":\"not\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":1,\"test\":\"selftest\"}\n{\"evaluation\":\"invalid observation index\",\"expression\":{\"args\":[{\"observation\":999,\"op\":\"get\",\"path\":[]}],\"op\":\"null\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":2,\"test\":\"selftest\"}\n{\"evaluation\":\"property not found: missing_parent\",\"expression\":{\"args\":[{\"allow_missing\":true,\"observation\":0,\"op\":\"get\",\"path\":[\"missing_parent\",\"leaf\"]}],\"op\":\"null\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":3,\"test\":\"selftest\"}\n{\"evaluation\":\"unknown assertion operation: unrecognized\",\"expression\":{\"args\":[{\"op\":\"literal\",\"value\":0},{\"op\":\"literal\",\"value\":0}],\"op\":\"unrecognized\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":4,\"test\":\"selftest\"}\n{\"evaluation\":false,\"expression\":{\"args\":[{\"observation\":0,\"op\":\"get\",\"path\":[]},{\"op\":\"literal\",\"value\":null}],\"op\":\"eq\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":5,\"test\":\"selftest\"}\n{\"evaluation\":\"fixture expression depth limit exceeded\",\"expression\":{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"args\":[{\"op\":\"literal\",\"value\":true}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"}],\"op\":\"not\"},\"observations\":[{\"_capability\":5,\"_commb_raw\":{},\"_raw\":{\"category\":0,\"char0\":5,\"char1\":26,\"char2\":25,\"char3\":56,\"char4\":53,\"char5\":13,\"char6\":8,\"char7\":32,\"tc\":4},\"bds\":\"08\",\"callsign\":\"EZY85MH\",\"df\":\"17\",\"icao24\":\"406b90\",\"wake_vortex\":\"n/a\"}],\"passed\":false,\"source_line\":6,\"test\":\"selftest\"}\n",
+    "stderr": "Upstream Lean assertions: 7, failures: 7\n"
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/.cache/upstream-selftest-md751egj/tests.jsonl"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "uncaught exception: unknown observation operation: unrecognized\n"
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/.cache/upstream-selftest-md751egj/tests.jsonl"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "uncaught exception: malformed hex input\n"
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/.cache/upstream-selftest-md751egj/tests.jsonl"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "uncaught exception: property not found: reference\n"
+  },
+  {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Upstream.lean",
+      "/home/zpconn/code/lean1090/.cache/upstream-selftest-md751egj/tests.jsonl"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "uncaught exception: property not found: op\n"
+  },
+  {
+    "argv": [
+      "python3",
+      "review/upstream-units/run_corpus.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"aircraft_states\": 29,\n  \"airports\": 6903,\n  \"corpus_rows\": 172432,\n  \"decoded_messages\": 172432,\n  \"passed\": true,\n  \"resolved_positions_observed\": 12659,\n  \"source_assertions\": 1,\n  \"source_line\": 22,\n  \"test\": \"python/tests/test_full.py::test_full\",\n  \"tracking_reports\": 50385,\n  \"tracking_results\": 50385,\n  \"pinned_rs1090\": \"685dfaa34c5ab186c691bca3cfe2a22e12517d30\",\n  \"reference\": [\n    43.3,\n    1.35\n  ],\n  \"reference_bits\": [\n    4631290750555285094,\n    4608758678669597082\n  ],\n  \"platform\": \"Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39\",\n  \"source_assertion\": \"data.shape[0] == len(decoded)\",\n  \"decoder_entrypoint\": \"Impl.decode\",\n  \"tracking_entrypoint\": \"Impl.decodePositions\",\n  \"input_timestamp_parser\": \"Python float decimal-to-binary64, retained as exact bits\",\n  \"limitation\": \"The upstream test asserts output cardinality only; position count is observed, not asserted.\"\n}\n",
+    "stderr": ""
+  }
+]

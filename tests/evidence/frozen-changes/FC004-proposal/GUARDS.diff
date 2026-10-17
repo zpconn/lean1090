@@ -1,0 +1,139 @@
+--- a/scripts/frozen_paths.py
++++ b/scripts/frozen_paths.py
+@@ -4,7 +4,27 @@
+ def frozen_paths():
+     paths = [path for root in (Path('Spec'), Path('Model'))
+              for path in root.rglob('*') if path.is_file()]
++    # Freeze membership as well as content: newly added suite members require
++    # their own approved lock entries, including new oracle helper sources.
++    paths += list(Path('scripts').glob('check_*_differential.py'))
++    paths += list(Path('scripts').glob('Fuzz*.lean'))
++    paths += list(Path('Tests').glob('*Differential.lean'))
++    paths += list(Path('Tests').glob('*Generator.lean'))
++    for root in ('differential/message-oracle/src', 'differential/cpr-oracle/src'):
++        paths += list(Path(root).rglob('*.rs'))
+     paths += [Path(p) for p in (
++        'scripts/run_differential.sh', 'scripts/check_numeric.py',
++        'scripts/check_altitude_differential.py', 'scripts/check_cpr_differential.py',
++        'scripts/check_dte_differential.py', 'scripts/check_message_differential.py',
++        'scripts/check_reserved_velocity_differential.py', 'scripts/FuzzCPR.lean',
++        'Tests/AltitudeDifferential.lean', 'Tests/CommBDifferential.lean',
++        'Tests/DTEDifferential.lean', 'Tests/ReservedVelocityDifferential.lean',
++        'Tests/MessageGenerator.lean', 'Tests/Numeric.lean', 'tests/numeric_oracle.rs',
++        'differential/message-oracle/Cargo.toml', 'differential/message-oracle/Cargo.lock',
++        'differential/message-oracle/src/main.rs', 'differential/message-oracle/src/commb.rs',
++        'differential/cpr-oracle/Cargo.toml', 'differential/cpr-oracle/Cargo.lock',
++        'differential/cpr-oracle/src/main.rs',
++        'lakefile.toml', 'lean-toolchain', 'lake-manifest.json',
+         'Spec.lean', 'Model.lean', 'Capstones.lean', 'bench/BENCHMARK.md',
+         'scripts/Final.lean', 'scripts/CheckHypotheses.lean',
+         'scripts/check_impl_imports.py', 'scripts/check_final.py',
+--- a/scripts/check_impl_imports.py
++++ b/scripts/check_impl_imports.py
+@@ -10,6 +10,11 @@
+ scripts/Final.lean is an import-free frozen declaration fragment. check_final.py
+ compiles it in a temporary wrapper that supplies the implementation/proof imports.
+ The fragment cannot itself import Impl, Proofs, or any other module.
++
++FC004 also freezes named differential adapters. Those adapters may directly
++import Impl in addition to the reference/platform imports, but never Proofs,
++including transitively. This exception applies only to the exact adapter paths
++below. It changes no Spec/Model/Capstones or proof-manifest import permission.
+ """
+ from pathlib import Path
+ import os
+@@ -28,11 +33,19 @@
+     return [str(path.with_suffix('')).replace('/', '.') for path in paths]
+ 
+ 
++differential_adapters = [
++    'Tests/AltitudeDifferential.lean', 'Tests/CommBDifferential.lean',
++    'Tests/DTEDifferential.lean', 'Tests/ReservedVelocityDifferential.lean',
++    'Tests/Numeric.lean', 'scripts/FuzzCPR.lean',
++]
++differential_modules = [str(Path(path).with_suffix('')).replace('/', '.')
++                        for path in differential_adapters]
++
+ runtime = project_modules('Impl')
+ semantic = project_modules('Spec') + project_modules('Model') + ['Capstones']
+ if not runtime:
+     raise SystemExit('FAIL: no implementation modules to audit')
+-subprocess.run(['lake', 'build', *sorted(set(runtime + semantic))], check=True)
++subprocess.run(['lake', 'build', *sorted(set(runtime + semantic + differential_modules))], check=True)
+ 
+ runtime_check = r'''
+ open Lean Elab Command
+@@ -49,6 +62,10 @@
+   (`Spec).isPrefixOf name || (`Model).isPrefixOf name || name == `Capstones
+ private def permittedDirectImport (name : Name) : Bool :=
+   [`Spec, `Model, `Mathlib, `Init, `Std, `Lean].any (·.isPrefixOf name)
++private def differentialAdapter (filename : String) : Bool :=
++  FROZEN_DIFFERENTIAL_LEAN_FILES.contains filename
++private def permittedFrozenImport (filename : String) (name : Name) : Bool :=
++  permittedDirectImport name || (differentialAdapter filename && (`Impl).isPrefixOf name)
+ run_elab do
+   for filename in FROZEN_LEAN_FILES do
+     let source ← IO.FS.readFile filename
+@@ -56,7 +73,7 @@
+     if messages.hasErrors then
+       throwError "Frozen Lean source header does not parse: {filename}"
+     for dependency in imports do
+-      if !permittedDirectImport dependency.module then
++      if !permittedFrozenImport filename dependency.module then
+         throwError "Frozen Lean source {filename} has forbidden direct import: {dependency.module}"
+       if (filename == "scripts/Final.lean" || filename == "scripts/AuditBDS50.lean") &&
+           dependency.module != `Init then
+@@ -77,6 +94,18 @@
+   logInfo m!"Frozen semantic import audit: {checked} modules; direct imports only Spec, Model, Mathlib, Init, Std, Lean; no transitive Impl or Proofs."
+ '''
+ 
++differential_check = r'''
++open Lean Elab Command
++run_elab do
++  let env ← getEnv
++  for name in env.header.moduleNames do
++    if (`Proofs).isPrefixOf name then
++      throwError "Frozen differential adapter transitively imports forbidden module: {name}"
++  logInfo "Frozen differential adapter import audit: no transitive Proofs modules."
++'''
++
++semantic_check = semantic_check.replace('FROZEN_DIFFERENTIAL_LEAN_FILES',
++                                        json.dumps(differential_adapters))
+ semantic_check = semantic_check.replace('FROZEN_LEAN_FILES', json.dumps(
+     [str(path) for path in frozen_paths() if path.suffix == '.lean']))
+ 
+@@ -100,6 +129,10 @@
+     check = directory / 'CheckImports.lean'
+     run_check(check, runtime, runtime_check)
+     run_check(check, semantic, semantic_check)
++    # Adapters define separate executable entrypoints; inspect each compiled
++    # environment independently rather than combining their main declarations.
++    for module in differential_modules:
++        run_check(check, [module], differential_check)
+ 
+     # These test the compiled transitive graph, not text matching import lines.
+     run_check(check, runtime + ['Spec'], runtime_check,
+@@ -129,7 +162,8 @@
+     fixtures = [('GuardTrap.Helper', 'import Std\n'),
+                 ('Spec.GuardTrap', 'import GuardTrap.Helper\n'),
+                 ('Proofs.GuardTrap', 'import Std\n'),
+-                ('GuardTrap.RuntimeBridge', 'import Impl.BDS50\n')]
++                ('GuardTrap.RuntimeBridge', 'import Impl.BDS50\n'),
++                ('Spec.DifferentialTrap', 'import Tests.AltitudeDifferential\n')]
+     for name, source in fixtures:
+         path = directory / (name.replace('.', '/') + '.lean')
+         path.parent.mkdir(parents=True, exist_ok=True)
+@@ -142,6 +176,12 @@
+               expected_failure='Frozen semantic module transitively imports forbidden module: Impl')
+     run_check(check, semantic + ['Spec.GuardTrap'], semantic_check, env=environment,
+               expected_failure='Frozen semantic module Spec.GuardTrap has forbidden direct import: GuardTrap.Helper')
++    run_check(check, semantic + ['Spec.DifferentialTrap'], semantic_check, env=environment,
++              expected_failure='Frozen semantic module transitively imports forbidden module: Impl')
++    run_check(check, ['Tests.AltitudeDifferential', 'Proofs.GuardTrap'],
++              differential_check, env=environment,
++              expected_failure='Frozen differential adapter transitively imports forbidden module: Proofs.GuardTrap')
+ 
+ print(f'Import audit: {len(runtime)} runtime modules, {len(semantic)} frozen semantic modules; '
+-      'four rejection self-tests passed. Final.lean is an import-free declaration fragment.')
++      f'{len(differential_modules)} frozen differential adapters; six rejection self-tests passed. '
++      'Final.lean is an import-free declaration fragment.')

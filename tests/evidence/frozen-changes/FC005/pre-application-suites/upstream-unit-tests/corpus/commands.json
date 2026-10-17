@@ -1,0 +1,72 @@
+[
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.001405954360961914,
+    "stdout": "685dfaa34c5ab186c691bca3cfe2a22e12517d30\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--",
+      "crates/rs1090",
+      "python/tests/test_full.py",
+      "python/src/lib.rs",
+      "Cargo.toml",
+      "Cargo.lock"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0013887882232666016,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.019507408142089844,
+    "stdout": "Lock audit: 86 frozen files match SHA-256.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "lake",
+      "build",
+      "Impl",
+      "Tests.UpstreamCorpus"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.7074642181396484,
+    "stdout": "Build completed successfully (23 jobs).\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/UpstreamCorpus.lean",
+      "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/corpus/input.jsonl",
+      "/home/zpconn/code/lean1090/tests/evidence/upstream-unit-tests/corpus/airports.jsonl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 45.702276945114136,
+    "stdout": "{\"aircraft_states\":29,\"airports\":6903,\"corpus_rows\":172432,\"decoded_messages\":172432,\"passed\":true,\"resolved_positions_observed\":12659,\"source_assertions\":1,\"source_line\":22,\"test\":\"python/tests/test_full.py::test_full\",\"tracking_reports\":50385,\"tracking_results\":50385}\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,133 @@
+{
+  "method": "Temporary-copy orchestration test with logging python3 stub; component tests not rerun.",
+  "candidate_path": ".cache/fc005-proposal/scripts/run_differential.sh",
+  "candidate_sha256": "15c086df8ba19a62e2ab600fe6cd9ae159e89a6b56ff05d6ad809c4c30519e41",
+  "test_script_sha256": "275114e57237bc14f3ee6416a91d5f2879e4931ea7247fc96dcab5a180476d19",
+  "cases": [
+    {
+      "case": "quick",
+      "runner_arguments": [
+        "--corpus",
+        "--generated",
+        "100000",
+        "--commb-boundaries",
+        "commb.csv"
+      ],
+      "simulated_tracking_exit": 0,
+      "exit": 0,
+      "commands": [
+        "scripts/check_lock.py",
+        "scripts/check_altitude_differential.py",
+        "scripts/check_reserved_velocity_differential.py",
+        "scripts/check_dte_differential.py",
+        "scripts/check_numeric.py",
+        "scripts/check_cpr_differential.py --quick",
+        "scripts/check_tracking.py --diagnostic",
+        "scripts/check_message_differential.py --corpus --generated 100000 --commb-boundaries commb.csv"
+      ],
+      "stdout": "component\texit_code\naltitude\t0\nreserved_velocity\t0\ndte\t0\nnumeric\t0\ncpr\t0\ntracking\t0\nmessage\t0\nComplete differential campaign passed all mandatory strata.\n",
+      "stderr": "",
+      "tracking_calls": 1,
+      "message_calls": 1,
+      "passed": true
+    },
+    {
+      "case": "full",
+      "runner_arguments": [
+        "--corpus",
+        "--generated",
+        "10000000",
+        "--commb-boundaries",
+        "commb.csv"
+      ],
+      "simulated_tracking_exit": 0,
+      "exit": 0,
+      "commands": [
+        "scripts/check_lock.py",
+        "scripts/check_altitude_differential.py",
+        "scripts/check_reserved_velocity_differential.py",
+        "scripts/check_dte_differential.py",
+        "scripts/check_numeric.py",
+        "scripts/check_cpr_differential.py --full",
+        "scripts/check_tracking.py --diagnostic",
+        "scripts/check_message_differential.py --corpus --generated 10000000 --commb-boundaries commb.csv"
+      ],
+      "stdout": "component\texit_code\naltitude\t0\nreserved_velocity\t0\ndte\t0\nnumeric\t0\ncpr\t0\ntracking\t0\nmessage\t0\nComplete differential campaign passed all mandatory strata.\n",
+      "stderr": "",
+      "tracking_calls": 1,
+      "message_calls": 1,
+      "passed": true
+    },
+    {
+      "case": "component",
+      "runner_arguments": [
+        "--cpr-only"
+      ],
+      "simulated_tracking_exit": 0,
+      "exit": 0,
+      "commands": [
+        "scripts/check_lock.py",
+        "scripts/check_cpr_differential.py --quick"
+      ],
+      "stdout": "CPR stratum passed; whole-message differential suite was not requested.\n",
+      "stderr": "",
+      "tracking_calls": 0,
+      "message_calls": 0,
+      "passed": true
+    },
+    {
+      "case": "tracking_failure",
+      "runner_arguments": [
+        "--corpus",
+        "--generated",
+        "100000",
+        "--commb-boundaries",
+        "commb.csv"
+      ],
+      "simulated_tracking_exit": 7,
+      "exit": 7,
+      "commands": [
+        "scripts/check_lock.py",
+        "scripts/check_altitude_differential.py",
+        "scripts/check_reserved_velocity_differential.py",
+        "scripts/check_dte_differential.py",
+        "scripts/check_numeric.py",
+        "scripts/check_cpr_differential.py --quick",
+        "scripts/check_tracking.py --diagnostic"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "tracking_calls": 1,
+      "message_calls": 0,
+      "passed": true
+    },
+    {
+      "case": "diagnostic_failure",
+      "runner_arguments": [
+        "--diagnostic",
+        "--corpus",
+        "--generated",
+        "100000",
+        "--commb-boundaries",
+        "commb.csv"
+      ],
+      "simulated_tracking_exit": 7,
+      "exit": 1,
+      "commands": [
+        "scripts/check_lock.py",
+        "scripts/check_altitude_differential.py",
+        "scripts/check_reserved_velocity_differential.py",
+        "scripts/check_dte_differential.py",
+        "scripts/check_numeric.py",
+        "scripts/check_cpr_differential.py --quick",
+        "scripts/check_tracking.py --diagnostic",
+        "scripts/check_message_differential.py --corpus --generated 100000 --commb-boundaries commb.csv --diagnostic"
+      ],
+      "stdout": "component\texit_code\naltitude\t0\nreserved_velocity\t0\ndte\t0\nnumeric\t0\ncpr\t0\ntracking\t7\nmessage\t0\n",
+      "stderr": "FAIL: differential campaign completed with findings; retained component evidence lists every mismatch.\n",
+      "tracking_calls": 1,
+      "message_calls": 1,
+      "passed": true
+    }
+  ]
+}

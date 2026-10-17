@@ -1,0 +1,18 @@
+[package]
+name = "lean1090-tracking-oracle"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+rs1090 = { path = "../../vendor/rs1090/crates/rs1090", default-features = true }
+serde_json = "1"
+
+[profile.release]
+lto = "thin"
+overflow-checks = true
+
+[profile.dist]
+inherits = "release"
+lto = true
+strip = true

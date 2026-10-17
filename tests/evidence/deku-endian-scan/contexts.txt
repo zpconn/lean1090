@@ -1,0 +1,158 @@
+--- vendor/rs1090/crates/rs1090/src/decode/bds/bds09.rs:105-117 ---
+105:     /// | 1    | < 10 m/s                  | < 15.2 m/s (50 fps)        |
+106:     /// | 2    | < 3 m/s                   | < 4.6 m/s (15 fps)         |
+107:     /// | 3    | < 1 m/s                   | < 1.5 m/s (5 fps)          |
+108:     /// | 4    | < 0.3 m/s                 | < 0.46 m/s (1.5 fps)       |
+109:     ///
+110:     /// Note: Called NUCv (Navigation Uncertainty Category) in ADS-B version 0.
+111:     pub nac_v: u8,
+112: 
+113:     #[deku(ctx = "*subtype")]
+114:     #[serde(flatten)]
+115:     /// Velocity Data (bits 14-35): 22 bits, encoding depends on subtype  
+116:     /// See AirborneVelocitySubType enum for subtype-specific structures.
+117:     pub velocity: AirborneVelocitySubType,
+--- vendor/rs1090/crates/rs1090/src/decode/bds/bds09.rs:216-240 ---
+216: 
+217: #[derive(Debug, PartialEq, Serialize, Deserialize, DekuRead, Clone)]
+218: #[deku(ctx = "subtype: u8", id = "subtype")]
+219: #[serde(untagged)]
+220: pub enum AirborneVelocitySubType {
+221:     #[deku(id = "0")]
+222:     Reserved0(ReservedVelocityData),
+223: 
+224:     #[deku(id_pat = "1..=2")]
+225:     GroundSpeedDecoding(GroundSpeedDecoding),
+226: 
+227:     #[deku(id = "3")]
+228:     AirspeedSubsonic(AirspeedSubsonicDecoding),
+229:     #[deku(id = "4")]
+230:     AirspeedSupersonic(AirspeedSupersonicDecoding),
+231: 
+232:     #[deku(id_pat = "5..=7")]
+233:     Reserved1(ReservedVelocityData),
+234: }
+235: 
+236: #[derive(Debug, PartialEq, Serialize, Deserialize, DekuRead, Clone)]
+237: pub struct ReservedVelocityData {
+238:     #[deku(bits = "22")]
+239:     pub reserved_data: u32,
+240: }
+--- vendor/rs1090/crates/rs1090/src/decode/bds/bds10.rs:116-125 ---
+116: #[derive(
+117:     Debug, PartialEq, Serialize, Deserialize, DekuRead, Clone, Default,
+118: )]
+119: #[serde(tag = "bds", rename = "10")]
+120: pub struct DataLinkCapability {
+121:     /// BDS Code (bits 1-8): Per ICAO Doc 9871 Table A-2-16  
+122:     /// Fixed identifier for this register.  
+123:     /// Must be 0x10 (0001 0000 binary = 1,0 hexadecimal).
+124:     #[deku(bits = "8", map = "fail_if_not10")]
+125:     #[serde(skip)]
+--- vendor/rs1090/crates/rs1090/src/decode/bds/bds10.rs:273-281 ---
+273:     pub acas_rtca: u8,
+274: 
+275:     /// Data Terminal Equipment Status (bits 41-56): Per ICAO Doc 9871 Table A-2-16  
+276:     /// 16-bit array indicating support status of DTE sub-addresses 0-15.  
+277:     /// Each bit (MSB to LSB) represents DTE subaddress 0 to 15.  
+278:     /// On-board DTE status sampled at approximately 1 minute intervals.
+279:     #[deku(bits = "16")]
+280:     pub dte: u16,
+281: }
+--- vendor/rs1090/crates/rs1090/src/decode/bds/bds30.rs:192-223 ---
+192:     /// Multiple threat encounter (not supported)
+193:     pub multiple: bool,
+194: 
+195:     /// Threat type indicator
+196:     #[serde(flatten)]
+197:     pub threat_type: ThreatType,
+198: }
+199: 
+200: #[derive(Debug, PartialEq, Serialize, Deserialize, DekuRead, Clone)]
+201: #[deku(id_type = "u8", bits = "2")]
+202: #[serde(untagged)]
+203: pub enum ThreatType {
+204:     #[deku(id = "0")]
+205:     NoIdentity {
+206:         #[deku(bits = "26")]
+207:         #[serde(skip)]
+208:         unused: u32,
+209:     },
+210: 
+211:     #[deku(id = "1")]
+212:     ThreatAddress(ThreadAddress),
+213: 
+214:     #[deku(id = "2")]
+215:     ThreatOrientation(ThreatOrientation),
+216: 
+217:     #[deku(id = "3")]
+218:     NotAssigned {
+219:         #[deku(bits = "26")]
+220:         #[serde(skip)]
+221:         unused: u32,
+222:     },
+223: }
+--- vendor/rs1090/crates/rs1090/src/decode/mod.rs:582-592 ---
+582: 
+583: /// ICAO 24-bit address, commonly use to reference airframes, i.e. tail numbers
+584: /// of aircraft
+585: #[derive(PartialEq, Eq, PartialOrd, DekuRead, Hash, Copy, Clone, Ord)]
+586: #[deku(ctx = "crc: u32")]
+587: pub struct IcaoParity(
+588:     // Ok it looks convoluted, actually the final bits are already read when
+589:     // we compute the crc so we don't need to read this again
+590:     #[deku(bits = 24, map = "|_v: u32| -> Result<_, DekuError> { Ok(crc) }")]
+591:     pub u32,
+592: );
+--- vendor/rs1090/crates/rs1090/src/decode/cat48.rs:1085-1100 ---
+1085: 
+1086: /// I048/120: Radial Doppler Speed (Compound)
+1087: /// Radial Doppler speed calculated from the Doppler filter bank.
+1088: /// First byte is an indicator; bit 7 = CAL present, bit 6 = RDS present,
+1089: /// bits 5-1 = spare, bit 0 = FX (always 0 for this item).
+1090: #[derive(Debug, Clone, PartialEq, DekuRead, Serialize)]
+1091: pub struct RadialDopplerSpeed {
+1092:     /// Indicator byte: bit 7 = CAL, bit 6 = RDS, bits 5-0 = spare+FX
+1093:     #[serde(skip)]
+1094:     indicator: u8,
+1095:     /// Calculated Doppler Speed (if present)
+1096:     #[deku(cond = "*indicator & 0x80 != 0")]
+1097:     #[serde(skip_serializing_if = "Option::is_none")]
+1098:     pub calculated: Option<CalculatedDopplerSpeed>,
+1099:     /// Raw Doppler Speed records (repetitive, if present)
+1100:     #[deku(
+--- vendor/rs1090/crates/rs1090/src/decode/cat48.rs:1122-1133 ---
+1122: /// Calculated Doppler Speed subfield of I048/120 (2 bytes = 16 bits)
+1123: /// Layout: D(1) + spare(5) + CAL(10 signed)
+1124: #[derive(Debug, Clone, PartialEq, DekuRead, Serialize)]
+1125: pub struct CalculatedDopplerSpeed {
+1126:     /// D: Doubtful (0=No, 1=Doppler speed doubtful)
+1127:     #[deku(bits = "1", pad_bits_after = "5")]
+1128:     pub doubtful: bool,
+1129:     /// CAL: Calculated Doppler Speed in m/s (signed, 10 bits, LSB = 1 m/s)
+1130:     #[deku(bits = "10")]
+1131:     pub speed_ms: i16,
+1132: }
+1133: 
+--- vendor/rs1090/crates/rs1090/src/decode/commb.rs:619-628 ---
+619:                 "Hypothesis BDS05: Typecode inconsistency {} should be in [9, 18] or [20, 22]",
+620:                 tc
+621:             )
+622:         }
+623:         match DataLinkCapability::try_from(buf.as_slice()) {
+624:             Ok(bds10) => result.bds10 = Some(bds10),
+625:             Err(e) => debug!("Hypothesis BDS10: {}", e.to_string()),
+626:         }
+627:         match CommonUsageGICBCapabilityReport::try_from(buf.as_slice()) {
+628:             Ok(bds17) => result.bds17 = Some(bds17),
+--- vendor/rs1090/crates/rs1090/src/decode/commb.rs:736-745 ---
+736:                 tc
+737:             )
+738:         }*/
+739: 
+740:         match DataLinkCapability::try_from(buf.as_slice()) {
+741:             Ok(bds10) => result.bds10 = Some(bds10),
+742:             Err(e) => debug!("Hypothesis BDS10: {}", e.to_string()),
+743:         }
+744:         match CommonUsageGICBCapabilityReport::try_from(buf.as_slice()) {
+745:             Ok(bds17) => result.bds17 = Some(bds17),

@@ -1,0 +1,102 @@
+{
+  "date_utc": "2026-10-16T22:46:23Z",
+  "machine": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "cpu": 0,
+  "allowed_cpus_before_pin": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "windows_power_plan": {
+    "status": "unavailable",
+    "attempts": [
+      {
+        "command": [
+          "powercfg.exe",
+          "/getactivescheme"
+        ],
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "<3>WSL (146 - ) ERROR: UtilBindVsockAnyPort:307: socket failed 1"
+      },
+      {
+        "command": [
+          "/mnt/c/Windows/System32/powercfg.exe",
+          "/getactivescheme"
+        ],
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "<3>WSL (147 - ) ERROR: UtilBindVsockAnyPort:307: socket failed 1"
+      }
+    ]
+  },
+  "corpus_sha256": "3e5aa149f2d45d675f79960f03c39a6a0e4f7c6acc3c067bebdd7b9be6ce5505",
+  "rs1090_commit": "685dfaa34c5ab186c691bca3cfe2a22e12517d30",
+  "lean_function": "Lean1090.Impl.BDS50.decode",
+  "proof": "Lean1090.Proofs.BDS50.refinement",
+  "protocol": "3 AB warmups, then 21 AB pairs; A=rs1090, B=Lean",
+  "corpus_differential": {
+    "inputs": 47714,
+    "accepted": 9813,
+    "score_rejected": 828,
+    "hard_rejected": 37073,
+    "matched": true,
+    "fields": [
+      "roll",
+      "track",
+      "groundspeed",
+      "track_rate",
+      "TAS",
+      "binary64_score"
+    ]
+  },
+  "generated_differential": {
+    "inputs": 4504,
+    "accepted": 421,
+    "score_rejected": 4026,
+    "hard_rejected": 57,
+    "matched": true,
+    "fields": [
+      "roll",
+      "track",
+      "groundspeed",
+      "track_rate",
+      "TAS",
+      "binary64_score"
+    ]
+  },
+  "generated_families": {
+    "groundspeed_bound": 6,
+    "penalty_boundary": 36,
+    "random_valid_fields": 4096,
+    "rate_sentinel": 8,
+    "roll_bound": 6,
+    "score_exact_threshold": 1,
+    "score_one_step": 2,
+    "score_threshold_neighbor": 276,
+    "status_nonzero": 32,
+    "status_zero": 32,
+    "tas_bound": 9
+  }
+}

@@ -1,0 +1,136 @@
+--- a/scripts/frozen_paths.py
++++ b/scripts/frozen_paths.py
+@@ -10,9 +10,32 @@
+     paths += list(Path('scripts').glob('Fuzz*.lean'))
+     paths += list(Path('Tests').glob('*Differential.lean'))
+     paths += list(Path('Tests').glob('*Generator.lean'))
+-    for root in ('differential/message-oracle/src', 'differential/cpr-oracle/src'):
++    for root in ('differential/message-oracle/src', 'differential/cpr-oracle/src',
++                 'differential/tracking-oracle/src'):
+         paths += list(Path(root).rglob('*.rs'))
++    # Every unit-port source-tree file is a frozen member, regardless of suffix
++    # or depth. In particular packages, extension modules and bytecode cannot
++    # silently shadow imports. Generated fixtures live outside this tree.
++    paths += [path for path in Path('review/upstream-units').rglob('*')
++              if path.is_file() or path.is_symlink()]
+     paths += [Path(p) for p in (
++        'Tests/Tracking.lean',
++        'Tests/Upstream.lean',
++        'Tests/UpstreamCorpus.lean',
++        'differential/tracking-oracle/Cargo.lock',
++        'differential/tracking-oracle/Cargo.toml',
++        'differential/tracking-oracle/src/main.rs',
++        'review/upstream-units/assemble.py',
++        'review/upstream-units/inventory.py',
++        'review/upstream-units/manual.py',
++        'review/upstream-units/port.py',
++        'review/upstream-units/run.py',
++        'review/upstream-units/run_corpus.py',
++        'review/upstream-units/rust_port.py',
++        'scripts/check_tracking.py',
++        'scripts/generate_tracking.py',
++        'scripts/run_unit_tests.sh',
++
+         'scripts/run_differential.sh', 'scripts/check_numeric.py',
+         'scripts/check_altitude_differential.py', 'scripts/check_cpr_differential.py',
+         'scripts/check_dte_differential.py', 'scripts/check_message_differential.py',
+--- a/scripts/check_impl_imports.py
++++ b/scripts/check_impl_imports.py
+@@ -11,7 +11,7 @@
+ compiles it in a temporary wrapper that supplies the implementation/proof imports.
+ The fragment cannot itself import Impl, Proofs, or any other module.
+ 
+-FC004 also freezes named differential adapters. Those adapters may directly
++FC004 freezes named differential adapters; FC005 adds tracking and upstream unit adapters. Those adapters may directly
+ import Impl in addition to the reference/platform imports, but never Proofs,
+ including transitively. This exception applies only to the exact adapter paths
+ below. It changes no Spec/Model/Capstones or proof-manifest import permission.
+@@ -37,6 +37,7 @@
+     'Tests/AltitudeDifferential.lean', 'Tests/CommBDifferential.lean',
+     'Tests/DTEDifferential.lean', 'Tests/ReservedVelocityDifferential.lean',
+     'Tests/Numeric.lean', 'scripts/FuzzCPR.lean',
++    'Tests/Tracking.lean', 'Tests/Upstream.lean', 'Tests/UpstreamCorpus.lean',
+ ]
+ differential_modules = [str(Path(path).with_suffix('')).replace('/', '.')
+                         for path in differential_adapters]
+--- a/scripts/run_differential.sh
++++ b/scripts/run_differential.sh
+@@ -86,6 +86,7 @@
+ run_component dte python3 scripts/check_dte_differential.py
+ run_component numeric python3 scripts/check_numeric.py
+ run_component cpr python3 scripts/check_cpr_differential.py "$mode"
++run_component tracking python3 scripts/check_tracking.py --diagnostic
+ message_args=(--corpus --generated "$generated" --commb-boundaries "$commb_boundaries")
+ if "$diagnostic"; then message_args+=(--diagnostic); fi
+ run_component message python3 scripts/check_message_differential.py "${message_args[@]}"
+--- a/spec.lock
++++ b/spec.lock
+@@ -1,7 +1,8 @@
+ 2fc64d1be46f5b71c5354c0686d6c67bf2efa47fb30c6f19e7c24907b6c6f7ce  Capstones.lean
++f776e7eaeb2c5d2ced245a284f5e3f5b27458fcb68c91169807cb1107f5013ff  Model.lean
+ e1a445dc1a2bd595e0b458601ebe59c570ea16551789d87a677636f647316c95  Model/BDS50.lean
+ 52b4ecd7e9e4997689a7d3f98246e8d41396b0d8afaac593ac6d3927a5e0c504  Model/Types.lean
+-f776e7eaeb2c5d2ced245a284f5e3f5b27458fcb68c91169807cb1107f5013ff  Model.lean
++277024d0b04a7e7bfae10065ff597d80d48a8a26acaa1f22ddb7efd6d28b6ed3  Spec.lean
+ a3b1ed8691863bd9cf18cbaa79d2d3dcb7a0964c04bcd135117797c583275330  Spec/ADSB.lean
+ c505219ed76335af94f417d68c896b8667575b2e765c8be8645068401c7dc7e4  Spec/Altitude.lean
+ 01d7ea1d9c37f0b9730643fa571b109c8c834f133d9996917c6b04283a310eb8  Spec/Assignment.lean
+@@ -27,13 +28,15 @@
+ efac2821c5883676fd44b199d4dc52f5adc25a3ca7358a1bb5cfd21561d020f3  Spec/StandardExamples.lean
+ 658bf1cd82f353c3255936a8f7ca30407333c68a1b2436c48fd04bc9142f824a  Spec/StandardFullExamples.lean
+ d2e73689404e9b5bf1b9f9f4bc63cc33e62479b8f91a68d4f90b6a942e428c0b  Spec/Witnesses.lean
+-277024d0b04a7e7bfae10065ff597d80d48a8a26acaa1f22ddb7efd6d28b6ed3  Spec.lean
+ b59f28adc245e46c6377c1601e924e357c789a8136df95627d80809a42334f29  Tests/AltitudeDifferential.lean
+ dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf  Tests/CommBDifferential.lean
+ 35f0083599b6edfb54c51ec985f34a1b721c55a7641df52b71484f2b687f13d4  Tests/DTEDifferential.lean
+ 4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36  Tests/MessageGenerator.lean
+ d03dbc25a5b8670b3cfb9258808e9ced685027064364b3fb5360cdfa7853e5f8  Tests/Numeric.lean
+ 69a81bffbbcfd229f5bc485bc7d5891e6ab3b728f28497ac16a8fada1a6eb0ab  Tests/ReservedVelocityDifferential.lean
++196f549f758b2e4c78f263c12af1151482465a3670e96b714b5fe8885ffde6cd  Tests/Tracking.lean
++49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032  Tests/Upstream.lean
++28fbfcd5816440cc3f32c264ba8390993c9d29cba400e0fb4f13297006a90a2c  Tests/UpstreamCorpus.lean
+ 823b89fa3c3a2218108e576379c3daf12fe269540e99ec28f4c8a824fe0bf041  bench/BENCHMARK.md
+ dee91776ebb3559f1f5b9c0bf292b88ec987b07487a88e299e58fea718d2f584  bench/bds50/Cargo.lock
+ d5863d28183c1a4858112efb9fece1224e2e1cafeb4fcfca224f6706227ccd0b  bench/bds50/Cargo.toml
+@@ -50,9 +53,19 @@
+ 008417f6916b75d663f2f48cf9a0af851b468956c47b421493d2aed55ea92b4c  differential/message-oracle/Cargo.toml
+ 958ca83fc71a341bf6e63989cbe07fe0752dbc1aba1b686e2c4065d92ed5e522  differential/message-oracle/src/commb.rs
+ 2e519c55e63bf38d8424d804accf9778fd21f74677b8f482d7544ed4d45c3db1  differential/message-oracle/src/main.rs
++f308bf25efaaf610a22cf0145837a36b2a478f687099ab043d185503d67f0786  differential/tracking-oracle/Cargo.lock
++85b25b6c4d10fe461009618231dfd9c117e65613d503182b8da40be1a2638a7f  differential/tracking-oracle/Cargo.toml
++3fbd472310907068e885816810ad1503fbafbede364ea76e5494a7decde24374  differential/tracking-oracle/src/main.rs
+ 5f37c9b37568377682023c05a51252f854d1a15c897ef29734157a1c3895637f  lake-manifest.json
+ fa8f7c3b587ae0ce1dbfb50a1e11ac61905f0070324fc942262cc01d006cbcf0  lakefile.toml
+ ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c  lean-toolchain
++4faf1ddda99a281adcf0b692fd3662bf74e65cfd0ba445ed9e4dcfcb3041fecc  review/upstream-units/assemble.py
++5a0830c5c2edea5cd0031c1ba05aa6f87a8013fefd99db6978535eb6a60cc9ac  review/upstream-units/inventory.py
++5964857d807d5e894bcc1c97a715b39f4b5d14050b706614ec0f96aa6146fedf  review/upstream-units/manual.py
++ab7452beb54c431258898237ed51d17756de3c39a8e082dcdd18b109b30a40c9  review/upstream-units/port.py
++c8d791a7b9e8737f50cf3286d52ba97830ad810850df74cbce35cc6438af04af  review/upstream-units/run.py
++b7032df01f37f98b2c392cf5b4bd5d8902242603759a4bf1ee76c050736e8a89  review/upstream-units/run_corpus.py
++08c1b5053031d9df7a3b9fbc808f574cf3c0b90fe06fbad17de76fc331abf457  review/upstream-units/rust_port.py
+ ba35df70c19e7f4b60f3647a96cc25ab02e1834d4efbd47042dccdced4eaf112  scripts/AuditBDS50.lean
+ 80d7043691a17dd8c6c5ff3699e9845bbca9ea1b2923484cfae563caba8688fd  scripts/AuditWitnesses.lean
+ 0a9c4a3cd885539b25782e823e6b06fa28d7a37671a302a7c2c49668be3f4fca  scripts/CheckAssignment.lean
+@@ -72,15 +85,18 @@
+ e64b68106b16718310c2a4c44955d988998fd61a2e41303809430d0e81e9bae3  scripts/check_draft.sh
+ 7c7544eb04d4f7ce5bf38867eaff2e029d868f79c52a4863c353d395fbbaa1c1  scripts/check_dte_differential.py
+ 3d3c92d8794b433a606f38e2fc71dff53c9a4d9b4bc8803d97f24e21eacbaaae  scripts/check_final.py
+-cf7d6960ae2521ab2c751839663432c5668b5e41c2fa9345135ee0a7d0104ce3  scripts/check_impl_imports.py
++23595396f7a837ec072af9adc88e0ef27bcd3d6bd0d73b7d39a5c439eaa90493  scripts/check_impl_imports.py
+ ce6da11face3073658bd73cc1c77f764b6e9d3b309a565b0b89a36f0ab80864d  scripts/check_lock.py
+ 88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d  scripts/check_message_differential.py
+ d7f4b0c4de049f6f48b20ec31a5c289590d4813113478cfc4d5c57256caea319  scripts/check_numeric.py
+ 1caacfb4b400c327fec1e2b649877c18542dc2fee31cc07079a6117c4b89fc58  scripts/check_pilot.py
+ 0568c6dbd0b068771af43a434ce8927b3bdd40ffacd68d8fd25141fb78a1a647  scripts/check_reserved_velocity_differential.py
++0ceee8daa0e504dcce12f8e499d699698c11c7f1ae111506f1e443c2e8e7b374  scripts/check_tracking.py
+ 1132b797fd32256761db4943cb1972dbf782a538dead49f8517a03ebba416d38  scripts/check_witness_axioms.py
+ 14cf48143c90127d4a490931716319d21b2f97fb5747a6dfd7445e888fd38427  scripts/compile_fragment.py
+-67b05b953cc221b1c1a7717f41dbb1c4ab34755795384c782d59fcc41c16e2d2  scripts/frozen_paths.py
+-ea7918b81763cbf45a1225859e533c50a3cb5b7d8a36303836f658f38975e067  scripts/run_differential.sh
++52d7bc29ee813f0e3697fc3ded50b60f166ea591630eedf9cd2c0de70b0aa4be  scripts/frozen_paths.py
++64236d72a99fa448863c655e277f1955e4686abfd1d5bfd6edc170abb1b4a7d5  scripts/generate_tracking.py
++15c086df8ba19a62e2ab600fe6cd9ae159e89a6b56ff05d6ad809c4c30519e41  scripts/run_differential.sh
++1e53deeac74dd369ede0ccc299d44125b8f795bbdea2d1931195cf25529eb9ed  scripts/run_unit_tests.sh
+ 6c22985f87b42772371ef4c03e31796ffb547c8b5aff016795be8592299d1b65  scripts/test_lock.py
+ 16d7b0445539700c38ee8caa586afe9a9ee26d69bb7aad88852b7525378938ad  tests/numeric_oracle.rs

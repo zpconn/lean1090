@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,os,subprocess,hashlib
+root=Path('/home/zpconn/code/lean1090');ev=root/'tests/evidence/tracking-revision-probes';work=root/'.cache/tracking-label-mutants';(work/'src').mkdir(parents=True,exist_ok=True)
+original=(root/'differential/tracking-oracle/src/main.rs').read_text()
+manifest=(root/'differential/tracking-oracle/Cargo.toml').read_text().replace('name = "lean1090-tracking-oracle"','name = "lean1090-tracking-oracle-mutant"').replace('../../vendor/rs1090/crates/rs1090',str(root/'vendor/rs1090/crates/rs1090'))
+(work/'Cargo.toml').write_text(manifest)
+(work/'Cargo.lock').write_text((root/'differential/tracking-oracle/Cargo.lock').read_text().replace('name = "lean1090-tracking-oracle"','name = "lean1090-tracking-oracle-mutant"'))
+mutants=[('airborne_accepts_rejected_motion','if airborne && !motion_pass {','if airborne && false {'),('surface_claims_failed_decode','''let expected = if airborne && !motion_pass {''','''if surface && name == "surface_first_ocean" { candidate = Some(Position { latitude: 0., longitude: -140. }); }
+                let expected = if airborne && !motion_pass {'''),('airport_transition_false_shadow','''                decode_position(
+                    me,''','''                expected_airport = old_airport.clone();
+                decode_position(
+                    me,''')]
+results=[]
+env={**os.environ,'CARGO_HOME':str(root/'.cache/cargo')}
+for name,old,new in mutants:
+ assert old in original,name
+ source=original.replace(old,new,1);(work/'src/main.rs').write_text(source)
+ cmd=['cargo','build','--offline','--locked','--profile','dist','--manifest-path',str(work/'Cargo.toml'),'--target-dir',str(root/'.cache/rs1090-target')]
+ r=subprocess.run(cmd,cwd=root,env=env,capture_output=True,text=True);assert r.returncode==0,r.stderr
+ with (ev/'input.jsonl').open('rb') as inp:
+  run=subprocess.run([str(root/'.cache/rs1090-target/dist/lean1090-tracking-oracle-mutant')],stdin=inp,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True)
+ assert run.returncode!=0,(name,'mutation survived')
+ assert 'shadow/real' in run.stderr,(name,run.stderr)
+ results.append(dict(mutation=name,source_sha256=hashlib.sha256(source.encode()).hexdigest(),build_command=cmd,build_exit=r.returncode,run_exit=run.returncode,stderr=run.stderr))
+ (ev/'label-integrity-mutations.json').write_text(json.dumps(results,indent=2)+'\n')
+ print(name,run.returncode,run.stderr.splitlines()[2],flush=True)
