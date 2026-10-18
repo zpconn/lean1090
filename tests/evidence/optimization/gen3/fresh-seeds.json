@@ -1,0 +1,55 @@
+{
+  "recorded_utc": "2026-10-18T19:45:33.157795+00:00",
+  "message_seed": 2991522103,
+  "commb_seed": 2632950597,
+  "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical-record and mutual collisions rejected.",
+  "historical_seed_values_checked": 14,
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "f05d8b1bd697269efdb2d73b045fdf50a481f969",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Impl/Parity.lean": "ec0beb1835491622abdf6162e31c7790949ab7eed3222cde23f38eea51b20c1b",
+    "Proofs/ParityBits.lean": "ca359334ed243b286d46a5a37eec443a096fdec17559f476eef6d7ebe2f8e43f",
+    "Proofs/Decoder.lean": "ff58bb524cfe6d13d3dd8df56f3cd181e3ec1d58bef8a076583a468a7ecb2795"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen3-gate/fresh-commb.csv",
+      "100000",
+      "2632950597"
+    ],
+    [
+      "python3",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen3-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen3/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "2991522103",
+      "--commb-boundaries",
+      ".cache/gen3-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen3/fresh-message"
+    ]
+  ],
+  "authorization_note": "Parent explicitly authorized generation and native direct campaign after combined targeted 3508-job build passed and staged ParityBits/Parity/Decoder sources were stable; full gate uses independent outputs."
+}

@@ -2,6 +2,7 @@ import Impl.Message
 import Capstones
 import Proofs.CommBTables
 import Proofs.ScoreGate
+import Proofs.ParityBits
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -94,8 +95,9 @@ private theorem decoder_Parity_step_eq : @Impl.Parity.step = @Spec.Parity.step :
   simp only [decoder_Parity_generator_eq]
   rfl
 private theorem decoder_Parity_syndrome_eq : @Impl.Parity.syndrome = @Spec.Parity.syndrome := by
+  funext width word
   unfold Impl.Parity.syndrome Spec.Parity.syndrome
-  simp only [decoder_Parity_step_eq]
+  simp only [ParityBits.cachedBit_eq, decoder_Parity_step_eq]
 private theorem decoder_Parity_checksum_eq : @Impl.Parity.checksum = @Spec.Parity.checksum := by
   unfold Impl.Parity.checksum Spec.Parity.checksum
   simp only [decoder_Parity_syndrome_eq]

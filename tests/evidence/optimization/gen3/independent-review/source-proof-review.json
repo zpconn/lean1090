@@ -1,0 +1,50 @@
+{
+  "status": "passed_source_proof_review",
+  "reviewer": "payload_roundtrips",
+  "recorded_utc": "2026-10-18T19:45:08.927854+00:00",
+  "reviewed_hashes": {
+    "Impl/Parity.lean": "ec0beb1835491622abdf6162e31c7790949ab7eed3222cde23f38eea51b20c1b",
+    "Proofs/ParityBits.lean": "ca359334ed243b286d46a5a37eec443a096fdec17559f476eef6d7ebe2f8e43f",
+    "Proofs/Decoder.lean": "ff58bb524cfe6d13d3dd8df56f3cd181e3ec1d58bef8a076583a468a7ecb2795",
+    "Impl/Message.lean": "b7285e71a61fbff751b7925755c266c0a41a69a8441ecc0262ac952d9ecfc1d9",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "tests/evidence/optimization/gen3/proof/build-01.log": "7c7e8520d45ca7df511c44321488cb55374e18be3d42e5e70289e6dae4171136",
+    "tests/evidence/optimization/gen3/native-review/inspection-inputs.json": "db3a05abc2b191f13e7d39388f2ed046ee46ff5325c5cd02f307123a70e4d089"
+  },
+  "unchanged_frozen_files": 104,
+  "scope_checks": {
+    "only_cached_bit_extraction_changes_in_parity": true,
+    "step_checksum_interrogator_bodies_preserved": true,
+    "decoder_diff_only_import_and_universal_syndrome_rewrite": true,
+    "all_Nat_width_word_indices_preserved": true,
+    "existing_native_review_artifacts_hashes_match": true,
+    "four_targeted_proofs_allowed_axioms": true
+  },
+  "domain_review": [
+    "wordBit is equivalent to Nat.testBit under the explicit i<64 hypothesis; no unrestricted wordBit equivalence is claimed.",
+    "UInt64.shiftRight masks the converted count modulo 64. cachedBit selects wordBit only with i<64 or 64<=i<128 and i-64<64.",
+    "Canonical cache casts reduce modulo 2^64; Nat.testBit_mod_two_pow preserves every selected low or high bit. The high branch uses (word>>>64).testBit(i-64)=word.testBit i.",
+    "For i>=128 the original unrestricted Nat.testBit is used, including arbitrary large Nat indices and words.",
+    "syndrome retains the exact same List.range/fold order and Nat subtraction. width=0, widths crossing 64/128 and arbitrary over-wide words are covered by the universal theorem.",
+    "cachedBit_eq is quantified over every Nat word/index without an acceptance, representability or decoder-dependent precondition.",
+    "Machine caches are computed afresh within each syndrome invocation, never across messages or corpus entries."
+  ],
+  "live_binding": [
+    "Impl.decode -> frameAccepted/report/frameAddress -> frameSyndrome -> Parity.checksum -> Parity.syndrome -> cachedBit (inlined in native fold).",
+    "Frozen Tests/Upstream.lean CRC operation calls the same live Impl.Parity.syndrome.",
+    "Proofs.Decoder rewrites that live syndrome for arbitrary width and word via ParityBits.cachedBit_eq; there is no duplicate legacy syndrome."
+  ],
+  "native_semantics_review": {
+    "Lean_definition": "Init/Data/UInt/Basic.lean:680 defines UInt64.shiftRight via UInt64.mod b 64.",
+    "C_runtime": "include/lean/lean.h:2279 uses a >> (b % 64), matching the pure definition and avoiding an undefined shift.",
+    "generated_C": "The retained Parity.c computes low/high once at lines 298-302, carries both as unboxed uint64_t through the fold, and calls Nat.testBit only for indices >=128.",
+    "helper_linking": "wordBit and cachedBit are present in the object and inline into the linked fold; their unused standalone binary symbols are absent. This is not a dead test path."
+  },
+  "validation_reviewed": "Agent-built Proofs.ParityBits target passed 2041 jobs; all four theorem/witness axiom outputs are exactly propext, Classical.choice, Quot.sound. Native-review CLI build passed separately. This reviewer ran no build/test/native decoder process. Root combined build and full gate remain separate required validation.",
+  "findings": [],
+  "limits": [
+    "This is correctness/source/proof/native-guard review, not a throughput result.",
+    "No frozen files, runtime sources, proof sources or benchmark artifacts were changed by this review."
+  ]
+}

@@ -213,6 +213,52 @@ private def census (inputs : Array Input) (output : Array Spec.Message) : IO Jso
   return Json.mkObj [("kind", .str "post_decode_shadow_census"),
     ("native_call_counts", .bool false), ("per_df", toJson rows)]
 
+/-- Replay the live interval predicates after collection, checking every result
+against the live score decision. Native call counts remain a separate profile
+observation; these counters distinguish the actual input populations. -/
+private def intervalCensus (output : Array Spec.Message) : IO Json := do
+  let mut rows := []
+  for register in scored do
+    let mut reached := 0
+    let mut fastAccept := 0
+    let mut fastReject := 0
+    let mut fallbackAccept := 0
+    let mut fallbackReject := 0
+    let mut lengths := []
+    for message in output do
+      let .commB _ _ mb := message.fields.body | continue
+      let word := mb.toNat
+      if word == 0 || !Impl.bdsWireValid register word then continue
+      let terms := Impl.cbDensityTermsFast register word
+      let penalty := Impl.cbPenalty register word
+      let center := Impl.ScoreGate.center terms penalty
+      let envelope := Impl.ScoreGate.envelope terms penalty
+      let actual := Impl.cbScorePasses register word
+      reached := reached + 1
+      lengths := bump lengths terms.length
+      if center - envelope ≥ -3 then
+        if !actual then throw (IO.userError "interval accept disagrees with live score gate")
+        fastAccept := fastAccept + 1
+      else if center + envelope < -3 then
+        if actual then throw (IO.userError "interval reject disagrees with live score gate")
+        fastReject := fastReject + 1
+      else
+        let expected := decide (Impl.cbCombinedScore register word ≥ -3)
+        if actual != expected then throw (IO.userError "fallback disagrees with live software score")
+        if actual then fallbackAccept := fallbackAccept + 1
+        else fallbackReject := fallbackReject + 1
+    if reached != fastAccept + fastReject + fallbackAccept + fallbackReject then
+      throw (IO.userError "interval population accounting mismatch")
+    rows := rows ++ [Json.mkObj [
+      ("register_decimal", toJson register), ("reached", toJson reached),
+      ("fast_accept", toJson fastAccept), ("fast_reject", toJson fastReject),
+      ("fallback_accept", toJson fallbackAccept), ("fallback_reject", toJson fallbackReject),
+      ("term_lengths", toJson ((lengths.mergeSort (fun a b => a.1 ≤ b.1)).map
+        (fun (length, count) => Json.mkObj [("length", toJson length), ("count", toJson count)])))]]
+  return Json.mkObj [("kind", .str "post_decode_interval_census"),
+    ("native_call_counts", .bool false), ("live_score_results_checked", .bool true),
+    ("registers", toJson rows)]
+
 private def decodeMode (mode : String) (inputs : Array Input) (withCensus wait : Bool) : IO Unit := do
   let predicate ← IO.ofExcept (select mode)
   let inputs := inputs.filter (fun input => predicate input.df)
@@ -228,7 +274,9 @@ private def decodeMode (mode : String) (inputs : Array Input) (withCensus wait :
     ("digest", digestJson total), ("per_df", toJson (perDF.toList.zipIdx.map
       (fun (digest, df) => Json.mkObj [("df", toJson df), ("digest", digestJson digest)]))),
     ("loop_small_allocations", toJson heartbeats)])
-  if withCensus then emit (← census inputs output)
+  if withCensus then
+    emit (← census inputs output)
+    emit (← intervalCensus output)
 
 private structure ScoreInput where
   df : Nat

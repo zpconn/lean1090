@@ -35,6 +35,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cache", required=True, type=Path)
     parser.add_argument("--jobs", type=int, default=6)
+    parser.add_argument("--perf-capture", type=Path,
+                        help="completed native capture required before starting any diagnostic worker")
     args = parser.parse_args()
     cache = args.cache
     assert 1 <= args.jobs <= 8
@@ -47,7 +49,8 @@ def main():
     baseline = Path("tests/evidence/diagnostics/gen0")
     binary_hash = sha(binary)
     assert build["artifacts"][str(binary)] == binary_hash
-    protected = {**build["reused_production_objects"], **build["production_sources"]}
+    protected = {**build.get("unchanged_native_inputs", {}),
+                 **build["reused_production_objects"], **build["production_sources"]}
     protected["spec.lock"] = sha("spec.lock")
     protected[".lake/build/bin/lean1090-bench"] = sha(".lake/build/bin/lean1090-bench")
     for directory in ("Model", "Proofs"):
@@ -77,6 +80,13 @@ def main():
                   "Separate processes retain cold lazy constants and distinct allocator contexts.",
                   "Complete result digests are checked after the collected root returns.",
                   "All source, object, C, lock and timed benchmark binary hashes must remain unchanged."]}
+    if args.perf_capture:
+        capture = json.loads(args.perf_capture.read_text())
+        assert capture["record_exit_code"] == 0 and capture["all_input_hashes_unchanged"] and capture["completed_utc"]
+        assert capture["before_hashes"][".lake/build/bin/lean1090-bench"] == protected[".lake/build/bin/lean1090-bench"]
+        state["prior_perf_capture"] = {"path": str(args.perf_capture), "sha256": sha(args.perf_capture),
+                                       "completed_utc": capture["completed_utc"],
+                                       "loaded_before_any_native_diagnostic": True}
 
     def save():
         (cache / "campaign.json").write_text(json.dumps(state, indent=2) + "\n")
@@ -118,6 +128,20 @@ def main():
         assert census == previous_census
         assert complete["digest"]["count"] == 172432
         state["full_output_digest_and_census_match_gen0"] = True
+        interval_rows = [row for row in all_rows if row.get("kind") == "post_decode_interval_census"]
+        if interval_rows:
+            assert len(interval_rows) == 1
+            interval = interval_rows[0]
+            assert interval["live_score_results_checked"] and not interval["native_call_counts"]
+            assert {row["register_decimal"] for row in interval["registers"]} == {0x40, 0x44, 0x45, 0x50, 0x60}
+            for row in interval["registers"]:
+                matching = [item for df in census["per_df"] if df["df"] in (20, 21)
+                            for item in df["commb"] if item["register_decimal"] == row["register_decimal"]]
+                assert row["reached"] == sum(item["score_attempt_predictions"] for item in matching)
+                assert row["fast_accept"] + row["fallback_accept"] == sum(item["score_pass"] for item in matching)
+                assert row["reached"] == sum(row[key] for key in ("fast_accept", "fast_reject", "fallback_accept", "fallback_reject"))
+                assert sum(item["count"] for item in row["term_lengths"]) == row["reached"]
+            state["interval_census"] = interval
         native_argv = [sys.executable, "review/diagnostics/run_native_df.py", "--binary", str(binary),
                        "--build", str(build_path), "--census", str(cache / "native/all.jsonl"),
                        "--corpus", str(corpus), "--output", str(cache / "native-df")]

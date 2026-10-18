@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "reviewed_utc": "2026-10-18T19:40:13.857528+00:00",
+  "archive_files": 428,
+  "archive_stored_bytes": 14917998,
+  "protected_live_inputs": 229,
+  "profiles_independently_recounted": {
+    "adsb": 22025459190,
+    "commb": 47546252015,
+    "other": 3973517283,
+    "score40": 1497049545,
+    "score44": 0,
+    "score45": 0,
+    "score50": 2606871703,
+    "score60": 4276991621,
+    "candidate40": 3154863445,
+    "candidate44": 154393343,
+    "candidate45": 146497929,
+    "candidate50": 3384175321,
+    "candidate60": 6315491514
+  },
+  "family_ir": {
+    "adsb": 22025459190,
+    "commb": 47546252015,
+    "other": 3973517283
+  },
+  "exclusive_stages": {
+    "adsb_fields": 1830272680,
+    "commb_inference": 20413720901,
+    "frame_crc": 34541501451,
+    "output_model_control": 43271684,
+    "outside_root": 0,
+    "semantic_oracle_values": 16716461772
+  },
+  "total_ir": 73545228488,
+  "interval_choose_entries": 45510,
+  "fallback_entries": 0,
+  "historical_committed_files_checked": 979,
+  "fresh_native_sets": 22,
+  "reused_production_objects": 21,
+  "gen2_benchmark_files_unchanged": 48,
+  "report_sha256": "5ad33dd7012933d45a839fc713493d6347191b133983dd041247ba21973203c0",
+  "analysis_sha256": "7149a59c8ae67362cd5ae444969bbed5b2e1fe0bc4a16330a5f6bb818c87baf0",
+  "manifest_sha256": "30129816421c646a544b07afcbd5ed2c052005719eb8e0486e0aea039d2987d7",
+  "validation_sha256": "dfd58200b589d658f60a168c0a05c13e455fd90a314b038d09b492c36d638087",
+  "reviewer": "payload_roundtrips",
+  "recorded_utc": "2026-10-18T19:40:50.550818+00:00",
+  "review_scope": "Independent read-only final source/build provenance, archive hashes, raw Callgrind self costs and caller-context stage recount, native entries/census, perf counts, report claims and historical immutability review.",
+  "live_checks_timing": "All 229 live protected-input checks passed while the diagnostic source/object hold remained in force. These checks are historical review observations; they must not be rerun against changed live sources after the hold is released.",
+  "checks": {
+    "all_archive_stored_and_uncompressed_hashes_sizes": true,
+    "all_13_primary_self_sums_summary_totals_run_analysis_campaign": true,
+    "all_13_independent_caller_context_stage_recounts": true,
+    "all_native_anchor_entry_counts_recounted_from_raw_calls": true,
+    "zero_nonroot_self_cost": true,
+    "all_output_digests_census_equal_gen0": true,
+    "interval_populations_equal_native_choose_and_exact_fallback_counts": true,
+    "fresh_committed_source_C_object_trace_binding": true,
+    "report_family_stage_comparison_allocation_tables": true,
+    "report_input_hashes": true,
+    "perf_raw_data_hash_and_independent_script_recount": true,
+    "report_wording_revision_only_six_phrase_replacements": true,
+    "all_historical_committed_files_and_membership_unchanged": true,
+    "gen2_benchmark_archive_and_source_bytes_unchanged": true
+  },
+  "perf_independent_recount": {
+    "total_samples": 719,
+    "decode_descendant_samples": 530,
+    "excluded_samples": 189,
+    "all_samples_with_unknown_frame": 709,
+    "total_period": 3613064875,
+    "decode_descendant_period": 2663316250,
+    "capture_sha256": "199ac0b8a6ee76cc3ebc31b42cc5b6c221455c528a3961cd8549472425ce19fc",
+    "raw_data_sha256": "ef4530d4d5dce3b532e29c3d1b4c7c13826ed3a6b9a15738f7152087a329e5c9",
+    "independent_raw_script_recount": true
+  },
+  "resolved_findings": [
+    {
+      "finding": "The nested table said a fallback native symbol was not observed although the binary symbol is present; the intended absence was from collected call contexts.",
+      "resolution": "Six phrase replacements to Not observed in collected call contexts; exact old/new report and renderer snapshots retained in report-revision/. All numerical content and the primary archive are unchanged."
+    }
+  ],
+  "remaining_blocking_findings": [],
+  "review_checker": {
+    "path": "tests/evidence/diagnostics/gen2/independent-review/check_final.py",
+    "sha256": "f9cae5ac037557269aa4095352850eccb2ef82c564f4d969fca8fa5fca07bd18",
+    "executed_command": "python3 -B .cache/gen2-diagnostic-review/check_final.py",
+    "note": "Retained byte-identical executed checker; it reads the exact live provenance and scratch perf recount available at review time. The original recount/result are also retained next to it."
+  },
+  "instruction_recount_method": "Independently parse primary gzip dumps: exclude the cost record immediately following each calls= edge from self sums, accumulate native incoming entries by compressed cfn name, and derive stage labels by following the full retained caller context from the exact collection root using the documented stage boundaries. No production analyzer/parser code is imported.",
+  "limitations": [
+    "Instruction counts are diagnostics, not timing or predicted throughput.",
+    "Zero fallback entries concern this corpus only; the fallback cost on uncertain inputs is unmeasured here.",
+    "Perf has 189 excluded samples and unknown frames in 709 total samples; included-stack percentages are conditional, not a whole-decoder timing decomposition.",
+    "FNV decoded-output digests establish an observability check, not mathematical equivalence.",
+    "No decoder execution, build, test, profiler job, runtime change or frozen change occurred during this review."
+  ],
+  "primary_archive_unchanged_by_review": true
+}

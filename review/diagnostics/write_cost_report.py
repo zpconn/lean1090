@@ -58,6 +58,8 @@ def main():
     parser.add_argument("--evidence-root", type=Path)
     parser.add_argument("--context-notes", type=Path,
                         help="optional reviewed Markdown with run-specific source/collection observations")
+    parser.add_argument("--source-review", type=Path,
+                        help="reviewed native-source binding with exact fallback symbol for interval census")
     args = parser.parse_args()
     if args.generation < 0:
         parser.error("generation must be nonnegative")
@@ -100,6 +102,19 @@ def main():
         measured = {row["mode"]: row["lean_over_rust"] for row in benchmark["results"]}
     census_rows = [json.loads(line) for line in args.census.read_text().splitlines() if line.strip()]
     census = next(row for row in census_rows if row.get("kind") == "post_decode_shadow_census")
+    interval_rows = [row for row in census_rows if row.get("kind") == "post_decode_interval_census"]
+    interval = interval_rows[0] if interval_rows else None
+    source_review = None
+    if interval:
+        assert len(interval_rows) == 1 and args.source_review
+        assert interval["live_score_results_checked"] and not interval["native_call_counts"]
+        source_review = read(args.source_review)
+        assert source_review["commit"] == build["commit"] == benchmark["commit"]
+        assert source_review["binary_sha256"] == benchmark["binary_sha256"]
+        assert source_review["fresh_native_inputs_sha256"] == build["fresh_benchmark_native_binding"]["sha256"]
+        for name, binding in source_review["source_C_object_trace_bindings"].items():
+            assert build["linked_project_inventory"]["sources"][name] == binding["source_sha256"]
+            assert all(build["unchanged_native_inputs"][path] == digest for path, digest in binding["artifacts"].items())
     per_df = {row["df"]: row for row in census["per_df"]}
     native_df = {row["df"]: row for row in native["per_df"]}
     assert set(per_df) == set(native_df) == set(range(32))
@@ -139,6 +154,34 @@ def main():
         candidate = analysis["non_additive_register_candidate_probes"][register]
         assert score["root_incoming_calls"] == values["score_attempt_predictions"]
         assert candidate["root_incoming_calls"] == values["nonempty"]
+    interval_observations = []
+    if interval:
+        fallback_symbol = source_review["exact_fallback_anchor"]
+        choose_symbol = P + "ScoreGate_choose"
+        assert fallback_symbol in analysis["optional_inclusive_anchor_symbols"]
+        assert choose_symbol in analysis["optional_inclusive_anchor_symbols"]
+        def entries(profile, symbol):
+            return profile["native_anchor_counts_and_non_additive_inclusive_events"].get(symbol, {}).get("native_entries", 0)
+        assert {row["register_decimal"] for row in interval["registers"]} == {int(register, 16) for register in required}
+        for row in interval["registers"]:
+            register = f"{row['register_decimal']:02x}"
+            counts_row = register_counts[register]
+            assert row["reached"] == counts_row["score_attempt_predictions"]
+            assert row["fast_accept"] + row["fallback_accept"] == counts_row["score_pass"]
+            fallback = row["fallback_accept"] + row["fallback_reject"]
+            assert row["reached"] == row["fast_accept"] + row["fast_reject"] + fallback
+            observed = {}
+            for kind in ("score", "candidate"):
+                profile = analysis[f"non_additive_register_{kind}_probes"][register]
+                observed[kind + "_choose"] = entries(profile, choose_symbol)
+                observed[kind + "_fallback"] = entries(profile, fallback_symbol)
+                assert observed[kind + "_choose"] == row["reached"], (register, kind, "choose entries")
+                assert observed[kind + "_fallback"] == fallback, (register, kind, "fallback entries")
+            interval_observations.append({**row, "register": register, **observed})
+        whole_choose = sum(entries(profile, choose_symbol) for profile in profiles.values())
+        whole_fallback = sum(entries(profile, fallback_symbol) for profile in profiles.values())
+        assert whole_choose == sum(row["reached"] for row in interval["registers"])
+        assert whole_fallback == sum(row["fallback_accept"] + row["fallback_reject"] for row in interval["registers"])
     empty_scores = [register for register, values in register_counts.items()
                     if values["score_attempt_predictions"] == 0]
     for register in empty_scores:
@@ -219,6 +262,14 @@ def main():
         candidate_ir = analysis["non_additive_register_candidate_probes"][register]["total_events"].get("Ir", 0)
         score_ir = analysis["non_additive_register_score_probes"][register]["total_events"].get("Ir", 0)
         lines.append(f"| BDS{register} | {values['nonempty']:,} | {values['score_attempt_predictions']:,} | {values['score_pass']:,} | {candidate_ir:,} | {score_ir:,} |")
+    if interval:
+        lines += ["", "### Interval decisions and retained native call boundaries", "",
+                  "The post-decode census replays the live interval predicates and checks each result against live `cbScorePasses`. These are population counts. Separately, native entries at `ScoreGate.choose` and the verified boxed fallback thunk are counted in every whole-decoder and supplemental profile. The two observations must agree; no decision count is inferred from instruction cost.", "",
+                  "| Register | Reached | Fast accept | Fast reject | Fallback accept / reject | Native choose (score / candidate) | Native fallback (score / candidate) |",
+                  "|---|---:|---:|---:|---:|---:|---:|"]
+        for row in interval_observations:
+            lines.append(f"| BDS{row['register']} | {row['reached']:,} | {row['fast_accept']:,} | {row['fast_reject']:,} | {row['fallback_accept']:,} / {row['fallback_reject']:,} | {row['score_choose']:,} / {row['candidate_choose']:,} | {row['score_fallback']:,} / {row['candidate_fallback']:,} |")
+        lines += ["", f"Across the disjoint whole-decoder families: **{whole_choose:,}** native interval entries and **{whole_fallback:,}** entries at `{fallback_symbol}`. The exact retained fallback boundary and source/C/object association are documented in {link(args.source_review)}. Supplemental counts overlap the whole-decoder observations and are not added to them.", ""]
     lines += ["", (", ".join("BDS" + register for register in empty_scores) + " have **zero reached score gates in this corpus**. Their hard-check costs are observed; their score-path performance is not measured by this workload. " if empty_scores else "All five scored registers have reached score gates in this corpus. ") + "No synthetic replacement is reported as a corpus observation. All 14 register attempt/eligibility/accepted counts are retained in the census.", "",
               "## Native allocation counts and output checks by DF", "",
               "`IO.getNumHeartbeats` counts Lean small allocations in the native decode-plus-array-append loop. These are not allocated bytes, peak live memory or all GMP/libc allocations. Each nonempty DF run consumes every output field afterward using its complete representation; count, representation byte count and FNV checksum agree with that DF's retained records from the complete corpus run. FNV is an observability checksum, not an equivalence proof.", "",
@@ -248,7 +299,7 @@ def main():
         if any(records):
             lines.append(f"| `{anchor}` | {entries:,} | {events:,} |")
         else:
-            lines.append(f"| `{anchor}` | Not observed as a native symbol | Not assigned |")
+            lines.append(f"| `{anchor}` | Not observed in collected call contexts | Not assigned |")
     lines += ["", "Optional ScoreGate, table and fallback-related anchors are overlapping native-symbol observations, not another cost partition. An absent/inlined symbol does not establish zero logical computations, zero fallback decisions or zero initialization work. A fallback population requires a verified live call boundary or a separately checked census; instruction counts are not converted into decision counts."]
     lines += ["", "CRC-only contexts further separate fixed-width remainder work from extraction of bits from the complete word. The following inclusive costs overlap: a high-level parity helper can call the Nat/GMP helpers below it. They must not be added, subtracted as if disjoint, or extrapolated to predicted speedups. Non-CRC uses of the same helpers are excluded by their observed caller context. A zero native-symbol count does not imply that all semantically related work disappeared.", "",
               "| CRC-only helper | Native entries | Inclusive Ir | Share of frame/CRC Ir (overlapping) |",
@@ -276,7 +327,7 @@ def main():
               "- Analyzer/parser fixtures cover compressed names/positions, exact self accounting, inclusive-cost double counting, full caller context names, explicit ambiguity, corrupted totals and collection leakage.", "",
               "Input hashes used to render this document:", "",
               "| Input | SHA-256 |", "|---|---|"]
-    for path in (args.analysis, args.census, args.native_df, args.perf, args.build, args.previous_analysis, args.campaign, args.benchmark, args.context_notes):
+    for path in (args.analysis, args.census, args.native_df, args.perf, args.build, args.previous_analysis, args.campaign, args.benchmark, args.context_notes, args.source_review):
         if path is None:
             continue
         lines.append(f"| `{path}` | `{sha(path)}` |")

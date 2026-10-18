@@ -124,6 +124,8 @@ def discover_project_objects(root, response, read_committed):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", default=".cache/gen1-planning")
+    parser.add_argument("--fresh-native-inputs", type=Path,
+                        help="fresh benchmark build inventory; require exact linked source/C/object association")
     args = parser.parse_args()
     output = (ROOT / args.output).resolve()
     output.relative_to(ROOT)
@@ -155,6 +157,35 @@ def main():
                         **inventory["sources"], **source_hashes,
                         **{str(path.relative_to(ROOT)): sha(path) for path in
                            (original_response, worker_compile_trace, worker_link_trace, source)}}
+    fresh_binding = None
+    if args.fresh_native_inputs:
+        fresh_path = (ROOT / args.fresh_native_inputs).resolve()
+        fresh_name = str(fresh_path.relative_to(ROOT))
+        fresh_bytes = fresh_path.read_bytes()
+        fresh_rows = json.loads(fresh_bytes)
+        fresh_sources, fresh_artifacts = {}, {}
+        for row in fresh_rows:
+            if row["source"] in fresh_sources:
+                raise RuntimeError("duplicate source in fresh native inventory")
+            fresh_sources[row["source"]] = row["source_sha256"]
+            for name, item in row["artifacts"].items():
+                if name in fresh_artifacts:
+                    raise RuntimeError("duplicate artifact in fresh native inventory")
+                fresh_artifacts[name] = item["sha256"]
+        if fresh_sources != inventory["sources"]:
+            raise RuntimeError("linked sources differ from fresh benchmark build inventory")
+        fresh_objects = {name: digest for name, digest in fresh_artifacts.items() if name.endswith(".c.o.export")}
+        fresh_c = {name: digest for name, digest in fresh_artifacts.items() if name.endswith(".c")}
+        if fresh_objects != inventory["objects"] or fresh_c != inventory["generated_c"]:
+            raise RuntimeError("linked objects/generated C differ from fresh benchmark build inventory")
+        if any(sha(ROOT / name) != digest for name, digest in fresh_artifacts.items()):
+            raise RuntimeError("fresh benchmark native artifact/trace changed")
+        unchanged_inputs.update(fresh_artifacts)
+        unchanged_inputs[fresh_name] = hashlib.sha256(fresh_bytes).hexdigest()
+        (output / "fresh-native-inputs.json").write_bytes(fresh_bytes)
+        fresh_binding = {"path": fresh_name, "sha256": unchanged_inputs[fresh_name],
+                         "linked_project_objects": len(fresh_objects),
+                         "sources_generated_c_objects_and_traces_match": True}
     compile_argv = command_from_trace(worker_compile_trace)
     link_argv = command_from_trace(worker_link_trace)
     original_compile_argv = compile_argv[:]
@@ -206,6 +237,7 @@ def main():
         "reused_production_object_count": len(production_objects),
         "linked_project_inventory": inventory,
         "linked_project_sources_equal_committed_head": True,
+        "fresh_benchmark_native_binding": fresh_binding,
         "native_freshness_precondition": "Caller must supply a fresh committed-worker build and its retained source/object provenance; identity checks here do not independently establish freshness.",
         "unchanged_native_inputs": unchanged_inputs,
         "original_worker_compile_argv": original_compile_argv,

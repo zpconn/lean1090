@@ -30,6 +30,8 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--perf-data", type=Path,
                         help="explicit raw perf file, checked against output/perf/capture.json")
+    parser.add_argument("--extra-evidence", action="append", default=[], type=Path,
+                        help="existing file/directory relative to output to include in the immutable manifest")
     args = parser.parse_args()
     campaign = json.loads((args.cache / "campaign.json").read_text())
     assert campaign["status"] == "passed" and campaign["protected_inputs_unchanged"]
@@ -108,6 +110,15 @@ def main():
     for source in sorted((output / "perf").rglob("*")):
         if source.is_file():
             archive(source, source.relative_to(output))
+    for name in args.extra_evidence:
+        source = output / name
+        assert source.resolve().is_relative_to(output.resolve()), "extra evidence escaped archive"
+        assert source.exists() and not source.is_symlink(), "missing/symlinked extra evidence"
+        members = sorted(source.rglob("*")) if source.is_dir() else [source]
+        for member in members:
+            assert not member.is_symlink(), "symlinked extra evidence member"
+            if member.is_file():
+                archive(member, member.relative_to(output))
     if perf_record is not None:
         manifest["omitted_binaries"][str(args.perf_data)] = perf_record
     manifest["file_count"] = len(manifest["files"])
