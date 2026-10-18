@@ -176,6 +176,7 @@ def main():
         assert score["root_incoming_calls"] == values["score_attempt_predictions"]
         assert candidate["root_incoming_calls"] == values["nonempty"]
     interval_observations = []
+    integer_gate_observations = []
     if interval:
         fallback_symbol = source_review["exact_fallback_anchor"]
         choose_symbol = P + "ScoreGate_choose"
@@ -203,6 +204,22 @@ def main():
         whole_fallback = sum(entries(profile, fallback_symbol) for profile in profiles.values())
         assert whole_choose == sum(row["reached"] for row in interval["registers"])
         assert whole_fallback == sum(row["fallback_accept"] + row["fallback_reject"] for row in interval["registers"])
+        if source_review.get("integer_score_gate_verified"):
+            integer_anchors = source_review["integer_score_gate_anchors"]
+            assert set(integer_anchors) == {"common_denominator", "totals_entry"}
+            assert all(symbol in analysis["optional_inclusive_anchor_symbols"] for symbol in integer_anchors.values())
+            for register in sorted(required):
+                for kind in ("candidate", "score"):
+                    profile = analysis[f"non_additive_register_{kind}_probes"][register]
+                    observed = {name: entries(profile, symbol) for name, symbol in integer_anchors.items()}
+                    expected = register_counts[register]["score_attempt_predictions"]
+                    assert all(count == expected for count in observed.values()), (register, kind, observed, expected)
+                    integer_gate_observations.append({"population": kind + register, "choose": expected, **observed})
+            for family, profile in profiles.items():
+                observed = {name: entries(profile, symbol) for name, symbol in integer_anchors.items()}
+                expected = entries(profile, choose_symbol)
+                assert all(count == expected for count in observed.values()), (family, observed, expected)
+                integer_gate_observations.append({"population": family, "choose": expected, **observed})
     empty_scores = [register for register, values in register_counts.items()
                     if values["score_attempt_predictions"] == 0]
     for register in empty_scores:
@@ -338,6 +355,13 @@ def main():
         else:
             lines.append(f"| `{anchor}` | Not observed in collected call contexts | Not assigned |")
     lines += ["", "Optional ScoreGate, table and fallback-related anchors are overlapping native-symbol observations, not another cost partition. An absent/inlined symbol does not establish zero logical computations, zero fallback decisions or zero initialization work. A fallback population requires a verified live call boundary or a separately checked census; instruction counts are not converted into decision counts."]
+    if integer_gate_observations:
+        lines += ["", "### Live integer enclosure boundaries", "",
+                  "The fresh compiled-source review verifies exact integer common-denominator decisions in live `choose`. Its denominator and first pair-fold entry counts each equal the observed choose entries below. `scaledNumerator` and the `scaledTotals` wrapper are inlined; their missing standalone boundaries do not mean zero work. The old rational `mass`, `center` and `envelope` remain reference APIs used by the post-collection census, outside the collected root. They are not the live decision arithmetic. These counts are overlapping observations, not extra message populations or timing results.", "",
+                  "| Collected population | Choose entries | Common-denominator entries | Integer pair-fold entries |",
+                  "|---|---:|---:|---:|"]
+        for row in integer_gate_observations:
+            lines.append(f"| {row['population']} | {row['choose']:,} | {row['common_denominator']:,} | {row['totals_entry']:,} |")
     lines += ["", "Frame/CRC-stage contexts further separate fixed-width remainder work from extraction of bits from the complete word. This filter follows the combined frame/CRC stage, not a stricter parity-only ancestry test. The following inclusive costs overlap: a high-level parity helper can call the Nat/GMP helpers below it. They must not be added, subtracted as if disjoint, or extrapolated to predicted speedups. Uses attributed to other stages are excluded. A zero native-symbol count does not imply that all semantically related work disappeared.", "",
               "| Helper in frame/CRC-stage contexts | Native entries | Inclusive Ir | Share of frame/CRC Ir (overlapping) |",
               "|---|---:|---:|---:|"]

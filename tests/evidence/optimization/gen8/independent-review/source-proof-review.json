@@ -1,0 +1,119 @@
+{
+  "status": "passed_source_and_universal_helper_proof_review",
+  "reviewed_utc": "2026-10-18T23:17:38.453609+00:00",
+  "source_sha256": {
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb",
+    "Proofs/AffineValue.lean": "c40af9b160755314d417d2d88a9038163cc80aaf38798f13fb6da6e2ad3debc5"
+  },
+  "unchanged_live_source_sha256": {
+    "Impl/CommB.lean": "d2a4c4910e6e867abc5df33355e3340740e2adb928532122c0eb610b0fbe7481",
+    "Impl/Semantics.lean": "903d9e23106fa79a6acd34cd62e3dd86ccf72b51252a422271435a391c034b29",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "TRUSTED.md": "e62861e0943b047863430104f779d04fcf449d39115e9b9ce5bbbd86d40e5041"
+  },
+  "proof_summary_sha256": "9c5642fa995bb9703a464e71e181df2dc339d7437547f91ad2c1bc2b04562f97",
+  "retained_failed_helper_log": {
+    "path": "tests/evidence/optimization/gen8/proof/build-01.log",
+    "sha256": "a3f8d474422b395e5b7d4524d776c16e86bd168752ee49600497d4faebc0f293",
+    "cause": "Three malformed multiline witness literals; their absent declarations caused subsequent print-axiom errors. Universal equalities compiled in that attempt. The passed attempt fixes witness formatting and adds a zero-scale witness."
+  },
+  "successful_helper_log": "tests/evidence/optimization/gen8/proof/build-02.log",
+  "successful_helper_log_sha256": "93b253f1b889b086c79ab4e0eb0ae32f4be632b319b2f33fc4ea5a22b49ec077",
+  "printed_axioms": {
+    "affineValue_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "payloadValue_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "payloadValue_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "identity_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "scaled_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "offset_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "both_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "negative_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "missing_status_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "zero_scale_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "universal_statements": {
+    "affineValue_eq": "theorem affineValue_eq (value : Int) (scale offset : Rat) :\n    Impl.affineValue value scale offset = (value : Rat) * scale + offset",
+    "payloadValue_eq_old": "theorem payloadValue_eq_old (column : Spec.PayloadColumn) (word : Nat) :\n    Impl.payloadValue column word =\n      (if column.status != 0 && Impl.payloadBits word column.status 1 == 0 then none\n       else some ((Impl.payloadInteger column.coding column.width\n         (Impl.payloadBits word column.start column.width) : Rat) * column.scale + column.offset))",
+    "payloadValue_eq": "theorem payloadValue_eq (column : Spec.PayloadColumn) (word : Nat) :\n    Impl.payloadValue column word = Spec.payloadValue column word"
+  },
+  "witnesses": [
+    "both_witness",
+    "identity_witness",
+    "missing_status_witness",
+    "negative_witness",
+    "offset_witness",
+    "scaled_witness",
+    "zero_scale_witness"
+  ],
+  "frozen_file_hashes_checked": 104,
+  "frozen_adapter_sources_checked": [
+    "Bench/WholeDecoder.lean",
+    "Capstones.lean",
+    "Tests/AltitudeDifferential.lean",
+    "Tests/CommBDifferential.lean",
+    "Tests/DTEDifferential.lean",
+    "Tests/Numeric.lean",
+    "Tests/ReservedVelocityDifferential.lean",
+    "Tests/Tracking.lean",
+    "Tests/Upstream.lean",
+    "Tests/UpstreamCorpus.lean",
+    "scripts/AuditBDS50.lean",
+    "scripts/Final.lean",
+    "scripts/FuzzCPR.lean"
+  ],
+  "review_script_sha256": "115c721f9256e3b5e50532322dacd11eeffa460b9140b5d30dc4b90b756419f2",
+  "findings": [],
+  "reasoning": [
+    "The helper quantifies every Int and Rat scale/offset. Exact Rat equality selects scale=1 and offset=0; four cases close by multiplication and addition identities, with no validity, range, sign, denominator, or acceptance hypotheses.",
+    "The general branch preserves integer-to-rational conversion followed by multiplication then addition. Unit scale skips only multiplication by one; zero offset skips only addition by zero. Negative, fractional and zero values are within the same universal equality.",
+    "payloadValue preserves the complete status predicate and none result before computing the helper. Existing natural-width extraction and signed interpretation are byte-identical, including unrestricted word/start/width/status arguments.",
+    "The old-body equality rewrites only the helper; the frozen reference equality then invokes the existing all-Nat payloadBits refinement. No new decoder-dependent validity premise or frozen statement is introduced.",
+    "Semantics.tableValues and commBValue remain byte-identical and call the same public live payloadValue. Frozen adapters reach those actual semantic/inference paths rather than a retained legacy copy.",
+    "Runtime imports only Model.Types. There is no new table, corpus condition, cross-message state, binary64 operation, extern, trusted primitive or arithmetic approximation."
+  ],
+  "limits": [
+    "This review consumes completed helper build/axiom evidence and reads sources; it runs no Lean build, test, decoder, profiler or benchmark.",
+    "Integrated refinement, actual generated-C/native branch binding and complete fixed/fresh gate evidence are separate checks.",
+    "Exact equivalence does not establish any speedup; general nonidentity fields still execute the original rational operations."
+  ]
+}

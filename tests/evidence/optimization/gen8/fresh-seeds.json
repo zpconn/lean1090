@@ -1,0 +1,66 @@
+{
+  "recorded_utc": "2026-10-18T23:12:10.376171+00:00",
+  "message_seed": 4180954545,
+  "commb_seed": 1380605832,
+  "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical recorded seeds and mutual collisions rejected. Historical-record count includes only message_seed, commb_seed and seed fields, not metadata counts.",
+  "historical_seed_values_checked": 22,
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "7c3b44d246149a1c5aa671d119b6ba2be27d856b",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen8-gate/fresh-commb.csv",
+      "100000",
+      "1380605832"
+    ],
+    [
+      "python3",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen8-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen8/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "4180954545",
+      "--commb-boundaries",
+      ".cache/gen8-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen8/fresh-message"
+    ]
+  ],
+  "authorization_note": "Seeds recorded while the full gen7 diagnostic hold is active, before gen8 fixture generation. Only orchestration preparation is authorized. No generator, build, test or native campaign has run. Runtime/proof/binary snapshots will be captured only after explicit root integrated-build release.",
+  "historical_seed_records_checked": [
+    "tests/evidence/capstones-complete/fresh-seeds.json",
+    "tests/evidence/fresh-seed-FC004/seeds.json",
+    "tests/evidence/fresh-seed-FC005-revision/seeds.json",
+    "tests/evidence/frozen-changes/FC005/fresh-seeds.json",
+    "tests/evidence/frozen-changes/FC006/fresh-seeds.json",
+    "tests/evidence/optimization/gen1/fresh-seeds.json",
+    "tests/evidence/optimization/gen2/fresh-seeds.json",
+    "tests/evidence/optimization/gen3/fresh-seeds.json",
+    "tests/evidence/optimization/gen4/fresh-seeds.json",
+    "tests/evidence/optimization/gen5/fresh-seeds.json",
+    "tests/evidence/optimization/gen6/fresh-seeds.json",
+    "tests/evidence/optimization/gen7/fresh-seeds.json"
+  ]
+}

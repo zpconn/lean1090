@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "scope": "Pure parser fixtures and re-render of retained gen6 evidence only. No build or native decoder/profile execution.",
+  "render_command": [
+    "/usr/bin/python3",
+    "review/diagnostics/write_cost_report.py",
+    "--generation",
+    "6",
+    "--analysis",
+    "tests/evidence/diagnostics/gen6/analysis/analysis.json",
+    "--census",
+    "tests/evidence/diagnostics/gen6/native/all.jsonl",
+    "--native-df",
+    "tests/evidence/diagnostics/gen6/native-df/summary.json",
+    "--perf",
+    "tests/evidence/diagnostics/gen6/perf/analysis.json",
+    "--build",
+    "tests/evidence/diagnostics/gen6/driver/driver-build.json",
+    "--campaign",
+    "tests/evidence/diagnostics/gen6/campaign.json",
+    "--benchmark",
+    "bench/runs/gen6/summary.json",
+    "--previous-analysis",
+    "tests/evidence/diagnostics/gen5/analysis/analysis.json",
+    "--previous-generation",
+    "5",
+    "--evidence-root",
+    "tests/evidence/diagnostics/gen6",
+    "--source-review",
+    "tests/evidence/diagnostics/gen6/source-review.json",
+    "--context-notes",
+    "tests/evidence/diagnostics/gen6/context-notes.md",
+    "--output",
+    "tests/evidence/diagnostics/gen7/tooling-checks/gen6-reproduction.md"
+  ],
+  "parser_command": [
+    "/usr/bin/python3",
+    "review/diagnostics/analyze_callgrind.py",
+    "--self-test"
+  ],
+  "previous_report_reproduction_byte_identical": true,
+  "previous_report_sha256": "845ec18f881ea22643448940b083e4563f697a550b7af24691b057dfd6ffb294",
+  "tool_hashes": {
+    "review/diagnostics/analyze_callgrind.py": "dc0528a9a8497d03e49284e807b6fc6697da60a09e0710af481c0f31c7bc5ec7",
+    "review/diagnostics/write_cost_report.py": "2d19e97092cf615fc030fb2e87a2b98e5a48cc0ddcc5a0c7a16faf0fbafea69f"
+  }
+}

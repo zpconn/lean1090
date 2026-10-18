@@ -2,6 +2,7 @@ import Impl.CommB
 import Proofs.CommBArithmetic
 import Proofs.PayloadBits
 import Proofs.CommBMach
+import Proofs.AffineValue
 
 /-!
 Exact immutable density tables. Every equality is symbolic in the complete
@@ -19,7 +20,7 @@ private theorem density40 (word : Nat) :
     cbDensityTermsFast 0x40 word = cbDensityTerms 0x40 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbQNHScoreTable, cbSelectedScoreTable, commBValue, commBLayout,
-    bds40Layout, cbColumn, payloadValue, cbScoreField, cbQNH64]
+    bds40Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, cbQNH64]
   repeat' split <;> simp_all
 
 private theorem density50 (word : Nat) :
@@ -27,7 +28,7 @@ private theorem density50 (word : Nat) :
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbRollScoreTable, cbRateScoreTable, cbTASScoreTable,
     cbGroundSpeedScoreTable, commBValue, commBLayout,
-    bds50Layout, cbColumn, payloadValue, cbScoreField, payloadInteger]
+    bds50Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, payloadInteger]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h1 : payloadBits word 1 1 = 0 <;>
     by_cases h35 : payloadBits word 35 1 = 0 <;>
@@ -44,7 +45,7 @@ private theorem density60 (word : Nat) :
     cbDensityTermsFast 0x60 word = cbDensityTerms 0x60 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbIASScoreTable, cbMachScoreTable, cbVerticalScoreTable,
-    commBValue, commBLayout, bds60Layout, cbColumn, payloadValue,
+    commBValue, commBLayout, bds60Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, CommBMach.cbMach64_eq_runtime, cbVertical60, cbSigned, verticalMagnitude,
     payloadInteger]
   have power : (2 : Rat)^10 = 1024 := by norm_num
@@ -56,7 +57,7 @@ private theorem density44 (word : Nat) :
     cbDensityTermsFast 0x44 word = cbDensityTerms 0x44 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbTemperature44ScoreTable, cbWindScoreTable, cbPressureScoreTable,
-    commBValue, commBLayout, bds44Layout, cbColumn, payloadValue,
+    commBValue, commBLayout, bds44Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, cbTemperature44, cbSigned, payloadInteger]
   have power : (2 : Rat)^11 = 2048 := by norm_num
   by_cases h5 : payloadBits word 5 1 = 0 <;>
@@ -66,7 +67,7 @@ private theorem density45 (word : Nat) :
     cbDensityTermsFast 0x45 word = cbDensityTerms 0x45 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbTemperature45ScoreTable, cbPressureScoreTable, commBValue,
-    commBLayout, bds45Layout, cbColumn, payloadValue,
+    commBLayout, bds45Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, payloadInteger]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h16 : payloadBits word 16 1 = 0 <;>

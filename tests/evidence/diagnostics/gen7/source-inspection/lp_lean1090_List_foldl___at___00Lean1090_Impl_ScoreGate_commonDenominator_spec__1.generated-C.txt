@@ -1,0 +1,28 @@
+{
+_start:
+{
+if (lean_obj_tag(v_x_60_) == 0)
+{
+lean_inc(v_x_59_);
+return v_x_59_;
+}
+else
+{
+lean_object* v_head_61_; lean_object* v_tail_62_; uint8_t v___x_63_; 
+v_head_61_ = lean_ctor_get(v_x_60_, 0);
+v_tail_62_ = lean_ctor_get(v_x_60_, 1);
+v___x_63_ = lean_nat_dec_le(v_x_59_, v_head_61_);
+if (v___x_63_ == 0)
+{
+v_x_60_ = v_tail_62_;
+goto _start;
+}
+else
+{
+v_x_59_ = v_head_61_;
+v_x_60_ = v_tail_62_;
+goto _start;
+}
+}
+}
+}

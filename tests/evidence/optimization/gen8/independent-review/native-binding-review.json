@@ -1,0 +1,73 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-18T23:21:43.118853+00:00",
+  "native_review_sha256": "a89a67583bb893a88aa7fb624cc83e5143e6af423e8556a15d9e9126eab3ac0a",
+  "native_inspection_sha256": "5d362fb08135c52d7256f76082fd5c8b9e07ef56001ee486039aece887a3ac56",
+  "integration_review_sha256": "e6ee97e98c544217559f9f965c77467b5c8f7b6298bad7d556c8215a05ad53bb",
+  "native_checks": 39,
+  "native_inputs": 137,
+  "native_files": 170,
+  "linked_project_sets": 21,
+  "other_unchanged_native_sets": 19,
+  "independently_recounted_native_sequences": [
+    {
+      "scale_equals_one": false,
+      "offset_equals_zero": false,
+      "present_call_sequence": [
+        "lp_lean1090_Lean1090_Impl_payloadInteger",
+        "l_Rat_ofInt",
+        "l_Rat_mul",
+        "l_Rat_add"
+      ],
+      "rejected_call_sequence": [],
+      "visited_states": 300
+    },
+    {
+      "scale_equals_one": false,
+      "offset_equals_zero": true,
+      "present_call_sequence": [
+        "lp_lean1090_Lean1090_Impl_payloadInteger",
+        "l_Rat_ofInt",
+        "l_Rat_mul"
+      ],
+      "rejected_call_sequence": [],
+      "visited_states": 306
+    },
+    {
+      "scale_equals_one": true,
+      "offset_equals_zero": false,
+      "present_call_sequence": [
+        "lp_lean1090_Lean1090_Impl_payloadInteger",
+        "l_Rat_ofInt",
+        "l_Rat_add"
+      ],
+      "rejected_call_sequence": [],
+      "visited_states": 297
+    },
+    {
+      "scale_equals_one": true,
+      "offset_equals_zero": true,
+      "present_call_sequence": [
+        "lp_lean1090_Lean1090_Impl_payloadInteger",
+        "l_Rat_ofInt"
+      ],
+      "rejected_call_sequence": [],
+      "visited_states": 303
+    }
+  ],
+  "cli_sha256": "cc682e295fa090b4ac315217c2b823c51d6ad3027a3bef84c2445f594a1f5632",
+  "review_script_sha256": "d6775295d0edadfd069e231381d399494529c0a22497938827d181764773c22f",
+  "all_reviewed_input_hashes_match": true,
+  "findings": [],
+  "conclusions": [
+    "The exact one/zero guards are inlined into live payloadValue, with arithmetic skipped only on their identity branches. Both general operations retain multiplication-before-addition order.",
+    "The status-rejected path reaches neither payloadInteger, Rat.ofInt, Rat.mul nor Rat.add. Present paths retain integer conversion exactly once and the four proved arithmetic combinations.",
+    "Actual ADS-B and Comm-B semantic map calls reach the same payloadValue. Frozen whole/direct adapters and benchmark remain linked through their live public entrypoints.",
+    "All 19 other production source/C/object/trace sets match gen7. Software fallback, table constants and integer inference gate are unchanged."
+  ],
+  "limits": [
+    "Static retained C and linked CLI assembly review only; the later fresh timed worker must be rebound independently.",
+    "Branch traversal fixes only inspected scale/offset equality outcomes and conservatively explores other direct branches, assuming ordinary calls return. It is supporting compiler inspection, not a replacement for the universal Lean proof.",
+    "No build, test, decoder, profiler or benchmark was run; no timing or instruction-count improvement is claimed."
+  ]
+}

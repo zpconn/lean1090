@@ -36,7 +36,8 @@ CANDIDATE = PREFIX + "commBCoreEligible"
 OPTIONAL_SCORE_ANCHORS = {
     PREFIX + name for name in (
         "cbDensityTermsFast", "cbDensityTableGet", "cbDensityTerms",
-        "ScoreGate_mass", "ScoreGate_center", "ScoreGate_envelope", "ScoreGate_choose")
+        "ScoreGate_mass", "ScoreGate_center", "ScoreGate_envelope", "ScoreGate_choose",
+        "ScoreGate_commonDenominator", "ScoreGate_scaledNumerator", "ScoreGate_scaledTotals")
 }
 STAGES = (
     "frame_crc",

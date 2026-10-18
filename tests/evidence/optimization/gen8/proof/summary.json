@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-10-18T23:17:06.302379+00:00",
+  "source_sha256": {
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb",
+    "Proofs/AffineValue.lean": "c40af9b160755314d417d2d88a9038163cc80aaf38798f13fb6da6e2ad3debc5"
+  },
+  "successful_attempt": 2,
+  "successful_command": [
+    "lake",
+    "build",
+    "Proofs.AffineValue"
+  ],
+  "successful_log": "tests/evidence/optimization/gen8/proof/build-02.log",
+  "successful_log_sha256": "93b253f1b889b086c79ab4e0eb0ae32f4be632b319b2f33fc4ea5a22b49ec077",
+  "attempts_retained": 2,
+  "runtime_helper": "@[inline] Lean1090.Impl.affineValue (value : Int) (scale offset : Rat) : Rat",
+  "universal_equalities": [
+    "Lean1090.Proofs.AffineValue.affineValue_eq",
+    "Lean1090.Proofs.AffineValue.payloadValue_eq_old",
+    "Lean1090.Proofs.AffineValue.payloadValue_eq"
+  ],
+  "hypotheses": "Every Int, Rat scale/offset, PayloadColumn and Nat word; no validity, bounded-word or positive-scale assumption.",
+  "witnesses": [
+    "identity_witness",
+    "scaled_witness",
+    "offset_witness",
+    "both_witness",
+    "negative_witness",
+    "missing_status_witness",
+    "zero_scale_witness"
+  ],
+  "axiom_audit": "All 10 exported facts print only propext, Classical.choice and Quot.sound.",
+  "failed_attempts": "Attempt 1 is retained: three multiline witness record literals had parser indentation errors. The universal proofs already compiled. Attempt 2 fixes only those witness layouts and adds a zero-scale witness; runtime unchanged after first build.",
+  "ownership": "Only Impl/PayloadBits.lean and new Proofs/AffineValue.lean edited; no frozen source, Decoder, CommBTables or gate source edits.",
+  "validation_scope": "Targeted helper proof build only. No complete gate, fresh campaign or benchmark was run."
+}

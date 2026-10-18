@@ -1,0 +1,26 @@
+diff --git a/Impl/PayloadBits.lean b/Impl/PayloadBits.lean
+index c3f12d7..a7e49a9 100644
+--- a/Impl/PayloadBits.lean
++++ b/Impl/PayloadBits.lean
+@@ -59,12 +59,19 @@ def payloadInteger (coding : PayloadCoding) (width code : Nat) : Int :=
+   if coding = .twosComplement ∧ code ≥ 2 ^ (width - 1) then
+     (code : Int) - (2 ^ width : Nat) else code
+ 
++/-- Exact affine interpretation of an integer field. Identity scale and zero
++offset need no rational multiplication or addition; every other case keeps
++the original exact operations in their original order. -/
++@[inline] def affineValue (value : Int) (scale offset : Rat) : Rat :=
++  let scaled := if scale == 1 then (value : Rat) else (value : Rat) * scale
++  if offset == 0 then scaled else scaled + offset
++
+ -- Initial algorithm: Spec/PayloadBits.lean:46.
+ /-- Sun chs.6–8,16–18 tables: exact field interpretation, with absent status
+ represented by `none`; nonlinear fields have dedicated projections. -/
+ def payloadValue (column : PayloadColumn) (word : Nat) : Option Rat :=
+   if column.status != 0 && payloadBits word column.status 1 == 0 then none
+-  else some ((payloadInteger column.coding column.width
+-    (payloadBits word column.start column.width) : Rat) * column.scale + column.offset)
++  else some (affineValue (payloadInteger column.coding column.width
++    (payloadBits word column.start column.width)) column.scale column.offset)
+ 
+ end Lean1090.Impl

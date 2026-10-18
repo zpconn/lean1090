@@ -6,6 +6,7 @@ import Proofs.ParityBits
 import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.SyndromeReuse
+import Proofs.AffineValue
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -240,8 +241,8 @@ private theorem decoder_Semantics_adsbStandardFloats_eq :
 private theorem decoder_payloadInteger_eq : @Impl.payloadInteger = @Spec.payloadInteger := by
   rfl
 private theorem decoder_payloadValue_eq : @Impl.payloadValue = @Spec.payloadValue := by
-  unfold Impl.payloadValue Spec.payloadValue
-  simp only [decoder_payloadBits_eq, decoder_payloadInteger_eq]
+  funext column word
+  exact AffineValue.payloadValue_eq column word
 private theorem decoder_Semantics_tableValues_eq :
     @Impl.Semantics.tableValues = @Spec.Semantics.tableValues := by
   unfold Impl.Semantics.tableValues Spec.Semantics.tableValues
