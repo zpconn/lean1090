@@ -1,0 +1,250 @@
+{
+  "classification": "one-pass diagnostic cpu-clock stack attribution; no throughput claim",
+  "total_samples": 1166,
+  "decode_descendant_samples": 590,
+  "excluded_samples": 576,
+  "excluded_by_visible_context": {
+    "worker other phase, no decode frame": 90,
+    "no decode or worker frame; may include unwind failures": 463,
+    "worker decode-loop stack, no decode frame": 23
+  },
+  "all_samples_with_unknown_frame": 1110,
+  "total_period": 5859295750,
+  "decode_descendant_period": 2964823750,
+  "disjoint_top_stages": {
+    "report/projection": 539,
+    "acceptance": 34,
+    "frame extraction": 17
+  },
+  "disjoint_detail_stages": {
+    "report parity/address": 205,
+    "Comm-B inference and raw payload": 247,
+    "Comm-B semantic projection": 45,
+    "ADS-B semantic projection": 27,
+    "acceptance": 34,
+    "frame extraction": 17,
+    "identity": 3,
+    "altitude": 4,
+    "ADS-B raw payload": 7,
+    "report other/self/unresolved substage": 1
+  },
+  "nested_overlapping_categories": {
+    "Parity (inclusive overlap)": 218,
+    "GMP/mpz (inclusive overlap)": 374,
+    "software Binary64 (inclusive overlap)": 200,
+    "Rat (inclusive overlap)": 196
+  },
+  "decode_leaf_top30": [
+    [
+      "__gmpz_n_pow_ui",
+      75
+    ],
+    [
+      "lean_alloc_small_object_core",
+      36
+    ],
+    [
+      "__gmpz_add",
+      33
+    ],
+    [
+      "__gmpz_realloc",
+      26
+    ],
+    [
+      "__gmp_default_allocate",
+      24
+    ],
+    [
+      "l_BitVec_ofNat",
+      22
+    ],
+    [
+      "__gmpz_clear",
+      21
+    ],
+    [
+      "l_Rat_mul",
+      18
+    ],
+    [
+      "cfree",
+      18
+    ],
+    [
+      "__gmpz_mul_2exp",
+      18
+    ],
+    [
+      "__gmpz_init_set_ui",
+      16
+    ],
+    [
+      "lean_dec_ref_cold",
+      14
+    ],
+    [
+      "__gmpz_init_set",
+      14
+    ],
+    [
+      "malloc@plt",
+      12
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      10
+    ],
+    [
+      "lean::mpz::~mpz()",
+      10
+    ],
+    [
+      "lean::mpz::get_size_t() const",
+      9
+    ],
+    [
+      "mi_free",
+      9
+    ],
+    [
+      "lean::mpz::mpz(unsigned long)",
+      9
+    ],
+    [
+      "lean_nat_pow",
+      9
+    ],
+    [
+      "__gmpn_gcd_1",
+      8
+    ],
+    [
+      "l_Rat_blt",
+      8
+    ],
+    [
+      "__gmpz_tdiv_q_2exp",
+      7
+    ],
+    [
+      "lean::mpz::pow(unsigned int) const",
+      7
+    ],
+    [
+      "__gmpz_and",
+      7
+    ],
+    [
+      "lean_nat_big_shiftr",
+      6
+    ],
+    [
+      "lean_nat_gcd",
+      6
+    ],
+    [
+      "malloc",
+      5
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_Parity_step",
+      5
+    ],
+    [
+      "l_Nat_testBit",
+      5
+    ]
+  ],
+  "all_samples_leaf_top20": [
+    [
+      "malloc",
+      205
+    ],
+    [
+      "[unknown]",
+      126
+    ],
+    [
+      "cfree",
+      108
+    ],
+    [
+      "__gmpz_n_pow_ui",
+      75
+    ],
+    [
+      "lean_alloc_small_object_core",
+      39
+    ],
+    [
+      "lean_dec_ref_cold",
+      38
+    ],
+    [
+      "__gmpz_add",
+      34
+    ],
+    [
+      "__gmpz_realloc",
+      29
+    ],
+    [
+      "__gmp_default_allocate",
+      24
+    ],
+    [
+      "__gmpz_clear",
+      23
+    ],
+    [
+      "l_Rat_mul",
+      23
+    ],
+    [
+      "l_BitVec_ofNat",
+      22
+    ],
+    [
+      "realloc",
+      21
+    ],
+    [
+      "__gmpz_mul_2exp",
+      19
+    ],
+    [
+      "mi_free",
+      18
+    ],
+    [
+      "__gmpz_init_set_ui",
+      18
+    ],
+    [
+      "__gmpz_init_set",
+      17
+    ],
+    [
+      "malloc@plt",
+      12
+    ],
+    [
+      "lean_nat_pow",
+      11
+    ],
+    [
+      "lean::mpz::get_size_t() const",
+      10
+    ]
+  ],
+  "limitations": [
+    "Only samples with the exact live Impl.decode frame are included. Missing/unwound/truncated ancestors can exclude real decoder samples; excluded samples are not assumed to be preparation.",
+    "Substages use visible symbol names; inlining and tail calls can erase stage frames. report-other remains explicit rather than guessed.",
+    "Percentages within decoded stacks are conditional on successful stack attribution and may be biased; see whole-process leaf samples and excluded count.",
+    "Software cpu-clock samples are statistical CPU-time evidence, not hardware instructions/cycles or a benchmark.",
+    "Inclusive nested categories overlap; only disjoint stage tables sum to included samples.",
+    "The worker runs through Lean runtime worker-thread startup; parent/child hardware/thread attribution was checked by visible decode stacks.",
+    "Possible concurrent diagnostic-driver compilation was authorized; no benchmark isolation or comparative timing claim."
+  ]
+}

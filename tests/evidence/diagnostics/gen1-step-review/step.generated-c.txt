@@ -1,0 +1,52 @@
+LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Parity_step(lean_object* v_remainder_2_, uint8_t v_bit_3_){
+_start:
+{
+lean_object* v___y_5_; lean_object* v___x_8_; lean_object* v___x_9_; lean_object* v___y_11_; 
+v___x_8_ = lean_unsigned_to_nat(2u);
+v___x_9_ = lean_nat_mul(v___x_8_, v_remainder_2_);
+if (v_bit_3_ == 0)
+{
+lean_object* v___x_17_; 
+v___x_17_ = lean_unsigned_to_nat(0u);
+v___y_11_ = v___x_17_;
+goto v___jp_10_;
+}
+else
+{
+lean_object* v___x_18_; 
+v___x_18_ = lean_unsigned_to_nat(1u);
+v___y_11_ = v___x_18_;
+goto v___jp_10_;
+}
+v___jp_4_:
+{
+lean_object* v___x_6_; lean_object* v___x_7_; 
+v___x_6_ = lean_unsigned_to_nat(16777216u);
+v___x_7_ = lean_nat_mod(v___y_5_, v___x_6_);
+lean_dec(v___y_5_);
+return v___x_7_;
+}
+v___jp_10_:
+{
+lean_object* v_shifted_12_; lean_object* v___x_13_; uint8_t v___x_14_; 
+v_shifted_12_ = lean_nat_add(v___x_9_, v___y_11_);
+lean_dec(v___x_9_);
+v___x_13_ = lean_unsigned_to_nat(8388608u);
+v___x_14_ = lean_nat_dec_le(v___x_13_, v_remainder_2_);
+if (v___x_14_ == 0)
+{
+v___y_5_ = v_shifted_12_;
+goto v___jp_4_;
+}
+else
+{
+lean_object* v___x_15_; lean_object* v___x_16_; 
+v___x_15_ = lean_unsigned_to_nat(33551369u);
+v___x_16_ = lean_nat_lxor(v_shifted_12_, v___x_15_);
+lean_dec(v_shifted_12_);
+v___y_5_ = v___x_16_;
+goto v___jp_4_;
+}
+}
+}
+}

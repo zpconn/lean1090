@@ -90,6 +90,7 @@ private theorem decoder_Parity_generator_eq : @Impl.Parity.generator = @Spec.Par
 private theorem decoder_Parity_step_eq : @Impl.Parity.step = @Spec.Parity.step := by
   unfold Impl.Parity.step Spec.Parity.step
   simp only [decoder_Parity_generator_eq]
+  rfl
 private theorem decoder_Parity_syndrome_eq : @Impl.Parity.syndrome = @Spec.Parity.syndrome := by
   unfold Impl.Parity.syndrome Spec.Parity.syndrome
   simp only [decoder_Parity_step_eq]

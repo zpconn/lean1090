@@ -16,35 +16,35 @@ These entries record source review and small oracle probes, not a completed diff
 
 ## D002–D004: TC19 velocity scale, source and zero altitude difference
 
-Concrete parity-valid DF17 message: `8d1122339a000300800801cb9966` (CRC0). Payload subtype 2, EW code 3, NS code 4, positive signs, vertical-source 0, vertical-rate code 2, GNSS-minus-baro code 1.
+Concrete parity-valid DF17 message: `8d1122339a000300800801cb9966` (CRC 0). Payload subtype 2, EW code 3, NS code 4, positive signs, vertical-source 0, vertical-rate code 2, GNSS-minus-baro code 1.
 
 | Field | Executed Lean standard view | Observed oracle view | Source actually read |
 |---|---|---|---|
-| D002 components | `some (8,12)`kt | `(2,3)`kt, groundspeed 3.605551275463989 kt | Sun 2nd ed. table 7.2, §7.3 equations 7.8–7.9: factor 4 for subtype 2 |
+| D002 components | `some (8,12)` kt | `(2,3)` kt, groundspeed 3.605551275463989 kt | Sun 2nd ed. table 7.2, §7.3 equations 7.8–7.9: factor 4 for subtype 2 |
 | D003 rate source | `"GNSS"` | `"barometric"` | Sun table 7.1 and §7.1: source 0 GNSS, 1 barometer |
-| D004 GNSS-minus-baro | `some 0`ft | `None` (JSONnull) | Sun §7.2 equation 7.4: signed(code −1)×25, unavailable allzero/allone |
+| D004 GNSS-minus-baro | `some 0` ft | `None` (JSONnull) | Sun §7.2 equation 7.4: signed(code −1)×25, unavailable allzero/allone |
 
-`Presentation.standardVelocityComponents`, `standardVerticalSource` and `standardGeoMinusBaro` are the executed standard views; explicitly named oracle views preserve the incompatible reader answers for comparison. The standard Float speed expression is hypot(8,12); this probe checks the exact components, without asserting a machine-checked libm result. The oracle uses the same track formula on components 2,3, reporting 33.690067525979785°.
+`Presentation.standardVelocityComponents`, `standardVerticalSource` and `standardGeoMinusBaro` are the executed standard views; explicitly named oracle views preserve the incompatible reader answers for comparison. The standard Float speed expression is hypot(8,12); this probe checks the exact components, without asserting a machine-checked libm result. The oracle uses the same track formula on components 2, 3, reporting 33.690067525979785°.
 
 ## D005–D006: TC19 unavailable component and all-one height difference
 
-Concrete parity-valid DF17 message: `8d1122339900000010007f1027d0` (CRC0). Payload subtype 1, EW=NS=0, vertical-source 1, vertical-rate 0, altitude-difference 127.
+Concrete parity-valid DF17 message: `8d1122339900000010007f1027d0` (CRC 0). Payload subtype 1, EW=NS=0, vertical-source 1, vertical-rate 0, altitude-difference 127.
 
 | Field | Executed Lean standard view | Observed oracle view | Source actually read |
 |---|---|---|---|
 | D005 velocity | `none` | components(−1,−1), groundspeed 1.4142135623730951 kt, track 225° | Sun table 7.2 and §7.3: zero component means no velocity information |
 | D003 source (second polarity) | `"barometric"` | `"GNSS"` | Sun table 7.1, §7.1 |
-| D006 GNSS-minus-baro | `none` | `Some(3150)`ft | Sun §7.2: all-one field unavailable |
+| D006 GNSS-minus-baro | `none` | `Some(3150)` ft | Sun §7.2: all-one field unavailable |
 
 ## D007: GNSS height treated as Q-bit feet
 
-Concrete parity-valid DF17 message: `8d112233a0010000000000b2fb95` (CRC0). TC20, 12-bit height code 16.
+Concrete parity-valid DF17 message: `8d112233a0010000000000b2fb95` (CRC 0). TC20, 12-bit height code 16.
 
-- Executed `Presentation.standardGNSSHeightMetres`: `some 16`metres.
+- Executed `Presentation.standardGNSSHeightMetres`: `some 16` metres.
 - Observed oracle: `alt: Some(-1000), source: Gnss` (altitude convention is feet). Executed compatibility projection `adsbAltitude` also yields `some (-1000)`.
 - Source actually read: Sun 2nd ed. §5.5.2, which gives the unsigned 12-bit GNSS height in metres. AC12 Q/Gillham barometric decoding belongs to the other altitude branch.
 
-All three DF17 messages above were constructed with the Mode S polynomial and the pinned oracle independently reported CRC0. Raw Rust and Lean outputs are retained in `bench/evidence/semantic-oracle.txt` and `semantic-lean.txt`. Reproduce Lean with `lake env lean bench/evidence/SemanticProbes.lean`; reproduce each Rust answer with `.cache/rs1090-target/dist/lean1090-oracle-bench --probe-hex HEX` after `bench/run_oracle.sh --check` builds it. These are narrow source-backed fixtures, not a 10M-message test claim or automatic approval of all future exceptions.
+All three DF17 messages above were constructed with the Mode S polynomial and the pinned oracle independently reported CRC 0. Raw Rust and Lean outputs are retained in `bench/evidence/semantic-oracle.txt` and `semantic-lean.txt`. Reproduce Lean with `lake env lean bench/evidence/SemanticProbes.lean`; reproduce each Rust answer with `.cache/rs1090-target/dist/lean1090-oracle-bench --probe-hex HEX` after `bench/run_oracle.sh --check` builds it. These are narrow source-backed fixtures, not a 10M-message test claim or automatic approval of all future exceptions.
 
 ## D008: representable altitude rejected by the default heuristic
 
@@ -56,7 +56,7 @@ Concrete parity-valid DF17 pair, both encoding latitude 87° and longitude 0°:
 
 - Even: `8d11223348010200000000f81a47`, CPR `(65536,0)`.
 - Odd: `8d11223348010508880000d59619`, CPR `(33860,0)`.
-- Both pinned Rust decodes and the executed Lean syndrome calculation return CRC0. `CPR.encode` independently returns those two coordinates for the physical position `(87,0)`.
+- Both pinned Rust decodes and the executed Lean syndrome calculation return CRC 0. `CPR.encode` independently returns those two coordinates for the physical position `(87,0)`.
 - Executed standard result, with the even report latest: `CPR.decodeGlobal ⟨false,65536,0⟩ ⟨true,33860,0⟩ false = some { lat := 87, lon := 0 }`.
 - Observed pinned oracle result: `airborne_position(odd, even)=None`.
 
@@ -103,8 +103,8 @@ Sources actually read for this entry:
   page because the text extraction misreads them as `B`.
 
 The following complete frames were executed through the runtime and actual
-`Message::from_bytes`; both DF17 examples have CRC0, and both DF4 examples
-recover address`112233` from AP:
+`Message::from_bytes`; both DF17 examples have CRC 0, and both DF4 examples
+recover address `112233` from AP:
 
 | Message | Code / encoding | Executed standard altitude | Observed rs1090 / compatibility altitude |
 | --- | --- | --- | --- |
@@ -167,11 +167,11 @@ assigning an aircraft quantity to these reserved bits.
 Source actually read: ICAO **Doc 9871, second edition (2012), including
 amendment 1 entered 9 January 2017, Tables A-2-9a and A-2-9b**, printed
 pp.A-32–A-33 (PDF pages 60–61). Both tables explicitly mark TC19 subtypes
-**0,5,6,7 reserved**. The edition/amendment pages and the subtype-code
+**0, 5, 6, 7 reserved**. The edition/amendment pages and the subtype-code
 columns were read on 2026-10-16 from the
 [published-document mirror](https://manuals.plus/m/07560cb9fbd061450f9d216b298160181a57c0b1a7795edc699cfaeb1e80fb7b.pdf).
 The browser's extracted PDF text was available; its screenshot endpoint
-failed and direct download returned HTTP403, so no locally acquired PDF or
+failed and direct download returned HTTP 403, so no locally acquired PDF or
 PDF hash is claimed. Sun's second edition, chapter 7, table 7.1 (p.69),
 independently locates the subtype-specific 22 bits at ME14–35 and defines
 subtypes 1–4, but is not cited as explicitly listing the reserved codes.
@@ -190,7 +190,7 @@ Cause inspected in the pinned sources:
   the target CPU's endianness. These files were read from the locked Cargo
   registry source under `.cache/cargo/registry/src/`.
 - The little-endian primitive path pads the final six-bit chunk on its
-  left, then interprets the 8,8,6-bit chunks least-significant first
+  left, then interprets the 8, 8, 6-bit chunks least-significant first
   (`src/impls/primitive.rs:289–329`). Therefore the compatibility value is
   `first8 + 256*next8 + 65536*last6`, not the 22-bit MSB-first integer.
 
@@ -209,7 +209,7 @@ printf '%s\n' 9011223398040000000000000000 | .lake/build/bin/lean1090 --diagnost
 ```
 
 Both commands were run on 2026-10-16. They consume 14 bytes with no remainder,
-report CRC12216280, and agree on the complete oracle projection, including
+report CRC 12216280, and agree on the complete oracle projection, including
 `reserved_data: 128`; the Lean standard projection keeps 2097152. Its
 different vertical-source label is the already documented D003.
 The permanent fresh-oracle differential test must cover each of subtypes
@@ -301,4 +301,4 @@ The DTE stratum is mandatory in both quick and full differential invocations.
 
 - Comm-B BDS65 is invoked without skipping the 5-bit typecode. Confirmed probes `a0000000f8000000000000000000`, `a0000000f9000000000000000000` and the same payloads with leading `a8` all return `bds65: None`; other 21/50/60 candidates remain. The direct subtype reader sees 7 and consumes 3+40 bits, leaving 13, so exact-slice `try_from` rejects. Captured output: `bench/evidence/bds65-oracle.txt`. This is included in the explicitly rs1090-derived inference policy; do not invent a standard-backed accepted BDS65 candidate in its place.
 
-The earlier standard clauses were read from the locally acquired texts identified by edition, acquisition URL and SHA256 in `docs/SOURCES.md`: Annex 10 IV §3.1.2.7.3 and Sun §§5.5.2,7.1–7.3. D011 separately records its Doc 9871 edition, table numbers and browser acquisition. Rounding projections (BDS40/62 selected altitude) and intentionally heuristic Comm-B candidate rules are documented in `SCOPE.md`; their use as an oracle reporting policy does not make them standards assertions.
+The earlier standard clauses were read from the locally acquired texts identified by edition, acquisition URL and SHA256 in `docs/SOURCES.md`: Annex 10 IV §3.1.2.7.3 and Sun §§5.5.2, 7.1–7.3. D011 separately records its Doc 9871 edition, table numbers and browser acquisition. Rounding projections (BDS40/62 selected altitude) and intentionally heuristic Comm-B candidate rules are documented in `SCOPE.md`; their use as an oracle reporting policy does not make them standards assertions.

@@ -181,7 +181,7 @@ def AltitudeRejection : Prop :=
   (∀ h, ¬ Altitude.RepresentableGillham h → Altitude.encodeGillham h = none)
 ```
 
-Each implication assumes precisely the independently defined invalidity predicate. Invalid C counts are 0,5,6; M/Q and field-width constraints are explicit. `Spec.Altitude.invalid_gillham_nonvacuous` uses raw code 2; `Spec.altitude_rejection_nonvacuous` uses 1 ft outside both step domains.
+Each implication assumes precisely the independently defined invalidity predicate. Invalid C counts are 0, 5, 6; M/Q and field-width constraints are explicit. `Spec.Altitude.invalid_gillham_nonvacuous` uses raw code 2; `Spec.altitude_rejection_nonvacuous` uses 1 ft outside both step domains.
 
 ## CPRLocal
 
@@ -195,7 +195,7 @@ def CPRLocal : Prop :=
       CPR.WithinResolution mode odd p q
 ```
 
-`LocalAdmissible` requires valid physical/reference coordinate ranges and strict half-cell proximity to the **quantized** latitude and longitude. Longitude distance is circular. A physical half-cell bound without the rounding margin can fail only in a half-step strip at its boundary; the exact latitude strip is <0.000024° airborne and <0.000006° surface, proved by `local_latitude_rounding_band`. `local_margin_needed` proves an actual alias 6° away despite physical distance <3°. There is no extra assumption that the true and rounded latitude have equal NL. `CPR.local_nonvacuous` proves every medium/parity at 0°,0°. The general half-step error bound is proved in Proofs/CPRGeometry.lean.
+`LocalAdmissible` requires valid physical/reference coordinate ranges and strict half-cell proximity to the **quantized** latitude and longitude. Longitude distance is circular. A physical half-cell bound without the rounding margin can fail only in a half-step strip at its boundary; the exact latitude strip is <0.000024° airborne and <0.000006° surface, proved by `local_latitude_rounding_band`. `local_margin_needed` proves an actual alias 6° away despite physical distance <3°. There is no extra assumption that the true and rounded latitude have equal NL. `CPR.local_nonvacuous` proves every medium/parity at 0°, 0°. The general half-step error bound is proved in Proofs/CPRGeometry.lean.
 
 ## CPRGlobal
 
@@ -235,7 +235,7 @@ def CPRLatitudeZones : Prop :=
   (∀ lat, CPR.DecodableLatitude lat → CPR.nlTable lat = CPR.nlFormula (lat : ℝ))
 ```
 
-`DecodableLatitude` is the union of the four legal latitude grids within [-90,90]. Decimal thresholds are not claimed equal to irrational transitions at every real input. The finite grid-separation and analytic interval bounds are conclusions to prove, not assumptions. The candidate-generation script is numerical evidence only. `nl_certificate_nonvacuous` proves the certificate list is nonempty; `CPR.nl_nonvacuous` proves 0° is attained. `nl_formula_zero` is proved. `nl_87_discrepancy` proves 87° is attained and distinguishes standard NL2 from oracle NL1; that point is not excluded to make the theorem true.
+`DecodableLatitude` is the union of the four legal latitude grids within [-90, 90]. Decimal thresholds are not claimed equal to irrational transitions at every real input. The finite grid-separation and analytic interval bounds are conclusions to prove, not assumptions. The candidate-generation script is numerical evidence only. `nl_certificate_nonvacuous` proves the certificate list is nonempty; `CPR.nl_nonvacuous` proves 0° is attained. `nl_formula_zero` is proved. `nl_87_discrepancy` proves 87° is attained and distinguishes standard NL2 from oracle NL1; that point is not excluded to make the theorem true.
 
 ## CommBInference
 

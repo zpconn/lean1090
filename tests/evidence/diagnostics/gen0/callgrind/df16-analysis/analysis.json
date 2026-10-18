@@ -1,0 +1,1805 @@
+{
+  "kind": "untimed_diagnostic_instruction_counts_not_benchmark",
+  "stage_definitions": {
+    "frame_crc": "Wire frame parsing, parity/CRC, address recovery and frame acceptance control",
+    "adsb_fields": "ADS-B layout/field decoding and ADS-B hard-validity checks",
+    "commb_inference": "Comm-B candidates, hard checks, score gates and accepted raw-field records",
+    "semantic_oracle_values": "Standard/oracle quantities, labels and numeric-expression construction",
+    "output_model_control": "Message/report construction and residual decoder control/reference management"
+  },
+  "method": "Exclusive self events, ancestor stage attribution, no inclusive double-counting or proportional distribution",
+  "limitations": [
+    "Ir counts instrumented guest instructions, not elapsed time, cycles, cache misses or throughput.",
+    "Stage attribution includes each stage's allocation and runtime helpers; construction is not a global allocation-only category.",
+    "Output-model/control contains final report/message/list assembly plus residual control; instruction-level allocation/control separation is unavailable.",
+    "Generic register arguments are absent from the call graph. Separate score probes overlap Comm-B inference and must not be added to whole-decoder counts.",
+    "Callgrind context merges, if present, remain explicitly shared/ambiguous.",
+    "Register probes are standalone executions of actual reached score gates; allocator/context state may differ from the whole decoder.",
+    "Native entry counts describe retained symbols; inlining/tail-call elimination can remove entries without removing the computation. Census predictions are reported separately."
+  ],
+  "families": {
+    "df16": {
+      "path": ".cache/gen1-planning/callgrind-controls-smoke-v3/callgrind.out.1",
+      "sha256": "fff1924abef54ef27fa92582a34eed7069cc152d20a0ba9aa37bdd8b58995bc4",
+      "events": [
+        "Ir"
+      ],
+      "metadata": {
+        "version": [
+          "1"
+        ],
+        "creator": [
+          "callgrind-3.22.0"
+        ],
+        "pid": [
+          "3"
+        ],
+        "cmd": [
+          "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs df16 /home/zpconn/code/lean1090/vendor/rs1090/crates/rs1090/data/long_flight.csv --wait"
+        ],
+        "part": [
+          "1"
+        ],
+        "desc": [
+          "I1 cache:",
+          "D1 cache:",
+          "LL cache:",
+          "Timerange: Basic block 0 - 345431929",
+          "Trigger: dump production-root-complete"
+        ]
+      },
+      "root": "lp_lean1090_Lean1090_Impl_decode",
+      "root_contexts": 1,
+      "root_incoming_calls": 2694,
+      "total_events": {
+        "Ir": 1641280306
+      },
+      "exclusive_stage_events": {
+        "adsb_fields": {
+          "Ir": 26940
+        },
+        "frame_crc": {
+          "Ir": 1631602767
+        },
+        "output_model_control": {
+          "Ir": 538032
+        },
+        "outside_root": {},
+        "semantic_oracle_values": {
+          "Ir": 9112567
+        }
+      },
+      "stage_attribution_complete": true,
+      "ambiguous_context_count": 0,
+      "ambiguous_contexts": [],
+      "top_self_cost_functions": [
+        {
+          "symbol": "__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 53104128
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 53104128
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 32586624
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 32586624
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 32586624
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 32586624
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 23534784
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 23534784
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 23534784
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 23534784
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 22026144
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 22026144
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 19509948
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 19509948
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 16864440
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 16864440
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 16293312
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 16293312
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14889738
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14889738
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14746956
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14746956
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14256648
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 14256648
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_realloc'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13577760
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_realloc'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13577760
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13276032
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13276032
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_realloc'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13189824
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_realloc'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 13189824
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12823104
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12823104
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "realloc'__gmp_default_reallocate'__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "realloc'__gmp_default_reallocate'__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12672576
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lean_dec_ref_cold'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12066426
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean_dec_ref_cold'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 12066426
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 11767392
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 11767392
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 10296468
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 10296468
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9636438
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9636438
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9439776
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9439776
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_mul_2exp'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9353568
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_mul_2exp'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9353568
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9353568
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 9353568
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 8448384
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 8448384
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7543200
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7543200
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7354620
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7354620
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)'lean_dec_ref_cold'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7128324
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)'lean_dec_ref_cold'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7128324
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7128324
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "0x00000000000ab250'free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 7128324
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6638016
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6638016
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6638016
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_realloc'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6638016
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_copyi_core2'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6072276
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_copyi_core2'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6072276
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "mi_free'lean_dec_ref_cold'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6034684
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "mi_free'lean_dec_ref_cold'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 6034684
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_rshift_coreisbr'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5802876
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_rshift_coreisbr'__gmpz_tdiv_q_2exp'lean::div2k(lean::mpz&, lean::mpz const&, unsigned int)'lean_nat_big_shiftr'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5802876
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5732832
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5732832
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5732832
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5732832
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_and'lean::mpz::operator&=(lean::mpz const&)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5722716
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpz_and'lean::mpz::operator&=(lean::mpz const&)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5722716
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set'lean::mpz::mpz(lean::mpz const&)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "malloc'__gmp_default_allocate'__gmpz_init_set_ui'lean::mpz::mpz(unsigned int)'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "realloc'__gmp_default_reallocate'__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "realloc'__gmp_default_reallocate'__gmpz_realloc'__gmpz_add'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5544252
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_List_range_loop'l_List_range'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5474208
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "l_List_range_loop'l_List_range'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5474208
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)'lean_dec_ref_cold'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5148234
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)'lean_dec_ref_cold'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5148234
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5148234
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "free'__gmp_default_free'__gmpz_clear'lean::mpz::~mpz()'lean::mpz::mpz(unsigned long)'lean_nat_big_land'l_Nat_testBit'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5148234
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/usr/lib/x86_64-linux-gnu/libc.so.6"
+          ]
+        },
+        {
+          "symbol": "lean_alloc_small_object_core'l_List_range_loop'l_List_range'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5137168
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean_alloc_small_object_core'l_List_range_loop'l_List_range'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 5136196
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 4827648
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 4827648
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_lshift_coreisbr'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 4525920
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        },
+        {
+          "symbol": "__gmpn_lshift_coreisbr'__gmpz_n_pow_ui'__gmpz_pow_ui'lean::mpz::pow(unsigned int) const'lean_nat_pow'l_BitVec_ofNat'lp_lean1090_Lean1090_Impl_Parity_step'lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0'lp_lean1090_Lean1090_Impl_Parity_syndrome'lp_lean1090_Lean1090_Impl_Parity_checksum'lp_lean1090_Lean1090_Impl_frameSyndrome'lp_lean1090_Lean1090_Impl_frameAddress'lp_lean1090_Lean1090_Impl_report'lp_lean1090_Lean1090_Impl_decode'l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode_spec__0'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_runDecode'l___private_review_diagnostics_DecodeCosts_0__Lean1090_Diagnostics_DecodeCosts_decodeMode",
+          "stages": [
+            "frame_crc"
+          ],
+          "bucket": "frame_crc",
+          "self_events": {
+            "Ir": 4525920
+          },
+          "files": [
+            "???"
+          ],
+          "objects": [
+            "/home/zpconn/code/lean1090/.cache/gen1-planning/driver-v3/decode-costs"
+          ]
+        }
+      ],
+      "native_anchor_counts_and_non_additive_inclusive_events": {
+        "lp_lean1090_Lean1090_Impl_Parity_checksum": {
+          "contexts": 2,
+          "native_entries": 5388,
+          "self_events": {
+            "Ir": 193968
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 1391579874
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_Parity_step": {
+          "contexts": 2,
+          "native_entries": 603456,
+          "self_events": {
+            "Ir": 25646208
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 662895744
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_Parity_syndrome": {
+          "contexts": 2,
+          "native_entries": 5388,
+          "self_events": {
+            "Ir": 220913
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 1383136515
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_decode": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 150864
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 1641280306
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_decodeFrame": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 360996
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 154465992
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameADSB": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 26940
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 26940
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameAccepted": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 59268
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 59268
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameAddress": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 72738
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 738646568
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameAltitude": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 70044
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 9061381
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameIdentity": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 51186
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 51186
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_frameSyndrome": {
+          "contexts": 2,
+          "native_entries": 5388,
+          "self_events": {
+            "Ir": 393324
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 1476940264
+          }
+        },
+        "lp_lean1090_Lean1090_Impl_report": {
+          "contexts": 1,
+          "native_entries": 2694,
+          "self_events": {
+            "Ir": 250542
+          },
+          "incoming_inclusive_events_non_additive": {
+            "Ir": 1486547368
+          }
+        }
+      },
+      "self_event_sum_matches_summary": true,
+      "nonzero_outside_root": false
+    }
+  },
+  "non_additive_register_score_probes": {},
+  "non_additive_register_candidate_probes": {}
+}

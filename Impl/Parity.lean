@@ -20,7 +20,10 @@ def generator : Nat := 0x1FFF409
 append one coefficient, then cancel x^24 when present. -/
 def step (remainder : BitVec 24) (bit : Bool) : BitVec 24 :=
   let shifted := 2 * remainder.toNat + if bit then 1 else 0
-  BitVec.ofNat 24 (if remainder.toNat ≥ 2^23 then shifted ^^^ generator else shifted)
+  let value := if remainder.toNat ≥ 2^23 then shifted ^^^ generator else shifted
+  -- Specialize the fixed modulus here: generic BitVec.ofNat computes 2^width
+  -- at runtime on every bit. This is its definition at width 24.
+  BitVec.ofNatLT (value % 16777216) (Nat.mod_lt _ (by decide))
 
 -- Initial algorithm: Spec/Parity.lean:25.
 /-- Annex 10 IV (4th ed.), §3.1.2.3.3.1.2: receiver remainder of the full

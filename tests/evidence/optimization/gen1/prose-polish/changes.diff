@@ -1,0 +1,192 @@
+--- before/PROGRESS.md
++++ after/PROGRESS.md
+@@ -36,7 +36,7 @@
+ 
+ ## FC005 proposal evidence (subsequently approved and applied above)
+ 
+-FC004 was applied exactly on 2026-10-17 after all input checks and the history entry: patch `eee626abcc93e917fe7d82e6f6f64f67ea54e62f227fd83e7c8515a74e52291f`,86-entry live lock `4be296e60bcdd1125166ce265d6e8b407704894c9999d3b68c1d8191534fc72a`. Its before/after snapshots are retained under tests/evidence/frozen-changes/FC004/. The live lock still matches that snapshot. No FC005 change is applied.
++FC004 was applied exactly on 2026-10-17 after all input checks and the history entry: patch `eee626abcc93e917fe7d82e6f6f64f67ea54e62f227fd83e7c8515a74e52291f`, 86-entry live lock `4be296e60bcdd1125166ce265d6e8b407704894c9999d3b68c1d8191534fc72a`. Its before/after snapshots are retained under tests/evidence/frozen-changes/FC004/. The live lock still matches that snapshot. No FC005 change is applied.
+ 
+ The user reproduced the original FC005 suites but requested revisions before freezing. The superseded proposal, sources and results are archived in tests/evidence/frozen-changes/FC005-review-v1/. All requested revisions are now implemented in the unfrozen test sources and proposed guard copy:
+ 
+@@ -111,7 +111,7 @@
+ 
+ ## FC002 applied; reserved velocity regression passes
+ 
+-After FC001 completed, continued generated testing found another frozen semantic omission. Pinned rs1090/deku 0.20.3 interprets the 22-bit reserved velocity field for TC19 subtypes 0/5/6/7 as 8,8,6-bit little-endian chunks on the pinned target. The frozen record preserves the MSB-first wire value but has no separate oracle meaning. The first 10,000 encoded/corrupted generated messages produced 9,029 exact matches, 940 known D001 cases and 31 reserved_data mismatches. Inputs/results are retained in tests/evidence/message-generated-initial/. This is a failed generated run, not the required 100k/10M differential pass.
++After FC001 completed, continued generated testing found another frozen semantic omission. Pinned rs1090/deku 0.20.3 interprets the 22-bit reserved velocity field for TC19 subtypes 0/5/6/7 as 8, 8, 6-bit little-endian chunks on the pinned target. The frozen record preserves the MSB-first wire value but has no separate oracle meaning. The first 10,000 encoded/corrupted generated messages produced 9,029 exact matches, 940 known D001 cases and 31 reserved_data mismatches. Inputs/results are retained in tests/evidence/message-generated-initial/. This is a failed generated run, not the required 100k/10M differential pass.
+ 
+ `docs/RESERVED-VELOCITY-REVIEW.md` explains the counterexample and `docs/RESERVED-VELOCITY-PROPOSAL.diff` proposes changes only to Spec/Semantics.lean and Spec/Assignment.lean. **The user has now approved exactly this patch by its SHA-256. It is applied to the two authorized files and mirrored in Impl; the extended refinement and all unchanged dependency/assignment/import audits pass. FC002 was recorded before the two-entry lock refresh. All 61 hashes match; the other 59 entries are unchanged, with before/after snapshots in tests/evidence/frozen-changes/FC002/.** A review-only prototype matches actual pinned oracle results on 16,511 cases (four subtypes ×zero/all-one/22 single-bit/4096 random cases, plus 31 failures). Its proposed semantic lists also agree with the independent assignment. Complete evidence: tests/evidence/reserved-velocity-proposal/. The raw/standard fields remain unchanged. Adding a conversion only in JSON would leave an exact reported meaning outside the proved record, so approval of the frozen semantic addition is required.
+ 
+@@ -125,7 +125,7 @@
+ 
+ `lake env lean --run review/AltitudeCompatibilityProposal.lean` passed: proposed independent/reference equivalence on all 8192 AC13/all 4096 AC12 codes, receiver acceptance on all 4096 AC12 codes, and concrete kernel regressions. Its emitted compatibility results were compared with actual pinned Message::from_bytes on 8192 DF4 and 4096 DF18 inputs: 12288 cases, zero mismatches. Complete review evidence is retained in tests/evidence/altitude-proposal/. The historical pre-approval evidence retains its original hashes.
+ 
+-`scripts/run_differential.sh --altitude-only` now passes the permanent actual-runtime/reference/oracle test on all 12288 codes (8192 AC13 accepted, AC12 3322 accepted/774 rejected), plus a Comm-B regression. Both complete quick/full differential paths require it. No sampling or D010 exemption is used. Each field retains 12 negative Gillham values in the standard view and 40 negative binary25 values in both views. Evidence: tests/evidence/altitude-exhaustive/. D010 cites actually inspected Annex 10 IV clauses and the negative pulse-assignment row, with Sun eq13.1 for −1200 ft. Five source-backed probes and all 33 prior corpus candidate mismatches now pass; their standard views retain 25 barometric negatives and 8 GNSS-metre values (D007). See tests/evidence/negative-gillham/ and altitude-corpus-regressions/.
++`scripts/run_differential.sh --altitude-only` now passes the permanent actual-runtime/reference/oracle test on all 12288 codes (8192 AC13 accepted, AC12 3322 accepted/774 rejected), plus a Comm-B regression. Both complete quick/full differential paths require it. No sampling or D010 exemption is used. Each field retains 12 negative Gillham values in the standard view and 40 negative binary25 values in both views. Evidence: tests/evidence/altitude-exhaustive/. D010 cites actually inspected Annex 10 IV clauses and the negative pulse-assignment row, with Sun eq 13.1 for −1200 ft. Five source-backed probes and all 33 prior corpus candidate mismatches now pass; their standard views retain 25 barometric negatives and 8 GNSS-metre values (D007). See tests/evidence/negative-gillham/ and altitude-corpus-regressions/.
+ 
+ The new CLI/output adapter and message-oracle harness built. The initial corpus run consumed all 172432 messages: 170398 oracle-view matches, 2034 mismatches (33 BDS05 candidate sets, 1989 track values, 12 groundspeeds). Tests/evidence/message-initial/ preserves all outputs and failure details. This is not a passing full differential suite. The scalar numerical mismatches are a separate adapter error: it used system libm instead of rs1090's Rust libm 0.2.16 crate. The initial 20936723-value test passed against Rust system math, not the actual pinned dependency. The corrected test harness now uses pinned libm and fails at hypot(11,261). No accuracy tolerance was loosened. The freeze question is resolved. The subsequent pure port fixes these numerical differences, as recorded below; no new extern was added.
+ 
+@@ -136,7 +136,7 @@
+ - The pure `Impl/Libm.lean` translation of pinned Rust libm 0.2.16 fixes the numerical adapter. `python3 scripts/check_numeric.py` passed 20,936,723 fresh exact-bit comparisons; this check is mandatory in complete quick/full differential invocations. The corrected CLI matched all 172432 corpus oracle-view JSON/CRC/consumption/remainder outputs exactly. Evidence: tests/evidence/numeric-libm/ and message-corpus-corrected/. `docs/NUMERICAL-PRESENTATION.md` records scope and licenses. This is tested presentation only; no hardware inference primitive or Float proof claim is introduced. Generated whole-message coverage subsequently passed in the post-FC003 campaign above.
+ 
+ - `docs/LAYOUT-ANCHORS.md` inventories 70 ADS-B branches and 14 Comm-B registers. **24 distinct worked Sun full-frame inputs** are checked through `Spec.decode` (23 successes and one corrupt rejection); **zero ICAO complete decoding examples** occur in the sources read. Six Sun raw-only Quick Start inputs and four ICAO arithmetic assertions are counted separately. The coverage table explicitly labels every missing branch **rs1090-derived; no worked-example anchor**, while retaining any available table provenance.
+-- ADS-B anchors cover TC4, TC7, TC11, TC19/subtype 1 and TC19/subtype 3. Missing: TC0–3,5–6,8–10,12–18,20–27,30; TC19/subtypes 0,2,4–7; TC28/subtypes 0–7; TC29/subtypes 0–3; TC31/subtype 0/versions 0–7, subtype 1/versions 0–7, and subtypes 2–7. Comm-B anchors cover 17/20/40/44/45/50/60; missing 05/10/18/19/21/30/65. `scripts/ReviewLayoutCoverage.lean` checks all 70/14 canonical branches in the kernel. SCOPE.md, THEOREMS.md and docs/EXAMPLE-COUNTS.md link the inventory.
++- ADS-B anchors cover TC4, TC7, TC11, TC19/subtype 1 and TC19/subtype 3. Missing: TC0–3, 5–6, 8–10, 12–18, 20–27, 30; TC19/subtypes 0, 2, 4–7; TC28/subtypes 0–7; TC29/subtypes 0–3; TC31/subtype 0/versions 0–7, subtype 1/versions 0–7, and subtypes 2–7. Comm-B anchors cover 17/20/40/44/45/50/60; missing 05/10/18/19/21/30/65. `scripts/ReviewLayoutCoverage.lean` checks all 70/14 canonical branches in the kernel. SCOPE.md, THEOREMS.md and docs/EXAMPLE-COUNTS.md link the inventory.
+ - `scripts/check_cpr_differential.py --quick` passed 44,228 calls; `--full --output tests/evidence/cpr-synthetic-full` passed 535,748 calls from 65,536 random worldwide positions. Actual Impl exact/numerical decoders are compared to the frozen reference and pinned rs1090. All 58 NL transitions, both hemispheres/media/parities, offsets within four quantization steps, ±87°, poles, equator, antimeridian, half-cell reference limits, moving pairs and rejection cases are included. All 216 geographic grid cells are occupied.
+ - Full CPR result: 535,544 oracle results bit-identical; 204 individually validated known D009 (exact ±87° NL convention) differences. All 533,982 admissible cases satisfy WithinResolution; zero contract counterexamples. The 22 additional rational-vs-Float half-cell ties are all outside LocalAdmissible and actual numerical output equals rs1090; they are retained, not silently removed. `docs/CPR-SYNTHETIC.md` documents denominators and classification, with complete compressed traces and source hashes under tests/evidence/. Preliminary interpreted campaigns were interrupted to switch to native execution and are not claimed complete.
+ - `scripts/run_differential.sh` now makes this CPR stratum mandatory on full-suite invocations. `--cpr-only` explicitly selects component validation. The later complete post-FC003 campaign above includes both whole-message corpus/random coverage and this mandatory CPR stratum; component-only commands do not claim a full-suite pass.
+@@ -164,7 +164,7 @@
+ - Acquired/read Annex 10 IV fourth edition 2007 with amendment 85 pages, Sun's second edition 2021, and the Annex 10 III PartI amendment 77 CPR excerpt. URLs, editions/revisions, hashes and unavailable-source handling are in `docs/SOURCES.md`. The ICAO maintenance HTML response was not treated as a PDF source.
+ - Wrote `SCOPE.md`, `THEOREMS.md`, `Spec/`, `Capstones.lean`, `bench/BENCHMARK.md`, the pinned Rust benchmark harness, `TRUSTED.md`, and source/topic notes. The original checkpoint had 22 named propositions; the amended contract has 23, including the proved BDS50 pilot. Later Proofs modules must prove these exact propositions without modifying the frozen file. This avoids frozen placeholder proofs. `THEOREMS.md` quotes each statement verbatim and documents every hypothesis and non-vacuity witness.
+ - Reference definitions include lossless frame/payload decoding and independent field encoders; polynomial CRC; altitude; exact CPR and NL formula/certificate candidates; complete CPR tracking with tested numerical adapters; all 14 Comm-B register schemas and exact binary64 inference decisions; and proof-visible exact semantic values, strings and Float-expression operands. Full structural field domains are separate from oracle receiver filters. No decoder uses a forbidden construct or a newly authorized extern primitive.
+-- Recorded source-backed discrepancies D001–D010, concrete inputs and both standard/oracle results in `DISCREPANCIES.md` and `bench/evidence/`. Includes Comm-D's115-bit oracle over-read, ADS-B velocity/source/height differences, the 50000 ft receiver heuristic, and the attainable 87° NL boundary. BDS65 per-message inference's offset/length rejection is explicitly rs1090-derived; its direct schema remains covered.
++- Recorded source-backed discrepancies D001–D010, concrete inputs and both standard/oracle results in `DISCREPANCIES.md` and `bench/evidence/`. Includes Comm-D's 115-bit oracle over-read, ADS-B velocity/source/height differences, the 50000 ft receiver heuristic, and the attainable 87° NL boundary. BDS65 per-message inference's offset/length rejection is explicitly rs1090-derived; its direct schema remains covered.
+ 
+ ## Applied approval amendments
+ 
+@@ -177,7 +177,7 @@
+ 
+ ## Measured BDS50 result
+ 
+-The retained run is `bench/evidence/bds50-pilot-quiet.json`; method and reproduction commands are in `docs/BDS50-PILOT.md`. CPU0, Intel Core Ultra 9 285K, WSL2 Linux 6.6.87.2. Windows power plan read successfully: **Ultimate Performance**, GUID `b96ff06e-8688-42eb-9c00-7c9f42465d2a`. Shipped Rust dist/default features, Lean generated C at −O3, no CPU-specific flags.
++The retained run is `bench/evidence/bds50-pilot-quiet.json`; method and reproduction commands are in `docs/BDS50-PILOT.md`. CPU 0, Intel Core Ultra 9 285K, WSL2 Linux 6.6.87.2. Windows power plan read successfully: **Ultimate Performance**, GUID `b96ff06e-8688-42eb-9c00-7c9f42465d2a`. Shipped Rust dist/default features, Lean generated C at −O3, no CPU-specific flags.
+ 
+ | Result | Lean | rs1090 |
+ | --- | ---: | ---: |
+--- before/DISCREPANCIES.md
++++ after/DISCREPANCIES.md
+@@ -16,35 +16,35 @@
+ 
+ ## D002–D004: TC19 velocity scale, source and zero altitude difference
+ 
+-Concrete parity-valid DF17 message: `8d1122339a000300800801cb9966` (CRC0). Payload subtype 2, EW code 3, NS code 4, positive signs, vertical-source 0, vertical-rate code 2, GNSS-minus-baro code 1.
++Concrete parity-valid DF17 message: `8d1122339a000300800801cb9966` (CRC 0). Payload subtype 2, EW code 3, NS code 4, positive signs, vertical-source 0, vertical-rate code 2, GNSS-minus-baro code 1.
+ 
+ | Field | Executed Lean standard view | Observed oracle view | Source actually read |
+ |---|---|---|---|
+-| D002 components | `some (8,12)`kt | `(2,3)`kt, groundspeed 3.605551275463989 kt | Sun 2nd ed. table 7.2, §7.3 equations 7.8–7.9: factor 4 for subtype 2 |
++| D002 components | `some (8,12)` kt | `(2,3)` kt, groundspeed 3.605551275463989 kt | Sun 2nd ed. table 7.2, §7.3 equations 7.8–7.9: factor 4 for subtype 2 |
+ | D003 rate source | `"GNSS"` | `"barometric"` | Sun table 7.1 and §7.1: source 0 GNSS, 1 barometer |
+-| D004 GNSS-minus-baro | `some 0`ft | `None` (JSONnull) | Sun §7.2 equation 7.4: signed(code −1)×25, unavailable allzero/allone |
+-
+-`Presentation.standardVelocityComponents`, `standardVerticalSource` and `standardGeoMinusBaro` are the executed standard views; explicitly named oracle views preserve the incompatible reader answers for comparison. The standard Float speed expression is hypot(8,12); this probe checks the exact components, without asserting a machine-checked libm result. The oracle uses the same track formula on components 2,3, reporting 33.690067525979785°.
++| D004 GNSS-minus-baro | `some 0` ft | `None` (JSONnull) | Sun §7.2 equation 7.4: signed(code −1)×25, unavailable allzero/allone |
++
++`Presentation.standardVelocityComponents`, `standardVerticalSource` and `standardGeoMinusBaro` are the executed standard views; explicitly named oracle views preserve the incompatible reader answers for comparison. The standard Float speed expression is hypot(8,12); this probe checks the exact components, without asserting a machine-checked libm result. The oracle uses the same track formula on components 2, 3, reporting 33.690067525979785°.
+ 
+ ## D005–D006: TC19 unavailable component and all-one height difference
+ 
+-Concrete parity-valid DF17 message: `8d1122339900000010007f1027d0` (CRC0). Payload subtype 1, EW=NS=0, vertical-source 1, vertical-rate 0, altitude-difference 127.
++Concrete parity-valid DF17 message: `8d1122339900000010007f1027d0` (CRC 0). Payload subtype 1, EW=NS=0, vertical-source 1, vertical-rate 0, altitude-difference 127.
+ 
+ | Field | Executed Lean standard view | Observed oracle view | Source actually read |
+ |---|---|---|---|
+ | D005 velocity | `none` | components(−1,−1), groundspeed 1.4142135623730951 kt, track 225° | Sun table 7.2 and §7.3: zero component means no velocity information |
+ | D003 source (second polarity) | `"barometric"` | `"GNSS"` | Sun table 7.1, §7.1 |
+-| D006 GNSS-minus-baro | `none` | `Some(3150)`ft | Sun §7.2: all-one field unavailable |
++| D006 GNSS-minus-baro | `none` | `Some(3150)` ft | Sun §7.2: all-one field unavailable |
+ 
+ ## D007: GNSS height treated as Q-bit feet
+ 
+-Concrete parity-valid DF17 message: `8d112233a0010000000000b2fb95` (CRC0). TC20, 12-bit height code 16.
+-
+-- Executed `Presentation.standardGNSSHeightMetres`: `some 16`metres.
++Concrete parity-valid DF17 message: `8d112233a0010000000000b2fb95` (CRC 0). TC20, 12-bit height code 16.
++
++- Executed `Presentation.standardGNSSHeightMetres`: `some 16` metres.
+ - Observed oracle: `alt: Some(-1000), source: Gnss` (altitude convention is feet). Executed compatibility projection `adsbAltitude` also yields `some (-1000)`.
+ - Source actually read: Sun 2nd ed. §5.5.2, which gives the unsigned 12-bit GNSS height in metres. AC12 Q/Gillham barometric decoding belongs to the other altitude branch.
+ 
+-All three DF17 messages above were constructed with the Mode S polynomial and the pinned oracle independently reported CRC0. Raw Rust and Lean outputs are retained in `bench/evidence/semantic-oracle.txt` and `semantic-lean.txt`. Reproduce Lean with `lake env lean bench/evidence/SemanticProbes.lean`; reproduce each Rust answer with `.cache/rs1090-target/dist/lean1090-oracle-bench --probe-hex HEX` after `bench/run_oracle.sh --check` builds it. These are narrow source-backed fixtures, not a 10M-message test claim or automatic approval of all future exceptions.
++All three DF17 messages above were constructed with the Mode S polynomial and the pinned oracle independently reported CRC 0. Raw Rust and Lean outputs are retained in `bench/evidence/semantic-oracle.txt` and `semantic-lean.txt`. Reproduce Lean with `lake env lean bench/evidence/SemanticProbes.lean`; reproduce each Rust answer with `.cache/rs1090-target/dist/lean1090-oracle-bench --probe-hex HEX` after `bench/run_oracle.sh --check` builds it. These are narrow source-backed fixtures, not a 10M-message test claim or automatic approval of all future exceptions.
+ 
+ ## D008: representable altitude rejected by the default heuristic
+ 
+@@ -56,7 +56,7 @@
+ 
+ - Even: `8d11223348010200000000f81a47`, CPR `(65536,0)`.
+ - Odd: `8d11223348010508880000d59619`, CPR `(33860,0)`.
+-- Both pinned Rust decodes and the executed Lean syndrome calculation return CRC0. `CPR.encode` independently returns those two coordinates for the physical position `(87,0)`.
++- Both pinned Rust decodes and the executed Lean syndrome calculation return CRC 0. `CPR.encode` independently returns those two coordinates for the physical position `(87,0)`.
+ - Executed standard result, with the even report latest: `CPR.decodeGlobal ⟨false,65536,0⟩ ⟨true,33860,0⟩ false = some { lat := 87, lon := 0 }`.
+ - Observed pinned oracle result: `airborne_position(odd, even)=None`.
+ 
+@@ -103,8 +103,8 @@
+   page because the text extraction misreads them as `B`.
+ 
+ The following complete frames were executed through the runtime and actual
+-`Message::from_bytes`; both DF17 examples have CRC0, and both DF4 examples
+-recover address`112233` from AP:
++`Message::from_bytes`; both DF17 examples have CRC 0, and both DF4 examples
++recover address `112233` from AP:
+ 
+ | Message | Code / encoding | Executed standard altitude | Observed rs1090 / compatibility altitude |
+ | --- | --- | --- | --- |
+@@ -167,11 +167,11 @@
+ Source actually read: ICAO **Doc 9871, second edition (2012), including
+ amendment 1 entered 9 January 2017, Tables A-2-9a and A-2-9b**, printed
+ pp.A-32–A-33 (PDF pages 60–61). Both tables explicitly mark TC19 subtypes
+-**0,5,6,7 reserved**. The edition/amendment pages and the subtype-code
++**0, 5, 6, 7 reserved**. The edition/amendment pages and the subtype-code
+ columns were read on 2026-10-16 from the
+ [published-document mirror](https://manuals.plus/m/07560cb9fbd061450f9d216b298160181a57c0b1a7795edc699cfaeb1e80fb7b.pdf).
+ The browser's extracted PDF text was available; its screenshot endpoint
+-failed and direct download returned HTTP403, so no locally acquired PDF or
++failed and direct download returned HTTP 403, so no locally acquired PDF or
+ PDF hash is claimed. Sun's second edition, chapter 7, table 7.1 (p.69),
+ independently locates the subtype-specific 22 bits at ME14–35 and defines
+ subtypes 1–4, but is not cited as explicitly listing the reserved codes.
+@@ -190,7 +190,7 @@
+   the target CPU's endianness. These files were read from the locked Cargo
+   registry source under `.cache/cargo/registry/src/`.
+ - The little-endian primitive path pads the final six-bit chunk on its
+-  left, then interprets the 8,8,6-bit chunks least-significant first
++  left, then interprets the 8, 8, 6-bit chunks least-significant first
+   (`src/impls/primitive.rs:289–329`). Therefore the compatibility value is
+   `first8 + 256*next8 + 65536*last6`, not the 22-bit MSB-first integer.
+ 
+@@ -209,7 +209,7 @@
+ ```
+ 
+ Both commands were run on 2026-10-16. They consume 14 bytes with no remainder,
+-report CRC12216280, and agree on the complete oracle projection, including
++report CRC 12216280, and agree on the complete oracle projection, including
+ `reserved_data: 128`; the Lean standard projection keeps 2097152. Its
+ different vertical-source label is the already documented D003.
+ The permanent fresh-oracle differential test must cover each of subtypes
+@@ -301,4 +301,4 @@
+ 
+ - Comm-B BDS65 is invoked without skipping the 5-bit typecode. Confirmed probes `a0000000f8000000000000000000`, `a0000000f9000000000000000000` and the same payloads with leading `a8` all return `bds65: None`; other 21/50/60 candidates remain. The direct subtype reader sees 7 and consumes 3+40 bits, leaving 13, so exact-slice `try_from` rejects. Captured output: `bench/evidence/bds65-oracle.txt`. This is included in the explicitly rs1090-derived inference policy; do not invent a standard-backed accepted BDS65 candidate in its place.
+ 
+-The earlier standard clauses were read from the locally acquired texts identified by edition, acquisition URL and SHA256 in `docs/SOURCES.md`: Annex 10 IV §3.1.2.7.3 and Sun §§5.5.2,7.1–7.3. D011 separately records its Doc 9871 edition, table numbers and browser acquisition. Rounding projections (BDS40/62 selected altitude) and intentionally heuristic Comm-B candidate rules are documented in `SCOPE.md`; their use as an oracle reporting policy does not make them standards assertions.
++The earlier standard clauses were read from the locally acquired texts identified by edition, acquisition URL and SHA256 in `docs/SOURCES.md`: Annex 10 IV §3.1.2.7.3 and Sun §§5.5.2, 7.1–7.3. D011 separately records its Doc 9871 edition, table numbers and browser acquisition. Rounding projections (BDS40/62 selected altitude) and intentionally heuristic Comm-B candidate rules are documented in `SCOPE.md`; their use as an oracle reporting policy does not make them standards assertions.
+--- before/THEOREMS.md
++++ after/THEOREMS.md
+@@ -181,7 +181,7 @@
+   (∀ h, ¬ Altitude.RepresentableGillham h → Altitude.encodeGillham h = none)
+ ```
+ 
+-Each implication assumes precisely the independently defined invalidity predicate. Invalid C counts are 0,5,6; M/Q and field-width constraints are explicit. `Spec.Altitude.invalid_gillham_nonvacuous` uses raw code 2; `Spec.altitude_rejection_nonvacuous` uses 1 ft outside both step domains.
++Each implication assumes precisely the independently defined invalidity predicate. Invalid C counts are 0, 5, 6; M/Q and field-width constraints are explicit. `Spec.Altitude.invalid_gillham_nonvacuous` uses raw code 2; `Spec.altitude_rejection_nonvacuous` uses 1 ft outside both step domains.
+ 
+ ## CPRLocal
+ 
+@@ -195,7 +195,7 @@
+       CPR.WithinResolution mode odd p q
+ ```
+ 
+-`LocalAdmissible` requires valid physical/reference coordinate ranges and strict half-cell proximity to the **quantized** latitude and longitude. Longitude distance is circular. A physical half-cell bound without the rounding margin can fail only in a half-step strip at its boundary; the exact latitude strip is <0.000024° airborne and <0.000006° surface, proved by `local_latitude_rounding_band`. `local_margin_needed` proves an actual alias 6° away despite physical distance <3°. There is no extra assumption that the true and rounded latitude have equal NL. `CPR.local_nonvacuous` proves every medium/parity at 0°,0°. The general half-step error bound is proved in Proofs/CPRGeometry.lean.
++`LocalAdmissible` requires valid physical/reference coordinate ranges and strict half-cell proximity to the **quantized** latitude and longitude. Longitude distance is circular. A physical half-cell bound without the rounding margin can fail only in a half-step strip at its boundary; the exact latitude strip is <0.000024° airborne and <0.000006° surface, proved by `local_latitude_rounding_band`. `local_margin_needed` proves an actual alias 6° away despite physical distance <3°. There is no extra assumption that the true and rounded latitude have equal NL. `CPR.local_nonvacuous` proves every medium/parity at 0°, 0°. The general half-step error bound is proved in Proofs/CPRGeometry.lean.
+ 
+ ## CPRGlobal
+ 
+@@ -235,7 +235,7 @@
+   (∀ lat, CPR.DecodableLatitude lat → CPR.nlTable lat = CPR.nlFormula (lat : ℝ))
+ ```
+ 
+-`DecodableLatitude` is the union of the four legal latitude grids within [-90,90]. Decimal thresholds are not claimed equal to irrational transitions at every real input. The finite grid-separation and analytic interval bounds are conclusions to prove, not assumptions. The candidate-generation script is numerical evidence only. `nl_certificate_nonvacuous` proves the certificate list is nonempty; `CPR.nl_nonvacuous` proves 0° is attained. `nl_formula_zero` is proved. `nl_87_discrepancy` proves 87° is attained and distinguishes standard NL2 from oracle NL1; that point is not excluded to make the theorem true.
++`DecodableLatitude` is the union of the four legal latitude grids within [-90, 90]. Decimal thresholds are not claimed equal to irrational transitions at every real input. The finite grid-separation and analytic interval bounds are conclusions to prove, not assumptions. The candidate-generation script is numerical evidence only. `nl_certificate_nonvacuous` proves the certificate list is nonempty; `CPR.nl_nonvacuous` proves 0° is attained. `nl_formula_zero` is proved. `nl_87_discrepancy` proves 87° is attained and distinguishes standard NL2 from oracle NL1; that point is not excluded to make the theorem true.
+ 
+ ## CommBInference
+ 

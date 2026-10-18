@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "kind": "diagnostic_live_path_review",
+  "build_manifest_sha256": "7388711e7094fcad3b0d6d49bb9b094d00e2bac994d6fd2089a6f9b2d14f2309",
+  "driver_source_sha256": "ef9f031c27127bb8ae9c33720a549dcb58085e436069a72f1465f73d6bbc1dfe",
+  "driver_binary_sha256": "af7eb9066ee0c14fd5f42e51790b8fbb0c12fed2586f9014026d7cd550574391",
+  "unchanged_production_object_count": 20,
+  "generated_c_call_sites": {
+    "lp_lean1090_Lean1090_Impl_decode": 1,
+    "lp_lean1090_Lean1090_Impl_cbScorePasses": 2,
+    "lp_lean1090_Lean1090_Impl_commBCoreEligible": 1
+  },
+  "generated_c_review": [
+    "runDecode calls the existing Impl.decode once per selected row and pushes its complete Message into the retained array.",
+    "Output capacity precedes the first heartbeat; the second heartbeat precedes the noinline full-Repr consumer.",
+    "Candidate loops call existing commBCoreEligible; score loops call existing cbScorePasses. Preparation never calls either score root.",
+    "The additional cbScorePasses site is only optional post-decode shadow census; profile invocations omit census.",
+    "There are no clock or throughput calls in the diagnostic source."
+  ],
+  "validation": [
+    "driver-all-census.jsonl:172432 retained; shadow candidate set equals actual returned candidates for every row/register.",
+    "driver-validation.json:all5scoreprobes/cardinalities and empty/command controls passed.",
+    "driver-v2/validation.json:all5candidate/all5scoreprobes equal full census.",
+    "callgrind-controls-smoke-v3-no-ptrace/run.json:nonempty2694-row profile, matching full-model per-DF digest."
+  ],
+  "all_census_command": [
+    ".cache/gen1-planning/decode-costs",
+    "all",
+    "vendor/rs1090/crates/rs1090/data/long_flight.csv",
+    "--census"
+  ],
+  "constraints": [
+    "No Impl, Model, Spec or frozen source changed.",
+    "No optimization or throughput measurement.",
+    "Repr/FNV is observability and replay checking, not a collision-proof substitute for the differential gate."
+  ]
+}

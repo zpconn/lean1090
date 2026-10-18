@@ -1,0 +1,29 @@
+⚠ [1427/1569] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+✔ [1538/2024] Built Impl.Parity (313ms)
+⚠ [2044/2081] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+✔ [2058/2081] Built Impl.Parity:c.o (59ms)
+✔ [2072/2081] Built Impl.Message (290ms)
+✔ [2074/2081] Built Impl (267ms)
+✔ [2076/2081] Built Impl.JSON (623ms)
+✔ [2078/2081] Built Bench.WholeDecoder (449ms)
+✔ [2080/2081] Built «lean1090-bench»:exe (419ms)
+✖ [2081/2081] Building Proofs.Decoder (6.7s)
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/Decoder.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/Decoder.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/Decoder.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/Decoder.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/Decoder.setup.json --json
+error: Proofs/Decoder.lean:90:82: unsolved goals
+⊢ (fun remainder bit =>
+      ((if remainder.toNat ≥ 2 ^ 23 then (2 * remainder.toNat + if bit = true then 1 else 0) ^^^ Spec.Parity.generator
+          else 2 * remainder.toNat + if bit = true then 1 else 0) %
+          16777216)#'⋯) =
+    fun remainder bit =>
+    BitVec.ofNat 24
+      (if remainder.toNat ≥ 2 ^ 23 then (2 * remainder.toNat + if bit = true then 1 else 0) ^^^ Spec.Parity.generator
+      else 2 * remainder.toNat + if bit = true then 1 else 0)
+info: Proofs/Decoder.lean:362:0: 'Lean1090.Proofs.DTEOracleRefinement' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/Decoder.lean:583:0: 'Lean1090.Proofs.Refinement' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/Decoder.lean:584:0: 'Lean1090.Proofs.PrefixRefinement' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Proofs.Decoder
+error: build failed
