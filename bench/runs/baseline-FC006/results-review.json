@@ -1,0 +1,170 @@
+{
+  "status": "passed with documented wall-clock and WSL observation caveats",
+  "reviewer": "independent agent /root/fc005_verify",
+  "reviewed_at": "2026-10-18T17:24:05.103148+00:00",
+  "scope": "Read-only recomputation of completed baseline outputs; no build, test, benchmark or source edit.",
+  "commit": "dee72954b7ad8e4c525b2ffb391477f8f5439809",
+  "binary_sha256": "6e09e99f75a523370970ef5311bc296d52c4c4dbb3cb0ffcce35d87f5f7dc415",
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "cpu": 0,
+  "windows_power_plan": {
+    "name": "Ultimate Performance",
+    "guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+    "successful_queries": 4,
+    "unchanged_across_modes": true
+  },
+  "results": [
+    {
+      "mode": "decode",
+      "samples": 48,
+      "warmup_samples": 6,
+      "measured_samples": 42,
+      "medians_nanoseconds": {
+        "rs1090": 881763889,
+        "lean1090": 5301668259
+      },
+      "messages_per_second": {
+        "rs1090": 195553.48336565867,
+        "lean1090": 32524.102146014717
+      },
+      "lean_over_rs1090": 0.16631819380685245,
+      "rs1090_over_lean": 6.01257130751019,
+      "positions_each_run": 0
+    },
+    {
+      "mode": "cpr",
+      "samples": 48,
+      "warmup_samples": 6,
+      "measured_samples": 42,
+      "medians_nanoseconds": {
+        "rs1090": 876985322,
+        "lean1090": 5615193346
+      },
+      "messages_per_second": {
+        "rs1090": 196619.02619619897,
+        "lean1090": 30708.1144628497
+      },
+      "lean_over_rs1090": 0.15618078808002633,
+      "rs1090_over_lean": 6.402836176544355,
+      "positions_each_run": 11347
+    }
+  ],
+  "clean_provenance_points": [
+    "before-build",
+    "before-decode",
+    "before-cpr",
+    "after-timing"
+  ],
+  "fresh_project_native_outputs": 21,
+  "effective_clang_driver_records_per_capture": 23,
+  "serialized_commands_all_exit_zero": true,
+  "recorded_compilation_finished_before_timing": true,
+  "oracle_freshness_checks": "Both interleaver logs show an already-fresh dist build before samples; no Rust compilation was performed.",
+  "host_observations": {
+    "before": {
+      "capture_start": "2026-10-18T17:16:22.566611+00:00",
+      "aggregate_busy_percent": 0.24549918166939444,
+      "cpu0_busy_percent": 0.0,
+      "loadavg": "0.46 0.97 1.24 1/631 695069",
+      "cpufreq": "unavailable",
+      "thermal": "unavailable",
+      "hwmon": "unavailable"
+    },
+    "after": {
+      "capture_start": "2026-10-18T17:21:24.428654+00:00",
+      "aggregate_busy_percent": 0.041084634346754315,
+      "cpu0_busy_percent": 0.0,
+      "loadavg": "1.00 1.00 1.16 1/621 695778",
+      "cpufreq": "unavailable",
+      "thermal": "unavailable",
+      "hwmon": "unavailable"
+    }
+  },
+  "wall_clock_steps": [
+    {
+      "mode": "cpr",
+      "previous_order": 32,
+      "order": 33,
+      "previous_recorded_at": "2026-10-18T17:20:33.473515+00:00",
+      "recorded_at": "2026-10-18T17:20:33.042166+00:00",
+      "wall_clock_step_seconds": -0.431349
+    }
+  ],
+  "caveats": [
+    "CPR UTC sample labels step backward once by 0.431349 seconds; timed durations use monotonic clocks and AB order/pair fields are correct. This does not invalidate timing.",
+    "WSL2 exposes no physical thermal, governor/frequency or hwmon readings; no thermal-stability claim is supported.",
+    "One-second guest snapshots show CPU0 idle before/after, but cannot establish Windows host-wide isolation throughout timing. Other interactive/service processes exist; ps percentages are lifetime averages.",
+    "No compiler/build/profiler is present in before/after process snapshots; command records show no overlapping orchestrated build/test. These are not a complete host execution trace."
+  ],
+  "findings": [],
+  "target_met": false,
+  "next": "Stop for user review before optimization generation 1.",
+  "evidence_sha256": {
+    "before-cpr-git.json": "d273d3dc9e4616344eefcb01b53616f215318f6d76694565af95275b0ddf9707",
+    "after-environment.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-environment.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-build-git.json": "014734b03faeec612d67c0579c651e11b855b04c933046f5c2b90ea74bbfbd32",
+    "after-effective-clang-drivers.json": "c11ac293c5c720eeb833ee9d3cc97a0f891d3d60738cb3a48fee912c901648bd",
+    "before-host.json": "d80c869b5fd3651f65b2c0c0f34e47575c3d33383ea8e9f99c8a51453c47141f",
+    "before-effective-clang-drivers.json": "c11ac293c5c720eeb833ee9d3cc97a0f891d3d60738cb3a48fee912c901648bd",
+    "before-build-lock.log": "0e06bef8fd83a786a9ed262ed291c862ab723d74f34cc9df0468922c4f6f954e",
+    "after-host.json": "66c480ed675dec1f8c2b57adbe02a4ce1f438c6f6d01fc7b2cc2e7d1163c8454",
+    "before-decode-lock.log": "0e06bef8fd83a786a9ed262ed291c862ab723d74f34cc9df0468922c4f6f954e",
+    "oracle-prebuild.log": "fc56401adcaece45bb9902e7014cfeea4e34bf8c0bef75ae795f8488e1cf2429",
+    "after-timing-lock.log": "0e06bef8fd83a786a9ed262ed291c862ab723d74f34cc9df0468922c4f6f954e",
+    "fresh-native-inputs.json": "bd5e1e3dc2690dc23e70e8a88411980998e8f7cec3a5f81c646b93d8191d2445",
+    "lean-fresh-build.log": "45f94f4293bd98bb794928d90f4056b3ad985c4dc5c29d274cbd5f39d7428a2f",
+    "before-cpr-lock.log": "0e06bef8fd83a786a9ed262ed291c862ab723d74f34cc9df0468922c4f6f954e",
+    "before-decode-git.json": "b0aa2176a45e51e51ecd25ee1586b576049948b278ef31432228e45ee32bb323",
+    "fresh-build-removals.json": "88292ede727fca7f4ebbf973be9ec1fc706f83c8830f2643539cc92ad00359d0",
+    "cpr-interleave.log": "449bc3fc6ab6eae498011c98153576e6695f14dcf7dd19b6fcef4bdea1ab201f",
+    "summary.json": "f2778f6c24296a5f4092e055fe48233c4bf0bafa170eebfd69e8a8226ee02289",
+    "decode-interleave.log": "1ce8714bfa3c5534a70736483eb654b7677afc610d2b89c34e9457147d0731da",
+    "before-host.log": "4e03f0756620090764e747a54d1456e90e03c6c50f9aef98f29e1dc8286dc637",
+    "after-timing-git.json": "89dac5aa7e06011f405641e0a8efa4a687c653666534c3ca356ebce0bbd52cde",
+    "commands.json": "efd8333feeabdefaf3bf35ccbc037e55d63c6a22b7ca2d6326a3c107dce9e528",
+    "authorization.json": "d8735e7cd73279f9c72a402b7698bd7108cda8165ad07a79cc62ab4d0d16d7a8",
+    "after-host.log": "48ddb63854ea7789d148df34008f3e633f6d3d4b4cd205a89d267925aeb744a0",
+    "binary-built.json": "e61956368c601a522f8459e105f304ba57d9056f462629599491e9026edb5a3e",
+    "after-environment/environment.json": "99ad5893875b2c7a08f073425aafc1aa5005042fbde0e572c7afc4490e520551",
+    "decode/metadata.json": "c6850a97d3684d8c99eadccb3f7b7d82cb93042874cc689f76dfda90fd8003a2",
+    "decode/lean1090.stderr.log": "ee84404ee6eec8165165be5b955b8b1e047f0800e7ee459d80b98defb746008e",
+    "decode/samples.csv": "68d24b15c6f6a99c5399e9b593e6c54de54872dc672f19380ec0985825dc8fe5",
+    "decode/rs1090.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cpr/metadata.json": "d213e4a25afcc5cac40c42757ec68b300bc827e46772678d3b86da1f22733656",
+    "cpr/lean1090.stderr.log": "5d3ce3f1db4f6a06fc97f99382c7b6bdafa3c53ab5d39a3234e25317339890a7",
+    "cpr/samples.csv": "d86d2064740383f14da49116ac2e52b58e7bd3daade571d43114d44a4d9efcfa",
+    "cpr/rs1090.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before-environment/environment.json": "a62d110f8a676fd4927aad9c09ecc5d72923fcf50953230bb0f9505f7c8501cb"
+  },
+  "background_work": "None from reviewer.",
+  "timer_source_review": {
+    "lean": {
+      "file": "Bench/WholeDecoder.lean",
+      "start_finish_lines": [
+        141,
+        146,
+        155,
+        162
+      ],
+      "timer": "IO.monoNanosNow",
+      "toolchain_definition": "/home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/src/lean/Init/System/IO.lean:421",
+      "definition_documentation": "Monotonically increasing nanoseconds; no relation to wall-clock time."
+    },
+    "oracle": {
+      "file": "bench/oracle/src/main.rs",
+      "start_line": 62,
+      "finish_line": 88,
+      "timer": "std::time::Instant::now / start.elapsed"
+    },
+    "wall_clock_sample_labels_used_in_medians": false
+  },
+  "timestamp_audit": {
+    "sample_labels_checked": 96,
+    "backward_adjacent_label_pairs": 1,
+    "other_anomalies_found": [],
+    "power_queries_and_mode_boundaries_ordered": true,
+    "orchestrator_commands_ordered": true,
+    "interpretation": "The -0.431349 s value is the difference between adjacent UTC labels, not an estimate of the underlying clock adjustment or a measured decoder duration."
+  }
+}

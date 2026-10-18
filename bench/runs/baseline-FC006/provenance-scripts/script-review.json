@@ -1,0 +1,42 @@
+{
+  "status": "passed; final reviewed scripts have no unresolved launch blocker",
+  "reviewer": "independent agent /root/fc005_verify",
+  "reviewed_at": "2026-10-18T17:05:06.560049+00:00",
+  "scope": "Read-only source review. Neither prep script, build, test suite nor benchmark was executed by this reviewer. The only compiler invocation was pinned clang --help to verify default-config controls.",
+  "script_sha256": {
+    "run_baseline.py": "97002781c433862001a956337802af8065420e8ce9b5e51ed097e63b6450eab4",
+    "capture_host.py": "eefc042474cf3d0c1835641cb6632f4cad681d548625e87b418f25e96ea6cc52"
+  },
+  "frozen_inputs_sha256": {
+    "bench/interleave.py": "b9b0bd460e0322427f080ec09d1f982d68c39325713e9279d4e84d12a196af7b",
+    "bench/run_oracle.sh": "55296371168e257ef8b1e0c46016e76478c0ea95f6708f11576fcffaf4aa3317",
+    "bench/check_worker.py": "f1e569eb424cc6479248b904b576d4716c2d507d264466c53588535eac29ea37",
+    "bench/BENCHMARK.md": "823b89fa3c3a2218108e576379c3daf12fe269540e99ec28f4c8a824fe0bf041",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8"
+  },
+  "checks": [
+    "Clean HEAD and exact approved lock are checked before rebuild, before both modes, and after timing; source bytes for every linked project object are compared with the recorded commit.",
+    "Deletion is confined to identified native artifacts under .lake/build. The executable and 21 project C/object outputs are regenerated with Lake --no-cache --rehash; rebuilt response-file membership, output/trace mtimes and hashes are checked and recorded.",
+    "Frozen interleave.py remains unchanged and performs three warmup AB pairs then 21 measured AB pairs; wrapper checks all 48 rows, chronology, pair/phase/implementation identities, message/position counts, medians, ratio and binary identity.",
+    "Each frozen interleaver invocation pins both workers to the same inherited core and records queried Windows plan name/GUID before and after. Wrapper requires successful queries and unchanged GUID within each mode.",
+    "Host captures occur outside timed workers. Cargo candidates, compile environment, oracle fingerprints, C compiler traces, Linux guest load/process/thermal/governor observations and explicit unavailability are retained.",
+    "Unexpected compile overrides, existing/unreadable Cargo configs or nonempty fingerprint rustflags abort before timing. Current pre-existing diagnostic records no such overrides or configs.",
+    "Effective Clang driver commands are captured with -### for actual compiler/link trace arguments. Equality with --no-default-config verifies default configuration does not alter those commands; compile commands must show x86-64/generic/O3/ffp-contract=off.",
+    "capture_host uses allowlisted compile settings and process names rather than arguments/environment dumps; possible secrets in flag values are redacted. Exclusive output creation and unique baseline directory preserve failed evidence.",
+    "The wrapper records both modes, performs no optimization and ends with a stop-for-user-review summary."
+  ],
+  "resolved_during_review": [
+    "Added fail-closed inspection of captured compile/Cargo settings and oracle rustflags.",
+    "Added rebuilt response-file equality and fresh C/object/trace artifact assertions and hashes.",
+    "Added effective Clang driver comparison with default configuration disabled, closing the hidden C-config evidence gap."
+  ],
+  "execution_preconditions": [
+    "Finish all required correctness commands, commit the verified source, and stop all agents/builds/tests/profilers before launch.",
+    "Run with ordinary python3 from the repository root; assertions must remain enabled.",
+    "Inspect and retain any failure as invalid evidence. Current diagnostic host state cannot substitute for the actual before/after captures.",
+    "Linux guest observations do not establish host-wide quiescence; record any known Windows/background contention separately.",
+    "After successful timing, preserve the exact prep scripts and complete ignored output in the committed evidence without changing frozen files."
+  ],
+  "findings": [],
+  "background_work": "None; reviewer is idle after writing this artifact."
+}

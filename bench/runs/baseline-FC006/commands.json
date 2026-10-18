@@ -1,0 +1,148 @@
+[
+  {
+    "argv": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "started_at": "2026-10-18T17:16:14.754567+00:00",
+    "log": "before-build-lock.log",
+    "finished_at": "2026-10-18T17:16:14.775160+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "bench/run_oracle.sh",
+      "--build-only"
+    ],
+    "started_at": "2026-10-18T17:16:14.775384+00:00",
+    "log": "oracle-prebuild.log",
+    "finished_at": "2026-10-18T17:16:14.902249+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "lake",
+      "--no-cache",
+      "--rehash",
+      "-v",
+      "build",
+      "lean1090-bench"
+    ],
+    "started_at": "2026-10-18T17:16:15.080544+00:00",
+    "log": "lean-fresh-build.log",
+    "finished_at": "2026-10-18T17:16:22.466108+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "/home/zpconn/code/lean1090/.cache/baseline-prep/capture_host.py",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/before-host.json"
+    ],
+    "started_at": "2026-10-18T17:16:22.542628+00:00",
+    "log": "before-host.log",
+    "finished_at": "2026-10-18T17:16:23.626322+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "bench/check_worker.py",
+      "--capture-environment-only",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/before-environment"
+    ],
+    "started_at": "2026-10-18T17:16:23.626523+00:00",
+    "log": "before-environment.log",
+    "finished_at": "2026-10-18T17:16:23.786849+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "started_at": "2026-10-18T17:16:24.113841+00:00",
+    "log": "before-decode-lock.log",
+    "finished_at": "2026-10-18T17:16:24.132658+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "bench/interleave.py",
+      "--mode",
+      "decode",
+      "--lean-worker",
+      "/home/zpconn/code/lean1090/.lake/build/bin/lean1090-bench",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/decode"
+    ],
+    "started_at": "2026-10-18T17:16:24.201896+00:00",
+    "log": "decode-interleave.log",
+    "finished_at": "2026-10-18T17:18:50.255851+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "started_at": "2026-10-18T17:18:50.338932+00:00",
+    "log": "before-cpr-lock.log",
+    "finished_at": "2026-10-18T17:18:50.358623+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "bench/interleave.py",
+      "--mode",
+      "cpr",
+      "--lean-worker",
+      "/home/zpconn/code/lean1090/.lake/build/bin/lean1090-bench",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/cpr"
+    ],
+    "started_at": "2026-10-18T17:18:50.428536+00:00",
+    "log": "cpr-interleave.log",
+    "finished_at": "2026-10-18T17:21:24.317918+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "/home/zpconn/code/lean1090/.cache/baseline-prep/capture_host.py",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/after-host.json"
+    ],
+    "started_at": "2026-10-18T17:21:24.401574+00:00",
+    "log": "after-host.log",
+    "finished_at": "2026-10-18T17:21:25.484245+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "bench/check_worker.py",
+      "--capture-environment-only",
+      "--output",
+      "/home/zpconn/code/lean1090/.cache/baseline-FC006/after-environment"
+    ],
+    "started_at": "2026-10-18T17:21:25.484477+00:00",
+    "log": "after-environment.log",
+    "finished_at": "2026-10-18T17:21:25.672284+00:00",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "started_at": "2026-10-18T17:21:25.997138+00:00",
+    "log": "after-timing-lock.log",
+    "finished_at": "2026-10-18T17:21:26.017595+00:00",
+    "exit_code": 0
+  }
+]
