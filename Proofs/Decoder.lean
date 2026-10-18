@@ -1,5 +1,7 @@
 import Impl.Message
 import Capstones
+import Proofs.CommBTables
+import Proofs.ScoreGate
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -475,8 +477,19 @@ private theorem decoder_cbCombinedScore_eq : @Impl.cbCombinedScore = @Spec.cbCom
   unfold Impl.cbCombinedScore Spec.cbCombinedScore
   simp only [decoder_Binary64_add_eq, decoder_cbDensity_eq, decoder_cbPenalty_eq]
 private theorem decoder_cbScorePasses_eq : @Impl.cbScorePasses = @Spec.cbScorePasses := by
-  unfold Impl.cbScorePasses Spec.cbScorePasses
-  simp only [decoder_cbCombinedScore_eq]
+  funext register word
+  have terms_eq : Impl.cbDensityTermsFast register word = Spec.cbDensityTerms register word := by
+    rw [CommBTables.density_terms_eq, decoder_cbDensityTerms_eq]
+  have fallback_eq :
+      (fun _ : Unit => decide (Impl.cbCombinedScore register word ≥ -3)) () =
+        decide (Binary64Error.scoreReference (Impl.cbDensityTermsFast register word)
+          (Impl.cbPenalty register word) ≥ -3) := by
+    rw [terms_eq, decoder_cbPenalty_eq, decoder_cbCombinedScore_eq]
+    rfl
+  unfold Impl.cbScorePasses
+  rw [ScoreGate.choose_eq _ _ _ (CommBTables.density_terms_length register word) fallback_eq,
+    terms_eq, decoder_cbPenalty_eq]
+  rfl
 private theorem decoder_commBCoreRegisters_eq : @Impl.commBCoreRegisters = @Spec.commBCoreRegisters := by
   rfl
 private theorem decoder_commBCoreEligible_eq : @Impl.commBCoreEligible = @Spec.commBCoreEligible := by

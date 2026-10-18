@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "reviewer": "payload_roundtrips",
+  "recorded_utc": "2026-10-18T18:49:33.083443+00:00",
+  "review_scope": "Read-only final factual, provenance, archived-hash and independent raw self-instruction accounting review.",
+  "live_checks_timing": "All live protected-input checks passed before cost_analysis released the diagnostic source/object hold. This record preserves those executed checks; they were not rerun after gen2 work was authorized.",
+  "reviewed_hashes": {
+    "docs/GEN1-COST-BREAKDOWN.md": "f91b1c78630d71d6b94c05739d849ecb2b01ef4637aa16404258011541fdea45",
+    "tests/evidence/diagnostics/gen1/analysis/analysis.json": "8041410ed8937d3582a7185f8effa8a6ea771c90f64bc272b24b012cbbdf9c09",
+    "tests/evidence/diagnostics/gen1/archive-manifest.json": "b6a0cc6879758d5d19e8fb16399431e44ef191d18e4bfd1e5e47f976fbd56299"
+  },
+  "archived_stored_files": 416,
+  "archived_stored_bytes": 16997567,
+  "live_protected_inputs_checked": 195,
+  "independently_recounted_primary_profiles": 13,
+  "family_ir": {
+    "adsb": 22024838792,
+    "commb": 77140852912,
+    "other": 3972627047
+  },
+  "total_ir": 103138318751,
+  "commb_exclusive_ir": 49856076161,
+  "commb_percent": 48.33904291320108,
+  "checks": {
+    "archive_stored_sha_and_size": true,
+    "primary_gzip_decoded_sha_and_size": true,
+    "raw_self_sum_matches_summary_totals_run_and_analysis": true,
+    "all_stage_contexts_unique": true,
+    "no_outside_root_costs": true,
+    "all_report_input_hashes": true,
+    "exact_driver_build_corpus_lock_source_object_associations": true,
+    "report_generated_c_line_claims": true,
+    "benchmark_and_perf_numbers": true,
+    "gen0_and_gen1_benchmark_artifacts_unchanged": true
+  },
+  "executed_commands": [
+    "python3 (inline read-only checker: hashlib/gzip/json/Counter; every archived stored hash and size; all 195 protected inputs; all 13 primary dumps independently recounted excluding calls= edge costs; report input hashes and analysis sums)",
+    "git diff --exit-code HEAD -- docs/GEN0-COST-BREAKDOWN.md tests/evidence/diagnostics/gen0 bench/runs/gen1"
+  ],
+  "instruction_recount_method": "Stream each primary gzip dump; track positions header; for calls= mark the next cost record as an inclusive edge and exclude it; sum all remaining Ir cost records. Require exact agreement with summary/totals, run.json, campaign and parsed analysis. Independently compare decompressed hash and size with archive source metadata.",
+  "limitations": [
+    "Instruction counts are diagnostics, not timing or predicted throughput.",
+    "Complete output FNV digests are observability checks, not mathematical equivalence proofs.",
+    "No builds, profiles or runtime changes were performed during this review."
+  ],
+  "primary_archive_unchanged_by_this_record": true
+}

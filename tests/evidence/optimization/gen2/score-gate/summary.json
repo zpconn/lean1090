@@ -1,0 +1,187 @@
+{
+  "status": "passed",
+  "completed_at_utc": "2026-10-18T18:51:12.413044+00:00",
+  "scope": "generic exact score gate and proof only; not yet integrated or benchmarked",
+  "runtime_module": "Impl.ScoreGate",
+  "runtime_imports": [
+    "Std"
+  ],
+  "runtime_api": {
+    "mass": "(terms : List Rat) : Rat",
+    "center": "(terms : List Rat) (penalty : Rat) : Rat",
+    "envelope": "(terms : List Rat) (penalty : Rat) : Rat",
+    "choose": "(terms : List Rat) (penalty : Rat) (fallback : Unit \u2192 Bool) : Bool"
+  },
+  "proof_api": "Lean1090.Proofs.ScoreGate.choose_eq (terms : List Rat) (penalty : Rat) (fallback : Unit \u2192 Bool) (short : terms.length \u2264 4) (fallback_eq : fallback () = decide (Lean1090.Proofs.Binary64Error.scoreReference terms penalty \u2265 -3)) : Lean1090.Impl.ScoreGate.choose terms penalty fallback = decide (Lean1090.Proofs.Binary64Error.scoreReference terms penalty \u2265 -3)",
+  "prepared_proof_byte_identical": true,
+  "prepared_proof_sha256": "ba588f633a9b057b1d7e38c44428b4496bb9c1fd6cf72f05ec175bcb728353dc",
+  "source_hashes": {
+    "Impl/ScoreGate.lean": "dc0ff331c6771aabd7113a635951228824f2910290813aa02e61c5b7af2183b9",
+    "Proofs/Binary64Error.lean": "ba588f633a9b057b1d7e38c44428b4496bb9c1fd6cf72f05ec175bcb728353dc",
+    "Proofs/ScoreGate.lean": "bc45d82fb87109dab49a538ef51ae2af6e66207a312e441c185bc9f98e50aa17"
+  },
+  "generated_c_sha256": "18b5552e537d69babbfe8fb3cd94b28906e36ad74a0ec89eadb837519c2bcb6a",
+  "lazy_fallback_review": {
+    "function": "lp_lean1090_Lean1090_Impl_ScoreGate_choose",
+    "line_start": 257,
+    "line_end": 298,
+    "fallback_application_count": 1,
+    "nested_failed_comparisons_before_fallback": 2,
+    "unused_closure_release_branches": 2,
+    "observation": "only the uncertain branch applies the thunk; both decisive branches release it without application",
+    "caller_obligation": "pass a lambda containing the full computation, not a closure over an already-evaluated score; root will inspect integrated caller C"
+  },
+  "axioms": {
+    "Lean1090.Proofs.Binary64Facts.round_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.nearestEven_error": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_quantum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.powerTwo_sub_nat": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.quantum_relative_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_relative": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_of_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.fold_error": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.density_error_and_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.score_error": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.sandwichGate_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.scoreGate_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Error.sandwichGate_at_threshold": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.choose_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.choose_at_threshold": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.accept_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.reject_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.fallback_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.reference_threshold_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.ScoreGate.threshold_refinement_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "kernel_witnesses": [
+    "accept_witness: choose [0] 0 (fun _ => false) = true",
+    "reject_witness: choose [0] (-4) (fun _ => true) = false",
+    "fallback_witness: choose [0] (-3) (fun _ => value) = value",
+    "reference_threshold_witness: scoreReference [0] (-3) = -3",
+    "threshold_refinement_witness: short-list and valid-fallback hypotheses plus accepted boundary result"
+  ],
+  "commands": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.ScoreGate"
+      ],
+      "log": "targeted-build.log",
+      "exit_code": 1,
+      "classification": "initial proof elaboration: Rat.abs function eta equality and local let reduction, repaired without statement weakening"
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.ScoreGate"
+      ],
+      "log": "targeted-build-2.log",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.ScoreGate"
+      ],
+      "log": "targeted-build-3.log",
+      "exit_code": 0,
+      "note": "final exact-boundary witnesses included"
+    },
+    {
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "--deps",
+        "Impl/ScoreGate.lean"
+      ],
+      "log": "runtime-dependencies.log",
+      "exit_code": 0
+    }
+  ],
+  "no_frozen_changes": true,
+  "no_timing_or_commit": true
+}

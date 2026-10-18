@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "source_hashes": {
+    "Impl/CommB.lean": "c39e1399daebe5c5b66210393c2a353a8ea51894ca17e0f1dcd550be0b05d325",
+    "Impl/ScoreGate.lean": "dc0ff331c6771aabd7113a635951228824f2910290813aa02e61c5b7af2183b9",
+    "Proofs/Decoder.lean": "449d3deb306a3dc8af5dc8e70a954156d87a8b234149adf9eb3242cfd8d2333b",
+    "Proofs/CommBTables.lean": "8f5b6f0a630958d1ee3b2dc055bfa34a7c0d872d1dff72ebf27f7b0a3d7a6161",
+    "Proofs/ScoreGate.lean": "bc45d82fb87109dab49a538ef51ae2af6e66207a312e441c185bc9f98e50aa17",
+    "Proofs/Binary64Error.lean": "ba588f633a9b057b1d7e38c44428b4496bb9c1fd6cf72f05ec175bcb728353dc"
+  },
+  "generated_c_hashes": {
+    ".lake/build/ir/Impl/CommB.c": "955b99322edf06f889ce97dc1fb084342ac6787d9ba48f9dd4ed4defc5d28f56",
+    ".lake/build/ir/Impl/ScoreGate.c": "18b5552e537d69babbfe8fb3cd94b28906e36ad74a0ec89eadb837519c2bcb6a"
+  },
+  "tables": [
+    "cbQNHScoreTable",
+    "cbSelectedScoreTable",
+    "cbRollScoreTable",
+    "cbRateScoreTable",
+    "cbTASScoreTable",
+    "cbGroundSpeedScoreTable",
+    "cbIASScoreTable",
+    "cbMachScoreTable",
+    "cbVerticalScoreTable",
+    "cbTemperature44ScoreTable",
+    "cbWindScoreTable",
+    "cbPressureScoreTable",
+    "cbTemperature45ScoreTable"
+  ],
+  "checks": [
+    "caller constructs a callback capturing register/word; it does not evaluate cbCombinedScore",
+    "full score evaluates within callback; choose invokes callback only in its uncertain branch (reviewed C extract)",
+    "13 field-code arrays initialized and marked persistent in module initialization",
+    "lookup path reads persistent arrays, with no array mutations"
+  ],
+  "note": "Diagnostic compilation inspection, not a benchmark result. Lean proof verifies semantics; C inspection verifies the intended lazy evaluation and immutable table layout."
+}

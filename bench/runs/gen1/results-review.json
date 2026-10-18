@@ -1,0 +1,225 @@
+{
+  "schema": 1,
+  "status": "passed_with_documented_clock_and_host_limitations",
+  "reviewed_at_utc": "2026-10-18T18:33:41.511956+00:00",
+  "reviewer": "independent fc005_verify agent",
+  "timed_commit": "1cec196fd30565c70573fb28b7d555c4c4b71d32",
+  "binary_sha256": "9bdebf77cda47bb37d8105a7b2856be1157e007508238183fa393f7d471b9f43",
+  "oracle_binary_sha256": "208ae085ba9b9633a5f1fb1e1de8e7ee9deef70c83cb051377c5ac626a9dec10",
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "archive_files_rehashed_and_byte_compared": 48,
+  "gate": {
+    "full_exit_code": 0,
+    "generated_messages": 10000000,
+    "correctness_inputs_verified_against_timed_git_blobs": 169,
+    "log_sha256": "7f4c7ac00dd081b1a2283879e8c954133973714033e757fe1c1f8a79bb44c056",
+    "ended_before_native_build": "2026-10-18T18:24:15.375246+00:00",
+    "all_seven_differential_components_zero": true
+  },
+  "native_build": {
+    "project_source_C_object_trace_sets": 21,
+    "removed_paths_recorded": 337,
+    "linked_objects_exact": true,
+    "actual_native_hashes_rechecked": 66,
+    "source_matches_timed_commit": true,
+    "before_after_environment_matches": true,
+    "O3_generic_x86_64_ffp_contract_off_compile_invocations": 21,
+    "effective_driver_default_config_comparisons": 44
+  },
+  "protocol": {
+    "samples_reviewed": 96,
+    "warmups_per_side_per_mode": 3,
+    "measurements_per_side_per_mode": 21,
+    "order": "ABAB, A=rs1090 B=lean1090",
+    "cpu": 0,
+    "affinity_mechanism": "frozen interleave.py sets parent affinity before spawning both persistent workers; children inherit it",
+    "positions_pass_tolerance_unchanged": true,
+    "project_isolation": "operator statement plus sequential command log and guest snapshots; not proof of Windows host-wide isolation"
+  },
+  "results": [
+    {
+      "mode": "decode",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 880740247,
+        "lean1090": 4204929276
+      },
+      "messages_per_second": {
+        "rs1090": 195780.76576759413,
+        "lean1090": 41007.1106270849
+      },
+      "lean_over_rust": 0.20945423553896653,
+      "resolved_positions_each_run": 0,
+      "postclock_consumer": "consumed messages=172432 checksum=596195688",
+      "sample_min_max_nanoseconds": {
+        "rs1090": [
+          872543596,
+          886417800
+        ],
+        "lean1090": [
+          4173979394,
+          4279863858
+        ]
+      }
+    },
+    {
+      "mode": "cpr",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 881841787,
+        "lean1090": 4539443247
+      },
+      "messages_per_second": {
+        "rs1090": 195536.20903655363,
+        "lean1090": 37985.27498145413
+      },
+      "lean_over_rust": 0.1942621019841555,
+      "resolved_positions_each_run": 11347,
+      "postclock_consumer": "consumed messages=172432 aircraft=29 checksum=596195717",
+      "sample_min_max_nanoseconds": {
+        "rs1090": [
+          875289269,
+          894323674
+        ],
+        "lean1090": [
+          4495645000,
+          4683513601
+        ]
+      }
+    }
+  ],
+  "power_plan_queries": [
+    {
+      "mode": "decode",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-18T18:26:31.312432+00:00"
+    },
+    {
+      "mode": "decode",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-18T18:28:33.154292+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-18T18:28:33.658822+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-18T18:30:43.829221+00:00"
+    }
+  ],
+  "utc_sample_backsteps": [
+    {
+      "mode": "decode",
+      "previous_order": 30,
+      "order": 31,
+      "previous": "2026-10-18T18:27:48.276887+00:00",
+      "current": "2026-10-18T18:27:48.033472+00:00",
+      "delta_seconds": -0.243415
+    },
+    {
+      "mode": "decode",
+      "previous_order": 42,
+      "order": 43,
+      "previous": "2026-10-18T18:28:18.563562+00:00",
+      "current": "2026-10-18T18:28:18.321365+00:00",
+      "delta_seconds": -0.242197
+    }
+  ],
+  "wrapper_utc_backsteps": [],
+  "outer_interleave_clock_comparisons": [
+    {
+      "mode": "decode",
+      "outer_monotonic_seconds": 126.523711738,
+      "outer_utc_seconds": 122.050769,
+      "utc_minus_monotonic_seconds": -4.472942738
+    },
+    {
+      "mode": "cpr",
+      "outer_monotonic_seconds": 134.870160188,
+      "outer_utc_seconds": 130.410355,
+      "utc_minus_monotonic_seconds": -4.45980518799999
+    }
+  ],
+  "clock_interpretation": "UTC labels step backward and diverge from monotonic wall intervals. Frozen workers time with IO.monoNanosNow (Lean) and Instant::now/elapsed (Rust); UTC labels are not used to calculate any sample duration. All samples retained, no timing rerun.",
+  "host_observations": {
+    "before": {
+      "cpu0_one_second_busy_percent": 0.0,
+      "all_cpu_one_second_busy_percent": 0.1629327902240326,
+      "loadavg_before": "0.79 1.00 1.34 1/634 715279",
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    },
+    "after": {
+      "cpu0_one_second_busy_percent": 0.0,
+      "all_cpu_one_second_busy_percent": 0.20525451559934318,
+      "loadavg_before": "1.00 1.00 1.24 1/624 715920",
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    }
+  },
+  "limitations": [
+    "WSL2 exposes 24 logical CPUs but does not establish physical-core scheduling, temperatures, frequency/thermal state or Windows host-wide quiescence.",
+    "CPU activity snapshots bracket timing and cannot establish continuous isolation. Process %CPU is lifetime-average; no claim is made that all background processes were idle.",
+    "Oracle build checks occur before worker startup for each mode; recorded logs show cached dist completion and no rebuild during sampled intervals.",
+    "Fresh native artifacts were explicitly removed and recreated from the clean timed commit. Raw mtimes are retained without using UTC comparisons as freshness evidence.",
+    "Monotonic timers protect duration arithmetic from UTC backsteps; no claim is made about unobserved host clock/frequency stability."
+  ],
+  "checks_passed": 908,
+  "no_build_tests_profilers_or_benchmarks_run_by_review": true,
+  "only_file_written": "bench/runs/gen1/results-review.json"
+}

@@ -1,0 +1,34 @@
+{
+  "status": "passed_read_only_review",
+  "recorded_utc": "2026-10-18T19:04:53.485013+00:00",
+  "reviewer": "payload_roundtrips",
+  "reviewed_sha256": {
+    "review/diagnostics/build_decode_costs.py": "f712f9f8e2b679778ced1c9e9df47708c51a23dbead32af5b4798bfe879a84df",
+    "tests/evidence/optimization/gen2/diagnostic-tooling/structural_checks.py": "0a64401283500feaa171eccf8bb2b0cf42eac55004e6db893d3943d0b2fa14bb",
+    "tests/evidence/optimization/gen2/diagnostic-tooling/structural-results.json": "272dff5c21c727f66cb3b0f7b02de0234440e3eeba3b69f6c8b53c4a6578ab95",
+    "tests/evidence/optimization/gen2/diagnostic-tooling/REVIEW.md": "a5a169b930fb62731569cd2e691881fd9eb0d6464c8c79adeb8a27b18a130673"
+  },
+  "retained_structural_checks_verified": 47,
+  "recomputed_checks": [
+    "Builder and checker hashes match retained results.",
+    "All 47 distinct checks passed; targeted nested-response and new-module cases are present.",
+    "Retained compile/link/response substitutions change exactly two/two/one artifact arguments; every remaining token and its order is unchanged.",
+    "Retained native compile command keeps -O3 and -ffp-contract=off."
+  ],
+  "source_review": [
+    "Actual worker response determines the project object inventory; there is no fixed count and new Impl/ScoreGate is covered.",
+    "One worker object is replaced. Every reused project object has a non-symlinked generated C file and Lean source mapped to an identical committed HEAD blob; duplicates and foreign modules are rejected.",
+    "Both top-level @response and comma-separated -Wl,@response forms are rejected, including forms encountered after path-taking options.",
+    "Native compile/link arguments preserve worker ordering and flags; only explicit output/input artifact paths are replaced.",
+    "Before/after guards include sources, Model/worker inputs, generated C, objects, response, traces, diagnostic source, spec.lock and HEAD.",
+    "The docstring, manifest and review explicitly separate identity/immutability from freshness: a fresh committed worker and retained build provenance remain mandatory caller prerequisites."
+  ],
+  "blockers": [],
+  "next_diagnostic_conditions": [
+    "Run only after the gen2 generation workflow has freshly rebuilt the worker from the committed sources and retained source/C/object/native-command provenance.",
+    "Bind the diagnostic reused-object hashes to that fresh worker provenance and keep them unchanged through collection.",
+    "Pass an explicit new --output directory; the inherited default is still .cache/gen1-planning and should not be used for the new campaign.",
+    "The retained structural native-command evidence predates the gen2 fresh benchmark; it demonstrates substitution behavior, not freshness of future gen2 objects."
+  ],
+  "scope": "No source changes, builder invocation, Lean/native build, runtime tests, benchmark or profiling. Review used source inspection and read-only hashes/assertions over retained structural evidence. Only this review JSON was written."
+}

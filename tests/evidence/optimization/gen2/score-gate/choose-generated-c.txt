@@ -1,0 +1,41 @@
+LEAN_EXPORT uint8_t lp_lean1090_Lean1090_Impl_ScoreGate_choose(lean_object* v_terms_63_, lean_object* v_penalty_64_, lean_object* v_fallback_65_){
+_start:
+{
+lean_object* v_c_66_; lean_object* v_e_67_; lean_object* v___x_68_; lean_object* v___x_69_; uint8_t v___x_70_; 
+lean_inc_ref(v_penalty_64_);
+lean_inc(v_terms_63_);
+v_c_66_ = lp_lean1090_Lean1090_Impl_ScoreGate_center(v_terms_63_, v_penalty_64_);
+v_e_67_ = lp_lean1090_Lean1090_Impl_ScoreGate_envelope(v_terms_63_, v_penalty_64_);
+v___x_68_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__1, &lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__1_once, _init_lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__1);
+lean_inc_ref(v_e_67_);
+lean_inc_ref(v_c_66_);
+v___x_69_ = l_Rat_sub(v_c_66_, v_e_67_);
+v___x_70_ = l_Rat_instDecidableLe(v___x_68_, v___x_69_);
+if (v___x_70_ == 0)
+{
+lean_object* v___x_71_; uint8_t v___x_72_; 
+v___x_71_ = l_Rat_add(v_c_66_, v_e_67_);
+v___x_72_ = l_Rat_blt(v___x_71_, v___x_68_);
+if (v___x_72_ == 0)
+{
+lean_object* v___x_73_; lean_object* v___x_74_; uint8_t v___x_75_; 
+v___x_73_ = lean_box(0);
+v___x_74_ = lean_apply_1(v_fallback_65_, v___x_73_);
+v___x_75_ = lean_unbox(v___x_74_);
+return v___x_75_;
+}
+else
+{
+lean_dec_ref(v_fallback_65_);
+return v___x_70_;
+}
+}
+else
+{
+lean_dec_ref(v_e_67_);
+lean_dec_ref(v_c_66_);
+lean_dec_ref(v_fallback_65_);
+return v___x_70_;
+}
+}
+}

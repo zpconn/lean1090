@@ -1,6 +1,7 @@
 import Impl.CommBLayouts
 import Impl.ADSB
 import Impl.Binary64
+import Impl.ScoreGate
 
 /-!
 Initial complete runtime path, implementing the frozen pure algorithms.
@@ -380,11 +381,117 @@ the exact proof-visible rational that represents the oracle binary64 result. -/
 def cbCombinedScore (register word : Nat) : Rat :=
   Binary64.add (cbDensity register word) (cbPenalty register word)
 
+/-- Exact software-binary64 QNH densities for every 12-bit field code. -/
+def cbQNHScoreTable : Array Rat := Array.ofFn fun code : Fin 4096 =>
+  cbLaplace (Binary64.add (Binary64.mul (code.val : Rat) (Binary64.literal (1/10))) 800)
+    (10132/10) (54/10)
+
+/-- Both BDS40 selected-altitude fields use this same complete code table. -/
+def cbSelectedScoreTable : Array Rat := Array.ofFn fun code : Fin 4096 =>
+  cbGaussian (cbSelected code.val) 24688 10844
+
+/-- Exact BDS50 signed-roll densities for every 10-bit field code. -/
+def cbRollScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbLaplace ((payloadInteger .twosComplement 10 code.val : Rat) * (45/256)) 0 10
+
+/-- Exact BDS50 signed-rate densities; availability is checked at lookup. -/
+def cbRateScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbLaplace ((payloadInteger .twosComplement 10 code.val : Rat) * (8/256)) 0 (70/100)
+
+/-- Exact BDS50 true-airspeed densities for every 10-bit field code. -/
+def cbTASScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian ((code.val : Rat) * 2) 413 120
+
+/-- Exact BDS50 groundspeed densities for every 10-bit field code. -/
+def cbGroundSpeedScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian ((code.val : Rat) * 2) 418 129
+
+/-- Exact BDS60 indicated-airspeed densities for every 10-bit field code. -/
+def cbIASScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian (code.val : Rat) 272 55
+
+/-- Exact BDS60 Mach densities, preserving the two rounded value operations. -/
+def cbMachScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian (Binary64.div (Binary64.mul (code.val : Rat) (Binary64.literal (256/125))) 512)
+    (69/100) (21/100)
+
+/-- Exact BDS60 inertial-rate densities, including both zero sentinels. -/
+def cbVerticalScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian (if code.val % 512 == 0 || code.val % 512 == 511 then 0
+    else (payloadInteger .twosComplement 10 code.val : Rat) * 32) (-298) 1669
+
+/-- Exact BDS44 temperature densities, preserving its compatibility wrap. -/
+def cbTemperature44ScoreTable : Array Rat := Array.ofFn fun code : Fin 2048 =>
+  let initial := (payloadInteger .twosComplement 11 code.val : Rat) / 4
+  cbLaplace (if initial < -80 then initial + 256 else initial) (-21) (990/100)
+
+/-- Exact BDS44 wind-speed densities for every nine-bit field code. -/
+def cbWindScoreTable : Array Rat := Array.ofFn fun code : Fin 512 =>
+  cbGaussian (code.val : Rat) 52 29
+
+/-- BDS44 and BDS45 pressure share this complete 11-bit density table. -/
+def cbPressureScoreTable : Array Rat := Array.ofFn fun code : Fin 2048 =>
+  cbLaplace (code.val : Rat) 393 290
+
+/-- Exact BDS45 signed-temperature densities for every 10-bit field code. -/
+def cbTemperature45ScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  cbGaussian ((payloadInteger .twosComplement 10 code.val : Rat) * (1/4)) (-142/10) (164/10)
+
+/-- A field-code lookup with a proof of the array bound; no message is a key. -/
+@[inline] def cbDensityTableGet (width : Nat) (table : Array Rat)
+    (size : table.size = 2^width) (word start : Nat) : Rat :=
+  table[payloadBits word start width]'(by
+    rw [size]
+    exact Nat.mod_lt _ (Nat.two_pow_pos width))
+
+/-- Immutable exact field-code densities in the reference's field order.
+Only availability checks and bounded raw-field lookups run per message. -/
+def cbDensityTermsFast (register word : Nat) : List Rat :=
+  match register with
+  | 0x40 =>
+    (if payloadBits word 27 1 == 0 then [] else
+      [cbDensityTableGet 12 cbQNHScoreTable (by simp [cbQNHScoreTable]) word 28]) ++
+    (if payloadBits word 1 1 == 0 then [] else
+      [cbDensityTableGet 12 cbSelectedScoreTable (by simp [cbSelectedScoreTable]) word 2]) ++
+    (if payloadBits word 14 1 == 0 then [] else
+      [cbDensityTableGet 12 cbSelectedScoreTable (by simp [cbSelectedScoreTable]) word 15])
+  | 0x50 =>
+    (if payloadBits word 1 1 == 0 then [] else
+      [cbDensityTableGet 10 cbRollScoreTable (by simp [cbRollScoreTable]) word 2]) ++
+    (if payloadBits word 35 1 == 0 || payloadBits word 37 9 == 511 then [] else
+      [cbDensityTableGet 10 cbRateScoreTable (by simp [cbRateScoreTable]) word 36]) ++
+    (if payloadBits word 46 1 == 0 then [] else
+      [cbDensityTableGet 10 cbTASScoreTable (by simp [cbTASScoreTable]) word 47]) ++
+    (if payloadBits word 24 1 == 0 then [] else
+      [cbDensityTableGet 10 cbGroundSpeedScoreTable (by simp [cbGroundSpeedScoreTable]) word 25])
+  | 0x60 =>
+    (if payloadBits word 13 1 == 0 then [] else
+      [cbDensityTableGet 10 cbIASScoreTable (by simp [cbIASScoreTable]) word 14]) ++
+    (if payloadBits word 24 1 == 0 then [] else
+      [cbDensityTableGet 10 cbMachScoreTable (by simp [cbMachScoreTable]) word 25]) ++
+    (if payloadBits word 46 1 == 0 then [] else
+      [cbDensityTableGet 10 cbVerticalScoreTable (by simp [cbVerticalScoreTable]) word 47])
+  | 0x44 =>
+    [cbDensityTableGet 11 cbTemperature44ScoreTable (by simp [cbTemperature44ScoreTable]) word 24] ++
+    (if payloadBits word 5 1 == 0 then [] else
+      [cbDensityTableGet 9 cbWindScoreTable (by simp [cbWindScoreTable]) word 6]) ++
+    (if payloadBits word 35 1 == 0 then [] else
+      [cbDensityTableGet 11 cbPressureScoreTable (by simp [cbPressureScoreTable]) word 36])
+  | 0x45 =>
+    (if payloadBits word 16 1 == 0 then [] else
+      [cbDensityTableGet 10 cbTemperature45ScoreTable (by simp [cbTemperature45ScoreTable]) word 17]) ++
+    (if payloadBits word 27 1 == 0 then [] else
+      [cbDensityTableGet 11 cbPressureScoreTable (by simp [cbPressureScoreTable]) word 28])
+  | _ => []
+
 -- Initial algorithm: Spec/CommB.lean:439.
 /-- rs1090-derived bds/mod.rs validate_score_gate: accept score≥-3. The raw
-Message::from_bytes path applies this only to 40/44/45/50/60, not to 05. -/
+Message::from_bytes path applies this only to 40/44/45/50/60, not to 05.
+Exact field-code densities and a proved rational enclosure decide the common
+case; the uncertain interval invokes the complete software model lazily. -/
 def cbScorePasses (register word : Nat) : Bool :=
-  cbCombinedScore register word ≥ -3
+  ScoreGate.choose (cbDensityTermsFast register word) (cbPenalty register word)
+    (fun _ => cbCombinedScore register word ≥ -3)
 
 -- Initial algorithm: Spec/CommB.lean:444.
 /-- rs1090-derived commb.rs: per-message core candidates in decoder order,

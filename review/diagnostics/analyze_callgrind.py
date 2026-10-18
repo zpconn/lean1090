@@ -33,6 +33,11 @@ PREFIX = "lp_lean1090_Lean1090_Impl_"
 DECODE = PREFIX + "decode"
 SCORE = PREFIX + "cbScorePasses"
 CANDIDATE = PREFIX + "commBCoreEligible"
+OPTIONAL_SCORE_ANCHORS = {
+    PREFIX + name for name in (
+        "cbDensityTermsFast", "cbDensityTableGet", "cbDensityTerms",
+        "ScoreGate_mass", "ScoreGate_center", "ScoreGate_envelope", "ScoreGate_choose")
+}
 STAGES = (
     "frame_crc",
     "adsb_fields",
@@ -241,7 +246,7 @@ def stage_for(symbol: str, inherited: str) -> str:
     return inherited
 
 
-def analyze(profile: Profile, root: str, initial: str) -> dict:
+def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict:
     roots = [name for name in profile.nodes if base_name(name) == root]
     if not roots:
         # Empty corpus strata are legitimate, but no counted work may be hidden.
@@ -296,6 +301,8 @@ def analyze(profile: Profile, root: str, initial: str) -> dict:
             "cbDensity", "cbPenalty", "Semantics_adsb", "Semantics_commB",
             "frameAltitude", "frameIdentity", "report")
     }
+    optional_anchors = OPTIONAL_SCORE_ANCHORS | set(extra_anchors)
+    anchor_names |= optional_anchors
     anchors = {}
     for anchor in sorted(anchor_names):
         contexts = {name for name in profile.nodes if base_name(name) == anchor}
@@ -353,6 +360,7 @@ def analyze(profile: Profile, root: str, initial: str) -> dict:
         "ambiguous_contexts": ambiguous,
         "top_self_cost_functions": functions[:100],
         "native_anchor_counts_and_non_additive_inclusive_events": anchors,
+        "unobserved_optional_anchor_symbols": sorted(optional_anchors - anchors.keys()),
         "crc_nested_events_non_additive": crc_nested,
         "self_event_sum_matches_summary": True,
         "nonzero_outside_root": False,
@@ -457,30 +465,52 @@ def labeled_paths(values: list[str]) -> list[tuple[str, Path]]:
     return result
 
 
+def write_outputs(output: Path, payloads: dict[str, str]) -> None:
+    for name, body in payloads.items():
+        path = output / name
+        if path.exists() and path.read_text() != body:
+            raise ValueError(f"refusing to overwrite prior analysis: {path}")
+    output.mkdir(parents=True, exist_ok=True)
+    for name, body in payloads.items():
+        path = output / name
+        if not path.exists():
+            path.write_text(body)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", action="append", default=[], metavar="FAMILY=PATH")
     parser.add_argument("--score", action="append", default=[], metavar="REGISTER=PATH")
     parser.add_argument("--candidate", action="append", default=[], metavar="REGISTER=PATH")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--title")
+    parser.add_argument("--generation", type=int)
+    parser.add_argument("--extra-anchor", action="append", default=[], metavar="EXACT_NATIVE_SYMBOL",
+                        help="additional optional inclusive anchor; never an additive stage")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
+    if args.generation is not None and args.generation < 0:
+        parser.error("generation must be nonnegative")
+    if args.title is None:
+        args.title = (f"Generation {args.generation}" if args.generation is not None else "Decoder") + " diagnostic instruction counts"
     if args.self_test:
         fixture_checks()
         if not args.profile and not args.score and not args.candidate:
             return
     if args.output is None or not (args.profile or args.score or args.candidate):
         parser.error("provide --output and at least one --profile, --score or --candidate")
-    families = {label: analyze(parse(path), DECODE, "output_model_control")
+    families = {label: analyze(parse(path), DECODE, "output_model_control", args.extra_anchor)
                 for label, path in labeled_paths(args.profile)}
-    scores = {label: analyze(parse(path), SCORE, "commb_inference")
+    scores = {label: analyze(parse(path), SCORE, "commb_inference", args.extra_anchor)
               for label, path in labeled_paths(args.score)}
-    candidates = {label: analyze(parse(path), CANDIDATE, "commb_inference")
+    candidates = {label: analyze(parse(path), CANDIDATE, "commb_inference", args.extra_anchor)
                   for label, path in labeled_paths(args.candidate)}
     document = {
         "kind": "untimed_diagnostic_instruction_counts_not_benchmark",
         "analyzer_source": "review/diagnostics/analyze_callgrind.py",
         "analyzer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "generation": args.generation,
+        "optional_inclusive_anchor_symbols": sorted(OPTIONAL_SCORE_ANCHORS | set(args.extra_anchor)),
         "stage_definitions": DESCRIPTIONS,
         "method": "Exclusive self events, ancestor stage attribution, no inclusive double-counting or proportional distribution",
         "limitations": [
@@ -491,14 +521,13 @@ def main() -> None:
             "Callgrind context merges, if present, remain explicitly shared/ambiguous.",
             "Register probes are standalone executions of actual reached score gates; allocator/context state may differ from the whole decoder.",
             "Native entry counts describe retained symbols; inlining/tail-call elimination can remove entries without removing the computation. Census predictions are reported separately.",
+            "Optional ScoreGate/table/fallback anchors retain caller-stage attribution and overlapping inclusive counts only. An unobserved symbol is not evidence of zero logical work or zero fallback decisions.",
             "These are single-pass diagnostic executions. Lazy constants and allocator state can differ from the three-warmup benchmark; no unmeasured correction is applied.",
         ],
         "families": families, "non_additive_register_score_probes": scores,
         "non_additive_register_candidate_probes": candidates,
     }
-    args.output.mkdir(parents=True, exist_ok=True)
-    (args.output / "analysis.json").write_text(json.dumps(document, indent=2) + "\n")
-    lines = ["# Generation 0 diagnostic instruction counts", "", "**Diagnostic, not a benchmark result.** No throughput is inferred from these counts.", "",
+    lines = ["# " + args.title, "", "**Diagnostic, not a benchmark result.** No throughput is inferred from these counts.", "",
              "| Profile | Guest instructions (Ir) | Complete stage attribution |", "|---|---:|---|"]
     for label, result in families.items():
         lines.append(f"| {label} | {result['total_events'].get('Ir', 0):,} | {result['stage_attribution_complete']} |")
@@ -523,7 +552,8 @@ def main() -> None:
         for label, result in candidates.items():
             lines.append(f"| {label} | {result['total_events'].get('Ir', 0):,} |")
     lines += ["", "## Attribution limits", ""] + [f"- {item}" for item in document["limitations"]]
-    (args.output / "ANALYSIS.md").write_text("\n".join(lines) + "\n")
+    write_outputs(args.output, {"analysis.json": json.dumps(document, indent=2) + "\n",
+                                "ANALYSIS.md": "\n".join(lines) + "\n"})
     print(json.dumps({"analysis": str(args.output / "analysis.json"),
                       "families": {key: value["total_events"] for key, value in families.items()},
                       "register_probes": {key: value["total_events"] for key, value in scores.items()},

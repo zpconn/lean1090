@@ -1,0 +1,249 @@
+{
+  "classification": "one-pass diagnostic cpu-clock stack attribution; no throughput claim",
+  "total_samples": 969,
+  "decode_descendant_samples": 470,
+  "excluded_samples": 499,
+  "excluded_by_visible_context": {
+    "worker other phase, no decode frame": 87,
+    "no decode or worker frame; may include unwind failures": 384,
+    "worker decode-loop stack, no decode frame": 28
+  },
+  "all_samples_with_unknown_frame": 916,
+  "total_period": 4869346125,
+  "decode_descendant_period": 2361808750,
+  "disjoint_top_stages": {
+    "report/projection": 422,
+    "frame extraction": 24,
+    "acceptance": 24
+  },
+  "disjoint_detail_stages": {
+    "Comm-B inference and raw payload": 236,
+    "ADS-B raw payload": 9,
+    "report parity/address": 105,
+    "frame extraction": 24,
+    "Comm-B semantic projection": 42,
+    "ADS-B semantic projection": 23,
+    "altitude": 4,
+    "acceptance": 24,
+    "identity": 3
+  },
+  "nested_overlapping_categories": {
+    "software Binary64 (inclusive overlap)": 186,
+    "Rat (inclusive overlap)": 181,
+    "GMP/mpz (inclusive overlap)": 275,
+    "Parity (inclusive overlap)": 118
+  },
+  "decode_leaf_top30": [
+    [
+      "lean_alloc_small_object_core",
+      33
+    ],
+    [
+      "__gmpz_n_pow_ui",
+      31
+    ],
+    [
+      "__gmpz_add",
+      30
+    ],
+    [
+      "__gmp_default_allocate",
+      21
+    ],
+    [
+      "lean_dec_ref_cold",
+      19
+    ],
+    [
+      "__gmpz_realloc",
+      18
+    ],
+    [
+      "malloc@plt",
+      17
+    ],
+    [
+      "l_Rat_mul",
+      16
+    ],
+    [
+      "__gmpz_init_set",
+      15
+    ],
+    [
+      "mi_free",
+      15
+    ],
+    [
+      "__gmpz_init_set_ui",
+      14
+    ],
+    [
+      "__gmpz_clear",
+      12
+    ],
+    [
+      "__gmpz_mul_2exp",
+      12
+    ],
+    [
+      "__gmpz_tdiv_q_2exp",
+      12
+    ],
+    [
+      "cfree",
+      10
+    ],
+    [
+      "l_Rat_blt",
+      10
+    ],
+    [
+      "lean::mpz::~mpz()",
+      10
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      10
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_Parity_step",
+      9
+    ],
+    [
+      "lean::mpz::mpz(unsigned long)",
+      8
+    ],
+    [
+      "lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)",
+      8
+    ],
+    [
+      "lean_nat_big_shiftr",
+      7
+    ],
+    [
+      "lean::mpz::is_size_t() const",
+      7
+    ],
+    [
+      "lean::mpz::get_size_t() const",
+      6
+    ],
+    [
+      "malloc",
+      6
+    ],
+    [
+      "__gmpz_and",
+      5
+    ],
+    [
+      "lean_int_big_div_exact",
+      5
+    ],
+    [
+      "lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0",
+      5
+    ],
+    [
+      "lean_int_big_lt",
+      5
+    ],
+    [
+      "__gmpn_divexact_1_x86_64",
+      4
+    ]
+  ],
+  "all_samples_leaf_top20": [
+    [
+      "malloc",
+      158
+    ],
+    [
+      "[unknown]",
+      102
+    ],
+    [
+      "cfree",
+      95
+    ],
+    [
+      "lean_dec_ref_cold",
+      49
+    ],
+    [
+      "lean_alloc_small_object_core",
+      39
+    ],
+    [
+      "__gmpz_n_pow_ui",
+      31
+    ],
+    [
+      "__gmpz_add",
+      30
+    ],
+    [
+      "__gmp_default_allocate",
+      23
+    ],
+    [
+      "__gmpz_realloc",
+      22
+    ],
+    [
+      "mi_free",
+      20
+    ],
+    [
+      "l_Rat_mul",
+      20
+    ],
+    [
+      "__gmpz_init_set",
+      19
+    ],
+    [
+      "malloc@plt",
+      18
+    ],
+    [
+      "realloc",
+      17
+    ],
+    [
+      "__gmpz_init_set_ui",
+      14
+    ],
+    [
+      "lean::mpz::~mpz()",
+      13
+    ],
+    [
+      "__gmpz_mul_2exp",
+      13
+    ],
+    [
+      "__gmpz_clear",
+      12
+    ],
+    [
+      "__gmpz_tdiv_q_2exp",
+      12
+    ],
+    [
+      "lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)",
+      11
+    ]
+  ],
+  "limitations": [
+    "Only samples with the exact live Impl.decode frame are included. Missing/unwound/truncated ancestors can exclude real decoder samples; excluded samples are not assumed to be preparation.",
+    "Substages use visible symbol names; inlining and tail calls can erase stage frames. report-other remains explicit rather than guessed.",
+    "Percentages within decoded stacks are conditional on successful stack attribution and may be biased; see whole-process leaf samples and excluded count.",
+    "Software cpu-clock samples are statistical CPU-time evidence, not hardware instructions/cycles or a benchmark.",
+    "Inclusive nested categories overlap; only disjoint stage tables sum to included samples.",
+    "The worker runs through Lean runtime worker-thread startup; parent/child hardware/thread attribution was checked by visible decode stacks.",
+    "Compilation completed and Callgrind/native diagnostics were held during capture; other agents could read evidence or prepare orchestration. No benchmark or comparative timing claim."
+  ]
+}
