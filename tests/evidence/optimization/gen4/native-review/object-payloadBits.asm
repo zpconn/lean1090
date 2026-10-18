@@ -1,0 +1,294 @@
+
+.lake/build/ir/Impl/PayloadBits.c.o.export:     file format elf64-x86-64
+
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadWordBits:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadWordBits___boxed:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadBits:
+
+0000000000000000 <lp_lean1090_Lean1090_Impl_payloadBits>:
+   0:	push   %r15
+   2:	push   %r14
+   4:	push   %r12
+   6:	push   %rbx
+   7:	push   %rax
+   8:	mov    %rdx,%rbx
+   b:	mov    %rdi,%r14
+   e:	test   $0x1,%sil
+  12:	je     110 <lp_lean1090_Lean1090_Impl_payloadBits+0x110>
+  18:	mov    $0x1,%r15d
+  1e:	cmp    $0x2,%rsi
+  22:	jb     2b <lp_lean1090_Lean1090_Impl_payloadBits+0x2b>
+  24:	add    $0xfffffffffffffffe,%rsi
+  28:	mov    %rsi,%r15
+  2b:	test   $0x1,%r15b
+  2f:	je     12a <lp_lean1090_Lean1090_Impl_payloadBits+0x12a>
+  35:	test   $0x1,%bl
+  38:	je     26d <lp_lean1090_Lean1090_Impl_payloadBits+0x26d>
+  3e:	shr    $1,%r15
+  41:	mov    %rbx,%rdi
+  44:	shr    $1,%rdi
+  47:	add    %r15,%rdi
+  4a:	js     27d <lp_lean1090_Lean1090_Impl_payloadBits+0x27d>
+  50:	lea    0x1(,%rdi,2),%rax
+  58:	test   $0x1,%al
+  5a:	je     14b <lp_lean1090_Lean1090_Impl_payloadBits+0x14b>
+  60:	mov    $0x1,%r15d
+  66:	cmp    $0x71,%rax
+  6a:	ja     79 <lp_lean1090_Lean1090_Impl_payloadBits+0x79>
+  6c:	and    $0xfffffffffffffffe,%rax
+  70:	mov    $0x71,%r15d
+  76:	sub    %rax,%r15
+  79:	test   $0x1,%bl
+  7c:	je     176 <lp_lean1090_Lean1090_Impl_payloadBits+0x176>
+  82:	cmp    $0x81,%rbx
+  89:	jae    18b <lp_lean1090_Lean1090_Impl_payloadBits+0x18b>
+  8f:	test   $0x1,%r14b
+  93:	jne    c1 <lp_lean1090_Lean1090_Impl_payloadBits+0xc1>
+  95:	mov    %r14,%rdi
+  98:	call   9d <lp_lean1090_Lean1090_Impl_payloadBits+0x9d>
+  9d:	mov    %rax,%r14
+  a0:	test   $0x1,%r15b
+  a4:	je     ca <lp_lean1090_Lean1090_Impl_payloadBits+0xca>
+  a6:	shr    $1,%r15
+  a9:	mov    %r15,%rcx
+  ac:	shr    %cl,%r14
+  af:	test   $0x1,%bl
+  b2:	jne    ee <lp_lean1090_Lean1090_Impl_payloadBits+0xee>
+  b4:	mov    %rbx,%rdi
+  b7:	call   bc <lp_lean1090_Lean1090_Impl_payloadBits+0xbc>
+  bc:	mov    %rax,%rbx
+  bf:	jmp    f1 <lp_lean1090_Lean1090_Impl_payloadBits+0xf1>
+  c1:	shr    $1,%r14
+  c4:	test   $0x1,%r15b
+  c8:	jne    a6 <lp_lean1090_Lean1090_Impl_payloadBits+0xa6>
+  ca:	mov    %r15,%rdi
+  cd:	call   d2 <lp_lean1090_Lean1090_Impl_payloadBits+0xd2>
+  d2:	mov    %rax,%rcx
+  d5:	mov    (%r15),%eax
+  d8:	cmp    $0x2,%eax
+  db:	jl     313 <lp_lean1090_Lean1090_Impl_payloadBits+0x313>
+  e1:	dec    %eax
+  e3:	mov    %eax,(%r15)
+  e6:	shr    %cl,%r14
+  e9:	test   $0x1,%bl
+  ec:	je     b4 <lp_lean1090_Lean1090_Impl_payloadBits+0xb4>
+  ee:	shr    $1,%rbx
+  f1:	mov    $0xffffffffffffffff,%rax
+  f8:	mov    %ebx,%ecx
+  fa:	shl    %cl,%rax
+  fd:	not    %rax
+ 100:	and    %rax,%r14
+ 103:	lea    0x1(,%r14,2),%rax
+ 10b:	jmp    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+ 110:	mov    %rsi,%rdi
+ 113:	mov    $0x3,%esi
+ 118:	call   11d <lp_lean1090_Lean1090_Impl_payloadBits+0x11d>
+ 11d:	mov    %rax,%r15
+ 120:	test   $0x1,%r15b
+ 124:	jne    35 <lp_lean1090_Lean1090_Impl_payloadBits+0x35>
+ 12a:	mov    %r15,%rdi
+ 12d:	mov    %rbx,%rsi
+ 130:	call   135 <lp_lean1090_Lean1090_Impl_payloadBits+0x135>
+ 135:	mov    (%r15),%ecx
+ 138:	cmp    $0x2,%ecx
+ 13b:	jl     34b <lp_lean1090_Lean1090_Impl_payloadBits+0x34b>
+ 141:	dec    %ecx
+ 143:	mov    %ecx,(%r15)
+ 146:	jmp    58 <lp_lean1090_Lean1090_Impl_payloadBits+0x58>
+ 14b:	mov    $0x71,%edi
+ 150:	mov    %rax,%rsi
+ 153:	mov    %rax,%r12
+ 156:	call   15b <lp_lean1090_Lean1090_Impl_payloadBits+0x15b>
+ 15b:	mov    %rax,%r15
+ 15e:	mov    (%r12),%eax
+ 162:	cmp    $0x2,%eax
+ 165:	jl     362 <lp_lean1090_Lean1090_Impl_payloadBits+0x362>
+ 16b:	dec    %eax
+ 16d:	mov    %eax,(%r12)
+ 171:	jmp    79 <lp_lean1090_Lean1090_Impl_payloadBits+0x79>
+ 176:	mov    $0x81,%esi
+ 17b:	mov    %rbx,%rdi
+ 17e:	call   183 <lp_lean1090_Lean1090_Impl_payloadBits+0x183>
+ 183:	test   %al,%al
+ 185:	jne    8f <lp_lean1090_Lean1090_Impl_payloadBits+0x8f>
+ 18b:	mov    $0x5,%edi
+ 190:	mov    %r15,%rsi
+ 193:	call   198 <lp_lean1090_Lean1090_Impl_payloadBits+0x198>
+ 198:	mov    %rax,%r12
+ 19b:	test   $0x1,%r15b
+ 19f:	jne    1b2 <lp_lean1090_Lean1090_Impl_payloadBits+0x1b2>
+ 1a1:	mov    (%r15),%eax
+ 1a4:	cmp    $0x2,%eax
+ 1a7:	jl     336 <lp_lean1090_Lean1090_Impl_payloadBits+0x336>
+ 1ad:	dec    %eax
+ 1af:	mov    %eax,(%r15)
+ 1b2:	movabs $0x7fffffff00000000,%r15
+ 1bc:	test   $0x1,%r14b
+ 1c0:	je     287 <lp_lean1090_Lean1090_Impl_payloadBits+0x287>
+ 1c6:	test   $0x1,%r12b
+ 1ca:	je     2b3 <lp_lean1090_Lean1090_Impl_payloadBits+0x2b3>
+ 1d0:	shr    $1,%r12
+ 1d3:	je     1ed <lp_lean1090_Lean1090_Impl_payloadBits+0x1ed>
+ 1d5:	shr    $1,%r14
+ 1d8:	mov    %r14,%rax
+ 1db:	or     %r12,%rax
+ 1de:	test   %r15,%rax
+ 1e1:	je     1f5 <lp_lean1090_Lean1090_Impl_payloadBits+0x1f5>
+ 1e3:	mov    %r14,%rax
+ 1e6:	xor    %edx,%edx
+ 1e8:	div    %r12
+ 1eb:	jmp    1fd <lp_lean1090_Lean1090_Impl_payloadBits+0x1fd>
+ 1ed:	mov    $0x1,%r14d
+ 1f3:	jmp    205 <lp_lean1090_Lean1090_Impl_payloadBits+0x205>
+ 1f5:	mov    %r14d,%eax
+ 1f8:	xor    %edx,%edx
+ 1fa:	div    %r12d
+ 1fd:	lea    0x1(,%rax,2),%r14
+ 205:	mov    $0x5,%edi
+ 20a:	mov    %rbx,%rsi
+ 20d:	call   212 <lp_lean1090_Lean1090_Impl_payloadBits+0x212>
+ 212:	mov    %rax,%rbx
+ 215:	test   $0x1,%r14b
+ 219:	je     2a1 <lp_lean1090_Lean1090_Impl_payloadBits+0x2a1>
+ 21f:	test   $0x1,%bl
+ 222:	je     2d9 <lp_lean1090_Lean1090_Impl_payloadBits+0x2d9>
+ 228:	shr    $1,%rbx
+ 22b:	je     24d <lp_lean1090_Lean1090_Impl_payloadBits+0x24d>
+ 22d:	shr    $1,%r14
+ 230:	mov    %r14,%rax
+ 233:	or     %rbx,%rax
+ 236:	test   %r15,%rax
+ 239:	je     252 <lp_lean1090_Lean1090_Impl_payloadBits+0x252>
+ 23b:	mov    %r14,%rax
+ 23e:	xor    %edx,%edx
+ 240:	div    %rbx
+ 243:	lea    0x1(,%rdx,2),%rax
+ 24b:	jmp    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+ 24d:	mov    %r14,%rax
+ 250:	jmp    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+ 252:	mov    %r14d,%eax
+ 255:	xor    %edx,%edx
+ 257:	div    %ebx
+ 259:	lea    0x1(,%rdx,2),%rax
+ 261:	add    $0x8,%rsp
+ 265:	pop    %rbx
+ 266:	pop    %r12
+ 268:	pop    %r14
+ 26a:	pop    %r15
+ 26c:	ret
+ 26d:	mov    %r15,%rdi
+ 270:	mov    %rbx,%rsi
+ 273:	call   278 <lp_lean1090_Lean1090_Impl_payloadBits+0x278>
+ 278:	jmp    58 <lp_lean1090_Lean1090_Impl_payloadBits+0x58>
+ 27d:	call   282 <lp_lean1090_Lean1090_Impl_payloadBits+0x282>
+ 282:	jmp    58 <lp_lean1090_Lean1090_Impl_payloadBits+0x58>
+ 287:	mov    %r14,%rdi
+ 28a:	mov    %r12,%rsi
+ 28d:	call   292 <lp_lean1090_Lean1090_Impl_payloadBits+0x292>
+ 292:	mov    %rax,%r14
+ 295:	test   $0x1,%r12b
+ 299:	jne    205 <lp_lean1090_Lean1090_Impl_payloadBits+0x205>
+ 29f:	jmp    2c1 <lp_lean1090_Lean1090_Impl_payloadBits+0x2c1>
+ 2a1:	mov    %r14,%rdi
+ 2a4:	mov    %rbx,%rsi
+ 2a7:	call   2ac <lp_lean1090_Lean1090_Impl_payloadBits+0x2ac>
+ 2ac:	test   $0x1,%bl
+ 2af:	je     2e4 <lp_lean1090_Lean1090_Impl_payloadBits+0x2e4>
+ 2b1:	jmp    2fd <lp_lean1090_Lean1090_Impl_payloadBits+0x2fd>
+ 2b3:	mov    %r14,%rdi
+ 2b6:	mov    %r12,%rsi
+ 2b9:	call   2be <lp_lean1090_Lean1090_Impl_payloadBits+0x2be>
+ 2be:	mov    %rax,%r14
+ 2c1:	mov    (%r12),%eax
+ 2c5:	cmp    $0x2,%eax
+ 2c8:	jl     377 <lp_lean1090_Lean1090_Impl_payloadBits+0x377>
+ 2ce:	dec    %eax
+ 2d0:	mov    %eax,(%r12)
+ 2d4:	jmp    205 <lp_lean1090_Lean1090_Impl_payloadBits+0x205>
+ 2d9:	mov    %r14,%rdi
+ 2dc:	mov    %rbx,%rsi
+ 2df:	call   2e4 <lp_lean1090_Lean1090_Impl_payloadBits+0x2e4>
+ 2e4:	mov    (%rbx),%ecx
+ 2e6:	cmp    $0x2,%ecx
+ 2e9:	jl     38c <lp_lean1090_Lean1090_Impl_payloadBits+0x38c>
+ 2ef:	dec    %ecx
+ 2f1:	mov    %ecx,(%rbx)
+ 2f3:	test   $0x1,%r14b
+ 2f7:	jne    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+ 2fd:	mov    (%r14),%ecx
+ 300:	cmp    $0x2,%ecx
+ 303:	jl     3a7 <lp_lean1090_Lean1090_Impl_payloadBits+0x3a7>
+ 309:	dec    %ecx
+ 30b:	mov    %ecx,(%r14)
+ 30e:	jmp    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+ 313:	mov    %rcx,%r12
+ 316:	test   %eax,%eax
+ 318:	je     322 <lp_lean1090_Lean1090_Impl_payloadBits+0x322>
+ 31a:	mov    %r15,%rdi
+ 31d:	call   322 <lp_lean1090_Lean1090_Impl_payloadBits+0x322>
+ 322:	mov    %r12,%rcx
+ 325:	shr    %cl,%r14
+ 328:	test   $0x1,%bl
+ 32b:	je     b4 <lp_lean1090_Lean1090_Impl_payloadBits+0xb4>
+ 331:	jmp    ee <lp_lean1090_Lean1090_Impl_payloadBits+0xee>
+ 336:	test   %eax,%eax
+ 338:	je     1b2 <lp_lean1090_Lean1090_Impl_payloadBits+0x1b2>
+ 33e:	mov    %r15,%rdi
+ 341:	call   346 <lp_lean1090_Lean1090_Impl_payloadBits+0x346>
+ 346:	jmp    1b2 <lp_lean1090_Lean1090_Impl_payloadBits+0x1b2>
+ 34b:	mov    %rax,%r12
+ 34e:	test   %ecx,%ecx
+ 350:	je     35a <lp_lean1090_Lean1090_Impl_payloadBits+0x35a>
+ 352:	mov    %r15,%rdi
+ 355:	call   35a <lp_lean1090_Lean1090_Impl_payloadBits+0x35a>
+ 35a:	mov    %r12,%rax
+ 35d:	jmp    58 <lp_lean1090_Lean1090_Impl_payloadBits+0x58>
+ 362:	test   %eax,%eax
+ 364:	je     79 <lp_lean1090_Lean1090_Impl_payloadBits+0x79>
+ 36a:	mov    %r12,%rdi
+ 36d:	call   372 <lp_lean1090_Lean1090_Impl_payloadBits+0x372>
+ 372:	jmp    79 <lp_lean1090_Lean1090_Impl_payloadBits+0x79>
+ 377:	test   %eax,%eax
+ 379:	je     205 <lp_lean1090_Lean1090_Impl_payloadBits+0x205>
+ 37f:	mov    %r12,%rdi
+ 382:	call   387 <lp_lean1090_Lean1090_Impl_payloadBits+0x387>
+ 387:	jmp    205 <lp_lean1090_Lean1090_Impl_payloadBits+0x205>
+ 38c:	test   %ecx,%ecx
+ 38e:	je     2f3 <lp_lean1090_Lean1090_Impl_payloadBits+0x2f3>
+ 394:	mov    %rbx,%rdi
+ 397:	mov    %rax,%rbx
+ 39a:	call   39f <lp_lean1090_Lean1090_Impl_payloadBits+0x39f>
+ 39f:	mov    %rbx,%rax
+ 3a2:	jmp    2f3 <lp_lean1090_Lean1090_Impl_payloadBits+0x2f3>
+ 3a7:	mov    %rax,%rbx
+ 3aa:	test   %ecx,%ecx
+ 3ac:	je     3b6 <lp_lean1090_Lean1090_Impl_payloadBits+0x3b6>
+ 3ae:	mov    %r14,%rdi
+ 3b1:	call   3b6 <lp_lean1090_Lean1090_Impl_payloadBits+0x3b6>
+ 3b6:	mov    %rbx,%rax
+ 3b9:	jmp    261 <lp_lean1090_Lean1090_Impl_payloadBits+0x261>
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadBits___boxed:
+
+Disassembly of section .text.lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_decodePayloadFields_spec__0:
+
+Disassembly of section .text.lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_decodePayloadFields_spec__0___boxed:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_decodePayloadFields:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_decodePayloadFields___boxed:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadInteger:
+
+Disassembly of section .text._init_lp_lean1090_Lean1090_Impl_payloadInteger___closed__0:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadInteger___boxed:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadValue:
+
+Disassembly of section .text.lp_lean1090_Lean1090_Impl_payloadValue___boxed:
+
+Disassembly of section .text.initialize_lean1090_Impl_PayloadBits:

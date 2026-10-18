@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "command": [
+    "lake",
+    "build",
+    "Proofs.PayloadBits"
+  ],
+  "exit_code": 0,
+  "jobs": 5,
+  "recorded_at_utc": "2026-10-18T20:25:20.319006+00:00",
+  "files_sha256": {
+    "Impl/PayloadBits.lean": "77966b972a6f9c0c81a767e637a791909b67d1c4bab083d867479870b1dc11be",
+    "Proofs/PayloadBits.lean": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+    "tests/evidence/optimization/gen4/proof/build-01.log": "908aa6432fb99f139bbe55734759eec01a0f61dbbd4542185fac1debc1713ecf"
+  },
+  "failed_attempts": 0,
+  "runtime_imports": [
+    "Model.Types (imports Std only)"
+  ],
+  "runtime_names": [
+    "Lean1090.Impl.payloadWordBits",
+    "Lean1090.Impl.payloadWordMask_toNat",
+    "Lean1090.Impl.payloadBits",
+    "Lean1090.Impl.payloadBits_lt"
+  ],
+  "universal_refinement": "Lean1090.Proofs.PayloadBits.payloadBits_eq (word start width : Nat) : Impl.payloadBits word start width = Spec.payloadBits word start width",
+  "runtime_bound": "Lean1090.Impl.payloadBits_lt (word start width : Nat) : payloadBits word start width < 2^width",
+  "kernel_witnesses": [
+    "zero_width_witness: over-wide word, start zero, width zero",
+    "last_fast_width_witness: over-wide word, width63 maximal mask",
+    "first_fallback_width_witness: over-wide word, width64 falls back",
+    "word_boundary_witness: generic helper extracts a field ending exactly at bit64"
+  ],
+  "axioms_permitted": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "notes": [
+    "Runtime helper and mask/bound proof use only Lean core/Std; no Spec or proof module imported by runtime.",
+    "Only assigned Impl/PayloadBits.lean and new Proofs/PayloadBits.lean changed; root owns dependent bound adjustments and Decoder integration.",
+    "No frozen file, trusted primitive, benchmark or corpus behavior changed.",
+    "Targeted proof build is not a full gate or performance claim."
+  ]
+}

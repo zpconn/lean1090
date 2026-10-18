@@ -1,0 +1,76 @@
+{
+  "status": "passed_integrated_build_and_proof_adjustment_review",
+  "reviewed_utc": "2026-10-18T20:27:49.659883+00:00",
+  "prior_source_review_sha256": "8d41e5d0ff5952a3716cbff5541ddeea42b0376d36ee27ad8e671b9276d82337",
+  "final_source_sha256": {
+    "Impl/PayloadBits.lean": "77966b972a6f9c0c81a767e637a791909b67d1c4bab083d867479870b1dc11be",
+    "Impl/CommB.lean": "8d506ed36782dc5a8cf4130f76904c12a8e123443ce98107ee0310fcf07d05a2",
+    "Proofs/PayloadBits.lean": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+    "Proofs/CommBTables.lean": "e84ce666239755d5b1df8079f9d41102d979639deafff3662bea08790cf6ea95",
+    "Proofs/Decoder.lean": "c9015700ec8d728289e16937f42ce9da9d4ecd62ae5d8a77865dab4a7dea4975"
+  },
+  "changed_since_prior_review": [
+    "Proofs/CommBTables.lean"
+  ],
+  "first_failed_build_retained": {
+    "manifest": "tests/evidence/optimization/gen4/integration/targeted-build.json",
+    "manifest_sha256": "8ad15267095fe3087e0f3c803528d859350b81df297d28d6c07bb905112f3ebf",
+    "log": "tests/evidence/optimization/gen4/integration/targeted-build.log",
+    "log_sha256": "5fe9b77cac3758be44ceee23b44f77e237c08cac6b92e1d87257c5849dc946c1",
+    "exit_code": 1
+  },
+  "successful_integrated_build": {
+    "manifest": "tests/evidence/optimization/gen4/integration/targeted-build-02.json",
+    "manifest_sha256": "7522575ae2eabcff1edbaa6cfee89338a093306c61b5a29fdf16396214f86f3d",
+    "log": "tests/evidence/optimization/gen4/integration/targeted-build-02.log",
+    "log_sha256": "52fb9d5993f41b5e5a2f17234da31770aaf7db5809d0d2edbd975c3736f40cc7",
+    "exit_code": 0,
+    "completed_jobs": 3509,
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Decoder",
+      "lean1090",
+      "messageGenerator",
+      "commbDifferential"
+    ]
+  },
+  "required_axiom_outputs": {
+    "Lean1090.Proofs.CommBTables.density_terms_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.CommBTables.density_terms_length": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.DTEOracleRefinement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Refinement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.PrefixRefinement": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "findings": [],
+  "proof_review": [
+    "The theorem type and its unconstrained register/word quantifiers are unchanged; it still bounds the live fast density list by four.",
+    "The proof first rewrites through the already proved all-input density_terms_eq, then splits the actual cbDensityTerms register branches and each optional score field.",
+    "BDS40 has at most three terms, BDS50 four, BDS60 three, BDS44 one mandatory plus two optional, BDS45 two optional; every other register has none. No decoder-validity or acceptance hypothesis is introduced.",
+    "The new proof no longer assumes Impl.cbDensityTerms and Spec.cbDensityTerms are definitionally equal. It proves the list bound structurally without changing either function body or any frozen statement.",
+    "The runtime source hashes are identical to the prior reviewed runtime. Only Proofs.CommBTables changed after that review.",
+    "The first failure and its compiler recovery axiom output remain in the failed historical log. The successful rebuild prints only permitted axioms for density equality/length and the three decoder refinements."
+  ],
+  "scope": "Read-only source/hash/build-log review; reviewer performed no build, test, native execution or correctness-source change.",
+  "remaining_validation": "Full gate and fresh differential campaign are not claimed by this integration review."
+}

@@ -146,8 +146,8 @@ def cbStandardThreat (word : Nat) : Option StandardCommBThreat :=
     | 1 => if payloadBits word 55 2 == 0 then
         some (.address (payloadBits word 31 24)) else none
     | 2 => some (.orientation (Altitude.decodeGillham (payloadBits word 31 13))
-        (standardThreatRange ⟨payloadBits word 44 7, Nat.mod_lt _ (by decide)⟩)
-        (standardThreatBearing ⟨payloadBits word 51 6, Nat.mod_lt _ (by decide)⟩))
+        (standardThreatRange ⟨payloadBits word 44 7, payloadBits_lt word 44 7⟩)
+        (standardThreatBearing ⟨payloadBits word 51 6, payloadBits_lt word 51 6⟩))
     | _ => some .unassigned
 
 -- Initial algorithm: Spec/CommB.lean:150.
@@ -442,7 +442,7 @@ def cbTemperature45ScoreTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
     (size : table.size = 2^width) (word start : Nat) : Rat :=
   table[payloadBits word start width]'(by
     rw [size]
-    exact Nat.mod_lt _ (Nat.two_pow_pos width))
+    exact payloadBits_lt word start width)
 
 /-- Immutable exact field-code densities in the reference's field order.
 Only availability checks and bounded raw-field lookups run per message. -/

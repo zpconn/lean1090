@@ -1,0 +1,92 @@
+{
+  "status": "passed_source_and_targeted_proof_review",
+  "reviewed_utc": "2026-10-18T20:26:11.663054+00:00",
+  "base_commit": "3ba567f1d5039eb16ab033dd436d3d4f0f33c98b",
+  "source_sha256": {
+    "Impl/PayloadBits.lean": "77966b972a6f9c0c81a767e637a791909b67d1c4bab083d867479870b1dc11be",
+    "Impl/CommB.lean": "8d506ed36782dc5a8cf4130f76904c12a8e123443ce98107ee0310fcf07d05a2",
+    "Proofs/PayloadBits.lean": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+    "Proofs/CommBTables.lean": "4ca1c631ab53f0b6a2bc41994fca7ecbb1285208b13e238aeef504e26d4cb99d",
+    "Proofs/Decoder.lean": "c9015700ec8d728289e16937f42ce9da9d4ecd62ae5d8a77865dab4a7dea4975"
+  },
+  "proof_build_log": {
+    "path": "tests/evidence/optimization/gen4/proof/build-01.log",
+    "sha256": "908aa6432fb99f139bbe55734759eec01a0f61dbbd4542185fac1debc1713ecf"
+  },
+  "axiom_outputs": [
+    {
+      "name": "Lean1090.Proofs.PayloadBits.payloadWordBits_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PayloadBits.payloadBits_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Impl.payloadBits_lt",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PayloadBits.zero_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PayloadBits.last_fast_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PayloadBits.first_fallback_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PayloadBits.word_boundary_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "frozen_files_checked": 104,
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "findings": [],
+  "domain_review": [
+    "payloadBits_eq quantifies over every Nat word, start and width, with no wire validity, acceptance or bounded-word hypothesis.",
+    "For width<64, the computed shift=56-(start-1+width) is below 64 and shift+width\u226464. Truncating an arbitrary-width word to UInt64 cannot discard any requested output bit.",
+    "The public shift never reaches64; both generic helper shift and mask width bounds are explicit in payloadWordBits_eq. UInt64 modulo 64 shift-count semantics are therefore handled rather than assumed absent.",
+    "Width 0 produces mask 0 and value 0; width 63 produces 2^63 - 1 as the mask without unsigned subtraction wrap; width 64 and all larger widths retain the original unbounded Nat division/modulo expression.",
+    "start 0 uses the same saturating start-1 as the frozen formula. Oversized starts use the same saturating final subtraction, yielding shift 0; neither is rejected or silently reinterpreted.",
+    "Zero words, words wider than 64/130 bits, fields ending exactly at bit 64, and unrestricted fallback widths are covered by the universal proofs. Four kernel witnesses additionally exercise widths 0/63/64 and the helper bit 64 boundary.",
+    "payloadBits_lt uses the exact mask upper bound and Nat.mod_lt for the fallback. It assumes no validity predicate and establishes checked runtime array/Fin indices for every natural argument."
+  ],
+  "live_binding_review": [
+    "The existing Impl.payloadBits name is replaced in place. decodePayloadFields and payloadValue continue calling it; ADSB, CommB inference/raw records, standard/oracle semantics, JSON presentation and whole-message report callers still use these live definitions.",
+    "The three changes in Impl.CommB are erased proof terms in cbStandardThreat Fin constructors and cbDensityTableGet checked indexing; no alternate decoder, corpus key, cache or legacy payload-copy path is introduced.",
+    "Proofs.Decoder replaces its former definitional payload equality with funext plus the new universal payloadBits_eq; all downstream component equalities retain the actual Impl calls.",
+    "Proofs.CommBTables changes only its import and private verticalMagnitude proof, rewriting live extraction through the proved equality before the same Nat modulo identity.",
+    "Frozen direct CommB and whole-message adapters still reach Impl.decodeBDS, Impl.Semantics.commB and Impl.decode; the new helper is transitively on their live paths.",
+    "Impl.PayloadBits imports only Model.Types, which imports Std. Runtime mask/bound proofs use platform facts only; Spec.PayloadBits is imported exclusively by the new proof module."
+  ],
+  "scope": "Read-only source/diff/hash/log review. No builds, tests, decoder execution, native artifact edits or frozen changes by reviewer.",
+  "remaining_validation": "Integrated decoder/native build and full gate/fresh campaigns remain the parent responsibility; this artifact does not claim they passed."
+}

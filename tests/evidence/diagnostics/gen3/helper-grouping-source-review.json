@@ -1,0 +1,21 @@
+{
+  "status": "passed_read_only_source_review",
+  "recorded_utc": "2026-10-18T20:19:49.656470+00:00",
+  "files": {
+    "review/diagnostics/analyze_callgrind.py": "f93250428c4ab0d873d8a13fad53b5125d2c7e7a9d8c0e0f759137707eee5c7a",
+    "review/diagnostics/write_cost_report.py": "0275780a128d93b070ece1716aaad20bae00004df6f02fddb07424bebb18f0bb"
+  },
+  "findings": [],
+  "checks": [
+    "Existing exclusive stage attribution and reconstruction are unchanged; helper observations are added after the exact partition.",
+    "Helper groups require exactly one observed stage and use (stage, actual native base symbol) keys. Ambiguous contexts are excluded; their self events remain explicit in the existing shared_ambiguous bucket.",
+    "Each context self event enters one helper group once; writer requires the grouped self sum to equal the largest exclusive stage.",
+    "Incoming calls and inclusive Ir are accumulated directly from every incoming edge, never added into self costs or exclusive-stage totals.",
+    "Recursive fixture separates two same-base contexts: self 3+4=7, incoming inclusive 7+4=11, exact frame-stage self 1+3+4=8. This correctly retains rather than hides within-row overlap.",
+    "Report explicitly describes within-row recursive/re-entrant overlap, descendants crossing later stage boundaries, and the absence of deduplicated subtree meaning. It forbids adding inclusive rows or inferring speedups.",
+    "Existing fixture checks shared-stage exclusion. No additional explicit stage-transition fixture was present in this source version; this does not invalidate the stated raw incoming-edge accounting.",
+    "CRC syndrome and exact fold entry counts are checked against the independent CRC census; helper labels now describe combined frame/CRC-stage attribution, not stricter parity ancestry."
+  ],
+  "execution_scope": "Static source/fixture/wording review plus file hashing only. No fixture execution, native decoder execution, build, test, measurement or production change.",
+  "pending": "Independent raw-profile recount of all helper self, entry and inclusive totals after complete campaign."
+}

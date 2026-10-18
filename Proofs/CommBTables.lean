@@ -1,5 +1,6 @@
 import Impl.CommB
 import Proofs.CommBArithmetic
+import Proofs.PayloadBits
 
 /-!
 Exact immutable density tables. Every equality is symbolic in the complete
@@ -36,7 +37,7 @@ private theorem density50 (word : Nat) :
 
 private theorem verticalMagnitude (word : Nat) :
     payloadBits word 47 10 % 512 = payloadBits word 48 9 := by
-  simp [payloadBits, Nat.mod_mod_of_dvd]
+  simp [PayloadBits.payloadBits_eq, Spec.payloadBits, Nat.mod_mod_of_dvd]
 
 private theorem density60 (word : Nat) :
     cbDensityTermsFast 0x60 word = cbDensityTerms 0x60 word := by
@@ -90,8 +91,11 @@ theorem density_terms_eq (register word : Nat) :
 theorem density_terms_length (register word : Nat) :
     (cbDensityTermsFast register word).length ≤ 4 := by
   rw [density_terms_eq]
-  change (Spec.cbDensityTerms register word).length ≤ 4
-  exact CommBArithmeticFacts.density_terms_length register word
+  unfold cbDensityTerms
+  split <;> simp only [List.length_append, List.length_cons, List.length_nil]
+  all_goals try omega
+  all_goals simp only [cbScoreField]
+  all_goals repeat' split <;> simp_all
 
 #print axioms density_terms_eq
 #print axioms density_terms_length

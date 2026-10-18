@@ -1,0 +1,57 @@
+{
+  "recorded_utc": "2026-10-18T20:27:53.996920+00:00",
+  "message_seed": 388032270,
+  "commb_seed": 1476569264,
+  "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical-record and mutual collisions rejected.",
+  "historical_seed_values_checked": 17,
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "3ba567f1d5039eb16ab033dd436d3d4f0f33c98b",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Impl/PayloadBits.lean": "77966b972a6f9c0c81a767e637a791909b67d1c4bab083d867479870b1dc11be",
+    "Impl/CommB.lean": "8d506ed36782dc5a8cf4130f76904c12a8e123443ce98107ee0310fcf07d05a2",
+    "Proofs/PayloadBits.lean": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+    "Proofs/CommBTables.lean": "e84ce666239755d5b1df8079f9d41102d979639deafff3662bea08790cf6ea95",
+    "Proofs/Decoder.lean": "c9015700ec8d728289e16937f42ce9da9d4ecd62ae5d8a77865dab4a7dea4975"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen4-gate/fresh-commb.csv",
+      "100000",
+      "1476569264"
+    ],
+    [
+      "python3",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen4-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen4/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "388032270",
+      "--commb-boundaries",
+      ".cache/gen4-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen4/fresh-message"
+    ]
+  ],
+  "authorization_note": "Parent explicitly authorized generation and native direct campaign after combined targeted build02 passed3509jobs and allfive runtime/proof files were staged and stable; fullgate uses independent outputs. Initial integration failure and structural-proof correction are retained in root evidence."
+}

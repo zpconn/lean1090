@@ -3,6 +3,7 @@ import Capstones
 import Proofs.CommBTables
 import Proofs.ScoreGate
 import Proofs.ParityBits
+import Proofs.PayloadBits
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -118,7 +119,8 @@ private theorem decoder_Presentation_velocityTrack_eq :
 private theorem decoder_adsbMovement_eq : @Impl.adsbMovement = @Spec.adsbMovement := by
   rfl
 private theorem decoder_payloadBits_eq : @Impl.payloadBits = @Spec.payloadBits := by
-  rfl
+  funext word start width
+  exact PayloadBits.payloadBits_eq word start width
 private theorem decoder_adsbOracleVelocityComponents_eq :
     @Impl.adsbOracleVelocityComponents = @Spec.adsbOracleVelocityComponents := by
   unfold Impl.adsbOracleVelocityComponents Spec.adsbOracleVelocityComponents

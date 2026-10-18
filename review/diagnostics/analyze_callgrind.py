@@ -323,7 +323,7 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
     crc_nested = {}
     for anchor in (PREFIX + "Parity_step", PREFIX + "Parity_syndrome",
                    "l_BitVec_ofNat", "l_Nat_testBit", "lean_nat_pow",
-                   "lean_nat_big_shiftr", "lean_nat_div", "lean_nat_mod"):
+                   "lean_nat_big_shiftr", "lean_uint64_of_big_nat", "lean_nat_div", "lean_nat_mod"):
         contexts = {name for name in profile.nodes
                     if base_name(name) == anchor and labels[name] == {"frame_crc"}}
         excluded_ambiguous = {name for name in profile.nodes
@@ -344,6 +344,34 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
             "native_entries": calls, "self_events": dict(own),
             "incoming_inclusive_events_non_additive": dict(inclusive),
         }
+    # Group observed symbols within an exact caller-stage attribution. These
+    # inclusive observations overlap; they never enter the exclusive partition.
+    helper_groups = {}
+    for name, node in profile.nodes.items():
+        if len(labels[name]) != 1:
+            continue
+        stage = next(iter(labels[name]))
+        key = (stage, base_name(name))
+        row = helper_groups.setdefault(key, {
+            "symbol": key[1], "contexts": 0, "native_entries": 0,
+            "self_events": Counter(), "incoming_inclusive_events_non_additive": Counter()})
+        row["contexts"] += 1
+        row["self_events"].update(node.own)
+    for node in profile.nodes.values():
+        for name, events in node.edges.items():
+            if len(labels[name]) != 1:
+                continue
+            key = (next(iter(labels[name])), base_name(name))
+            row = helper_groups[key]
+            row["native_entries"] += node.calls[name]
+            row["incoming_inclusive_events_non_additive"].update(events)
+    stage_helpers = defaultdict(list)
+    for (stage, _), row in helper_groups.items():
+        row["self_events"] = dict(row["self_events"])
+        row["incoming_inclusive_events_non_additive"] = dict(row["incoming_inclusive_events_non_additive"])
+        stage_helpers[stage].append(row)
+    for rows in stage_helpers.values():
+        rows.sort(key=lambda row: row["incoming_inclusive_events_non_additive"].get("Ir", 0), reverse=True)
     return {
         "path": str(profile.path),
         "sha256": hashlib.sha256(gzip.decompress(profile.path.read_bytes())
@@ -362,6 +390,7 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
         "native_anchor_counts_and_non_additive_inclusive_events": anchors,
         "unobserved_optional_anchor_symbols": sorted(optional_anchors - anchors.keys()),
         "crc_nested_events_non_additive": crc_nested,
+        "stage_helper_observations_non_additive": dict(stage_helpers),
         "self_event_sum_matches_summary": True,
         "nonzero_outside_root": False,
     }
@@ -407,6 +436,11 @@ totals: 38 8
         assert result["exclusive_stage_events"]["semantic_oracle_values"] == {"Ir": 5, "Dr": 1}
         assert result["exclusive_stage_events"]["shared_ambiguous"] == {"Ir": 28, "Dr": 6}
         assert not result["stage_attribution_complete"]
+        frame_helpers = result["stage_helper_observations_non_additive"]["frame_crc"]
+        assert len(frame_helpers) == 1  # Shared allocation context stays unassigned.
+        assert frame_helpers[0]["symbol"] == PREFIX + "decodeFrame"
+        assert frame_helpers[0]["self_events"] == {"Ir": 3, "Dr": 1}
+        assert frame_helpers[0]["incoming_inclusive_events_non_additive"] == {"Ir": 17, "Dr": 4}
         compressed = path.with_suffix(".callgrind.gz")
         compressed.write_bytes(gzip.compress(text.encode(), mtime=0))
         compressed_result = analyze(parse(compressed), DECODE, "output_model_control")
@@ -450,7 +484,37 @@ totals: 38 8
         empty = analyze(parse(path), SCORE, "commb_inference")
         assert empty["total_events"] == {"Ir": 0}
         assert empty["root_contexts"] == empty["root_incoming_calls"] == 0
-    print("PASS: self/inclusive separation, compressed positions/names, merged-context honesty, context separation, damaged totals and collection-leak rejection")
+        path.write_text(f"""positions: line
+events: Ir
+summary: 10
+fn=(1) {DECODE}
+1 2
+cfn=(2) {PREFIX}decodeFrame
+calls=1 2
+1 8
+fn=(2)
+2 1
+cfn=(3) recursive_helper
+calls=1 3
+2 7
+fn=(3)
+3 3
+cfn=(4) recursive_helper'2
+calls=1 4
+3 4
+fn=(4)
+4 4
+totals: 10
+""")
+        recursive = analyze(parse(path), DECODE, "output_model_control")
+        helper = next(row for row in recursive["stage_helper_observations_non_additive"]["frame_crc"]
+                      if row["symbol"] == "recursive_helper")
+        assert helper["contexts"] == helper["native_entries"] == 2
+        assert helper["self_events"] == {"Ir": 7}
+        # The inner visit appears in both incoming inclusive observations.
+        assert helper["incoming_inclusive_events_non_additive"] == {"Ir": 11}
+        assert recursive["exclusive_stage_events"]["frame_crc"] == {"Ir": 8}
+    print("PASS: self/inclusive separation, compressed positions/names, merged-context honesty, context separation, recursive helper overlap, damaged totals and collection-leak rejection")
 
 
 def labeled_paths(values: list[str]) -> list[tuple[str, Path]]:

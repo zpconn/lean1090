@@ -128,7 +128,10 @@ def main():
         crc = sum(per_df[df]["crc_call_predictions"] for df in dfs)
         steps = sum(per_df[df]["crc_call_predictions"] * (56 if df < 16 else 112) for df in dfs)
         assert anchors[P + "Parity_checksum"]["native_entries"] == crc, (name, "CRC entry count")
+        assert anchors[P + "Parity_syndrome"]["native_entries"] == crc, (name, "CRC syndrome entry count")
         assert anchors[P + "Parity_step"]["native_entries"] == steps, (name, "CRC step count")
+        if source_review and source_review.get("parity_fold_anchor"):
+            assert anchors[source_review["parity_fold_anchor"]]["native_entries"] == crc, (name, "CRC fold entry count")
     totals = {name: result["total_events"]["Ir"] for name, result in profiles.items()}
     total = sum(totals.values())
     stages = Counter()
@@ -287,7 +290,7 @@ def main():
               "| Live function | Native entries across families | Inclusive Ir across families |",
               "|---|---:|---:|"]
     anchor_symbols = [P + name for name in (
-        "decodeFrame", "frameSyndrome", "Parity_checksum", "Parity_step", "cbDensity", "cbPenalty",
+        "decodeFrame", "frameSyndrome", "Parity_checksum", "Parity_syndrome", "Parity_step", "cbDensity", "cbPenalty",
         "Semantics_adsb", "Semantics_commB", "cbCombinedScore")]
     anchor_symbols += sorted(analysis.get("optional_inclusive_anchor_symbols", []))
     for symbol in dict.fromkeys(anchor_symbols):
@@ -301,15 +304,32 @@ def main():
         else:
             lines.append(f"| `{anchor}` | Not observed in collected call contexts | Not assigned |")
     lines += ["", "Optional ScoreGate, table and fallback-related anchors are overlapping native-symbol observations, not another cost partition. An absent/inlined symbol does not establish zero logical computations, zero fallback decisions or zero initialization work. A fallback population requires a verified live call boundary or a separately checked census; instruction counts are not converted into decision counts."]
-    lines += ["", "CRC-only contexts further separate fixed-width remainder work from extraction of bits from the complete word. The following inclusive costs overlap: a high-level parity helper can call the Nat/GMP helpers below it. They must not be added, subtracted as if disjoint, or extrapolated to predicted speedups. Non-CRC uses of the same helpers are excluded by their observed caller context. A zero native-symbol count does not imply that all semantically related work disappeared.", "",
-              "| CRC-only helper | Native entries | Inclusive Ir | Share of frame/CRC Ir (overlapping) |",
+    lines += ["", "Frame/CRC-stage contexts further separate fixed-width remainder work from extraction of bits from the complete word. This filter follows the combined frame/CRC stage, not a stricter parity-only ancestry test. The following inclusive costs overlap: a high-level parity helper can call the Nat/GMP helpers below it. They must not be added, subtracted as if disjoint, or extrapolated to predicted speedups. Uses attributed to other stages are excluded. A zero native-symbol count does not imply that all semantically related work disappeared.", "",
+              "| Helper in frame/CRC-stage contexts | Native entries | Inclusive Ir | Share of frame/CRC Ir (overlapping) |",
               "|---|---:|---:|---:|"]
-    for anchor in (P + "Parity_step", "l_BitVec_ofNat", "l_Nat_testBit", "lean_nat_pow", "lean_nat_big_shiftr"):
+    for anchor in (P + "Parity_step", "l_BitVec_ofNat", "l_Nat_testBit", "lean_nat_pow", "lean_nat_big_shiftr", "lean_uint64_of_big_nat"):
+        if not all(anchor in profile["crc_nested_events_non_additive"] for profile in profiles.values()):
+            continue  # Older retained analysis did not collect this optional helper.
         records = [profile["crc_nested_events_non_additive"][anchor] for profile in profiles.values()]
         assert not any(record["ambiguous_contexts_excluded"] for record in records)
         entries = sum(record["native_entries"] for record in records)
         events = sum(record["incoming_inclusive_events_non_additive"].get("Ir", 0) for record in records)
         lines.append(f"| `{anchor.removeprefix(P)}` | {entries:,} | {events:,} | {100*events/stages['frame_crc']:.2f}% |")
+    if all("stage_helper_observations_non_additive" in profile for profile in profiles.values()):
+        helpers = {}
+        for profile in profiles.values():
+            for row in profile["stage_helper_observations_non_additive"].get(largest, []):
+                combined = helpers.setdefault(row["symbol"], Counter())
+                combined["entries"] += row["native_entries"]
+                combined["self"] += row["self_events"].get("Ir", 0)
+                combined["inclusive"] += row["incoming_inclusive_events_non_additive"].get("Ir", 0)
+        assert sum(row["self"] for row in helpers.values()) == stages[largest]
+        lines += ["", "### Largest-stage nested helpers", "",
+                  f"These are the 15 largest observed inclusive symbol totals within uniquely attributed **{STAGES[largest]}** contexts. Caller suffixes are grouped by their actual native base symbol. Inclusive values are raw summed incoming call-edge observations: recursive or re-entrant visits can overlap within one row, and descendants can cross a later stage boundary. They are not deduplicated stage-local subtree costs. Rows also overlap each other and the exclusive stage; do not add them or infer a speedup. Only the grouped self costs form a partition. Inlined work remains in its retained caller. Full per-stage observations, including self costs and all smaller symbols, are in the analysis JSON.", "",
+                  "| Observed symbol | Native entries | Self Ir | Inclusive Ir (non-additive) |",
+                  "|---|---:|---:|---:|"]
+        for symbol, row in sorted(helpers.items(), key=lambda item: item[1]["inclusive"], reverse=True)[:15]:
+            lines.append(f"| `{symbol}` | {row['entries']:,} | {row['self']:,} | {row['inclusive']:,} |")
     lines += ["", f"The source and generated C retained under `{args.evidence_root}` identify the actual live boundaries for this run. Source-specific explanations, compiler inlining and initialization placement must be checked there; no prior generation's C line numbers are assumed.", "",
               "## Native sampling cross-check", "",
               f"A separate `perf` software CPU-clock capture of the generation-{args.generation} benchmark binary retained {perf['total_samples']:,} samples; {perf['decode_descendant_samples']:,} had a visible live `Impl.decode` ancestor. Within those visible stacks, report parity/address had {perf['disjoint_detail_stages']['report parity/address']} samples and Comm-B inference/raw fields had {perf['disjoint_detail_stages']['Comm-B inference and raw payload']}. Missing/truncated ancestry prevents an unbiased whole-decoder timing allocation. The complete exclusion counts and raw stacks are retained. Sampling does not supply the exact instruction partition above. The capture provenance records the actual concurrency and collection conditions; host-wide isolation is not inferred. This is a diagnostic, not a frozen benchmark.", "",
