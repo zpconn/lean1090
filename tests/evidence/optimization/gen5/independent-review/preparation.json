@@ -1,0 +1,68 @@
+{
+  "recorded_utc": "2026-10-18T21:14:16.041217+00:00",
+  "result_prefix_sha256": "6cd64b592ff0c146b76a1a0b2ec0a86447845319e407f934aa036ade15155859",
+  "history_sha256": {
+    "tests/evidence/diagnostics/gen4/archive-manifest.json": "b5a0a24c9358969f2b8d148a996316b46eaf7c312a2c877e6880682969bddfed",
+    "docs/GEN4-COST-BREAKDOWN.md": "5d9d2156607c695eb7647cea3ad75c89b0ad4ffac6e0efd8dfde5b4eb744e067",
+    "tests/evidence/diagnostics/gen4/independent-review.json": "7c30fd280bc994d075d64e8fcb697d602fbacc8e3f762b2e9ed05859e5130bd7",
+    "tests/evidence/diagnostics/gen4/validation.json": "465ecf9a3ec7464bf693f16f1d2b05072cc188ed1bcbb911b7ab9bcee2342829",
+    "bench/runs/gen4/results-review.json": "86838cceb85b3978245e4ee07395b0f678f6036b208b36d9a8c812eeada31d06",
+    "bench/runs/gen4/archive-verification.json": "f4e4d9e78714a6606155bc106b4e6e849605c9bffc460e3c1199a071445cf0ba"
+  },
+  "fresh_seeds": {
+    "recorded_utc": "2026-10-18T21:12:30.087292+00:00",
+    "message_seed": 26660891,
+    "commb_seed": 2917856783,
+    "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical-record and mutual collisions rejected.",
+    "historical_seed_values_checked": 16,
+    "generated_messages": 10000000,
+    "random_commb_assignments": 100000,
+    "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+    "head_before_run": "275329a2efd269dc44e549e4b6538d36277aaa3f",
+    "source_sha256": {
+      "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+      "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+      "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+      "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+      "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+      "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+      "Impl/CommB.lean": "d2a4c4910e6e867abc5df33355e3340740e2adb928532122c0eb610b0fbe7481",
+      "Proofs/CommBMach.lean": "286f5531097b652f97a039c63868f53e30f0972897bdd1f3f68508b641c6bc34",
+      "Proofs/CommBTables.lean": "5e2fb415380f205cc0d1e4cce911fdd4be92f9095bdfe3493fe76ef3437b5257",
+      "Proofs/Decoder.lean": "54c5fd01a38da21a4e7989259b542f36af03ebff1e6fc1966b511d6ac9918fbd"
+    },
+    "commands": [
+      [
+        "lake",
+        "env",
+        "lean",
+        "--run",
+        "scripts/FuzzCommB.lean",
+        ".cache/gen5-gate/fresh-commb.csv",
+        "100000",
+        "2917856783"
+      ],
+      [
+        "python3",
+        "scripts/check_commb_fuzz.py",
+        ".cache/gen5-gate/fresh-commb.csv",
+        "tests/evidence/optimization/gen5/fresh-commb-coverage.json"
+      ],
+      [
+        "python3",
+        "scripts/check_message_differential.py",
+        "--corpus",
+        "--generated",
+        "10000000",
+        "--seed",
+        "26660891",
+        "--commb-boundaries",
+        ".cache/gen5-gate/fresh-commb.csv",
+        "--diagnostic",
+        "--output",
+        "tests/evidence/optimization/gen5/fresh-message"
+      ]
+    ],
+    "authorization_note": "Parent explicitly authorized generation and native direct campaign after the combined targeted gen5 build passed at 21:11:46 UTC; correctness sources and native targets are stable. Full gate has independent outputs. No extra build is introduced by this orchestration."
+  }
+}

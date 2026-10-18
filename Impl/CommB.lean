@@ -51,11 +51,17 @@ def cbQNH64 (word : Nat) : Rat :=
     (Binary64.literal (1 / 10))) 800
 
 -- Initial algorithm: Spec/CommB.lean:53.
+/-- Exact BDS60 Mach values for all 1024 ten-bit field codes. The immutable
+table preserves literal rounding, multiplication and division in that order. -/
+def cbMachValueTable : Array Rat := Array.ofFn fun code : Fin 1024 =>
+  Binary64.div (Binary64.mul (code.val : Rat)
+    (Binary64.literal (256 / 125))) 512
+
 /-- rs1090-derived bds60.rs: binary64 `raw * 2.048 / 512`, preserving the
 rounded decimal constant and operation order instead of replacing it by /250. -/
 def cbMach64 (word : Nat) : Rat :=
-  Binary64.div (Binary64.mul (payloadBits word 25 10 : Rat)
-    (Binary64.literal (256 / 125))) 512
+  cbMachValueTable[payloadBits word 25 10]'(by
+    simpa only [cbMachValueTable, Array.size_ofFn] using payloadBits_lt word 25 10)
 
 -- Initial algorithm: Spec/CommB.lean:59.
 /-- rs1090-derived bds50/bds60: wrap negative heading/track to [0,360). -/

@@ -1,0 +1,83 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b4a0d0 <main>:
+  b4a0d0:	push   %rbp
+  b4a0d1:	push   %r14
+  b4a0d3:	push   %rbx
+  b4a0d4:	mov    %edi,%ebp
+  b4a0d6:	call   48d39a8 <lean_setup_args>
+  b4a0db:	mov    %rax,%r14
+  b4a0de:	mov    $0x1,%edi
+  b4a0e3:	call   b49f30 <initialize_lean1090_CLI_Main>
+  b4a0e8:	mov    %rax,%rbx
+  b4a0eb:	call   48b2d50 <lean_io_mark_end_initialization>
+  b4a0f0:	cmpl   $0xffffff,0x4(%rbx)
+  b4a0f7:	ja     b4a11d <main+0x4d>
+  b4a0f9:	mov    (%rbx),%eax
+  b4a0fb:	cmp    $0x2,%eax
+  b4a0fe:	jl     b4a15f <main+0x8f>
+  b4a100:	dec    %eax
+  b4a102:	mov    %eax,(%rbx)
+  b4a104:	call   48938d0 <lean_init_task_manager>
+  b4a109:	lea    -0xb0(%rip),%rdi        # b4a060 <run_main>
+  b4a110:	mov    %ebp,%esi
+  b4a112:	mov    %r14,%rdx
+  b4a115:	call   48424a0 <lean_run_main>
+  b4a11a:	mov    %rax,%rbx
+  b4a11d:	call   4893960 <lean_finalize_task_manager>
+  b4a122:	cmpl   $0xffffff,0x4(%rbx)
+  b4a129:	ja     b4a142 <main+0x72>
+  b4a12b:	mov    0x8(%rbx),%rax
+  b4a12f:	shr    $1,%rax
+  b4a132:	mov    (%rbx),%ecx
+  b4a134:	cmp    $0x2,%ecx
+  b4a137:	jl     b4a16d <main+0x9d>
+  b4a139:	dec    %ecx
+  b4a13b:	mov    %ecx,(%rbx)
+  b4a13d:	pop    %rbx
+  b4a13e:	pop    %r14
+  b4a140:	pop    %rbp
+  b4a141:	ret
+  b4a142:	mov    %rbx,%rdi
+  b4a145:	call   48b2bf0 <lean_io_result_show_error>
+  b4a14a:	mov    (%rbx),%ecx
+  b4a14c:	cmp    $0x2,%ecx
+  b4a14f:	jl     b4a184 <main+0xb4>
+  b4a151:	dec    %ecx
+  b4a153:	mov    %ecx,(%rbx)
+  b4a155:	mov    $0x1,%eax
+  b4a15a:	pop    %rbx
+  b4a15b:	pop    %r14
+  b4a15d:	pop    %rbp
+  b4a15e:	ret
+  b4a15f:	test   %eax,%eax
+  b4a161:	je     b4a104 <main+0x34>
+  b4a163:	mov    %rbx,%rdi
+  b4a166:	call   4891fb0 <lean_dec_ref_cold>
+  b4a16b:	jmp    b4a104 <main+0x34>
+  b4a16d:	test   %ecx,%ecx
+  b4a16f:	je     b4a13d <main+0x6d>
+  b4a171:	mov    %rbx,%rdi
+  b4a174:	mov    %rax,%rbx
+  b4a177:	call   4891fb0 <lean_dec_ref_cold>
+  b4a17c:	mov    %rbx,%rax
+  b4a17f:	pop    %rbx
+  b4a180:	pop    %r14
+  b4a182:	pop    %rbp
+  b4a183:	ret
+  b4a184:	mov    $0x1,%eax
+  b4a189:	test   %ecx,%ecx
+  b4a18b:	je     b4a13d <main+0x6d>
+  b4a18d:	mov    %rbx,%rdi
+  b4a190:	call   4891fb0 <lean_dec_ref_cold>
+  b4a195:	jmp    b4a155 <main+0x85>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

@@ -4,6 +4,7 @@ import Proofs.CommBTables
 import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.PayloadBits
+import Proofs.CommBMach
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -441,9 +442,8 @@ private theorem decoder_cbValid50_eq : @Impl.cbValid50 = @Spec.cbValid50 := by
   unfold Impl.cbValid50 Spec.cbValid50
   simp only [decoder_cbSigned_eq, decoder_cbStatus_eq, decoder_payloadBits_eq]
 private theorem decoder_cbMach64_eq : @Impl.cbMach64 = @Spec.cbMach64 := by
-  unfold Impl.cbMach64 Spec.cbMach64
-  simp only [decoder_Binary64_div_eq, decoder_Binary64_literal_eq, decoder_Binary64_mul_eq,
-    decoder_payloadBits_eq]
+  funext word
+  exact CommBMach.cbMach64_eq word
 private theorem decoder_cbValid60_eq : @Impl.cbValid60 = @Spec.cbValid60 := by
   unfold Impl.cbValid60 Spec.cbValid60
   simp only [decoder_cbMach64_eq, decoder_cbStatus_eq, decoder_cbVertical60_eq, decoder_payloadBits_eq]

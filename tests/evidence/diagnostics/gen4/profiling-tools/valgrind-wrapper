@@ -1,0 +1,5 @@
+#!/bin/sh
+profiling_root=$(CDPATH= cd -- "$(dirname -- "$0")/../root" && pwd)
+VALGRIND_LIB="$profiling_root/usr/libexec/valgrind"
+export VALGRIND_LIB
+exec "$profiling_root/usr/bin/valgrind" --extra-debuginfo-path="$profiling_root/usr/lib/debug" "$@"

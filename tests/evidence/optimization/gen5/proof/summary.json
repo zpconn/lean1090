@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-10-18T21:10:29.873310+00:00",
+  "sources": {
+    "Impl/CommB.lean": "d2a4c4910e6e867abc5df33355e3340740e2adb928532122c0eb610b0fbe7481",
+    "Proofs/CommBMach.lean": "286f5531097b652f97a039c63868f53e30f0972897bdd1f3f68508b641c6bc34"
+  },
+  "attempts": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.CommBMach"
+      ],
+      "log": "tests/evidence/optimization/gen5/proof/build-01.log",
+      "exit_code": 0,
+      "note": "Only unnecessarySimpa linter warning; corrected in proof-only follow-up."
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.CommBMach"
+      ],
+      "log": "tests/evidence/optimization/gen5/proof/build-02.log",
+      "exit_code": 0,
+      "note": "Final stable source; no warnings in new proof."
+    }
+  ],
+  "theorems": [
+    "table_size",
+    "table_get",
+    "cbMach64_eq_runtime",
+    "cbMach64_eq",
+    "zero_witness",
+    "plausibility_boundary_witness",
+    "maximal_wide_witness"
+  ],
+  "axioms": "All seven facts print only propext, Classical.choice, Quot.sound.",
+  "scope": "One exact immutable 1024-code software-binary64 value table and the existing live cbMach64 lookup. No corpus keys, memoization, trusted primitives or frozen changes.",
+  "final_build_log_sha256": "740afc137662274200e639df4f1c5a4dd5badc2b202aaac4bca2f866ab87b690"
+}

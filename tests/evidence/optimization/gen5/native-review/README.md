@@ -1,0 +1,21 @@
+# Generation 5 native Mach-table review
+
+The existing integrated build passes all **31 static review checks**. The live Mach path uses the exact field-code table, and initialization constructs the complete table before message processing. This is compiled-structure evidence, not a benchmark or a replacement for the refinement proof and full gate.
+
+The parent supplied a successful first integrated build: `lake build Proofs.Decoder lean1090 messageGenerator commbDifferential`, **3,510 jobs**, finished at `2026-10-18T21:11:46.003490+00:00`. Its log SHA-256 is `d09b7179a3ddb8d229f23df325f8437754d3f2d6dbf468abf7536ecd83348991`. The exact build record, source, generated C, native traces and current CLI/direct-register-adapter hashes are retained in [inspection-inputs.json](inspection-inputs.json). The CLI inspected here is the integration binary, **not a freshly built timed benchmark worker**.
+
+## Actual compiled path
+
+- [CommB.c](retained/.lake/build/ir/Impl/CommB.c:954) preserves software `Binary64.mul` followed by `Binary64.div` in the table-entry constructor. The rounded literal is prepared by its closed-constant initializer. `Array.ofFn` is called with exactly 1,024 entries at line 968; native assembly uses tagged count `0x801` and the actual table-entry closure.
+- [CommB.c](retained/.lake/build/ir/Impl/CommB.c:986) implements `cbMach64` as `payloadBits word 25 10` followed by `lean_array_fget_borrowed`. This function contains no software arithmetic or table construction. The [object assembly](object-mach.txt) loads the same global table, passes tagged field constants `0x33` and `0x15`, and performs the indexed pointer load at `0x18(%rbx,%rax,4)`. The checked Lean bound enables this array access.
+- [Module initialization](retained/.lake/build/ir/Impl/CommB.c:6860) assigns `cbMachValueTable` once and calls `lean_mark_persistent`. The [linked initializer](binary-module-initializer.txt) retains that store and persistence call. CLI initialization reaches Comm-B through JSON and Message before `lean_run_main`, as shown by the retained generated C. There is no message-dependent initialization or mutation of the table.
+
+**Clang inlines `cbMach64` into its callers.** The standalone definition exists in the Comm-B object, but the linker removes it from both inspected executables after inlining. This is not zero Mach work. Actual table loads and field-code indexing remain in [cbValid60](binary-valid60.txt), [cbPenalty](binary-penalty.txt), the [slow density-term path](binary-density-terms.txt), and the [frozen direct-register adapter's validity path](adapter-valid60.txt). Future instruction reports must describe this absent native anchor as inlining and use the retained caller stages and candidate/score probes as their primary costs.
+
+Generated C still connects the same source names: `cbValid60`, `cbPenalty` and `cbDensityTerms` use live `cbMach64`; `decodeBDS` performs the same `bdsWireValid` recheck; `cbScorePasses` uses the current penalty and exact interval gate. The frozen Comm-B adapter calls actual `Impl.decodeBDS`; it has no separate legacy copy. Software operations for the Mach conversion now occur in table construction. Other software arithmetic, including the IAS/Mach penalty division, remains in its existing runtime path.
+
+## Validation and limits
+
+`python3 tests/evidence/optimization/gen5/native-review/capture.py` retained the existing artifacts and disassembly. `python3 tests/evidence/optimization/gen5/native-review/validate.py` passed 31 structural checks and confirmed that all **44 captured input hashes** remained unchanged. [review.json](review.json) binds every retained file and records the checks. The source/C and native paths are inspected separately so a missing linked wrapper cannot silently become a claim of zero computation.
+
+`TRUSTED.md`, `lakefile.toml` and `spec.lock` equal their HEAD blobs; all 104 frozen entries match. The runtime diff adds no extern or implementation override. The existing `-O3` and `-ffp-contract=off` compiler flags remain present. No production source, proof, frozen file, configuration or native object was edited by this review. No build, decoder execution, test campaign, profiling or timing was run. The full gate and fresh differential campaign are handled separately by the parent.

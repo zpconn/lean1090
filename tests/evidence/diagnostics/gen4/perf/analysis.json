@@ -1,0 +1,254 @@
+{
+  "classification": "one-pass diagnostic cpu-clock stack attribution; no throughput claim",
+  "total_samples": 450,
+  "decode_descendant_samples": 281,
+  "excluded_samples": 169,
+  "excluded_by_visible_context": {
+    "worker other phase, no decode frame": 136,
+    "no decode or worker frame; may include unwind failures": 9,
+    "worker decode-loop stack, no decode frame": 24
+  },
+  "all_samples_with_unknown_frame": 444,
+  "total_period": 2261306250,
+  "decode_descendant_period": 1412060125,
+  "disjoint_top_stages": {
+    "report/projection": 233,
+    "frame extraction": 36,
+    "acceptance": 11,
+    "decode self/other": 1
+  },
+  "disjoint_detail_stages": {
+    "Comm-B semantic projection": 59,
+    "ADS-B semantic projection": 18,
+    "frame extraction": 36,
+    "report parity/address": 42,
+    "report other/self/unresolved substage": 46,
+    "Comm-B inference and raw payload": 56,
+    "ADS-B raw payload": 4,
+    "acceptance": 11,
+    "altitude": 7,
+    "identity": 1,
+    "decode self/other": 1
+  },
+  "nested_overlapping_categories": {
+    "Rat (inclusive overlap)": 126,
+    "GMP/mpz (inclusive overlap)": 177,
+    "Parity (inclusive overlap)": 40,
+    "exact score enclosure (inclusive overlap)": 23,
+    "software Binary64 (inclusive overlap)": 50
+  },
+  "decode_leaf_top30": [
+    [
+      "malloc",
+      49
+    ],
+    [
+      "cfree",
+      28
+    ],
+    [
+      "lean_alloc_small_object_core",
+      22
+    ],
+    [
+      "[unknown]",
+      21
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_Parity_step",
+      11
+    ],
+    [
+      "lean_dec_ref_cold",
+      9
+    ],
+    [
+      "__gmpz_init_set_ui",
+      7
+    ],
+    [
+      "__gmpz_add",
+      7
+    ],
+    [
+      "__gmpz_n_pow_ui",
+      6
+    ],
+    [
+      "__gmpz_realloc",
+      6
+    ],
+    [
+      "mi_free",
+      6
+    ],
+    [
+      "lean::mpz::~mpz()",
+      5
+    ],
+    [
+      "__gmpz_mul",
+      5
+    ],
+    [
+      "lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0",
+      5
+    ],
+    [
+      "__gmp_default_reallocate",
+      5
+    ],
+    [
+      "l_Rat_mul",
+      4
+    ],
+    [
+      "__gmpz_mul_2exp",
+      4
+    ],
+    [
+      "malloc@plt",
+      4
+    ],
+    [
+      "__gmp_default_allocate",
+      3
+    ],
+    [
+      "l_List_reverseAux___redArg",
+      3
+    ],
+    [
+      "__gmpz_clear",
+      3
+    ],
+    [
+      "l_List_range_loop",
+      2
+    ],
+    [
+      "lean_nat_pow",
+      2
+    ],
+    [
+      "lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0",
+      2
+    ],
+    [
+      "lean::mpz::mpz(unsigned long)",
+      2
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_Altitude_bit",
+      2
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      2
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_decodeFrame",
+      2
+    ],
+    [
+      "__gmpn_bc_set_str",
+      2
+    ],
+    [
+      "__gmpz_set",
+      2
+    ]
+  ],
+  "all_samples_leaf_top20": [
+    [
+      "malloc",
+      66
+    ],
+    [
+      "cfree",
+      38
+    ],
+    [
+      "lean_alloc_small_object_core",
+      34
+    ],
+    [
+      "lean_dec_ref_cold",
+      33
+    ],
+    [
+      "[unknown]",
+      31
+    ],
+    [
+      "mi_free",
+      12
+    ],
+    [
+      "__gmpz_add",
+      11
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_Parity_step",
+      11
+    ],
+    [
+      "lean::mpz::~mpz()",
+      9
+    ],
+    [
+      "__gmpz_realloc",
+      9
+    ],
+    [
+      "__gmpz_init_set_ui",
+      9
+    ],
+    [
+      "__gmpz_n_pow_ui",
+      8
+    ],
+    [
+      "lean_string_utf8_get",
+      7
+    ],
+    [
+      "__gmpz_mul_2exp",
+      6
+    ],
+    [
+      "l_Rat_mul",
+      6
+    ],
+    [
+      "__gmp_default_reallocate",
+      6
+    ],
+    [
+      "__gmp_default_allocate",
+      5
+    ],
+    [
+      "malloc@plt",
+      5
+    ],
+    [
+      "__gmpz_mul",
+      5
+    ],
+    [
+      "lp_lean1090_List_foldl___at___00Lean1090_Impl_Parity_syndrome_spec__0",
+      5
+    ]
+  ],
+  "limitations": [
+    "Only samples with the exact live Impl.decode frame are included. Missing/unwound/truncated ancestors can exclude real decoder samples; excluded samples are not assumed to be preparation.",
+    "Substages use visible symbol names; inlining and tail calls can erase stage frames. report-other remains explicit rather than guessed.",
+    "Percentages within decoded stacks are conditional on successful stack attribution and may be biased; see whole-process leaf samples and excluded count.",
+    "Software cpu-clock samples are statistical CPU-time evidence, not hardware instructions/cycles or a benchmark.",
+    "Inclusive nested categories overlap; only disjoint stage tables sum to included samples.",
+    "This generation initializes immutable density tables during process startup; such costs are excluded from decode-root samples when their actual stacks are outside Impl.decode, never charged to the steady-state decision by assumption.",
+    "The worker runs through Lean runtime worker-thread startup; parent/child hardware/thread attribution was checked by visible decode stacks.",
+    "Compilation completed and Callgrind/native diagnostics were held during capture; other agents could read evidence or prepare orchestration. No benchmark or comparative timing claim."
+  ]
+}

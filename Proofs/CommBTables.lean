@@ -1,6 +1,7 @@
 import Impl.CommB
 import Proofs.CommBArithmetic
 import Proofs.PayloadBits
+import Proofs.CommBMach
 
 /-!
 Exact immutable density tables. Every equality is symbolic in the complete
@@ -44,7 +45,7 @@ private theorem density60 (word : Nat) :
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbIASScoreTable, cbMachScoreTable, cbVerticalScoreTable,
     commBValue, commBLayout, bds60Layout, cbColumn, payloadValue,
-    cbScoreField, cbMach64, cbVertical60, cbSigned, verticalMagnitude,
+    cbScoreField, CommBMach.cbMach64_eq_runtime, cbVertical60, cbSigned, verticalMagnitude,
     payloadInteger]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h13 : payloadBits word 13 1 = 0 <;>
