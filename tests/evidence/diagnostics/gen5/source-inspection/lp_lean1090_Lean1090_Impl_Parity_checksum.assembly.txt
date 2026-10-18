@@ -1,0 +1,78 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b55730 <lp_lean1090_Lean1090_Impl_Parity_checksum>:
+  b55730:	push   %r14
+  b55732:	push   %rbx
+  b55733:	push   %rax
+  b55734:	mov    %rsi,%rbx
+  b55737:	test   $0x1,%dil
+  b5573b:	je     b557b0 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x80>
+  b5573d:	shr    $1,%rdi
+  b55740:	add    $0x18,%rdi
+  b55744:	js     b557bc <lp_lean1090_Lean1090_Impl_Parity_checksum+0x8c>
+  b55746:	lea    0x1(,%rdi,2),%rdi
+  b5574e:	test   $0x1,%bl
+  b55751:	je     b557c9 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x99>
+  b55753:	mov    %rbx,%rax
+  b55756:	shr    $1,%rax
+  b55759:	je     b55790 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x60>
+  b5575b:	movabs $0x10000000000,%rcx
+  b55765:	and    %rbx,%rcx
+  b55768:	shr    $0x29,%rbx
+  b5576c:	or     %rcx,%rbx
+  b5576f:	je     b55786 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x56>
+  b55771:	mov    $0x1000000,%esi
+  b55776:	mov    %rdi,%rbx
+  b55779:	mov    %rax,%rdi
+  b5577c:	call   48a1e60 <lean_nat_overflow_mul>
+  b55781:	mov    %rbx,%rdi
+  b55784:	jmp    b5578d <lp_lean1090_Lean1090_Impl_Parity_checksum+0x5d>
+  b55786:	shl    $0x19,%rax
+  b5578a:	inc    %rax
+  b5578d:	mov    %rax,%rbx
+  b55790:	mov    %rbx,%rsi
+  b55793:	call   b555b0 <lp_lean1090_Lean1090_Impl_Parity_syndrome>
+  b55798:	test   $0x1,%bl
+  b5579b:	jne    b557a8 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x78>
+  b5579d:	mov    (%rbx),%ecx
+  b5579f:	cmp    $0x2,%ecx
+  b557a2:	jl     b557de <lp_lean1090_Lean1090_Impl_Parity_checksum+0xae>
+  b557a4:	dec    %ecx
+  b557a6:	mov    %ecx,(%rbx)
+  b557a8:	add    $0x8,%rsp
+  b557ac:	pop    %rbx
+  b557ad:	pop    %r14
+  b557af:	ret
+  b557b0:	mov    $0x31,%esi
+  b557b5:	call   48a17b0 <lean_nat_big_add>
+  b557ba:	jmp    b557c1 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x91>
+  b557bc:	call   48a1610 <lean_big_usize_to_nat>
+  b557c1:	mov    %rax,%rdi
+  b557c4:	test   $0x1,%bl
+  b557c7:	jne    b55753 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x23>
+  b557c9:	mov    $0x2000001,%esi
+  b557ce:	mov    %rdi,%r14
+  b557d1:	mov    %rbx,%rdi
+  b557d4:	call   48a1bf0 <lean_nat_big_mul>
+  b557d9:	mov    %r14,%rdi
+  b557dc:	jmp    b5578d <lp_lean1090_Lean1090_Impl_Parity_checksum+0x5d>
+  b557de:	test   %ecx,%ecx
+  b557e0:	je     b557a8 <lp_lean1090_Lean1090_Impl_Parity_checksum+0x78>
+  b557e2:	mov    %rbx,%rdi
+  b557e5:	mov    %rax,%rbx
+  b557e8:	call   489f0f0 <lean_dec_ref_cold>
+  b557ed:	mov    %rbx,%rax
+  b557f0:	add    $0x8,%rsp
+  b557f4:	pop    %rbx
+  b557f5:	pop    %r14
+  b557f7:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

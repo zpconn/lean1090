@@ -5,6 +5,7 @@ import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.PayloadBits
 import Proofs.CommBMach
+import Proofs.SyndromeReuse
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -535,7 +536,9 @@ private theorem decoder_frameSyndrome_eq : @Impl.frameSyndrome = @Spec.frameSynd
   simp only [decoder_FrameBody_informationBits_eq, decoder_FrameBody_parts_eq, decoder_Parity_checksum_eq,
     decoder_packFields_eq]
 private theorem decoder_frameAccepted_eq : @Impl.frameAccepted = @Spec.frameAccepted := by
-  unfold Impl.frameAccepted Spec.frameAccepted
+  funext frame
+  rw [SyndromeReuse.frameAccepted_old]
+  unfold Spec.frameAccepted
   simp only [decoder_adsbHardValid_eq, decoder_frameSyndrome_eq]
   rfl
 private theorem decoder_decodePayloadFields_eq : @Impl.decodePayloadFields = @Spec.decodePayloadFields := by
@@ -551,7 +554,9 @@ private theorem decoder_frameADSB_eq : @Impl.frameADSB = @Spec.frameADSB := by
   simp only [decoder_decodeADSB_eq]
   rfl
 private theorem decoder_frameAddress_eq : @Impl.frameAddress = @Spec.frameAddress := by
-  unfold Impl.frameAddress Spec.frameAddress
+  funext frame
+  rw [SyndromeReuse.frameAddress_old]
+  unfold Spec.frameAddress
   simp only [decoder_frameSyndrome_eq]
   rfl
 private theorem decoder_frameAltitude_eq : @Impl.frameAltitude = @Spec.frameAltitude := by
@@ -578,13 +583,17 @@ private theorem decoder_frameIdentity_eq : @Impl.frameIdentity = @Spec.frameIden
   simp only [decoder_identityCode_eq, decoder_payloadBits_eq]
   rfl
 private theorem decoder_report_eq : @Impl.report = @Spec.report := by
-  unfold Impl.report Spec.report
+  funext frame
+  rw [SyndromeReuse.report_old]
+  unfold Spec.report
   simp only [decoder_Parity_interrogator_eq, decoder_Semantics_adsb_eq, decoder_Semantics_commB_eq,
     decoder_frameADSB_eq, decoder_frameAddress_eq, decoder_frameAltitude_eq, decoder_frameCommB_eq,
     decoder_frameIdentity_eq, decoder_frameSyndrome_eq]
   rfl
 private theorem decoder_decode_eq : @Impl.decode = @Spec.decode := by
-  unfold Impl.decode Spec.decode
+  funext bytes
+  rw [SyndromeReuse.decode_old]
+  unfold Spec.decode
   simp only [decoder_decodeFrame_eq, decoder_frameAccepted_eq, decoder_report_eq]
 private theorem decoder_decodePrefix_eq : @Impl.decodePrefix = @Spec.decodePrefix := by
   unfold Impl.decodePrefix Spec.decodePrefix

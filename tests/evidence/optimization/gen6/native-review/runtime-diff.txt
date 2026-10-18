@@ -1,0 +1,74 @@
+diff --git a/Impl/Message.lean b/Impl/Message.lean
+index c443587..2ee07c9 100644
+--- a/Impl/Message.lean
++++ b/Impl/Message.lean
+@@ -25,20 +25,28 @@ def frameSyndrome (f : Frame) : BitVec 24 :=
+ /-- rs1090-derived decode/mod.rs and bds05/65 acceptance policy: DF17
+ requires zero PI syndrome; DF18 does not. ADSB altitude/reserved-bit filters
+ apply to both. Standard Comm-D is accepted despite the D001 oracle over-read. -/
+-def frameAccepted (f : Frame) : Bool :=
++def frameAcceptedWithSyndrome (f : Frame) (syndrome : BitVec 24) : Bool :=
+   match f.body with
+   | .extended supplementary _ _ me =>
+-      adsbHardValid me.toNat && (supplementary || frameSyndrome f == 0)
++      adsbHardValid me.toNat && (supplementary || syndrome == 0)
+   | _ => true
+ 
++/-- Standalone acceptance uses the same helper as the complete decoder. -/
++def frameAccepted (f : Frame) : Bool :=
++  frameAcceptedWithSyndrome f (frameSyndrome f)
++
+ -- Initial algorithm: Spec/Message.lean:37.
+ /-- Annex10 IV (4th ed., 2007) §§3.1.2.3.3,3.1.2.5.2.2: announced address or AP recovery.
+ DF19 reserves its trailing bits; it has no address interpretation here. -/
+-def frameAddress (f : Frame) : Option (BitVec 24) :=
++def frameAddressWithSyndrome (f : Frame) (syndrome : BitVec 24) : Option (BitVec 24) :=
+   match f.body with
+   | .allCall _ aa | .extended _ _ aa _ => some aa
+   | .military _ _ => none
+-  | _ => some (frameSyndrome f)
++  | _ => some syndrome
++
++/-- Standalone address recovery shares the decoder's address-selection helper. -/
++def frameAddress (f : Frame) : Option (BitVec 24) :=
++  frameAddressWithSyndrome f (frameSyndrome f)
+ 
+ -- Initial algorithm: Spec/Message.lean:45.
+ /-- Sun 2nd ed., chs.5,13: standard altitude with explicit units.
+@@ -103,22 +111,31 @@ def frameCommB (f : Frame) : List (Nat × PayloadRecord) :=
+ -- Initial algorithm: Spec/Message.lean:100.
+ /-- Source-defined exact report projection. DF11 CL/IC is an additional
+ standard view; failure to identify CL/IC does not reject a received DF11. -/
+-def report (f : Frame) : Report :=
+-  ⟨frameSyndrome f, frameAddress f,
+-   (match f.body with | .allCall _ _ => Parity.interrogator (frameSyndrome f) | _ => none),
++def reportWithSyndrome (f : Frame) (syndrome : BitVec 24) : Report :=
++  ⟨syndrome, frameAddressWithSyndrome f syndrome,
++   (match f.body with | .allCall _ _ => Parity.interrogator syndrome | _ => none),
+    frameAltitude f, frameIdentity f, frameADSB f, frameCommB f,
+    (match f.body with | .extended _ _ _ me => some (Semantics.adsb me.toNat) | _ => none),
+    (match f.body with
+     | .commB _ _ mb => (frameCommB f).map fun (reg, _) => (reg, Semantics.commB reg mb.toNat)
+     | _ => [])⟩
+ 
++/-- Standalone reports use the same projection as the complete decoder. -/
++def report (f : Frame) : Report :=
++  reportWithSyndrome f (frameSyndrome f)
++
+ -- Initial algorithm: Spec/Message.lean:119.
+ /-- Annex10 IV layouts + explicit rs1090-derived acceptance: total reference
+ decoding of exactly one7/14-byte message. Errors are none, including bad lengths,
+-unsupported DF, DF17 PI failure or oracle payload plausibility failure. -/
++unsupported DF, DF17 PI failure or oracle payload plausibility failure.
++After parsing succeeds, one pure syndrome calculation supplies acceptance and
++every report use. A later payload-plausibility rejection may now calculate its
++syndrome before rejection; malformed lengths and unsupported DFs still stop at
++`decodeFrame`. This changes evaluation order, not the returned value. -/
+ def decode (bytes : List UInt8) : Option Message := do
+   let f ← decodeFrame bytes
+-  if frameAccepted f then some ⟨f, report f⟩ else none
++  let syndrome := frameSyndrome f
++  if frameAcceptedWithSyndrome f syndrome then some ⟨f, reportWithSyndrome f syndrome⟩ else none
+ 
+ -- Initial algorithm: Spec/Message.lean:132.
+ /-- rs1090-derived Message::from_bytes boundary policy: consume one DF-sized

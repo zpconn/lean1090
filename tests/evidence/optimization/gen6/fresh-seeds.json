@@ -1,0 +1,55 @@
+{
+  "recorded_utc": "2026-10-18T22:01:00.422649+00:00",
+  "message_seed": 3190208009,
+  "commb_seed": 1865131355,
+  "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical-record and mutual collisions rejected.",
+  "historical_seed_values_checked": 18,
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "eeb58261e6be0c2b87385f3064a88aed00d4d19a",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Proofs/SyndromeReuse.lean": "cb442517b984cdafd13e66b7e2001d9b1c0f91c1d630de26a173aaef1d2a2126",
+    "Proofs/Decoder.lean": "b830d30e5f2daa16213a43fa4a22a596f486842565a12c1c476e876918881b9b"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen6-gate/fresh-commb.csv",
+      "100000",
+      "1865131355"
+    ],
+    [
+      "python3",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen6-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen6/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "3190208009",
+      "--commb-boundaries",
+      ".cache/gen6-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen6/fresh-message"
+    ]
+  ],
+  "authorization_note": "Parent explicitly authorized generation and native direct campaign after combined targeted gen6 build passed at 22:00:17 UTC (3511 jobs); correctness sources and native targets are stable. Main full gate has independent outputs. No extra build is introduced by this orchestration."
+}

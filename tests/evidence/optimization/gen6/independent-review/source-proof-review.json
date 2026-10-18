@@ -1,0 +1,121 @@
+{
+  "status": "passed_source_and_targeted_proof_review",
+  "reviewed_utc": "2026-10-18T22:00:41.305168+00:00",
+  "base_commit": "eeb58261e6be0c2b87385f3064a88aed00d4d19a",
+  "source_sha256": {
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Proofs/SyndromeReuse.lean": "cb442517b984cdafd13e66b7e2001d9b1c0f91c1d630de26a173aaef1d2a2126",
+    "Proofs/Decoder.lean": "b830d30e5f2daa16213a43fa4a22a596f486842565a12c1c476e876918881b9b"
+  },
+  "proof_build_log": {
+    "path": "tests/evidence/optimization/gen6/proof/build-01.log",
+    "sha256": "deb86c68ae9734a8495a923c051a39809fcde1b2e41fa8e3c53987994e227c1d",
+    "jobs": 16,
+    "exit_code": 0
+  },
+  "axiom_outputs": [
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.frameAccepted_canonical",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.frameAddress_canonical",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.report_canonical",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.frameAccepted_old",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.frameAddress_old",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.report_old",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.decode_old",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.empty_input_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.truncated_input_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.SyndromeReuse.bad_parity_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "frozen_files_checked": 104,
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "findings": [],
+  "scope_review": [
+    "Every existing definition except frameAccepted, frameAddress, report and decode retains its exact original body; only three shared helper definitions are added. Runtime imports remain unchanged.",
+    "Each helper body exactly substitutes the provided syndrome into its former public body. Report retains both frameCommB calls and every altitude, identity, ADS-B, semantic and inference projection unchanged.",
+    "Each public standalone acceptance/address/report entry point delegates directly to the same helper used by complete decode. No legacy duplicate or frozen-adapter-only path exists.",
+    "The complete decoder binds one local frameSyndrome after decodeFrame succeeds and passes it to acceptance and report. No global state, mutable cache, corpus key or cross-message/run reuse is introduced."
+  ],
+  "semantics_and_domain": [
+    "All seven canonical/old-body helper equalities quantify over every Frame or byte list, without validity, length, parity, acceptance or corpus hypotheses; each proof is rfl.",
+    "DF17 still requires hard-valid ADS-B payload and zero syndrome; DF18 still ignores PI syndrome; all other frame constructors retain prior acceptance.",
+    "Announced all-call/extended addresses, missing DF19 address, AP-recovered addresses and DF11 interrogator projection retain exactly their old values.",
+    "Empty, truncated and unsupported-DF byte inputs still terminate at decodeFrame before the local syndrome binding. The pure CRC may run earlier for a parsed frame rejected later by payload validity; this evaluation-order change is explicitly documented and cannot change the Option result.",
+    "Standalone delegates can also evaluate a syndrome earlier than their old short-circuit body. They remain total and extensionally equal; this record does not claim unchanged standalone cost.",
+    "Kernel witnesses cover empty input, one-byte truncation and a complete DF17 parity failure. These supplement rather than replace the universal equalities."
+  ],
+  "integration_review": [
+    "Decoder rewrites each modified public function through its exact old-body theorem before reusing the frozen component refinement chain. Final integrated compilation remains separately recorded."
+  ],
+  "review_script": "/home/zpconn/code/lean1090/tests/evidence/optimization/gen6/independent-review/check_source.py",
+  "review_script_sha256": "75346c75671b4164db022a43c87ea73934c87eca286cdce4c604210ca53c6a74",
+  "limits": "Read-only source/diff/hash/log inspection only. No build, test, decoder execution, native artifact change or frozen edit. Generated-C/native call count, integrated build and complete gate remain separate obligations."
+}

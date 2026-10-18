@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-10-18T21:59:20.355348+00:00",
+  "sources": {
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Proofs/SyndromeReuse.lean": "cb442517b984cdafd13e66b7e2001d9b1c0f91c1d630de26a173aaef1d2a2126"
+  },
+  "build_command": [
+    "lake",
+    "build",
+    "Proofs.SyndromeReuse"
+  ],
+  "build_exit_code": 0,
+  "build_log": "tests/evidence/optimization/gen6/proof/build-01.log",
+  "build_log_sha256": "deb86c68ae9734a8495a923c051a39809fcde1b2e41fa8e3c53987994e227c1d",
+  "jobs": 16,
+  "theorems": [
+    "frameAccepted_canonical",
+    "frameAddress_canonical",
+    "report_canonical",
+    "frameAccepted_old",
+    "frameAddress_old",
+    "report_old",
+    "decode_old",
+    "empty_input_witness",
+    "truncated_input_witness",
+    "bad_parity_witness"
+  ],
+  "axioms": "All ten facts print only propext, Classical.choice, Quot.sound.",
+  "scope": "Share one pure frame syndrome between acceptance and all report uses after decodeFrame succeeds. Public acceptance/address/report wrappers delegate to the same live helpers. Every non-CRC projection and both frameCommB calls are preserved. No global state, cross-message cache, trusted primitive or frozen edit.",
+  "evaluation_order": "Malformed lengths/unsupported DFs still fail in decodeFrame. Parsed frames rejected later by payload plausibility may now calculate a syndrome before returning the same none result.",
+  "proof_method": "The seven general helper/old-body equalities are rfl; they quantify over every Frame or byte list without validity hypotheses."
+}
