@@ -1,0 +1,31 @@
+[
+  [
+    "lake",
+    "env",
+    "lean",
+    "--run",
+    "scripts/FuzzCommB.lean",
+    ".cache/gate/commb-fc006-fresh.csv",
+    "100000",
+    "1176298437"
+  ],
+  [
+    "python3",
+    "scripts/check_commb_fuzz.py",
+    ".cache/gate/commb-fc006-fresh.csv"
+  ],
+  [
+    "python3",
+    "scripts/check_message_differential.py",
+    "--corpus",
+    "--generated",
+    "10000000",
+    "--commb-boundaries",
+    ".cache/gate/commb-fc006-fresh.csv",
+    "--seed",
+    "1425820264",
+    "--diagnostic",
+    "--output",
+    "tests/evidence/frozen-changes/FC006/fresh-message"
+  ]
+]

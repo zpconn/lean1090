@@ -13,7 +13,7 @@ The fragment cannot itself import Impl, Proofs, or any other module.
 
 FC004 freezes named differential adapters; FC005 adds tracking and upstream unit adapters. Those adapters may directly
 import Impl in addition to the reference/platform imports, but never Proofs,
-including transitively. This exception applies only to the exact adapter paths
+including transitively. FC006 also includes the frozen whole-decoder benchmark worker. This exception applies only to the exact adapter paths
 below. It changes no Spec/Model/Capstones or proof-manifest import permission.
 """
 from pathlib import Path
@@ -38,6 +38,7 @@ differential_adapters = [
     'Tests/DTEDifferential.lean', 'Tests/ReservedVelocityDifferential.lean',
     'Tests/Numeric.lean', 'scripts/FuzzCPR.lean',
     'Tests/Tracking.lean', 'Tests/Upstream.lean', 'Tests/UpstreamCorpus.lean',
+    'Bench/WholeDecoder.lean',
 ]
 differential_modules = [str(Path(path).with_suffix('')).replace('/', '.')
                         for path in differential_adapters]

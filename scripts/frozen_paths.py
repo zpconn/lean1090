@@ -60,6 +60,7 @@ def frozen_paths():
         'scripts/AuditWitnesses.lean', 'scripts/AuditBDS50.lean',
         'scripts/check_pilot.py', 'scripts/compile_fragment.py',
         'scripts/check_all.sh', 'scripts/check_draft.sh', 'scripts/check_documents.py',
+        'Bench/WholeDecoder.lean', 'bench/check_worker.py',
         'bench/oracle/Cargo.toml', 'bench/oracle/Cargo.lock', 'bench/oracle/src/main.rs',
         'bench/run_oracle.sh', 'bench/interleave.py',
         'bench/bds50/Cargo.toml', 'bench/bds50/Cargo.lock', 'bench/bds50/src/main.rs',
