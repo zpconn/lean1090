@@ -237,7 +237,8 @@ def stage_for(symbol: str, inherited: str) -> str:
         return "adsb_fields"
     if local in ("frameAltitude", "frameOracleAltitude", "frameIdentity"):
         return "semantic_oracle_values"
-    if local in ("decodeFrame", "frameSyndrome", "frameAddress", "frameAccepted") or (
+    if local in ("decodeFrame", "frameSyndrome", "frameAddress", "frameAccepted",
+                 "frameAddressWithSyndrome", "frameAcceptedWithSyndrome") or (
             symbol.startswith(PREFIX + "Parity_")):
         return "frame_crc"
     # report's map specialization allocates the semantic list; its called
@@ -295,6 +296,7 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
     anchor_names = {
         PREFIX + name for name in (
             "decode", "decodeFrame", "frameAccepted", "frameSyndrome", "frameAddress",
+            "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
             "Parity_checksum", "Parity_syndrome", "Parity_step", "frameADSB",
             "decodeADSB", "adsbHardValid", "frameCommB", "inferCommB",
             "commBCoreEligible", "bdsWireValid", "cbScorePasses", "cbCombinedScore",
@@ -398,6 +400,13 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
 
 def fixture_checks() -> None:
     """Check accounting errors that would materially mislead this diagnostic."""
+    # Renamed pure helpers keep their previous operational stage. Inlined
+    # acceptance self work remains in decode's residual-control bucket; it is
+    # not silently attributed by source-level intention.
+    assert stage_for(PREFIX + "frameAddressWithSyndrome", "output_model_control") == "frame_crc"
+    assert stage_for(PREFIX + "frameAcceptedWithSyndrome", "output_model_control") == "frame_crc"
+    assert stage_for(PREFIX + "reportWithSyndrome", "output_model_control") == "output_model_control"
+    assert stage_for(DECODE, "output_model_control") == "output_model_control"
     text = f"""# callgrind format
 version: 1
 positions: instr line

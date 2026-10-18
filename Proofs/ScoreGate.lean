@@ -1,4 +1,5 @@
 import Impl.ScoreGate
+import Proofs.ScoreGateInteger
 import Proofs.Binary64Error
 
 /-! Correctness and concrete branch witnesses for the lazy exact score gate. -/
@@ -26,9 +27,8 @@ theorem choose_eq (terms : List Rat) (penalty : Rat) (fallback : Unit → Bool)
     (fallback_eq : fallback () = decide (scoreReference terms penalty ≥ -3)) :
     Impl.ScoreGate.choose terms penalty fallback =
       decide (scoreReference terms penalty ≥ -3) := by
-  unfold Impl.ScoreGate.choose
+  rw [ScoreGateInteger.choose_eq_old]
   rw [center_eq, envelope_eq]
-  dsimp only
   have bounded := score_error terms penalty short
   obtain ⟨lower, upper⟩ := abs_le.mp bounded
   split

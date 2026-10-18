@@ -1,0 +1,99 @@
+{
+  "status": "passed_source_and_universal_helper_proof_review",
+  "reviewed_utc": "2026-10-18T22:41:56.884719+00:00",
+  "source_sha256": {
+    "Impl/ScoreGate.lean": "471a48cecb1f4374dcced2adaec0bd5a639aa61d8f47ec80e9a23af9aafe7776",
+    "Proofs/ScoreGateInteger.lean": "2927ea9e43a7fb539b96ef2624548177ff273862033d5963e7470e0b03631d9e"
+  },
+  "unchanged_live_commb_source_sha256": "d2a4c4910e6e867abc5df33355e3340740e2adb928532122c0eb610b0fbe7481",
+  "proof_summary_sha256": "fd0b50d50fc6e24200482fc4bb266cf06e62c375352ee8e9887a0d203550b88d",
+  "successful_helper_log": "tests/evidence/optimization/gen7/proof/build-04.log",
+  "successful_helper_log_sha256": "f71f4df962a0fa0d2e10153ea043bb59e64c5b250e1c69c8edf5ac1ab4d1ed37",
+  "printed_axioms": {
+    "commonDenominator_pos": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "denominator_dvd": [
+      "Quot.sound",
+      "propext"
+    ],
+    "scaledNumerator_cast": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "scaledTotals_cast": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "choose_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "accept_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "reject_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "fallback_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "empty_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "dyadic_denominator_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "product_denominator_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "product_decision_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "witnesses": [
+    "accept_witness",
+    "reject_witness",
+    "fallback_witness",
+    "empty_witness",
+    "dyadic_denominator_witness",
+    "product_denominator_witness",
+    "product_decision_witness"
+  ],
+  "universal_statement": "theorem choose_eq_old (terms : List Rat) (penalty : Rat) (fallback : Unit \u2192 Bool) :\n    choose terms penalty fallback =\n      (if center terms penalty - envelope terms penalty \u2265 -3 then true\n       else if center terms penalty + envelope terms penalty < -3 then false\n       else fallback ())",
+  "frozen_file_hashes_checked": 104,
+  "frozen_direct_ScoreGate_references": [],
+  "review_script_sha256": "926649c89b51c63c6d5d5847f5bb0264d0dd7a09925ae1a1856753a33f3718c0",
+  "findings": [],
+  "reviewer_note": "The initial source-text guard omitted the final explicit Nat annotation around max(length,1). Its script/log are retained as attempt 01; the corrected guard matches the already stable compiled source. No source or proof change was requested.",
+  "reasoning": [
+    "The maximum starts at one, so its branch is positive; the other branch multiplies positive canonical Rat denominators. Every denominator divides the selected value, by the checked remainder predicate or list-product membership.",
+    "scaledNumerator uses an exact divisible Nat quotient. Rat.natCast_div and num_div_den prove that its integer cast is D times the original rational, including negative numerators. The absolute numerator identity uses nonnegative D.",
+    "A universal fold lemma proves the two accumulated integers are D times the signed term sum and absolute term sum. It assumes divisibility only locally; commonDenominator establishes that for every input.",
+    "n=max(length,1) is positive. The empty-list branch has zero mean; nonempty lists clear their actual positive length. Therefore C=n*D*center and E=D*K*envelope for K=2^40.",
+    "The positive scale n*D*K preserves the exact lower >= -3 and upper < -3 comparisons, including equality. The universal theorem assumes neither short lists nor dyadic inputs nor a particular fallback result.",
+    "The complete software fallback remains the same thunk at the sole uncertainty branch. Runtime source imports only Std and uses unbounded Nat/Int operations; no approximation, floating-point primitive, corpus condition or cross-message state is added.",
+    "The original mass, center and envelope definitions remain byte-identical. Impl.CommB is byte-identical and still invokes live choose with cbCombinedScore as the fallback; no frozen adapter is redirected to a dead legacy implementation."
+  ],
+  "limits": [
+    "This review consumes the successful helper build and its printed axioms; it performs no compiler, test or native execution.",
+    "The integrated decoder build, generated-C laziness review and complete fixed/fresh differential campaigns are separate pending checks.",
+    "No performance claim follows from the source/proof review. The product denominator can be large for arbitrary non-dyadic lists; the theorem establishes exact behavior, not a universal speed bound."
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "recorded_utc": "2026-10-18T22:36:29.379729+00:00",
+  "message_seed": 175700860,
+  "commb_seed": 3045455262,
+  "sampling": "Separate secrets.randbits(32) draws before any fresh fixture generation; historical-record and mutual collisions rejected.",
+  "historical_seed_values_checked": 20,
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "cd4df90b6821ed8d375cb26e0e5baed6f6e9fecf",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen7-gate/fresh-commb.csv",
+      "100000",
+      "3045455262"
+    ],
+    [
+      "python3",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen7-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen7/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "175700860",
+      "--commb-boundaries",
+      ".cache/gen7-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen7/fresh-message"
+    ]
+  ],
+  "authorization_note": "Seeds recorded while gen7 implementation/proof work is in progress. No campaign has started. Runtime/proof/binary snapshots will be captured only after root confirms a passing integrated build and stable correctness inputs."
+}

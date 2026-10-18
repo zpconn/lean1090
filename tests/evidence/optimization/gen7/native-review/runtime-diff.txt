@@ -1,0 +1,54 @@
+diff --git a/Impl/ScoreGate.lean b/Impl/ScoreGate.lean
+index f3a269c..22388ab 100644
+--- a/Impl/ScoreGate.lean
++++ b/Impl/ScoreGate.lean
+@@ -24,16 +24,44 @@ constant denominator is exactly 2^40. The proof covers arbitrary rationals. -/
+ def envelope (terms : List Rat) (penalty : Rat) : Rat :=
+   (mass terms + penalty.abs + 1) / (2 : Rat)^40
+ 
+-/-- Decide the inclusive -3 threshold from the exact enclosure. A caller must
++/-- A positive common denominator for every term and the penalty. The maximum
++is sufficient when all denominators divide it (including all dyadic inputs).
++The product supplies an exact fallback for arbitrary rational inputs. -/
++def commonDenominator (terms : List Rat) (penalty : Rat) : Nat :=
++  let denominators := penalty.den :: terms.map Rat.den
++  let largest := denominators.foldl max 1
++  if denominators.all (fun d => largest % d == 0) then largest
++  else denominators.prod
++
++/-- Numerator at a known common denominator, without constructing a new Rat. -/
++@[inline] def scaledNumerator (denominator : Nat) (value : Rat) : Int :=
++  value.num * (denominator / value.den : Nat)
++
++/-- Accumulate signed and absolute numerators together using integer arithmetic.
++The denominator's divisibility is established by `commonDenominator`. -/
++def scaledTotals (denominator : Nat) (terms : List Rat) : Int × Int :=
++  terms.foldl (fun totals value =>
++    let numerator := scaledNumerator denominator value
++    (totals.1 + numerator, totals.2 + (numerator.natAbs : Int))) (0, 0)
++
++/-- Decide the inclusive -3 threshold from the same exact enclosure using
++integer cross multiplication at a positive common denominator. A caller must
+ pass the complete software score decision as a thunk: only the uncertain
+ branch invokes it. Keeping this boundary uninlined makes that lazy call
+ explicit in generated C as well as in the pure definition. -/
+ @[noinline] def choose (terms : List Rat) (penalty : Rat)
+     (fallback : Unit → Bool) : Bool :=
+-  let c := center terms penalty
+-  let e := envelope terms penalty
+-  if c - e ≥ -3 then true
+-  else if c + e < -3 then false
++  let denominator := commonDenominator terms penalty
++  let totals := scaledTotals denominator terms
++  let p := scaledNumerator denominator penalty
++  let n : Int := (max terms.length 1 : Nat)
++  let c := totals.1 + n * p
++  let e := totals.2 + (p.natAbs : Int) + denominator
++  let scaledCenter := 1099511627776 * c
++  let scaledError := n * e
++  let threshold := -3 * n * denominator * 1099511627776
++  if scaledCenter - scaledError ≥ threshold then true
++  else if scaledCenter + scaledError < threshold then false
+   else fallback ()
+ 
+ end Lean1090.Impl.ScoreGate

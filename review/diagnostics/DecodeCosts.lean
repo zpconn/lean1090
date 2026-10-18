@@ -200,6 +200,8 @@ private def census (inputs : Array Input) (output : Array Spec.Message) : IO Jso
           ("hard_pass", toJson c.hardPass), ("score_attempt_predictions", toJson c.scoreAttempts),
           ("score_pass", toJson c.scorePass), ("eligible", toJson c.eligible),
           ("accepted", toJson c.accepted), ("decodeBDS_recheck_predictions", toJson c.accepted)]]
+    -- Retain this historical gen0--5 prediction for exact census comparison.
+    -- The separate crcCensus below is the live gen6 prediction, not this field.
     let crcPerMessage := if [0,4,5,16,17,20,21,24,25,26,27,28,29,30,31].contains df then 2 else 1
     rows := rows ++ [Json.mkObj [
       ("df", toJson df), ("count", toJson messages.length),
@@ -212,6 +214,40 @@ private def census (inputs : Array Input) (output : Array Spec.Message) : IO Jso
       ("commb", toJson registers)]]
   return Json.mkObj [("kind", .str "post_decode_shadow_census"),
     ("native_call_counts", .bool false), ("per_df", toJson rows)]
+
+/-- Gen6 live-path census after collection. Reparse each retained input and
+check its exact frame and syndrome against the complete decoder result.
+The source/C path computes one syndrome after successful parsing; native
+profile entries must independently agree with these population predictions.
+The older shadow census's CRC field is retained only for historical equality. -/
+private def crcCensus (inputs : Array Input) (output : Array Spec.Message) : IO Json := do
+  if inputs.size != output.size then throw (IO.userError "CRC census cardinality mismatch")
+  let mut counts := Array.replicate 32 (0 : Nat)
+  let mut steps := Array.replicate 32 (0 : Nat)
+  for h : i in [:inputs.size] do
+    let input := inputs[i]
+    let some message := output[i]? | throw (IO.userError "missing CRC census result")
+    let some frame := Impl.decodeFrame input.bytes | throw (IO.userError "CRC census parse failed")
+    if !(decide (frame = message.fields)) then
+      throw (IO.userError "CRC census parsed fields differ from decoder result")
+    let syndrome := Impl.frameSyndrome frame
+    if syndrome != message.decoded.crc || !Impl.frameAcceptedWithSyndrome frame syndrome then
+      throw (IO.userError "CRC census syndrome/acceptance differs from decoder result")
+    let bits := Impl.informationBits frame.body + 24
+    if bits != input.bytes.length * 8 then throw (IO.userError "CRC census width mismatch")
+    counts := counts.modify input.df (· + 1)
+    steps := steps.modify input.df (· + bits)
+  let rows := (List.range 32).map fun df => Json.mkObj [
+    ("df", toJson df), ("parsed_frames", toJson (counts[df]?.getD 0)),
+    ("crc_call_predictions", toJson (counts[df]?.getD 0)),
+    ("crc_step_predictions", toJson (steps[df]?.getD 0))]
+  return Json.mkObj [("kind", .str "post_decode_crc_census"),
+    ("strategy", .str "one_syndrome_per_successfully_parsed_frame"),
+    ("population", .str "accepted_corpus_only"),
+    ("input_rows", toJson inputs.size), ("retained_accepted_rows", toJson output.size),
+    ("native_call_counts", .bool false), ("parsed_fields_and_syndromes_checked", .bool true),
+    ("historical_crc_prediction", .str "post_decode_shadow_census.per_df[].crc_call_predictions"),
+    ("per_df", toJson rows)]
 
 /-- Replay the live interval predicates after collection, checking every result
 against the live score decision. Native call counts remain a separate profile
@@ -277,6 +313,7 @@ private def decodeMode (mode : String) (inputs : Array Input) (withCensus wait :
   if withCensus then
     emit (← census inputs output)
     emit (← intervalCensus output)
+    emit (← crcCensus inputs output)
 
 private structure ScoreInput where
   df : Nat

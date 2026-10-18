@@ -1,0 +1,79 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b790d0 <initialize_lean1090_Impl_ScoreGate>:
+  b790d0:	push   %rbx
+  b790d1:	cmpb   $0x0,0x3ff8bc0(%rip)        # 4b71c98 <_G_initialized>
+  b790d8:	je     b790fa <initialize_lean1090_Impl_ScoreGate+0x2a>
+  b790da:	mov    $0x10,%edi
+  b790df:	call   48fcde0 <lean_alloc_small_object_core>
+  b790e4:	movl   $0x1,(%rax)
+  b790ea:	movw   $0x1,0x6(%rax)
+  b790f0:	movq   $0x1,0x8(%rax)
+  b790f8:	pop    %rbx
+  b790f9:	ret
+  b790fa:	mov    %edi,%ebx
+  b790fc:	movb   $0x1,0x3ff8b95(%rip)        # 4b71c98 <_G_initialized>
+  b79103:	xor    %eax,%eax
+  b79105:	call   48b4370 <lean_initialize_runtime_module>
+  b7910a:	movzbl %bl,%ebx
+  b7910d:	mov    %ebx,%edi
+  b7910f:	call   48276f0 <initialize_Init>
+  b79114:	movzbl 0x7(%rax),%ecx
+  b79118:	shl    $0x18,%ecx
+  b7911b:	cmp    $0x1000000,%ecx
+  b79121:	je     b79165 <initialize_lean1090_Impl_ScoreGate+0x95>
+  b79123:	mov    (%rax),%ecx
+  b79125:	cmp    $0x2,%ecx
+  b79128:	jl     b79177 <initialize_lean1090_Impl_ScoreGate+0xa7>
+  b7912a:	dec    %ecx
+  b7912c:	mov    %ecx,(%rax)
+  b7912e:	mov    %ebx,%edi
+  b79130:	call   48276f0 <initialize_Init>
+  b79135:	movzbl 0x7(%rax),%ecx
+  b79139:	shl    $0x18,%ecx
+  b7913c:	cmp    $0x1000000,%ecx
+  b79142:	je     b79165 <initialize_lean1090_Impl_ScoreGate+0x95>
+  b79144:	mov    (%rax),%ecx
+  b79146:	cmp    $0x2,%ecx
+  b79149:	jl     b79185 <initialize_lean1090_Impl_ScoreGate+0xb5>
+  b7914b:	dec    %ecx
+  b7914d:	mov    %ecx,(%rax)
+  b7914f:	mov    %ebx,%edi
+  b79151:	call   46e1bf0 <initialize_Std>
+  b79156:	movzbl 0x7(%rax),%ecx
+  b7915a:	shl    $0x18,%ecx
+  b7915d:	cmp    $0x1000000,%ecx
+  b79163:	jne    b79167 <initialize_lean1090_Impl_ScoreGate+0x97>
+  b79165:	pop    %rbx
+  b79166:	ret
+  b79167:	mov    (%rax),%ecx
+  b79169:	cmp    $0x2,%ecx
+  b7916c:	jl     b79193 <initialize_lean1090_Impl_ScoreGate+0xc3>
+  b7916e:	dec    %ecx
+  b79170:	mov    %ecx,(%rax)
+  b79172:	jmp    b790da <initialize_lean1090_Impl_ScoreGate+0xa>
+  b79177:	test   %ecx,%ecx
+  b79179:	je     b7912e <initialize_lean1090_Impl_ScoreGate+0x5e>
+  b7917b:	mov    %rax,%rdi
+  b7917e:	call   48937b0 <lean_dec_ref_cold>
+  b79183:	jmp    b7912e <initialize_lean1090_Impl_ScoreGate+0x5e>
+  b79185:	test   %ecx,%ecx
+  b79187:	je     b7914f <initialize_lean1090_Impl_ScoreGate+0x7f>
+  b79189:	mov    %rax,%rdi
+  b7918c:	call   48937b0 <lean_dec_ref_cold>
+  b79191:	jmp    b7914f <initialize_lean1090_Impl_ScoreGate+0x7f>
+  b79193:	test   %ecx,%ecx
+  b79195:	je     b790da <initialize_lean1090_Impl_ScoreGate+0xa>
+  b7919b:	mov    %rax,%rdi
+  b7919e:	call   48937b0 <lean_dec_ref_cold>
+  b791a3:	jmp    b790da <initialize_lean1090_Impl_ScoreGate+0xa>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

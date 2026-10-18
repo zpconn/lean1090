@@ -1,0 +1,642 @@
+{
+  "accepted_callback_false": {
+    "lines": "768-774",
+    "note": "Aggregate of callback absent or callback returning false; not one source branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "accepted_callback_true": {
+    "lines": "768-774",
+    "note": "Aggregate alias for callback present and true.",
+    "real_outcome": null,
+    "required": true,
+    "role": "cooccurring_duplicate",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "airborne": {
+    "lines": "671-675",
+    "note": "The ME dispatch selects BDS05.",
+    "real_outcome": "payload.airborne",
+    "required": false,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "airborne_backward_motion": {
+    "lines": "705,720-721",
+    "note": "Nonzero movement with negative signed age witnesses use of absolute duration for motion.",
+    "real_outcome": null,
+    "required": true,
+    "role": "context",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "airborne_even": {
+    "lines": "678-685,778-786",
+    "note": "Even reads the odd slot and eventually replaces the even slot unless returned early.",
+    "real_outcome": "parity.even",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "airborne_odd": {
+    "lines": "678-685,778-786",
+    "note": "Odd reads the even slot and eventually replaces the odd slot unless returned early.",
+    "real_outcome": "parity.odd",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "backward_speed_above_threshold": {
+    "lines": "720-735",
+    "note": "Nonzero backward-time movement above 1200 km/h rejects; missing abs would accept.",
+    "real_outcome": "speed_threshold.reject",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "backward_speed_below_threshold": {
+    "lines": "720-735",
+    "note": "Nonzero backward-time movement at or below 1200 km/h passes; targeted fixtures must be strictly below.",
+    "real_outcome": "speed_threshold.pass",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "cache_replace_accepted": {
+    "lines": "755-786",
+    "note": "Accepted candidate updates public state then replaces its parity cache.",
+    "real_outcome": "airborne_result.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "cache_replace_failed": {
+    "lines": "755-786",
+    "note": "No accepted candidate; public position is preserved but its parity cache is replaced.",
+    "real_outcome": "airborne_result.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "cache_unchanged_early_return": {
+    "lines": "688-690",
+    "note": "Same event as cross_parity_out_of_order; state/cache preservation is checked.",
+    "real_outcome": null,
+    "required": true,
+    "role": "cooccurring_duplicate",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "callback_absent": {
+    "lines": "768-775",
+    "note": "No update callback was supplied.",
+    "real_outcome": "callback.absent",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "callback_false": {
+    "lines": "769-774",
+    "note": "A supplied callback returns false and leaves shared reference unchanged.",
+    "real_outcome": "callback.false",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "callback_true": {
+    "lines": "769-774",
+    "note": "A supplied callback returns true and updates shared reference.",
+    "real_outcome": "callback.true",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "cross_parity_out_of_order": {
+    "lines": "688-690",
+    "note": "Negative time relative to the opposite slot returns before any state update.",
+    "real_outcome": "ordering.return",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "decode_rejected": {
+    "lines": "885-905",
+    "note": "Message::from_bytes failed; the batch skips the missing message.",
+    "real_outcome": "routing.missing",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "df17": {
+    "lines": "887-894",
+    "note": "The batch dispatch selects ExtendedSquitterADSB.",
+    "real_outcome": "routing.df17",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "df18": {
+    "lines": "895-902",
+    "note": "The batch dispatch selects ExtendedSquitterTisB.",
+    "real_outcome": "routing.df18",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "distance_above_500": {
+    "lines": "743-748",
+    "note": "Distance context only; does not by itself imply jump rejection.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "distance_below_500": {
+    "lines": "743-748",
+    "note": "Distance context only; speed rejection or age can prevent the jump condition from evaluating.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "distance_exact_500": {
+    "lines": "743-748",
+    "note": "Exact distance boundary context; not required because no exact binary64 fixture is assumed.",
+    "real_outcome": null,
+    "required": false,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "global_rejected": {
+    "lines": "697,702-705",
+    "note": "airborne_position returns None, so the local-age condition is considered.",
+    "real_outcome": "global_result.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "global_success": {
+    "lines": "697,702-705",
+    "note": "airborne_position returns Some, so the local fallback is skipped.",
+    "real_outcome": "global_result.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "jump_rejection": {
+    "lines": "743-748",
+    "note": "Candidate survives speed but exceeds 500 km with absolute age below 30 seconds.",
+    "real_outcome": "jump.reject",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_age_exact": {
+    "lines": "704-706",
+    "note": "Exactly 180 seconds fails the signed local-age condition.",
+    "real_outcome": "local_age.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_age_inside": {
+    "lines": "704-706",
+    "note": "The signed age is strictly less than 180 seconds, including negative ages.",
+    "real_outcome": "local_age.inside",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_age_outside": {
+    "lines": "704-706",
+    "note": "Greater than 180 seconds fails the same signed condition.",
+    "real_outcome": "local_age.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_attempt": {
+    "lines": "707-713",
+    "note": "A previous accepted position exists for local fallback.",
+    "real_outcome": "local_reference.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_no_previous_position": {
+    "lines": "707-713",
+    "note": "No previous accepted position exists for local fallback.",
+    "real_outcome": "local_reference.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_rejected": {
+    "lines": "708-713",
+    "note": "The actual airborne_position_with_reference returns None.",
+    "real_outcome": "local_result.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "local_success": {
+    "lines": "708-713",
+    "note": "The actual airborne_position_with_reference returns Some.",
+    "real_outcome": "local_result.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "motion_pass": {
+    "lines": "743-748",
+    "note": "After surviving speed validation, the compound jump-rejection condition is false; its conjuncts are not counted separately.",
+    "real_outcome": "jump.pass",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "non_adsb": {
+    "lines": "903",
+    "note": "A successfully decoded frame has no tracking dispatch.",
+    "real_outcome": "routing.other",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "opposite_slot_empty": {
+    "lines": "696-699",
+    "note": "The opposite slot is None, so global reconstruction has no candidate.",
+    "real_outcome": "pair_slot.empty",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "other_adsb": {
+    "lines": "852-866",
+    "note": "The other-ME arm records supported evidence and produces no position.",
+    "real_outcome": "payload.other",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "pair_even_then_odd": {
+    "lines": "678-699",
+    "note": "The odd parity arm with a populated even slot; not another decision.",
+    "real_outcome": null,
+    "required": true,
+    "role": "cooccurring_duplicate",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "pair_gap_exact": {
+    "lines": "692-700",
+    "note": "Exactly 30 seconds fails the strict pair window.",
+    "real_outcome": "pair_window.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "pair_gap_inside": {
+    "lines": "692-700",
+    "note": "The strict absolute 30-second pair window passes after the ordering check.",
+    "real_outcome": "pair_window.inside",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "pair_gap_outside": {
+    "lines": "692-700",
+    "note": "More than 30 seconds fails the same strict pair-window condition.",
+    "real_outcome": "pair_window.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "pair_odd_then_even": {
+    "lines": "678-699",
+    "note": "The even parity arm with a populated odd slot; not another decision.",
+    "real_outcome": null,
+    "required": true,
+    "role": "cooccurring_duplicate",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "reference_initialized": {
+    "lines": "768-774",
+    "note": "A true callback changed None to Some; initialization is not a separate source branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "reference_unchanged": {
+    "lines": "688-690,755-775,789-866",
+    "note": "Can result from early return, failure, absent/false callback, unchanged coordinates, or non-airborne message.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "reference_updated": {
+    "lines": "768-774",
+    "note": "A true callback changed an existing coordinate; source uses the same assignment.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "resolved": {
+    "lines": "755-776,834-850",
+    "note": "Aggregate accepted position across airborne and surface paths.",
+    "real_outcome": null,
+    "required": false,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "same_parity_out_of_order_replacement": {
+    "lines": "688-690,778-786",
+    "note": "Only the opposite timestamp is checked; replacement of an older same-parity slot is permitted.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "signed_local_age_backward_motion": {
+    "lines": "704-713",
+    "note": "A negative age permits local fallback; targeted fixtures at -180 seconds and on both sides test that an absolute-age rule would be wrong.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_above_threshold": {
+    "lines": "730-735",
+    "note": "Computed speed greater than 1200 km/h rejects.",
+    "real_outcome": "speed_threshold.reject",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_below_threshold": {
+    "lines": "730-735",
+    "note": "Computed speed below 1200 km/h does not reject.",
+    "real_outcome": "speed_threshold.pass",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_exact_threshold": {
+    "lines": "730-735",
+    "note": "Computed speed equal to 1200 km/h does not reject.",
+    "real_outcome": "speed_threshold.pass",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_gap_exact": {
+    "lines": "727-737",
+    "note": "Exactly 1800 seconds bypasses speed validation.",
+    "real_outcome": "speed_window.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_gap_inside": {
+    "lines": "720-729",
+    "note": "Absolute age below 1800 seconds enables speed validation.",
+    "real_outcome": "speed_window.inside",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_gap_outside": {
+    "lines": "727-737",
+    "note": "Greater than 1800 seconds bypasses the same condition.",
+    "real_outcome": "speed_window.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_rejection": {
+    "lines": "733-735",
+    "note": "Same rejected event as speed_above_threshold.",
+    "real_outcome": "speed_threshold.reject",
+    "required": true,
+    "role": "cooccurring_duplicate",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "speed_zero_dt": {
+    "lines": "728-736",
+    "note": "Zero absolute duration bypasses division/speed rejection.",
+    "real_outcome": "speed_duration.zero",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface": {
+    "lines": "789-792",
+    "note": "The ME dispatch selects BDS06.",
+    "real_outcome": "payload.surface",
+    "required": false,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_airport_lookup_found": {
+    "lines": "104-127,847-848",
+    "note": "Lookup result is Some; a result split inside surface_airport.lookup, not another tracking branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_airport_lookup_missing": {
+    "lines": "104-127,847-848",
+    "note": "Lookup result is None; a result split inside surface_airport.lookup, not another tracking branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_airport_lookup_none": {
+    "lines": "846-849",
+    "note": "No airport was set, so nearest-airport lookup runs.",
+    "real_outcome": "surface_airport.lookup",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_airport_preserved_despite_new_nearest": {
+    "lines": "846-849",
+    "note": "The existing airport is retained even when a fresh lookup would return another airport; no unconditional refresh exists.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_airport_preserved_existing": {
+    "lines": "846-849",
+    "note": "An existing airport skips lookup and remains unchanged.",
+    "real_outcome": "surface_airport.preserve",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_even": {
+    "lines": "580-592,789-792",
+    "note": "Surface parity selects the low-level grid; decode_position has no surface parity policy branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "context",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_existing_bypasses_airport": {
+    "lines": "818-826",
+    "note": "Existing position bypasses first-surface airport proximity validation.",
+    "real_outcome": "surface_first.existing",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_first_far_from_airport": {
+    "lines": "818-823",
+    "note": "First position is not within strict 10-km airport proximity and rejected.",
+    "real_outcome": "surface_first_airport.far",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_first_near_airport": {
+    "lines": "818-823",
+    "note": "First position is within strict 10-km airport proximity and accepted.",
+    "real_outcome": "surface_first_airport.near",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_has_previous": {
+    "lines": "794-806",
+    "note": "An existing accepted position permits an own-reference attempt.",
+    "real_outcome": "surface_previous.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_no_shared_reference": {
+    "lines": "807-833",
+    "note": "No own candidate remains and no shared reference exists.",
+    "real_outcome": "surface_shared.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_odd": {
+    "lines": "580-592,789-792",
+    "note": "Surface parity selects the low-level grid; decode_position has no surface parity policy branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "context",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_out_of_order": {
+    "lines": "789-850",
+    "note": "No surface timestamp gate exists; a backward timestamp can still update position.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_own_1km_just_inside": {
+    "lines": "800-805",
+    "note": "Decoded distance lies in the 2-m band below 1 km; targeted fixtures are additionally required within one latitude code.",
+    "real_outcome": "surface_own_distance.inside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_own_1km_just_outside": {
+    "lines": "800-805",
+    "note": "Decoded distance lies in the 2-m band at/above 1 km; targeted fixtures are additionally required strictly above and within one latitude code.",
+    "real_outcome": "surface_own_distance.outside",
+    "required": true,
+    "role": "boundary_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_own_decode_rejected": {
+    "lines": "795-802",
+    "note": "The own-reference decoder returns None; short circuit skips distance.",
+    "real_outcome": "surface_own_decode.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_own_outside_1km": {
+    "lines": "800-805",
+    "note": "Decoded distance is at least 1 km, so own-reference candidate is discarded.",
+    "real_outcome": "surface_own_distance.outside",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_own_within_1km": {
+    "lines": "800-805",
+    "note": "Decoded distance is strictly below 1 km and the own-reference candidate is retained.",
+    "real_outcome": "surface_own_distance.inside",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_recent_previous": {
+    "lines": "789-850",
+    "note": "Age below 180 seconds is context, not a surface policy branch.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_shared_attempt": {
+    "lines": "807-813",
+    "note": "No own candidate remains and a shared reference exists.",
+    "real_outcome": "surface_shared.some",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_shared_decode_rejected": {
+    "lines": "817-831",
+    "note": "Shared-reference decoder returns None.",
+    "real_outcome": "surface_shared_decode.none",
+    "required": true,
+    "role": "real_outcome",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "surface_stale_previous": {
+    "lines": "789-850",
+    "note": "No surface 180-second age gate exists; this tests absence of an airborne-only rule.",
+    "real_outcome": null,
+    "required": true,
+    "role": "negative_control",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "transition_airborne_to_surface_altitude_reset": {
+    "lines": "834-844",
+    "note": "Accepted surface position resets a nonempty altitude to None; assignment outcome, not a new conditional arm.",
+    "real_outcome": null,
+    "required": true,
+    "role": "state_effect",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "transition_surface_to_airborne_airport_cleared": {
+    "lines": "755-766",
+    "note": "Accepted airborne position clears an existing airport; assignment outcome, not a new conditional arm.",
+    "real_outcome": null,
+    "required": true,
+    "role": "state_effect",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  },
+  "unresolved": {
+    "lines": "688-690,755-776,834-866",
+    "note": "Aggregate missing position across different policy outcomes.",
+    "real_outcome": null,
+    "required": false,
+    "role": "outcome_split",
+    "source": "vendor/rs1090/crates/rs1090/src/decode/cpr.rs"
+  }
+}

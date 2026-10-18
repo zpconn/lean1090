@@ -1,0 +1,151 @@
+⚠ [1418/1801] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2034/2041] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [2040/2041] Replayed Proofs.Binary64Bounds
+info: Proofs/Binary64Bounds.lean:122:0: 'Lean1090.Proofs.Binary64Facts.round_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2041/2041] Building Proofs.ScoreGateInteger (1.4s)
+warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Data.Rat.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Algebra.BigOperators.Group.List.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/ScoreGateInteger.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ScoreGateInteger.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ScoreGateInteger.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ScoreGateInteger.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ScoreGateInteger.setup.json --json
+warning: Proofs/ScoreGateInteger.lean:127:53: `if_false` has been deprecated: Use `ite_false` instead
+
+Hint: Replace the deprecated name:
+  i̵f̵_̵f̵a̵l̵s̵e̵i̲t̲e̲_̲f̲a̲l̲s̲e̲
+error: Proofs/ScoreGateInteger.lean:156:41: unsolved goals
+terms : List ℚ
+penalty : ℚ
+fallback : Unit → Bool
+d : ℕ := commonDenominator terms penalty
+totals : ℤ × ℤ := scaledTotals d terms
+p : ℤ := scaledNumerator d penalty
+n : ℤ := max (↑terms.length) 1
+c : ℤ := totals.1 + n * p
+e : ℤ := totals.2 + ↑p.natAbs + ↑d
+k : ℤ := 1099511627776
+threshold : ℤ := -3 * n * ↑d * k
+dPositive : 0 < d
+dPositiveRat : 0 < ↑d
+nPositive : 0 < n
+nPositiveRat : 0 < ↑n
+kPositiveRat : 0 < ↑k
+factorPositive : 0 < ↑n * ↑d * ↑k
+q : ℚ
+member : q ∈ terms
+⊢ q.den = penalty.den ∨ ∃ a ∈ terms, a.den = q.den
+error: Proofs/ScoreGateInteger.lean:165:4: 'change' tactic failed, pattern
+  ↑n * center terms penalty = terms.sum + ↑n * penalty
+is not definitionally equal to target
+  ↑(max terms.length 1) * center terms penalty = terms.sum + ↑(max terms.length 1) * penalty
+error: Proofs/ScoreGateInteger.lean:189:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.412 ≤ ?m.413
+in the target expression
+  k * c - n * e ≥ threshold ↔ center terms penalty - envelope terms penalty ≥ -3
+
+terms : List ℚ
+penalty : ℚ
+fallback : Unit → Bool
+d : ℕ := commonDenominator terms penalty
+totals : ℤ × ℤ := scaledTotals d terms
+p : ℤ := scaledNumerator d penalty
+n : ℤ := max (↑terms.length) 1
+c : ℤ := totals.1 + n * p
+e : ℤ := totals.2 + ↑p.natAbs + ↑d
+k : ℤ := 1099511627776
+threshold : ℤ := -3 * n * ↑d * k
+dPositive : 0 < d
+dPositiveRat : 0 < ↑d
+nPositive : 0 < n
+nPositiveRat : 0 < ↑n
+kPositiveRat : 0 < ↑k
+factorPositive : 0 < ↑n * ↑d * ↑k
+divisibility : ∀ q ∈ terms, q.den ∣ d
+penaltyDivides : penalty.den ∣ d
+sums : ↑(scaledTotals d terms).1 = ↑d * terms.sum ∧ ↑(scaledTotals d terms).2 = ↑d * mass terms
+penaltyScaled : ↑p = ↑d * penalty
+penaltyMass : ↑p.natAbs = ↑d * penalty.abs
+cCast : ↑c = ↑n * ↑d * center terms penalty
+eCast : ↑e = ↑d * ↑k * envelope terms penalty
+lowerCast : ↑(k * c - n * e) = ↑n * ↑d * ↑k * (center terms penalty - envelope terms penalty)
+upperCast : ↑(k * c + n * e) = ↑n * ↑d * ↑k * (center terms penalty + envelope terms penalty)
+thresholdCast : ↑threshold = ↑n * ↑d * ↑k * -3
+⊢ k * c - n * e ≥ threshold ↔ center terms penalty - envelope terms penalty ≥ -3
+error: Proofs/ScoreGateInteger.lean:193:10: failed to synthesize instance of type class
+  MulRightStrictMono ℚ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: Proofs/ScoreGateInteger.lean:196:6: Tactic `rewrite` failed: motive is not type correct:
+  fun _a =>
+    (if _a then true else if k * c + n * e < threshold then false else fallback ()) =
+      if center terms penalty - envelope terms penalty ≥ -3 then true
+      else if center terms penalty + envelope terms penalty < -3 then false else fallback ()
+Error: Application type mismatch: The argument
+  threshold.decLe (k * c - n * e)
+has type
+  Decidable (threshold ≤ k * c - n * e)
+but is expected to have type
+  Decidable _a
+in the application
+  @ite Bool _a (threshold.decLe (k * c - n * e))
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+terms : List ℚ
+penalty : ℚ
+fallback : Unit → Bool
+d : ℕ := commonDenominator terms penalty
+totals : ℤ × ℤ := scaledTotals d terms
+p : ℤ := scaledNumerator d penalty
+n : ℤ := max (↑terms.length) 1
+c : ℤ := totals.1 + n * p
+e : ℤ := totals.2 + ↑p.natAbs + ↑d
+k : ℤ := 1099511627776
+threshold : ℤ := -3 * n * ↑d * k
+dPositive : 0 < d
+dPositiveRat : 0 < ↑d
+nPositive : 0 < n
+nPositiveRat : 0 < ↑n
+kPositiveRat : 0 < ↑k
+factorPositive : 0 < ↑n * ↑d * ↑k
+divisibility : ∀ q ∈ terms, q.den ∣ d
+penaltyDivides : penalty.den ∣ d
+sums : ↑(scaledTotals d terms).1 = ↑d * terms.sum ∧ ↑(scaledTotals d terms).2 = ↑d * mass terms
+penaltyScaled : ↑p = ↑d * penalty
+penaltyMass : ↑p.natAbs = ↑d * penalty.abs
+cCast : ↑c = ↑n * ↑d * center terms penalty
+eCast : ↑e = ↑d * ↑k * envelope terms penalty
+lowerCast : ↑(k * c - n * e) = ↑n * ↑d * ↑k * (center terms penalty - envelope terms penalty)
+upperCast : ↑(k * c + n * e) = ↑n * ↑d * ↑k * (center terms penalty + envelope terms penalty)
+thresholdCast : ↑threshold = ↑n * ↑d * ↑k * -3
+accept : k * c - n * e ≥ threshold ↔ center terms penalty - envelope terms penalty ≥ -3
+reject : k * c + n * e < threshold ↔ center terms penalty + envelope terms penalty < -3
+⊢ (if k * c - n * e ≥ threshold then true else if k * c + n * e < threshold then false else fallback ()) =
+    if center terms penalty - envelope terms penalty ≥ -3 then true
+    else if center terms penalty + envelope terms penalty < -3 then false else fallback ()
+warning: Proofs/ScoreGateInteger.lean:156:50: This simp argument is unused:
+  member
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Proofs/ScoreGateInteger.lean:223:0: 'Lean1090.Proofs.ScoreGateInteger.commonDenominator_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:224:0: 'Lean1090.Proofs.ScoreGateInteger.denominator_dvd' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:225:0: 'Lean1090.Proofs.ScoreGateInteger.scaledNumerator_cast' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:226:0: 'Lean1090.Proofs.ScoreGateInteger.scaledTotals_cast' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:227:0: 'Lean1090.Proofs.ScoreGateInteger.choose_eq_old' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:228:0: 'Lean1090.Proofs.ScoreGateInteger.accept_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:229:0: 'Lean1090.Proofs.ScoreGateInteger.reject_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:230:0: 'Lean1090.Proofs.ScoreGateInteger.fallback_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:231:0: 'Lean1090.Proofs.ScoreGateInteger.empty_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:232:0: 'Lean1090.Proofs.ScoreGateInteger.dyadic_denominator_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ScoreGateInteger.lean:233:0: 'Lean1090.Proofs.ScoreGateInteger.product_denominator_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Proofs/ScoreGateInteger.lean:234:0: 'Lean1090.Proofs.ScoreGateInteger.product_decision_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Proofs.ScoreGateInteger
+error: build failed

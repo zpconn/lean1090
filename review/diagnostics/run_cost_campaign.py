@@ -128,6 +128,21 @@ def main():
         assert census == previous_census
         assert complete["digest"]["count"] == 172432
         state["full_output_digest_and_census_match_gen0"] = True
+        crc_rows = [row for row in all_rows if row.get("kind") == "post_decode_crc_census"]
+        if crc_rows:
+            assert len(crc_rows) == 1
+            crc = crc_rows[0]
+            assert crc["strategy"] == "one_syndrome_per_successfully_parsed_frame"
+            assert crc["population"] == "accepted_corpus_only"
+            assert crc["input_rows"] == crc["retained_accepted_rows"] == complete["digest"]["count"]
+            assert crc["parsed_fields_and_syndromes_checked"] and not crc["native_call_counts"]
+            assert [row["df"] for row in crc["per_df"]] == list(range(32))
+            for row, historical in zip(crc["per_df"], census["per_df"]):
+                assert row["df"] == historical["df"]
+                assert row["parsed_frames"] == row["crc_call_predictions"] == historical["count"]
+                assert row["crc_step_predictions"] == row["parsed_frames"] * (56 if row["df"] < 16 else 112)
+            state["live_crc_census"] = crc
+            state["notes"].append("The original shadow CRC prediction is historical. Native CRC entries must match the separate checked one-syndrome-per-parsed-frame census.")
         interval_rows = [row for row in all_rows if row.get("kind") == "post_decode_interval_census"]
         if interval_rows:
             assert len(interval_rows) == 1

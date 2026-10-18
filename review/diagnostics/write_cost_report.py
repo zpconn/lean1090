@@ -102,6 +102,8 @@ def main():
         measured = {row["mode"]: row["lean_over_rust"] for row in benchmark["results"]}
     census_rows = [json.loads(line) for line in args.census.read_text().splitlines() if line.strip()]
     census = next(row for row in census_rows if row.get("kind") == "post_decode_shadow_census")
+    crc_rows = [row for row in census_rows if row.get("kind") == "post_decode_crc_census"]
+    live_crc = crc_rows[0] if crc_rows else None
     interval_rows = [row for row in census_rows if row.get("kind") == "post_decode_interval_census"]
     interval = interval_rows[0] if interval_rows else None
     source_review = None
@@ -116,6 +118,20 @@ def main():
             assert build["linked_project_inventory"]["sources"][name] == binding["source_sha256"]
             assert all(build["unchanged_native_inputs"][path] == digest for path, digest in binding["artifacts"].items())
     per_df = {row["df"]: row for row in census["per_df"]}
+    crc_per_df = None
+    if live_crc:
+        assert len(crc_rows) == 1
+        assert live_crc["strategy"] == "one_syndrome_per_successfully_parsed_frame"
+        assert live_crc["population"] == "accepted_corpus_only"
+        assert live_crc["input_rows"] == live_crc["retained_accepted_rows"] == 172432
+        assert live_crc["parsed_fields_and_syndromes_checked"] and not live_crc["native_call_counts"]
+        assert source_review and source_review["shared_syndrome_decode_verified"]
+        assert campaign["live_crc_census"] == live_crc
+        crc_per_df = {row["df"]: row for row in live_crc["per_df"]}
+        assert len(live_crc["per_df"]) == len(crc_per_df) == 32
+        for df, row in crc_per_df.items():
+            assert row["parsed_frames"] == row["crc_call_predictions"] == per_df[df]["count"]
+            assert row["crc_step_predictions"] == row["parsed_frames"] * (56 if df < 16 else 112)
     native_df = {row["df"]: row for row in native["per_df"]}
     assert set(per_df) == set(native_df) == set(range(32))
     assert sum(row["count"] for row in per_df.values()) == 172432
@@ -125,8 +141,10 @@ def main():
         profile = profiles[name]
         anchors = profile["native_anchor_counts_and_non_additive_inclusive_events"]
         assert profile["root_incoming_calls"] == counts[name], (name, "decode entry count")
-        crc = sum(per_df[df]["crc_call_predictions"] for df in dfs)
-        steps = sum(per_df[df]["crc_call_predictions"] * (56 if df < 16 else 112) for df in dfs)
+        crc = sum((crc_per_df or per_df)[df]["crc_call_predictions"] for df in dfs)
+        steps = (sum(crc_per_df[df]["crc_step_predictions"] for df in dfs) if crc_per_df else
+                 sum(per_df[df]["crc_call_predictions"] * (56 if df < 16 else 112) for df in dfs))
+        assert anchors[P + "frameSyndrome"]["native_entries"] == crc, (name, "frame syndrome entry count")
         assert anchors[P + "Parity_checksum"]["native_entries"] == crc, (name, "CRC entry count")
         assert anchors[P + "Parity_syndrome"]["native_entries"] == crc, (name, "CRC syndrome entry count")
         assert anchors[P + "Parity_step"]["native_entries"] == steps, (name, "CRC step count")
@@ -233,6 +251,21 @@ def main():
     lines += ["", f"All stage contexts resolved uniquely: **{all_complete}**. All self-event sums match Callgrind's reported totals, and there are no counted events outside the collection root.", "",
               "The stage owns its runtime, Rat/GMP and allocation helpers. This is an operational partition: allocations inside inference stay with inference; semantic payload allocations stay with semantic construction. Final Message/Report/list assembly and residual decoder control are the output-model category. Compiler inlining can leave some dispatch/control work in its caller. A DF with no ADS-B payload can still incur the small `frameADSB` dispatch cost.", "",
     ]
+    if live_crc:
+        lines += ["## Shared-syndrome census and native entries", "",
+                  "The original shadow census is retained exactly for historical comparison; its repeated-CRC prediction is not the current expectation. A separate post-decode census reparses every corpus row, checks its frame and syndrome against the retained decoder result, and predicts one syndrome after successful parsing. This work occurs after collection and does not enter the decoder-root counters.", "",
+                  "All 172,432 corpus rows are accepted, as required by the complete retained-output check. This census covers that accepted corpus only. It does not measure malformed frames or frames rejected after parsing; the latter now compute a syndrome before rejection, as documented by the source/native review.", "",
+                  "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed CRC step entries |",
+                  "|---|---:|---:|---:|---:|"]
+        for family, dfs in FAMILIES.items():
+            anchors = profiles[family]["native_anchor_counts_and_non_additive_inclusive_events"]
+            historical = sum(per_df[df]["crc_call_predictions"] for df in dfs)
+            predicted = sum(crc_per_df[df]["crc_call_predictions"] for df in dfs)
+            actual = anchors[P + "frameSyndrome"]["native_entries"]
+            checksum = anchors[P + "Parity_checksum"]["native_entries"]
+            steps = anchors[P + "Parity_step"]["native_entries"]
+            lines.append(f"| {family} | {historical:,} | {predicted:,} | {actual:,} / {checksum:,} | {steps:,} |")
+        lines += ["", "The new acceptance/address helpers keep their predecessor stages when they retain a native boundary. Acceptance control inlined into `decode` remains in that function's residual-control category; its called hard-validity helper retains the ADS-B category. No cost is reassigned by source-level intention. The renamed report helper retains the same report/semantic boundaries. These compiler-boundary changes must be considered when comparing stage deltas.", ""]
     if args.previous_analysis:
         previous = read(args.previous_analysis)
         assert previous.get("generation") in (None, args.previous_generation), "previous analysis generation differs"
@@ -290,7 +323,8 @@ def main():
               "| Live function | Native entries across families | Inclusive Ir across families |",
               "|---|---:|---:|"]
     anchor_symbols = [P + name for name in (
-        "decodeFrame", "frameSyndrome", "Parity_checksum", "Parity_syndrome", "Parity_step", "cbDensity", "cbPenalty",
+        "decodeFrame", "frameSyndrome", "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
+        "Parity_checksum", "Parity_syndrome", "Parity_step", "cbDensity", "cbPenalty",
         "Semantics_adsb", "Semantics_commB", "cbCombinedScore")]
     anchor_symbols += sorted(analysis.get("optional_inclusive_anchor_symbols", []))
     for symbol in dict.fromkeys(anchor_symbols):
@@ -330,9 +364,11 @@ def main():
                   "|---|---:|---:|---:|"]
         for symbol, row in sorted(helpers.items(), key=lambda item: item[1]["inclusive"], reverse=True)[:15]:
             lines.append(f"| `{symbol}` | {row['entries']:,} | {row['self']:,} | {row['inclusive']:,} |")
+    sample_details = "; ".join(f"{label}: {count:,}" for label, count in
+                               sorted(perf["disjoint_detail_stages"].items(), key=lambda item: (-item[1], item[0])))
     lines += ["", f"The source and generated C retained under `{args.evidence_root}` identify the actual live boundaries for this run. Source-specific explanations, compiler inlining and initialization placement must be checked there; no prior generation's C line numbers are assumed.", "",
               "## Native sampling cross-check", "",
-              f"A separate `perf` software CPU-clock capture of the generation-{args.generation} benchmark binary retained {perf['total_samples']:,} samples; {perf['decode_descendant_samples']:,} had a visible live `Impl.decode` ancestor. Within those visible stacks, report parity/address had {perf['disjoint_detail_stages']['report parity/address']} samples and Comm-B inference/raw fields had {perf['disjoint_detail_stages']['Comm-B inference and raw payload']}. Missing/truncated ancestry prevents an unbiased whole-decoder timing allocation. The complete exclusion counts and raw stacks are retained. Sampling does not supply the exact instruction partition above. The capture provenance records the actual concurrency and collection conditions; host-wide isolation is not inferred. This is a diagnostic, not a frozen benchmark.", "",
+              f"A separate `perf` software CPU-clock capture of the generation-{args.generation} benchmark binary retained {perf['total_samples']:,} samples; {perf['decode_descendant_samples']:,} had a visible live `Impl.decode` ancestor. Its recorded detail labels within those visible stacks are: {sample_details}. Missing/truncated ancestry prevents an unbiased whole-decoder timing allocation. The complete exclusion counts and raw stacks are retained. Sampling does not supply the exact instruction partition above. The capture provenance records the actual concurrency and collection conditions; host-wide isolation is not inferred. This is a diagnostic, not a frozen benchmark.", "",
               "## Consequences for the next optimization", "",
               f"Start with the measured **{STAGES[largest]}** cost and inspect its actual source/generated-C path. A proposed improvement must follow the current user authorization and preserve the refinement theorem, then be evaluated with the frozen benchmark protocol. These counters do not establish which optimization will improve throughput.", "",
               "These are single-pass diagnostic executions. Lazy constants and allocator state can differ from the accepted benchmark after its three warmup pairs. This diagnostic does not measure the size of that difference or correct instruction counts into an estimated warm throughput. Any performance conclusion requires the unchanged frozen ABAB benchmark.", "",

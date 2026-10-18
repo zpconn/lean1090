@@ -1,0 +1,66 @@
+✔ [1108/1484] Built Spec.Bits (283ms)
+✔ [1468/1910] Built Impl.ScoreGate (294ms)
+✔ [2019/2041] Built Spec.Binary64 (348ms)
+✔ [2020/2041] Built Spec.PayloadBits (351ms)
+✔ [2021/2041] Built Spec.Altitude (446ms)
+✔ [2022/2041] Built Spec.AssignmentAltitude (363ms)
+✔ [2023/2041] Built Spec.CPR (393ms)
+✔ [2024/2041] Built Spec.Frame (427ms)
+✔ [2025/2041] Built Model.BDS50 (398ms)
+✔ [2026/2041] Built Spec.CommBLayouts (376ms)
+✔ [2027/2041] Built Spec.CPRContracts (381ms)
+✔ [2028/2041] Built Spec.CPRPolicy (405ms)
+✔ [2029/2041] Built Spec.ADSB (1.0s)
+✔ [2030/2041] Built Spec.Presentation (330ms)
+✔ [2031/2041] Built Spec.CommB (475ms)
+✔ [2032/2041] Built Spec.BDS50 (265ms)
+✔ [2033/2041] Built Spec.Semantics (371ms)
+✔ [2034/2041] Built Spec.CommBArithmetic (333ms)
+⚠ [2035/2041] Built Spec.Parity (2.5s)
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2036/2041] Built Spec.CPRFormula (2.3s)
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+✔ [2037/2041] Built Spec.Assignment (926ms)
+✔ [2038/2041] Built Spec.Message (862ms)
+✔ [2039/2041] Built Capstones (1.0s)
+ℹ [2040/2041] Built Proofs.Binary64Bounds (1.2s)
+info: Proofs/Binary64Bounds.lean:122:0: 'Lean1090.Proofs.Binary64Facts.round_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2041/2041] Building Proofs.ScoreGateInteger (1.0s)
+warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Data.Rat.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Algebra.BigOperators.Group.List.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/ScoreGateInteger.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ScoreGateInteger.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ScoreGateInteger.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ScoreGateInteger.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ScoreGateInteger.setup.json --json
+error: Proofs/ScoreGateInteger.lean:32:2: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+
+terms : List ℚ
+penalty : ℚ
+⊢ 0 <
+    have denominators := penalty.den :: List.map Rat.den terms;
+    have largest := List.foldl max 1 denominators;
+    if (denominators.all fun d => largest % d == 0) = true then largest else denominators.prod
+error: Proofs/ScoreGateInteger.lean:47:2: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+
+terms : List ℚ
+penalty : ℚ
+d : ℕ
+member : d ∈ penalty.den :: List.map Rat.den terms
+⊢ d ∣
+    have denominators := penalty.den :: List.map Rat.den terms;
+    have largest := List.foldl max 1 denominators;
+    if (denominators.all fun d => largest % d == 0) = true then largest else denominators.prod
+error: Proofs/ScoreGateInteger.lean:68:23: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(scaledNumerator denominator value)
+in the target expression
+  ↑|scaledNumerator denominator value| = ↑denominator * value.abs
+
+denominator : ℕ
+value : ℚ
+divides : value.den ∣ denominator
+⊢ ↑|scaledNumerator denominator value| = ↑denominator * value.abs
+Some required targets logged failures:
+- Proofs.ScoreGateInteger
+error: build failed
