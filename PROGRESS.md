@@ -5,7 +5,35 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 18 reached 1.672168328366× decode and
+**Latest measurement: generation 19 reached 1.795418481745× decode and
+1.432826926432× with CPR.** Both 2.00× targets remain unmet. The measured
+source is `79cc25b8c6f104da94e2b532439fe6e9b47f72ea`, authored and committed
+by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 451.410097/810.470031 ms
+for decode and 567.399785/812.985690 ms for CPR. Lean throughput increased
+by 6.98% and 5.87% respectively versus generation 18. All 96 samples, six
+clean-tree/lock checks, 22 freshly built native sets and four Ultimate
+Performance power-plan captures are retained. Actual worker SHA-256:
+`c8636e3760f9829c836a44befe239cb1f0334be6d46f93e100a4d97088f6fb7a`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +441,396,829 ns
+(decode) and +418,736,633 ns (CPR) remain unadjusted. Worker monotonic durations
+determine the results. Environment: Intel Core Ultra 9 285K / WSL2, CPU 0;
+host workload limits remain documented. [Report and raw samples](bench/GEN19.md).
+Independent result review passed all 683 checks on its first execution:
+`7ce0ffac700b450d0b56284fd36c5c2829cc6a9cb5f2c874657dbca0a2a4e984`.
+Artifact-commit binding passed with all 192 correctness inputs identical to
+the passed full gate, timed source and current tree:
+`7db09303e8e74a0ebe2592214a698952af61783ecfc510f53d40ace05696e485`.
+Presentation refresh passed: 40 CSV rows, 20 GIF frames, 840 plotted values,
+93 links and all 23 capstones verbatim. Producer visual inspection and root
+PNG inspection passed. A harmless read-only metadata-display error was
+retained; no render or measurement was repeated. Independent presentation
+review passed all 1,095 checks on its first execution. Completion SHA-256:
+`befb0c4dd2ef52224c816cfc5488085f04f46c9c35088d786a3bea66adba966b`.
+The reviewed artifacts are ready to commit and push. Then complete fresh
+untimed decode and CPR diagnostics before selecting generation 20. No new
+optimization is selected.
+
+**Previous measurement: generation 18 reached 1.672168328366× decode and
 1.342734836785× with CPR.** Both 2.00× targets remain unmet. The measured
 source is `c19e00dd6bd45c89e4d6238d4ea9973947625449`, authored and committed
 by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 482.908888/807.504948 ms
@@ -111,8 +139,8 @@ no findings. It verified all 192 inputs, seven components and 62 retained
 files, source/native/proof review bindings, the fresh replay, all 38 prior
 CSV rows unchanged and both exact 2/1 targets. Review SHA-256:
 `f4165deed8103bdb4d809a81c5b716bd6cae5b8cf29b002b2d10a6cd62acf9f1`.
-The source is ready for commit and the isolated clean-commit two-mode
-benchmark. No generation 19 throughput is claimed yet.
+The verified source was committed and measured; the reviewed generation 19
+result is recorded above.
 
 **Previous measurement: generation 17 reached 1.669372647154× decode and
 1.150460800400× with CPR.** Both 2.00× targets remain unmet. The timed source

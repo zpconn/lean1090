@@ -1,0 +1,10 @@
+{
+  "status": "retained_read_only_inspection_error",
+  "stage": "post-refresh metadata display, after successful producer execution",
+  "source": "e=json.loads((p/'execution.json').read_text()); print('held',len(e['before_hashes']),len(e['after_hashes']),e['before_hashes']==e['after_hashes'])",
+  "stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 5, in <module>\nKeyError: 'after_hashes'\n",
+  "cause": "The execution schema retains before_hashes and all_held_inputs_unchanged; it does not duplicate an after_hashes dictionary.",
+  "resolution": "The final sealer directly rehashes all recorded before_hashes and asserts equality.",
+  "producer_retry": false,
+  "mutations": []
+}

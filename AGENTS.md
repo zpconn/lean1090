@@ -36,29 +36,25 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 18 measured decode 1.672168328366× rs1090 and CPR
-1.342734836785×. The measured source is
-`c19e00dd6bd45c89e4d6238d4ea9973947625449`; independent result review passed.
-All samples and provenance are in `bench/runs/gen18/`, with the report in
-`bench/GEN18.md`. Both 2.00× targets remain unmet. Generation 18 adds exact
-small-dyadic integer bit packing to `Impl.CPR.Policy.toFloat`, with the original
-total conversion retained as fallback. Its all-input proof, CPR integration,
-full fixed gate, fresh 10M campaign and final reviews passed. Verified scratch
-cleanup reclaimed 11,092,893,696 allocated bytes. Result and presentation
-reviews passed; artifacts were pushed as
-`9c2745732de1626418b77b468069b12ab8a1e5c1`. Fresh decode and CPR diagnostics, independent
-reviews and bounded cleanup passed. Generation 19 now replaces powers-of-two
-arithmetic with exact natural shifts/masks in four altitude, identity and
-signed-field extraction definitions. Runtime changes and all-input helper proofs
-are complete; the combined 3,536-job integration build passes with 192
-correctness inputs unchanged. Full fixed and fresh 10M campaigns passed,
-including independent native and fresh replay reviews. Verified scratch cleanup
-reclaimed 11,092,008,960 allocated bytes. Final independent gate/archive/plan
-review passed without findings. Commit the verified source and complete the
-isolated clean-commit benchmark before claiming a generation 19 result.
-Keep all existing frozen-file, proof, full-gate,
-isolated benchmark and disk-retention requirements. `PROGRESS.md` records
-current work and review results.
+Generation 19 measured decode 1.795418481745× rs1090 and CPR
+1.432826926432×. The measured source is
+`79cc25b8c6f104da94e2b532439fe6e9b47f72ea`; independent result review passed
+all 683 checks on its first execution. All 96 samples and provenance are in
+`bench/runs/gen19/`, with the report in `bench/GEN19.md`. Both 2.00× targets
+remain unmet. Generation 19 replaces powers-of-two arithmetic with exact
+natural shifts/masks in four altitude, identity and signed-field definitions.
+All-input proofs, the full fixed gate, fresh 10M campaign and final reviews
+passed with 192 correctness inputs unchanged. Verified scratch cleanup
+reclaimed 11,092,008,960 allocated bytes.
+
+Presentation refresh, independent visual/data review and artifact-commit
+binding passed. Commit and push the reviewed artifacts under the user's
+identity, then complete fresh
+untimed decode and CPR diagnostics before selecting generation 20. Prepared
+controllers are in `tests/evidence/diagnostics/gen19/` and `gen19-cpr/` and
+have not executed. No new optimization is selected. Keep all existing
+frozen-file, proof, full-gate, isolated benchmark and disk-retention rules.
+`PROGRESS.md` records current work and review results.
 
 ## Ground rules
 

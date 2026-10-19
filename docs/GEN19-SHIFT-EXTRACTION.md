@@ -1,6 +1,8 @@
 # Generation 19: exact shifts for bit extraction
 
-This generation is in progress. No generation 19 throughput is claimed.
+Generation 19 measured **1.79542× rs1090 decode** and **1.43283× with CPR**.
+Lean throughput increased by 6.98% and 5.87% versus generation 18. Both 2.00×
+targets remain unmet. [Measurement, environment and raw samples](../bench/GEN19.md).
 
 The [generation 18 decode diagnostic](GEN18-COST-BREAKDOWN.md) found Comm-B
 inference, frame/CRC and semantic values to be the largest stages. Its
@@ -47,4 +49,5 @@ also passed all 23 capstones, the unit suite and all seven differential
 components, retaining all 192 correctness inputs unchanged. Its verified
 cleanup reclaimed a further 5,733,339,136 allocated bytes. Final independent
 gate/archive/plan review passed without findings. The clean-commit two-mode
-benchmark remains required; no speed result is claimed yet.
+benchmark and independent result review then passed, retaining every sample.
+Result review checked all 683 conditions on its first execution.
