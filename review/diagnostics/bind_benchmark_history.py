@@ -29,30 +29,40 @@ def git_oid(raw):
 
 
 def inspect(build_path, benchmark_path, history_path, correctness_path):
-    build, benchmark, history = map(read, (build_path, benchmark_path, history_path))
-    assert build['status'] == history['status'] == 'passed'
+    build, benchmark = map(read, (build_path, benchmark_path))
+    assert build['status'] == 'passed'
     assert benchmark['status'] == 'complete'
     current, original = build['commit'], benchmark['commit']
     assert git_bytes('rev-parse', 'HEAD').decode().strip() == current
-    rows = [row for row in history['commits'] if row['old'] == original]
-    assert len(rows) == 1
-    row = rows[0]
-    before, after = row['raw_commit'].encode(), row['raw_commit_after'].encode()
-    assert git_oid(before) == original and git_oid(after) == row['new']
-    assert git_bytes('cat-file', 'commit', row['new']) == after
-    assert before.split(b'\n', 1)[0] == after.split(b'\n', 1)[0] == b'tree ' + row['tree'].encode()
-    assert before.split(b'\n\n', 1)[1] == after.split(b'\n\n', 1)[1]
-    mapping = {entry['old']: entry['new'] for entry in history['commits']}
-    assert len(mapping) == len(history['commits']) == len(set(mapping.values()))
-    identity = (history['identity']['name'] + ' <' + history['identity']['email'] + '> ').encode()
-    expected_headers = []
-    for line in before.split(b'\n\n', 1)[0].splitlines():
-        if line.startswith(b'parent '):
-            line = b'parent ' + mapping[line[7:].decode()].encode()
-        elif line.startswith((b'author ', b'committer ')):
-            line = line.split(b' ', 1)[0] + b' ' + identity + line.rsplit(b'> ', 1)[1]
-        expected_headers.append(line)
-    assert b'\n'.join(expected_headers) == after.split(b'\n\n', 1)[0]
+    if history_path is None:
+        # Later result/documentation commits need no attribution rewrite. Bind
+        # the actual timed commit and still require ancestry and every audited
+        # Lean source, native set, lock and worker hash below.
+        before = git_bytes('cat-file', 'commit', original)
+        assert git_oid(before) == original
+        row = {'new': original, 'tree': before.split(b'\n', 1)[0].removeprefix(b'tree ').decode()}
+    else:
+        history = read(history_path)
+        assert history['status'] == 'passed'
+        rows = [row for row in history['commits'] if row['old'] == original]
+        assert len(rows) == 1
+        row = rows[0]
+        before, after = row['raw_commit'].encode(), row['raw_commit_after'].encode()
+        assert git_oid(before) == original and git_oid(after) == row['new']
+        assert git_bytes('cat-file', 'commit', row['new']) == after
+        assert before.split(b'\n', 1)[0] == after.split(b'\n', 1)[0] == b'tree ' + row['tree'].encode()
+        assert before.split(b'\n\n', 1)[1] == after.split(b'\n\n', 1)[1]
+        mapping = {entry['old']: entry['new'] for entry in history['commits']}
+        assert len(mapping) == len(history['commits']) == len(set(mapping.values()))
+        identity = (history['identity']['name'] + ' <' + history['identity']['email'] + '> ').encode()
+        expected_headers = []
+        for line in before.split(b'\n\n', 1)[0].splitlines():
+            if line.startswith(b'parent '):
+                line = b'parent ' + mapping[line[7:].decode()].encode()
+            elif line.startswith((b'author ', b'committer ')):
+                line = line.split(b' ', 1)[0] + b' ' + identity + line.rsplit(b'> ', 1)[1]
+            expected_headers.append(line)
+        assert b'\n'.join(expected_headers) == after.split(b'\n\n', 1)[0]
     # The mapped commit is an ancestor, not an arbitrary substitute checkout.
     subprocess.run(['git', 'merge-base', '--is-ancestor', row['new'], current], check=True)
     assert Path(correctness_path).resolve() == (Path(benchmark_path).parent / 'correctness-inputs.json').resolve()
@@ -72,12 +82,14 @@ def inspect(build_path, benchmark_path, history_path, correctness_path):
     assert build['lock_sha256'] == benchmark['spec_lock_sha256'] == sha('spec.lock')
     assert sha('.lake/build/bin/lean1090-bench') == benchmark['binary_sha256']
     return {
-        'kind': 'unchanged_timed_sources_after_attribution_and_documentation_commits',
+        'kind': ('unchanged_timed_sources_after_attribution_and_documentation_commits' if history_path is not None
+                 else 'unchanged_timed_sources_after_documentation_commits'),
         'status': 'passed', 'diagnostic_commit': current, 'timed_original_commit': original,
         'timed_mapped_commit': row['new'], 'timed_tree': row['tree'],
         'build_manifest': str(build_path), 'build_manifest_sha256': sha(build_path),
         'benchmark': str(benchmark_path), 'benchmark_sha256': sha(benchmark_path),
-        'history': str(history_path), 'history_sha256': sha(history_path),
+        'history': str(history_path) if history_path is not None else None,
+        'history_sha256': sha(history_path) if history_path is not None else None,
         'correctness_inputs': str(correctness_path), 'correctness_inputs_sha256': sha(correctness_path),
         'all_audited_lean_sources': expected,
         'linked_project_sources': build['linked_project_inventory']['sources'],
@@ -88,8 +100,10 @@ def inspect(build_path, benchmark_path, history_path, correctness_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ('build', 'benchmark', 'history', 'correctness-inputs', 'output'):
+    for name in ('build', 'benchmark', 'correctness-inputs', 'output'):
         parser.add_argument('--' + name, required=True, type=Path)
+    parser.add_argument('--history', type=Path,
+                        help='attribution mapping only when the original timed commit was rewritten')
     args = parser.parse_args()
     record = inspect(args.build, args.benchmark, args.history, args.correctness_inputs)
     assert not args.output.exists(), 'preserve existing binding'

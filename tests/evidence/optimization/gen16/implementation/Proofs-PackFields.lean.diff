@@ -1,0 +1,82 @@
+--- before/Proofs/PackFields.lean
++++ after/Proofs/PackFields.lean
+@@ -0,0 +1,79 @@
++import Impl.Bits
++import Spec.Bits
++import Proofs.PayloadBits
++
++/-! Natural shifts and native low-word masks preserve general field packing. -/
++namespace Lean1090.Proofs.PackFields
++
++/-- A packing step preserves the original formula for every accumulator,
++width and value. Neither the accumulator nor the supplied value is bounded. -/
++theorem step_eq (acc width value : Nat) :
++    (acc <<< width) +
++        (if width < 64 then Impl.payloadWordBits value.toUInt64 0 width
++         else value % 2 ^ width) =
++      acc * 2 ^ width + value % 2 ^ width := by
++  rw [Nat.shiftLeft_eq]
++  by_cases small : width < 64
++  · rw [ite_eq_left small,
++      PayloadBits.payloadWordBits_eq value 0 width (by decide) small (by omega)]
++    simp only [Nat.pow_zero, Nat.div_one]
++  · rw [ite_eq_right small]
++
++/-- The fold is unchanged for every list and every initial accumulator,
++including zero-width and arbitrarily wide fields. -/
++theorem fold_eq (fields : List (Nat × Nat)) (acc : Nat) :
++    fields.foldl (fun acc (width, value) =>
++      (acc <<< width) +
++        if width < 64 then Impl.payloadWordBits value.toUInt64 0 width
++        else value % 2 ^ width) acc =
++      fields.foldl (fun acc (width, value) =>
++        acc * 2 ^ width + value % 2 ^ width) acc := by
++  simp only [step_eq]
++
++/-- The live public packer equals the frozen specification on every list,
++without a valid-layout or field-range premise. -/
++theorem packFields_eq (fields : List (Nat × Nat)) :
++    Impl.packFields fields = Spec.packFields fields :=
++  fold_eq fields 0
++
++/-- The empty list preserves the original zero result. -/
++theorem empty_witness : Impl.packFields [] = 0 := by
++  decide +kernel
++
++/-- A zero-width field discards its value, even when wider than UInt64. -/
++theorem zero_width_witness :
++    Impl.packFields [(5, 19), (0, 2^200 + 7)] = 19 := by
++  decide +kernel
++
++/-- Width 63 uses the last native mask, discarding high input bits. -/
++theorem last_fast_width_witness :
++    Impl.packFields [(63, 2^200 + 2^63 - 1)] = 2^63 - 1 := by
++  decide +kernel
++
++/-- Width 64 uses the unbounded fallback and retains all 64 result bits. -/
++theorem first_fallback_width_witness :
++    Impl.packFields [(64, 2^200 + 2^64 - 1)] = 2^64 - 1 := by
++  decide +kernel
++
++/-- Wider fields preserve more than one native word. -/
++theorem wide_fallback_witness :
++    Impl.packFields [(80, 2^200 + 2^79 + 13)] = 2^79 + 13 := by
++  decide +kernel
++
++/-- A previously accumulated multiword value is shifted without truncation. -/
++theorem wide_accumulator_witness :
++    Impl.packFields [(130, 2^129 + 3), (63, 2^200 + 7), (0, 2^300)] =
++      (2^129 + 3) * 2^63 + 7 := by
++  decide +kernel
++
++#print axioms step_eq
++#print axioms fold_eq
++#print axioms packFields_eq
++#print axioms empty_witness
++#print axioms zero_width_witness
++#print axioms last_fast_width_witness
++#print axioms first_fallback_width_witness
++#print axioms wide_fallback_witness
++#print axioms wide_accumulator_witness
++
++end Lean1090.Proofs.PackFields

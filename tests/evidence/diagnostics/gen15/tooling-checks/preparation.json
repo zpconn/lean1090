@@ -1,0 +1,23 @@
+{
+  "status": "prepared_syntax_checked",
+  "python_bytecode_policy": "PYTHONDONTWRITEBYTECODE=1 and python3 -B throughout; sys.dont_write_bytecode before dynamic imports",
+  "files": {
+    "review/diagnostics/bind_benchmark_history.py": "fc72612cb7a12245265a722f331e88bfcdaf46df4c8dffd9616f2749c6394cf3",
+    "tests/evidence/diagnostics/gen15/finalize.py": "91bb4c94642b2423b32f7d6f59963cfd29fd84a134b49c2a613357acadf286db",
+    "tests/evidence/diagnostics/gen15/snapshot_history.py": "3a5d0dcea4c99290a7c5b821d16b54643089086636c88f1e93f7a538f76a7c42",
+    "tests/evidence/diagnostics/gen15/extract_ratio_contexts.py": "d212d51b8d11d4011eb4902854421f8156247a0583581d11896f8c2d77c4c9ce",
+    "tests/evidence/diagnostics/gen15/extract_constant_contexts.py": "151888447f3b65ef84bcd93ba577b9d61b8f9b9ced462bfba2d25df7336827aa",
+    "tests/evidence/diagnostics/gen15/cleanup_cache.py": "cbfb15e103780cc9f0345aa13709088a820bd4cc2562bb821e93f1d795627c99",
+    "tests/evidence/diagnostics/gen15/tooling-checks/check_source_binding.py": "4da40619c88254fc984ac663fb6011636b9cc1f950d60605eed09646a47eca01"
+  },
+  "scope": "Current production sources/native sets unchanged; new generation orchestration, exact ordinary descendant-commit binding and post-review duplicate cleanup only. Historical evidence remains byte-identical.",
+  "expected_profiles": 13,
+  "expected_output_messages": 172432,
+  "planned_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen15/snapshot_history.py",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen15/tooling-checks/check_source_binding.py",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B review/diagnostics/run_cost_campaign.py --cache .cache/gen15-costs --jobs 6 --perf-capture tests/evidence/diagnostics/gen15/perf/capture.json",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen15/finalize.py",
+    "After independent review and quiescence only: PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen15/cleanup_cache.py --apply --quiescent --output tests/evidence/diagnostics/gen15/cache-cleanup.json"
+  ]
+}

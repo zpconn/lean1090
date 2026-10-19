@@ -1,0 +1,14 @@
+--- before/Impl/Bits.lean
++++ after/Impl/Bits.lean
+@@ -55,7 +55,10 @@
+ -- Initial algorithm: Spec/Bits.lean:27.
+ /-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: concatenate separately supplied fields. -/
+ def packFields (fields : List (Nat × Nat)) : Nat :=
+-  fields.foldl (fun acc (width, value) => acc * 2 ^ width + value % 2 ^ width) 0
++  fields.foldl (fun acc (width, value) =>
++    (acc <<< width) +
++      if width < 64 then payloadWordBits value.toUInt64 0 width
++      else value % 2 ^ width) 0
+ 
+ -- Initial algorithm: Spec/Bits.lean:31.
+ /-- Annex 10 IV (4th ed.), §3.1.2.3.1.2: DF bit 1 selects 56 or 112 bits. -/

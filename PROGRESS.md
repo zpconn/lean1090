@@ -2,7 +2,93 @@
 
 ## Status and current authorization
 
-**Current state: the 1.50× decode target is reached; stop for user review.**
+**Current state: optimization resumed toward 2.00× rs1090 in both modes.**
+The user set a new stretch goal of **2.00× headline decode and 2.00×
+decode-plus-CPR throughput**, superseding the generation 15 review stop.
+Start from pushed commit `7163b2506f3b4045caa98721aa90b7042733b0fe` and
+preserve the completed generation 15 measurement below. Fresh untimed live
+cost breakdowns for decode and CPR passed independent review. Both isolated actual-worker perf captures completed with
+197 protected inputs unchanged; completion record:
+`tests/evidence/diagnostics/gen15-cpr/isolated-perf-completion.json`.
+The decode corpus output digest and control-flow census match generation 0.
+The CPR driver's full 172,432-row tracking audit and final state match the
+frozen worker byte-for-byte, resolving 11,347 positions. Decode review SHA-256:
+`97333e1b8672ddd31bc926d0571ee5949f7e2aff000ab4b3daf13d9a26c2249e`;
+CPR review:
+`67272c55dcb02445b531b35a0bef6f149ab0f0e795b25661e61051fb923744c4`.
+Frame/CRC is the largest decode stage (3,961,737,590 of 11,213,423,773
+collected instructions). Numeric geography is the largest detailed CPR stage
+(5,562,621,468 of 18,463,254,211). These are diagnostic counts, not speedup
+predictions. See [decode](docs/GEN15-COST-BREAKDOWN.md) and
+[CPR](docs/GEN15-CPR-COST-BREAKDOWN.md) reports. The source hold is released.
+
+**Generation 16 in progress:** replace repeated powers and multiplication in
+the general field-packing fold with natural-number shifts and a UInt64 mask
+for widths below 64, retaining the unrestricted wider-field fallback. The
+packing fold accounts for 1,280,682,876 inclusive decode instructions;
+881,619 direct power calls account for 882,818,451 of those instructions.
+Its all-input proof and whole-decoder integration passed the helper and
+combined builds on their first executions. The integrated build checked
+3,524 jobs; all nine new facts and both decoder refinements use only permitted
+axioms. The full gate passed from 16:18:40 to 16:34:32 UTC with all 187
+correctness inputs unchanged. It checked all 23 capstones, 152 witness proofs,
+1,011 unit assertions and all seven differential components. The fixed
+campaign checked 10,476,164 messages: 9,542,689 exact matches + 933,475
+documented D001 cases, with all 101,244 direct Comm-B cases exact and no
+coverage errors. Its 2,038,998 standard-view differences remain separately
+recorded. The
+fresh 10M campaign passed on its first execution: 10,476,164 messages =
+9,543,217 exact matches + 932,947 documented D001 cases; all 101,244 direct
+Comm-B cases match exactly. All 32 DF attempts, 70 ADS-B branches and 14
+registers are covered, with no gaps or unclassified differences. The
+2,037,560 standard-view differences are recorded separately. All 112 sources
+and three binaries remain unchanged. Independent retention review and
+comparison-only replay passed their first executions. Fresh completion
+SHA-256: `2bcf68e3b9dd6fff78d91616dce911d533678ac3163ab5797bc30d3098c707a8`.
+Exactly eight verified raw duplicates were removed after archival, reclaiming
+5,359,882,240 allocated bytes while preserving all 33 retained files and the
+active fixed-gate scratch. Fresh verifier SHA-256:
+`288f95bf1e0b7189e04b7c53a638e2e2ef4b9ede394eaa490d14451b3f461d1b`.
+Independent native review passed on its first
+execution, checking the live shift/mask loop, wide fallback, all nine proof
+facts, 21 unchanged sibling native sets and 104 locked hashes. Review SHA-256:
+`fc8af38e62b1ef7726f227dee34bed319e0cdf420eaf4e41256e1ad4f8c850d6`. Fresh
+seeds recorded before execution: messages 1400844992, Comm-B 1518488658.
+The final independent gate/archive/benchmark-plan review passed, checking all
+187 inputs, seven components/62 retained files, complete fixed/fresh coverage,
+native/proof bindings, both exact 2/1 targets and the unchanged 32-row result
+prefix. Review SHA-256:
+`180f14c351a50a29ca555b88062c8bd1b974fc38fe617f528ac9427f7ae08cf5`.
+One reviewer-only absolute-path API mistake was corrected with its original
+source/log retained; no production change was needed.
+The fixed archive and verified scratch cleanup completed, reclaiming another
+5,733,335,040 allocated bytes. Combined fixed/fresh cleanup reclaimed
+11,093,217,280 bytes while retaining compressed evidence, the earlier proposal
+and the interrupted generation 15 attempt. No generation 16 commit or timing
+has completed yet. All validation and review jobs are stopped. Next: commit
+the verified source, then measure both modes from a clean
+fresh build. [Implementation and proof](docs/GEN16-PACK-FIELDS.md).
+
+Read-only planning identified a possible later CPR change: an immutable table
+of exact `Binary64.powerTwo` values for format exponents −1074 through 1023,
+with the original total formula outside that range. It would need a central
+all-input binary64 equality proof and propagation through the decoder,
+BDS50, Mach/QNH, ratio and CPR tracking proofs. The table must initialize
+from the original power formula, without calling rounding or its own lookup.
+No such change is selected or implemented; assess it against fresh diagnostics
+after generation 16's measured result.
+
+The unfrozen reporting
+helper now supports separate exact targets for both modes; seven fixture
+tests passed, including unchanged reconstruction of the old generation 15
+report. Independent reporting review passed 3,318 exact decision cases plus
+those seven fixtures, with all 186 correctness inputs unchanged; review SHA-256:
+`3ed2081e864a2fd55e34bd8a799a84587873f295baed828585b2ebc291affb4b`. Continue verified commits and private pushes under
+the user's identity, retaining all proof, frozen-file, benchmark and disk-use
+safeguards. Stop for review when both new targets are reached. No frozen-file
+change or trusted primitive is authorized.
+
+**Starting measurement:**
 Generation 15 measured **1.607053275134× rs1090** in decode mode and
 **0.990643654222×** with CPR. The verified source commit is
 `e659220307538f2aee5398efdb0a9182bff1d778`, authored and committed by
@@ -26,8 +112,8 @@ entries and all 15 retained raw perf captures. Review SHA-256:
 The artifact-commit binding confirms all 186 inputs still match the passing
 full gate and timed source. The source commit has been pushed to the existing
 private repository; all benchmark samples, result rows and reviews accompany
-this progress record. No generation 16, new optimization diagnostic or
-final-deliverable work is authorized until this review checkpoint is resolved.
+the result-artifact commit. The previous review checkpoint is resolved by
+the new stretch-goal instruction above.
 
 **Optimization resumed (2026-10-19 UTC):** the user requested continued work
 toward **1.50× rs1090 headline decode throughput**. This supersedes the earlier

@@ -1,0 +1,7 @@
+# Generation 15 live CPR diagnostic
+
+The frozen secondary benchmark decodes each row, projects DF17/18, and immediately calls the live streamStep. It does not invoke the batch decodePositions wrapper. This diagnostic reproduces that loop without clocks and reuses the unchanged production objects. All 172,432 inputs and exact binary64 timestamp values, the 6,903 airports in source order, empty state/reference and false update callback match the frozen worker.
+
+The collected noinline loop includes decode, routing, CPR policy/geography and output append. Exclusive instruction categories use function self costs and caller context; overlapping inclusive helpers are reported separately. Preparation, complete output consumption and audit serialization stay outside collection. The full message digest is compared with the decoder diagnostic; all per-message position bits and final projected state are compared with the frozen worker audit. Input and airport audits are compared byte for byte.
+
+Both diagnostic drivers are compiled before isolated sequential decode/CPR actual-worker perf capture. Native audits and Callgrind start only after that sampling window. No timings from diagnostic executions are benchmark evidence. Production sources, proofs, frozen files, native objects and Lake targets remain held. Raw Callgrind/perf artifacts are retained compressed with hashes; standalone binaries stay ignored and are removable only after their provenance is retained.

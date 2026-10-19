@@ -1,0 +1,22 @@
+{
+  "generation": 16,
+  "prepared_utc": "2026-10-19T16:35:25.657441+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen16/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "b5ab9e5b55c2a417e8eb9bab98efd9fbe3a413369c15f1c6b8cf7af18b63e598",
+  "prior_csv_rows": 32,
+  "fresh_verification": "tests/evidence/optimization/gen16/fresh-final-verification.json",
+  "fresh_verification_sha256": "288f95bf1e0b7189e04b7c53a638e2e2ef4b9ede394eaa490d14451b3f461d1b",
+  "title": "shift and mask field packing",
+  "change_description": "The live field-packing fold uses a natural-number shift for concatenation and a UInt64 mask for field widths below 64, with the original modulus fallback for wider fields. Its equality proof covers every list of natural-number widths and values, including over-wide values and unbounded accumulators. [Implementation and proof evidence](../docs/GEN16-PACK-FIELDS.md).",
+  "row_note": "Proved shift/mask field packing; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "cpr_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "review_threshold": "Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.",
+  "note": "Prepared before timing. Contains no speculative measurement. The reviewed reporting helper only archives a completed run."
+}

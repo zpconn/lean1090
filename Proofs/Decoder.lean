@@ -8,6 +8,7 @@ import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.ParityWord
 import Proofs.ByteWords
+import Proofs.PackFields
 import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.SyndromeReuse
@@ -540,7 +541,8 @@ private theorem decoder_decodeFrame_eq : @Impl.decodeFrame = @Spec.decodeFrame :
     decoder_readSurveillance_eq]
   rfl
 private theorem decoder_packFields_eq : @Impl.packFields = @Spec.packFields := by
-  rfl
+  funext fields
+  exact PackFields.packFields_eq fields
 private theorem decoder_frameSyndrome_eq : @Impl.frameSyndrome = @Spec.frameSyndrome := by
   unfold Impl.frameSyndrome Spec.frameSyndrome
   simp only [decoder_FrameBody_informationBits_eq, decoder_FrameBody_parts_eq, decoder_Parity_checksum_eq,

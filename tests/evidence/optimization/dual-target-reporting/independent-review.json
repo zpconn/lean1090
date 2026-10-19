@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "checked_utc": "2026-10-19T16:01:19.173729+00:00",
+  "findings": [],
+  "independent_exact_decision_cases": 3318,
+  "author_fixture_replay_exit_code": 0,
+  "unchanged_original_function_ASTs": [
+    "require",
+    "sha",
+    "load",
+    "stamp",
+    "committed_sha",
+    "parse_prior_csv",
+    "inventory",
+    "validate_source"
+  ],
+  "unchanged_correctness_inputs": 186,
+  "helper_sha256": "d5fd187fcab621b849303687f1f16bf6eca632ef66eb92b56f1ca6f2ee6b5e72",
+  "previous_helper_sha256": "9cb02d8f8ba5603538b29b8944546538de3c9f75b5b3a40733aaeae7478e8ebb",
+  "test_sha256": "491ccc95bf43bdc6379825276042e6cb4517fc88a70266d27928c03e93b2697c",
+  "validation_final_sha256": "4484e5768b3fe0608593657d46bf059214f9bb574315089012c31ce7e736b170",
+  "independent_test_log_sha256": "b4ec4de04bfd5694e0e0ea8e2298146ff49c44f5b47405bfeae09aaf0e87e70f",
+  "historical_report_sha256": "64b40fc4a9f18233dfba5b20ae1165c5f74bd9cc47f3ba5bc4568491fdbd031c",
+  "review_script_sha256": "ccdbcf9cb980999f87a9a6c23f1028048274ef23aa6a7087a24e1d2c2a7140bb",
+  "assessment": [
+    "Both thresholds use inclusive exact integer cross multiplication independently; the joint decision is a conjunction, never an average.",
+    "Only the presence of an explicit CPR target enables the second requirement; historical decode-only decisions and report bytes remain unchanged.",
+    "Measurement, validation, hashing, archive-copy and CSV-prefix checks outside reporting functions retain identical ASTs.",
+    "Durable fixture reconstructs the original 48 files from the committed archive in a temporary directory, without requiring ignored benchmark caches."
+  ],
+  "limits": "Reporting/fixture execution only; no benchmark, compiler, decoder, profiler or frozen-file change."
+}

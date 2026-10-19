@@ -15,9 +15,10 @@ committing all project work, tidying documentation and presentation, and the
 first push to a **private** GitHub repository. This supersedes the earlier
 review pause and GOAL.md's public-repository/first-push approval requirement.
 Do not ask for that approval again. The subsequent user instruction authorizes
-continued optimization toward **1.50× rs1090 headline decode throughput** and
-pushing verified generations to the same private repository. Stop for review
-when that target is reached. No frozen-file change or trusted primitive is
+continued optimization toward **2.00× rs1090 in both headline decode and
+decode-plus-CPR throughput**, and pushing verified generations to the same
+private repository. This latest stretch goal supersedes the 1.50× review stop.
+Stop for review when both mode targets are reached. No frozen-file change or trusted primitive is
 authorized.
 
 The private repository is `https://github.com/zpconn/lean1090`, default branch
@@ -33,14 +34,17 @@ All 23 capstone contracts are proved. The runtime uses zero project-specific
 trusted primitives. The current lock has 104 entries and SHA-256
 `5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8`.
 
-## Current review checkpoint
+## Current optimization state
 
-Generation 15 reached the user's 1.50× headline target: decode
+Generation 15 reached the previous 1.50× headline target: decode
 1.607053275134× rs1090; CPR 0.990643654222×. The measured source is
-`e659220307538f2aee5398efdb0a9182bff1d778`. All samples and provenance are in
-`bench/runs/gen15/`, with the report in `bench/GEN15.md`. Stop for user review
-before generation 16 or final-deliverable work. `PROGRESS.md` records the
-independent measurement review and result-artifact publication status.
+`e659220307538f2aee5398efdb0a9182bff1d778`; its reviewed results are committed
+and pushed as `7163b2506f3b4045caa98721aa90b7042733b0fe`. All samples and
+provenance are in `bench/runs/gen15/`, with the report in `bench/GEN15.md`.
+The user's new 2.00× target in both modes resumes optimization from this state.
+Obtain fresh decode and CPR diagnostics before choosing generation 16. Keep
+all existing frozen-file, proof, full-gate, isolated benchmark and disk-retention
+requirements. `PROGRESS.md` records current work and review results.
 
 ## Ground rules
 

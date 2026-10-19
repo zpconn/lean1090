@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen16/independent-review/check_gate.py", line 223, in <module>
+    main()
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen16/independent-review/check_gate.py", line 72, in main
+    assert archive_api.inventory(directory) == retained
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zpconn/code/lean1090/review/diagnostics/archive_generation_gate.py", line 135, in inventory
+    'path': relative(path), 'sha256': digest(path), 'bytes': path.stat().st_size}
+            ^^^^^^^^^^^^^^
+  File "/home/zpconn/code/lean1090/review/diagnostics/archive_generation_gate.py", line 52, in relative
+    return str(path.relative_to(ROOT))
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '.cache/gen16-gate/component-archives/altitude/README.md' is not in the subpath of '/home/zpconn/code/lean1090'

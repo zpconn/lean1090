@@ -1,0 +1,205 @@
+{
+  "kind": "gen16_general_pack_fields_implementation",
+  "status": "passed",
+  "finished_utc": "2026-10-19T16:18:21.114872+00:00",
+  "scope": "Only Impl.packFields runtime body changes; general Nat shift and low-word masking below width 64, original modulus at all wider widths. No bounded-input premise.",
+  "sources": {
+    "Impl/Bits.lean": "2c4bbc967cca620c1a64491dbed8b42b00b3b8adeb043cd575d36b91d5d5adb4",
+    "Proofs/PackFields.lean": "983302f5c6ac374fb99afec905e82649ec9e9631f93be27eb131b278e822b8f2",
+    "Proofs/Decoder.lean": "aa94f086ed411b1ff59266c1e9cd439f4071c5c5fb5bc133f00de33a185002e6"
+  },
+  "before_manifest_sha256": "5e4a12e526b0e5cf19adf78a758f4d56da12c3eaacf5761a04826b2c4982bdbd",
+  "helper_build": {
+    "record": "tests/evidence/optimization/gen16/implementation/build-01.json",
+    "sha256": "a354bdd9bc5fc38a5bb73675b4ff510b0743d782cb6af878a164a03932c93b8a",
+    "log_sha256": "89d382554b67145d1a13619dfd14ac6dd06d904f08e89849a43840c5adcf9e26",
+    "status": "passed",
+    "note": "First helper build passed. Final proof only renames deprecated if_pos/if_neg aliases to ite_eq_left/ite_eq_right; final proof validated in combined build."
+  },
+  "integration": {
+    "record": "tests/evidence/optimization/gen16/integration/targeted-build.json",
+    "sha256": "3f82eb60d82297e0a8ece9aefe1e2cd9c42a4d49e6becd6b54ed3717fb1dad6d",
+    "log_sha256": "bd4dd964c9ec207ccf5858ac9d79209e00c4ccb6cd86755c37370ce781140e2c",
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Decoder",
+      "lean1090",
+      "messageGenerator",
+      "commbDifferential"
+    ],
+    "jobs": 3524,
+    "exit_code": 0,
+    "source_hashes_unchanged": true
+  },
+  "new_axiom_facts": [
+    {
+      "name": "Lean1090.Proofs.PackFields.step_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.fold_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.packFields_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.empty_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.zero_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.last_fast_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.first_fallback_width_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.wide_fallback_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.PackFields.wide_accumulator_witness",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "all_integration_axiom_fact_count": 158,
+  "all_integration_axioms_permitted": true,
+  "kernel_witness_count": 6,
+  "scope_checks": {
+    "only_runtime_file": "Impl/Bits.lean",
+    "exact_runtime_replacement": true,
+    "exact_decoder_import_and_private_lemma_replacement": true,
+    "lock_spec_and_payload_lemma_unchanged": true,
+    "new_module": "Proofs/PackFields.lean"
+  },
+  "build_attempts": [
+    "implementation/build-01",
+    "integration/targeted-build"
+  ],
+  "failed_builds": [],
+  "evidence": {
+    "tests/evidence/optimization/gen16/implementation/Impl-Bits.lean.diff": {
+      "sha256": "e2810bd9448e3710dfd7c83ad1be6f5858e4773921e76d9dba28a8b86f6c2971",
+      "bytes": 621
+    },
+    "tests/evidence/optimization/gen16/implementation/Proofs-Decoder.lean.diff": {
+      "sha256": "e7fdd2cbe31fdc860bf42c3a22c31edb1d15c1c8160d4afa88f8d7effa7f793a",
+      "bytes": 718
+    },
+    "tests/evidence/optimization/gen16/implementation/Proofs-PackFields.lean.diff": {
+      "sha256": "d751d16037d3559bdb615fd020737fa41ecbf1defbb85608cfda95d6a7c138ee",
+      "bytes": 3101
+    },
+    "tests/evidence/optimization/gen16/implementation/before/Impl/Bits.lean": {
+      "sha256": "7135f27b137db55e23e643a52667911eb2c68458da363cfd7d32934eebd5a21f",
+      "bytes": 2944
+    },
+    "tests/evidence/optimization/gen16/implementation/before/Proofs/Decoder.lean": {
+      "sha256": "08629a2721de15d0c9109e6906019e9c7a7180de1d750aa0d886fcced7dfed47",
+      "bytes": 36450
+    },
+    "tests/evidence/optimization/gen16/implementation/before/Proofs/PayloadBits.lean": {
+      "sha256": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+      "bytes": 2832
+    },
+    "tests/evidence/optimization/gen16/implementation/before/Spec/Bits.lean": {
+      "sha256": "25eb2a136569c34608c11c8894bfbb70649f0813cacc76d145920dadc55ef6c2",
+      "bytes": 1369
+    },
+    "tests/evidence/optimization/gen16/implementation/before/spec.lock": {
+      "sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+      "bytes": 9532
+    },
+    "tests/evidence/optimization/gen16/implementation/before.json": {
+      "sha256": "5e4a12e526b0e5cf19adf78a758f4d56da12c3eaacf5761a04826b2c4982bdbd",
+      "bytes": 1357
+    },
+    "tests/evidence/optimization/gen16/implementation/build-01/Impl-Bits.lean": {
+      "sha256": "2c4bbc967cca620c1a64491dbed8b42b00b3b8adeb043cd575d36b91d5d5adb4",
+      "bytes": 3023
+    },
+    "tests/evidence/optimization/gen16/implementation/build-01/Proofs-PackFields.lean": {
+      "sha256": "739a22c69095723fa829c6e63631bd49c6f9860d5532d5d50f5b5113010e5a56",
+      "bytes": 2927
+    },
+    "tests/evidence/optimization/gen16/implementation/build-01.json": {
+      "sha256": "a354bdd9bc5fc38a5bb73675b4ff510b0743d782cb6af878a164a03932c93b8a",
+      "bytes": 889
+    },
+    "tests/evidence/optimization/gen16/implementation/build-01.log": {
+      "sha256": "89d382554b67145d1a13619dfd14ac6dd06d904f08e89849a43840c5adcf9e26",
+      "bytes": 2699
+    },
+    "tests/evidence/optimization/gen16/implementation/run_build.py": {
+      "sha256": "498a8b6ff65886dd93fd404b8a73434d8b90f213bd2e46fd84ca88f850b3177b",
+      "bytes": 1502
+    },
+    "tests/evidence/optimization/gen16/integration/run_build.py": {
+      "sha256": "13472bc91e5d18a26852ee5801a661753a4e945bbc3c5817b648eea8f374133e",
+      "bytes": 1577
+    },
+    "tests/evidence/optimization/gen16/integration/sources/Impl/Bits.lean": {
+      "sha256": "2c4bbc967cca620c1a64491dbed8b42b00b3b8adeb043cd575d36b91d5d5adb4",
+      "bytes": 3023
+    },
+    "tests/evidence/optimization/gen16/integration/sources/Proofs/Decoder.lean": {
+      "sha256": "aa94f086ed411b1ff59266c1e9cd439f4071c5c5fb5bc133f00de33a185002e6",
+      "bytes": 36525
+    },
+    "tests/evidence/optimization/gen16/integration/sources/Proofs/PackFields.lean": {
+      "sha256": "983302f5c6ac374fb99afec905e82649ec9e9631f93be27eb131b278e822b8f2",
+      "bytes": 2938
+    },
+    "tests/evidence/optimization/gen16/integration/targeted-build.json": {
+      "sha256": "3f82eb60d82297e0a8ece9aefe1e2cd9c42a4d49e6becd6b54ed3717fb1dad6d",
+      "bytes": 1063
+    },
+    "tests/evidence/optimization/gen16/integration/targeted-build.log": {
+      "sha256": "bd4dd964c9ec207ccf5858ac9d79209e00c4ccb6cd86755c37370ce781140e2c",
+      "bytes": 27928
+    }
+  },
+  "integration_dependent_axiom_fact_count": 156,
+  "integration_axiom_free_facts": [
+    "Lean1090.Proofs.CommBConstant.payload_limit_eq",
+    "Lean1090.Proofs.ByteWords.empty_witness"
+  ]
+}

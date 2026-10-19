@@ -1,0 +1,76 @@
+LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_decode(lean_object* v_bytes_263_){
+_start:
+{
+lean_object* v___x_264_; 
+v___x_264_ = lp_lean1090_Lean1090_Impl_decodeFrame(v_bytes_263_);
+if (lean_obj_tag(v___x_264_) == 0)
+{
+lean_object* v___x_265_; 
+v___x_265_ = lean_box(0);
+return v___x_265_;
+}
+else
+{
+lean_object* v_val_266_; lean_object* v___x_268_; uint8_t v_isShared_269_; uint8_t v_isSharedCheck_278_; 
+v_val_266_ = lean_ctor_get(v___x_264_, 0);
+v_isSharedCheck_278_ = !lean_is_exclusive(v___x_264_);
+if (v_isSharedCheck_278_ == 0)
+{
+v___x_268_ = v___x_264_;
+v_isShared_269_ = v_isSharedCheck_278_;
+goto v_resetjp_267_;
+}
+else
+{
+lean_inc(v_val_266_);
+lean_dec(v___x_264_);
+v___x_268_ = lean_box(0);
+v_isShared_269_ = v_isSharedCheck_278_;
+goto v_resetjp_267_;
+}
+v_resetjp_267_:
+{
+lean_object* v___x_270_; uint8_t v___x_271_; 
+lean_inc(v_val_266_);
+v___x_270_ = lp_lean1090_Lean1090_Impl_frameSyndrome(v_val_266_);
+v___x_271_ = lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome(v_val_266_, v___x_270_);
+if (v___x_271_ == 0)
+{
+lean_object* v___x_272_; 
+lean_dec(v___x_270_);
+lean_del_object(v___x_268_);
+lean_dec(v_val_266_);
+v___x_272_ = lean_box(0);
+return v___x_272_;
+}
+else
+{
+lean_object* v___x_273_; lean_object* v___x_274_; lean_object* v___x_276_; 
+lean_inc(v_val_266_);
+v___x_273_ = lp_lean1090_Lean1090_Impl_reportWithSyndrome(v_val_266_, v___x_270_);
+v___x_274_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v___x_274_, 0, v_val_266_);
+lean_ctor_set(v___x_274_, 1, v___x_273_);
+if (v_isShared_269_ == 0)
+{
+lean_ctor_set(v___x_268_, 0, v___x_274_);
+v___x_276_ = v___x_268_;
+goto v_reusejp_275_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_277_; 
+v_reuseFailAlloc_277_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v_reuseFailAlloc_277_, 0, v___x_274_);
+v___x_276_ = v_reuseFailAlloc_277_;
+goto v_reusejp_275_;
+}
+v_reusejp_275_:
+{
+return v___x_276_;
+}
+}
+}
+}
+}
+}
