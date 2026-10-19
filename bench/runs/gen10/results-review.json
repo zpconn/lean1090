@@ -1,0 +1,336 @@
+{
+  "schema": 1,
+  "status": "passed_with_documented_clock_and_host_limitations",
+  "reviewed_at_utc": "2026-10-19T00:50:28.209128+00:00",
+  "reviewer": "independent payload_roundtrips agent",
+  "timed_commit": "d51a3040984beb6f0f96b0f4fcf225ba2622a7e0",
+  "binary_sha256": "e2b7efcfa6aa3a3f2e234aa97d95fabc59a4a8c15562b098f20f1f0ab4f95586",
+  "oracle_binary_sha256": "208ae085ba9b9633a5f1fb1e1de8e7ee9deef70c83cb051377c5ac626a9dec10",
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "archive_files_rehashed_and_byte_compared": 48,
+  "automated_archival_evidence": {
+    "files": [
+      "archive-verification.json",
+      "report-verification.json"
+    ],
+    "report_verification_sha256": "ceaf4c7db500e546be6ad1e0e059065411c2135fa35db79d0f9f8579f298b959",
+    "archive_verification_sha256": "c700403b83163014a114f435526072e177b1b16d3ad1198835b82fe391196465",
+    "report_sha256": "997b7ca9966160829db07c17581d7bc1407e521a2915ba96b28a0e906466aded",
+    "exact_integer_outer_clocks": {
+      "decode": {
+        "utc_elapsed_ns": 42200469000,
+        "monotonic_elapsed_ns": 40751832430,
+        "utc_minus_monotonic_ns": 1448636570,
+        "sample_backsteps": []
+      },
+      "cpr": {
+        "utc_elapsed_ns": 49247358000,
+        "monotonic_elapsed_ns": 48389505361,
+        "utc_minus_monotonic_ns": 857852639,
+        "sample_backsteps": []
+      }
+    }
+  },
+  "gate": {
+    "correctness_inputs_verified_against_timed_git_blobs": 181,
+    "fresh_inputs_verified_against_timed_git_blobs": 106,
+    "locked_git_blobs_verified": 104,
+    "full_gate_exit_code": 0,
+    "generated_messages": 10000000,
+    "all_seven_components_zero": true
+  },
+  "native_build": {
+    "project_source_C_object_trace_sets": 22,
+    "removed_paths_recorded": 348,
+    "actual_native_hashes_rechecked": 69,
+    "linked_objects_exact": true,
+    "source_matches_timed_commit": true,
+    "before_after_environment_matches": true,
+    "effective_driver_config_comparisons": 46
+  },
+  "protocol": {
+    "samples_reviewed": 96,
+    "warmups_per_side_per_mode": 3,
+    "measurements_per_side_per_mode": 21,
+    "order": "ABAB, A=rs1090 B=lean1090",
+    "cpu": 0,
+    "six_clean_tree_and_lock_checkpoints": true
+  },
+  "results": [
+    {
+      "mode": "decode",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 816825398,
+        "lean1090": 698769176
+      },
+      "messages_per_second": {
+        "rs1090": 211100.19402212565,
+        "lean1090": 246765.3209705976
+      },
+      "lean_over_rust": 1.1689488117890305,
+      "positions_each_run": 0,
+      "postclock_consumer": "consumed messages=172432 checksum=596195688",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          801746488,
+          828382584
+        ],
+        "lean1090": [
+          694874065,
+          746749014
+        ]
+      },
+      "lean_throughput_change_over_gen9_percent": 14.795086496488508
+    },
+    {
+      "mode": "cpr",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 812456083,
+        "lean1090": 1027401995
+      },
+      "messages_per_second": {
+        "rs1090": 212235.47168641238,
+        "lean1090": 167833.03988036347
+      },
+      "lean_over_rust": 0.7907869431380654,
+      "positions_each_run": 11347,
+      "postclock_consumer": "consumed messages=172432 aircraft=29 checksum=596195717",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          757627188,
+          821147204
+        ],
+        "lean1090": [
+          936849530,
+          1036882914
+        ]
+      },
+      "lean_throughput_change_over_gen9_percent": 4.977063822033934
+    }
+  ],
+  "power_plan_queries": [
+    {
+      "mode": "decode",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T00:47:43.376952+00:00"
+    },
+    {
+      "mode": "decode",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T00:48:25.332017+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T00:48:25.933096+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T00:49:14.933345+00:00"
+    }
+  ],
+  "utc_sample_backsteps": [],
+  "wrapper_utc_backsteps": [],
+  "outer_interleave_clock_comparisons": [
+    {
+      "mode": "decode",
+      "outer_monotonic_seconds": 40.75183243,
+      "outer_utc_seconds": 42.200469,
+      "utc_minus_monotonic_seconds": 1.448636569999998
+    },
+    {
+      "mode": "cpr",
+      "outer_monotonic_seconds": 48.389505361,
+      "outer_utc_seconds": 49.247358,
+      "utc_minus_monotonic_seconds": 0.8578526390000007
+    }
+  ],
+  "host_observations": {
+    "before": {
+      "cpu0_one_second_busy_percent": 0.0,
+      "all_cpu_one_second_busy_percent": 0.125,
+      "capture_start_utc": "2026-10-19T00:47:41.173768+00:00",
+      "capture_end_utc": "2026-10-19T00:47:42.231926+00:00",
+      "sample_monotonic_seconds": 1.000530429,
+      "sample_utc_seconds": 1.000714,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    },
+    "after": {
+      "cpu0_one_second_busy_percent": 0.0,
+      "all_cpu_one_second_busy_percent": 0.125,
+      "capture_start_utc": "2026-10-19T00:49:15.178691+00:00",
+      "capture_end_utc": "2026-10-19T00:49:16.211541+00:00",
+      "sample_monotonic_seconds": 1.000582679,
+      "sample_utc_seconds": 1.000746,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    }
+  },
+  "historical_result_prefix_bytes": 4318,
+  "historical_result_prefix_sha256": "5ce7351b6afe2983c6e39795720c707f3b1bc038a55669d4aecde4e708cf71a6",
+  "clock_interpretation": "Frozen workers use IO.monoNanosNow and Rust Instant; UTC labels do not calculate sample durations. Outer UTC/monotonic differences are retained, with no samples discarded.",
+  "limitations": [
+    "WSL2 does not expose physical temperatures, frequency/governor state or physical-core scheduling; guest affinity and one-second snapshots cannot prove Windows host-wide isolation.",
+    "Process CPU percentages are lifetime averages. Bracketing guest observations cannot establish continuous absence of competing work.",
+    "Commands are sequential in recorded orchestration; oracle prebuild/checking occurs before worker samples. This review performs no native decoder, test or profile execution.",
+    "Build freshness follows explicit artifact invalidation and observed rebuild commands, not mtimes that can be affected by UTC corrections.",
+    "Cargo profile/config fingerprint hashes are opaque; configuration observations are not a complete Cargo precedence interpreter. Pinned manifests and recorded flags provide the inspectable settings.",
+    "The outer decode interval has approximately +1.449 seconds and CPR +0.858 seconds UTC-minus-monotonic difference. These large disagreements remain raw, with no correction or rerun. They are a host-clock limitation; sample durations use monotonic clocks.",
+    "Monotonic sample durations remain distinct from UTC labels; unobserved host clock/frequency changes are outside this evidence."
+  ],
+  "reviewer_attempt": {
+    "attempt": 2,
+    "prior_script_sha256": "09ffb7f3730c209007ce55eeaea9ea40abb838f22823b4571c959826f94f4faa",
+    "prior_log_sha256": "4a1e81faa1a6d6bfa41e727f28d3029e3f390f7c012e1755cbb57b13495bdead",
+    "correction": "The first reviewer additionally required all compressed fresh transcripts to be Git blobs. Those large raw streams are intentionally ignored; the corrected review verifies their exact retained hashes/sizes against the committed manifest, while checking every tracked metadata blob against the timed commit. No producer artifact changed."
+  },
+  "fresh_retention_binding": {
+    "committed_files": 21,
+    "ignored_compressed_raw_files": 12,
+    "manifest_is_committed": true
+  },
+  "threshold": {
+    "reached": true,
+    "criterion": "10 * rs1090 median ns >= 11 * Lean median ns",
+    "left_integer": 8168253980,
+    "right_integer": 7686460936,
+    "lean_throughput_percent_above_rs1090": 16.894881178903056,
+    "cpr_is_separate_headline_exclusion": true,
+    "next": "Stop for user review; no further optimization, diagnostic or final-deliverable work authorized here."
+  },
+  "pre_timing_review_artifacts_committed": {
+    "tests/evidence/optimization/gen10/gate-archive.json": "466f00b09d80ea732f315a8d2a5b384003a3e3dd2c220dc515c1be3b77476ac1",
+    "tests/evidence/optimization/gen10/fresh-retained-hashes.json": "83421bb53df270263e9d093527f7f96e4613ced35b1561cb79c966869f05766e",
+    "tests/evidence/optimization/gen10/native-review/review.json": "65a6f7a693c52fc4be1dc9d5df3c5bbcc99139acd64745e653e5740b6c8eb154",
+    "tests/evidence/optimization/gen10/native-review/inspection-inputs.json": "79b68f2321b0b3892429c60c6493a8161765f6b84017405840a2bd2eda137703",
+    "tests/evidence/optimization/gen10/independent-review/source-proof-review.json": "2dfcfd183803425a51010604b93d67dd9704958e3d0a3349e76e30896809d794",
+    "tests/evidence/optimization/gen10/independent-review/integration-review.json": "5ff428d4f08a3d8001d7bf1aa69fb59c24f74cb302d41e2c3f472f5258a7b98b",
+    "tests/evidence/optimization/gen10/independent-review/native-binding-review.json": "9ab43d3741211a46b6a5034ed637ceca1d4d3084a8ece437d27bf98f056ddf34",
+    "tests/evidence/optimization/gen10/independent-review/fresh-retention-review.json": "666639437a4cd9110f61619572afb36cb6ab8d7bf6c826fcfc06c41f7a6ca850",
+    "tests/evidence/optimization/gen10/independent-review/gate-review.json": "346a6e748fa37cbc7d9e9df9883f020cfa880fa85cbe0c6227017cdd4c7f970e"
+  },
+  "findings": [],
+  "checks_passed": 1969,
+  "no_build_tests_profilers_or_benchmarks_run_by_review": true,
+  "review_script_sha256": "edbbaad92c4e6afc9c56422a8584a13fb8da99fbabda6bca4b651ea7103722e9",
+  "historical_artifact_review": {
+    "status": "passed",
+    "checked_utc": "2026-10-19T00:50:36.142288+00:00",
+    "committed_files": 5353,
+    "committed_bytes": 329814340,
+    "roots": [
+      "bench/runs/baseline-FC006",
+      "bench/BASELINE.md",
+      "bench/runs/gen1",
+      "bench/runs/gen2",
+      "bench/runs/gen3",
+      "bench/runs/gen4",
+      "bench/runs/gen5",
+      "bench/runs/gen6",
+      "bench/runs/gen7",
+      "bench/runs/gen8",
+      "bench/runs/gen9",
+      "bench/GEN1.md",
+      "bench/GEN2.md",
+      "bench/GEN3.md",
+      "bench/GEN4.md",
+      "bench/GEN5.md",
+      "bench/GEN6.md",
+      "bench/GEN7.md",
+      "bench/GEN8.md",
+      "bench/GEN9.md",
+      "tests/evidence/diagnostics/gen0",
+      "tests/evidence/diagnostics/gen1",
+      "tests/evidence/diagnostics/gen2",
+      "tests/evidence/diagnostics/gen3",
+      "tests/evidence/diagnostics/gen4",
+      "tests/evidence/diagnostics/gen5",
+      "tests/evidence/diagnostics/gen6",
+      "tests/evidence/diagnostics/gen7",
+      "tests/evidence/diagnostics/gen8",
+      "tests/evidence/diagnostics/gen9",
+      "docs/GEN0-COST-BREAKDOWN.md",
+      "docs/GEN1-COST-BREAKDOWN.md",
+      "docs/GEN2-COST-BREAKDOWN.md",
+      "docs/GEN3-COST-BREAKDOWN.md",
+      "docs/GEN4-COST-BREAKDOWN.md",
+      "docs/GEN5-COST-BREAKDOWN.md",
+      "docs/GEN6-COST-BREAKDOWN.md",
+      "docs/GEN7-COST-BREAKDOWN.md",
+      "docs/GEN8-COST-BREAKDOWN.md",
+      "docs/GEN9-COST-BREAKDOWN.md"
+    ],
+    "exact_bytes_equal_timed_commit": true,
+    "tracked_and_untracked_membership_unchanged": true,
+    "prior_raw_perf_hashes": {
+      "tests/evidence/diagnostics/gen0/perf/capture.json": "5efc0e16c52b524ce8b2ac5e28b7ead0c688391257a29400b3bcff69dd18f475",
+      "tests/evidence/diagnostics/gen1/perf/capture.json": "84a9062f37a1801c9105d323088006d0b5bc45dfffca07035c81b550db06c35d",
+      "tests/evidence/diagnostics/gen2/perf/capture.json": "ef4530d4d5dce3b532e29c3d1b4c7c13826ed3a6b9a15738f7152087a329e5c9",
+      "tests/evidence/diagnostics/gen3/perf/capture.json": "8fe03e120871650b9188b216a9dbd9d70d79c2c15b12f8d2c0f10e34f6e2d5dd",
+      "tests/evidence/diagnostics/gen4/perf/capture.json": "e1c1270d8ed8c917bdb09e94f9eab1e57175286eb7865107db4ae57b86fdb1a3",
+      "tests/evidence/diagnostics/gen5/perf/capture.json": "f0525980238d3fc1f1014b2da25983afa086d435045886d6bd665279720bfc59",
+      "tests/evidence/diagnostics/gen6/perf/capture.json": "bb7bb251d4268f6c15b85decb071a497e423263d50f4fe183cf983f60e843f1c",
+      "tests/evidence/diagnostics/gen7/perf/capture.json": "6d370e8b855b09c7c996cf267fb18d16a5ac17710a532165f57435c6169741c9",
+      "tests/evidence/diagnostics/gen8/perf/capture.json": "0b8cd8b75f9d1505ed1c49519b77c8729e3eac5221fc724ff96e50ae57297a46",
+      "tests/evidence/diagnostics/gen9/perf/capture.json": "62c0429edf60f55a6f78cf162e7c3c945cb44ced4d33d1beacf947dbe9776c84"
+    },
+    "checker": "/home/zpconn/code/lean1090/tests/evidence/optimization/gen10/independent-review/check_benchmark_history.py",
+    "checker_sha256": "319a2d334578edfb26b664bd3899615a5ab1361a29dd21f2651f3cdd0f8d2f86"
+  }
+}

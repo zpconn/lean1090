@@ -1,0 +1,14 @@
+fatal: path 'tests/evidence/optimization/gen10/fresh-message/direct-input.txt.gz' exists on disk, but not in 'd51a3040984beb6f0f96b0f4fcf225ba2622a7e0'
+Traceback (most recent call last):
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen10/independent-review/check_benchmark_review.py", line 200, in <module>
+    ck(hashlib.sha256(blob(path)).hexdigest()==row['sha256']==sha(path),'committed fresh retained artifact '+path)
+                      ^^^^^^^^^^
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen10/independent-review/check_benchmark_review.py", line 11, in blob
+    def blob(p):return subprocess.check_output(['git','cat-file','blob',commit+':'+str(p)])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'cat-file', 'blob', 'd51a3040984beb6f0f96b0f4fcf225ba2622a7e0:tests/evidence/optimization/gen10/fresh-message/direct-input.txt.gz']' returned non-zero exit status 128.

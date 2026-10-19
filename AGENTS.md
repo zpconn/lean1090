@@ -1,10 +1,25 @@
 # Project rules
 
-Read `GOAL.md` and `PROGRESS.md` at session start and after every context reset. The user reviewed the amendment diff and authorized the final dependency fixes followed by writing `spec.lock`. The lock is written: the reference files and guards are frozen. The latest chat authorizes adding published-layout coverage and synthetic CPR tests, then continuing section 4 and subsequent work under GOAL.md. Later chat instructions override this file.
+Read `GOAL.md` and the current-status section of `PROGRESS.md` at session start
+and after every context reset. Later chat instructions override project files.
 
-Latest authorization (2026-10-18): generation 0 was accepted and its exact baseline artifacts/PROGRESS were committed unchanged as ff450a1. Optimization generations are authorized. Before optimizing, produce an untimed diagnostic cost breakdown of live Impl.decode over the corpus by DF family and frame/CRC, ADS-B fields, Comm-B inference (each scored register), semantic/oracle values and output-model construction. Attack the largest measured costs first. Immutable tables may use field codes or format constants only; no message/corpus keys or cross-message/run caching. Every timed generation must pass scripts/check_all.sh --full, be committed, then be freshly built from that clean commit and measured in both modes with the frozen interleaver, actual binary SHA-256, all samples and a results.csv row. Run fresh recorded message/Comm-B seeds at milestones. No frozen changes or trusted primitives are authorized; stop for approval for either or if a proof needs a changed frozen statement. Continue autonomously otherwise, and stop for review when decode reaches at least 1.10×, before final-run/deliverable work. This supersedes the earlier baseline pause below.
+## Current authorization
 
-For optimization, keep the software binary64 model as the proved reference and first optimize the proved path: exact per-field density tables, verified integer arithmetic, and a full-model fallback inside a proved rounding-error interval around −3. These are candidate techniques, not permission to approximate decisions. Only after this approach fails to close the measured gap may hardware binary64 add/sub/mul/div primitives be proposed. Ask the user before adding them to TRUSTED.md or code; any approved primitives must use `-ffp-contract=off` and runtime cross-checks against the software model. None is currently authorized.
+The user accepted generation 10's measured result and explicitly authorized
+committing all project work, tidying documentation and presentation, and the
+first push to a **private** GitHub repository. This supersedes the earlier
+review pause and GOAL.md's public-repository/first-push approval requirement.
+Do not ask for that approval again. No additional optimization, frozen-file
+change or trusted primitive is authorized by the publication task.
+
+Generation 10's verified source commit is
+`d51a3040984beb6f0f96b0f4fcf225ba2622a7e0`. Decode reached 1.168948811789×
+rs1090; CPR reached 0.790786943138×. Retain the measured artifacts unchanged.
+All 23 capstone contracts are proved. The runtime uses zero project-specific
+trusted primitives. The current lock has 104 entries and SHA-256
+`5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8`.
+
+## Ground rules
 
 1. **Persistence.** First, save this prompt verbatim to `GOAL.md` (if it isn't already there). Create `AGENTS.md` with the rules in this section, plus a one-line `CLAUDE.md` pointing to it. Keep `PROGRESS.md` current (done, in progress, next, open questions), so a fresh session can resume from GOAL.md, AGENTS.md and PROGRESS.md alone.
 2. **The standard is the spec; rs1090 is the oracle.** Write the reference semantics in `Spec/` from the published standards: ICAO Annex 10 Vol. IV, and Junzi Sun's *The 1090 Megahertz Riddle* (free online). Never transcribe them from rs1090's code. rs1090 is for tests, differential checks and benchmarks. Each Spec definition's docstring cites the table or section it encodes.
@@ -15,20 +30,6 @@ For optimization, keep the software binary64 model as the proved reference and f
    - the rs1090-side benchmark harness
 
    Record their SHA-256 hashes in `spec.lock`, and make the gate fail if any of them changes. Never edit a frozen file yourself. If you believe one is wrong, stop and ask me.
-
-   For every explicitly approved change to a locked file, append an entry to `docs/FROZEN-CHANGES.md` **before** updating `spec.lock`: date, affected files, old/new SHA-256 hashes, reason, executed evidence and the user's approval. Preserve all prior entries and before/after lock snapshots. FC001, FC002 and FC003 are applied. FC003 changed exactly docs/DTE-BYTE-ORDER-PROPOSAL.diff (SHA-256 1de67cd6b73644ebd60a9e24f3e8f3e6618dd58ef364a69ef8accea29ef6968a), only Spec/CommB.lean; the other60 lock entries are unchanged. The FC00361-file lock passed; FC004 subsequently expanded it to86 files.
-
-   The complete post-FC003 diagnostic campaign passes:576164 whole messages,101244 direct Comm-B cases, all scoped DFs/70 ADS-B branches/14 registers covered, with only documented D001/D009 oracle differences. Failed-campaign evidence is retained. The altitude12288-code, reserved-velocity16480-case and exhaustive65536-code DTE fresh-oracle regressions are permanent requirements in both complete quick and full differential runs. Standard negative Gillham values and MSB-first reserved/DTE fields remain available separately from oracle-compatible values. D012 records the reproduced endian-read scan.
-
-   **FC004 is approved and applied exactly.** Patch docs/FC004-DIFFERENTIAL-FREEZE.diff has SHA-256 eee626abcc93e917fe7d82e6f6f64f67ea54e62f227fd83e7c8515a74e52291f; the86-entry live lock has SHA-256 4be296e60bcdd1125166ce265d6e8b407704894c9999d3b68c1d8191534fc72a. Every input hash was verified, the FC004 history was recorded before touching the lock, and before/after snapshots are under tests/evidence/frozen-changes/FC004/. No other frozen change is authorized.
-
-   Before resuming the seven remaining capstones, finish two new diagnostic suites: (1) actual Impl.decodePositions versus pinned rs1090 decode_positions, full timestamped corpus plus synthetic multi-aircraft pairing/reference/motion branches; (2) all upstream in-scope unit vectors, wired through scripts/run_unit_tests.sh. Accumulate every finding before proposing frozen-model corrections as a batch. Once each suite passes, propose freezing it; FC005 must also wire the stream suite into run_differential.sh as mandatory. Do not apply an unapproved proposal. Stage new diagnostic code outside frozen membership patterns until approval. Only after both suites pass and are frozen may the seven capstones resume.
-
-   Revised FC005 is approved and applied exactly on2026-10-17: docs/FC005-TRACKING-UNIT-FREEZE.diff SHA-256 d6ae99c26491ccd24fffe1ca9e5e547ec934a8c47378ee58cfa6e58bf6823c2f;102-entry lock e349a52673522259491c3420dde71980cddfc908fdbe05e81013fefa51fbd3db. Every input was verified; FC005 history preceded lock update; snapshots are retained in tests/evidence/frozen-changes/FC005/. review/upstream-units must contain only its seven locked Python scripts: no bytecode, generated files, subdirectories or other unapproved members. Post-application lock/import/unit/integrated differential and fresh-seed checks all pass. The user authorizes resuming and finishing the seven capstones; then propose the benchmark-worker FC and measure the whole-decoder baseline before any optimization generation. No other frozen change is authorized.
-
-   The seven resumed proofs are complete: all 23 frozen capstones and their axiom audits pass. The full fixed-seed 10M gate and separate fresh-seed 10M campaign passed on 2026-10-17. FC006 is approved and applied exactly on 2026-10-18: docs/FC006-BENCHMARK-WORKER.diff SHA-256 3e26e7db148c7dc54a649af7cde877d2fc4a01dbed9866d8b5aef4cfeccfb03f; the current 104-entry lock is 5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8. Its input verification, before-lock history and before/after snapshots are retained under tests/evidence/frozen-changes/FC006/. No other frozen change is authorized. Post-application guards, the full integrated gate and a separate fresh-seed 10M campaign pass; evidence is retained in the same directory. Commit before the baseline. Then build the timed binary from that clean commit immediately before timing, record the commit, clean-tree and lock checks and actual binary SHA-256, and run both modes with the frozen interleaver after all other build/test/proof work stops. Retain all 48 samples per mode and Windows power-plan captures. **Stop after reporting the whole-decoder baseline for user review; do not start optimization gen1.**
-
-   Standing optimization/test rules from2026-10-17: every Impl name referenced by frozen adapters must remain the live path or delegate to it; never retain a dead legacy copy just for frozen tests. If a refactor cannot preserve that binding, stop and propose an FC. At every milestone and the final10M run, run the normal fixed-seed sets plus check_message_differential.py directly with a newly sampled recorded seed and freshly seeded FuzzCommB cases; report both results. lakefile.toml is frozen: the future benchmark executable target requires its own approved FC with evidence of exact bench/BENCHMARK.md compliance. After both new suites are frozen and all seven proofs are finished, propose that worker FC and measure the whole-decoder baseline under the frozen ABAB protocol with all raw samples before optimization gen1.
 4. **No cheating.**
    - Forbidden anywhere in the decoder or its proofs:
      - `sorry`, `admit`, new `axiom`s, `native_decide`, `unsafe`
@@ -48,3 +49,29 @@ For optimization, keep the software binary64 model as the proved reference and f
 6. **Honesty.** Every claim in PROGRESS.md or the README must be backed by a command you ran. If the 10% target is still out of reach after you've exhausted your ideas, report the best measured number. Don't redefine success.
 7. **Parallelism.** If your harness can run parallel subagents or git worktrees, use them for independent proof obligations and optimization experiments. Merge only through the gate.
 
+## Active safeguards
+
+- Never edit a locked file without exact user approval. For every approved
+  change, record date, files, old/new hashes, reason, executed evidence and
+  approval in `docs/FROZEN-CHANGES.md` **before** updating the lock. Keep
+  before/after snapshots. FC001–FC006 are the complete approved history.
+- Frozen membership matters. In particular, `review/upstream-units` contains
+  exactly its seven locked scripts; bytecode or an added package fails the gate.
+- Frozen adapters must call the live production path or delegate to it.
+  Do not keep obsolete implementations solely for tests. `Impl/` imports
+  neither `Spec/` nor Mathlib; frozen reference modules never import `Impl/`
+  or `Proofs/`. Do not alter the frozen hypothesis/assignment dependency guards.
+- At milestones and the final 10M run, run the fixed-seed gate and a separate
+  whole-message campaign with freshly sampled, recorded message and Comm-B
+  seeds. Preserve every finding and coverage count.
+- If optimization is authorized again, complete an untimed live-decoder cost
+  breakdown before selecting each change. Preserve software binary64 semantics;
+  exact field-code tables and proved integer bounds may use the full model as
+  fallback. No hardware Float primitive is authorized. Never cache corpus
+  messages. Every timed generation needs a passing full gate, a committed
+  clean tree, a fresh build and binary hash, the frozen ABAB interleaver in both
+  modes, all raw samples and Windows power-plan captures. Stop all other
+  builds, proofs, tests and profilers while timing.
+- Preserve historical evidence and benchmark commits. Build caches, vendor
+  checkouts and explicitly ignored large transcripts are not publication
+  sources; document their reconstruction rather than force-adding them.

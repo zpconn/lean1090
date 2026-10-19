@@ -1,0 +1,74 @@
+{
+  "status": "prepared_not_executed",
+  "prepared_utc": "2026-10-19T01:01:39.117782+00:00",
+  "source": "review/diagnostics/archive_generation_gate.py",
+  "source_sha256": "cbdee009df5943250ab24a4cd9f712c27b3c76e08ced20046714e5733f00577e",
+  "candidate": "review/diagnostics/archive_publication_gate.py",
+  "candidate_sha256": "933513c91d456587d9181edba85d7227e24de05e644a823e3ca176e20b43ebe5",
+  "path_and_label_changes": [
+    {
+      "before": "versioned generation evidence.",
+      "after": "versioned publication evidence."
+    },
+    {
+      "before": "    parser.add_argument('--generation', required=True, type=int)\n",
+      "after": ""
+    },
+    {
+      "before": "    require(args.generation >= 1, 'generation must be positive')\n",
+      "after": ""
+    },
+    {
+      "before": "    destination = ROOT / f'tests/evidence/optimization/gen{args.generation}'",
+      "after": "    destination = ROOT / 'tests/evidence/publication'"
+    },
+    {
+      "before": "    cache = ROOT / f'.cache/gen{args.generation}-gate/fixed-message-archive'",
+      "after": "    cache = ROOT / '.cache/publication-gate/fixed-message-archive'"
+    },
+    {
+      "before": "    component_cache = ROOT / f'.cache/gen{args.generation}-gate/component-archives'",
+      "after": "    component_cache = ROOT / '.cache/publication-gate/component-archives'"
+    },
+    {
+      "before": "'generation': args.generation,",
+      "after": "'milestone': 'publication',"
+    },
+    {
+      "before": "a new generation cache archive.",
+      "after": "a new publication cache archive."
+    }
+  ],
+  "unchanged_function_asts": [
+    "require",
+    "digest",
+    "relative",
+    "write_json",
+    "provenance_helper",
+    "literal_path",
+    "checker_output",
+    "discover_components",
+    "inventory",
+    "copy_checked",
+    "check_summary",
+    "bind_printed_summary"
+  ],
+  "preserved_checks": [
+    "Passing full gate and current correctness inputs match both gate snapshots.",
+    "Full gate log digest and exact emitted JSON/completion-line binding for all seven components.",
+    "Frozen runner component membership/order and all seven status exits.",
+    "Every component artifact copied and verified by SHA-256 and byte count.",
+    "Complete ignored raw archives plus versioned small metadata/manifests.",
+    "Refuse existing destinations and symlinks; verify originals, gate log/status and all correctness inputs unchanged after copying.",
+    "Preserve partial failure record and re-raise; no test/build/benchmark execution."
+  ],
+  "syntax_check": "ast.parse only; archive helper has not run.",
+  "command_after_root_full_gate_completed": [
+    "python3",
+    "review/diagnostics/archive_publication_gate.py",
+    "--gate-evidence",
+    "tests/evidence/publication/gate-evidence.json",
+    "--gate-log",
+    "tests/evidence/publication/gate-full.log"
+  ]
+}

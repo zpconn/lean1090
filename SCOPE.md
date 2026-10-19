@@ -1,6 +1,6 @@
-# Decoder scope and oracle contract — checkpoint 1 draft
+# Decoder scope and oracle contract
 
-This inventory is based on the pinned oracle's actual readers, not just its Rust enum names or comments. It describes the target and reporting policies implemented by the checkpoint reference modules. The initial complete pure runtime and its all-input refinement are implemented and proved. The remaining semantic capstones, complete unit-vector port and whole-message differential tests are section4 work. The BDS50 measured baseline is in docs/BDS50-PILOT.md. See `THEOREMS.md` for the exact proof boundary and `PROGRESS.md` for executed checks.
+This inventory is based on the pinned oracle's actual readers, not just its Rust enum names or comments. It describes the formats and reporting policies implemented by the frozen reference modules and pure runtime. All 23 capstone contracts are proved; the upstream unit-vector port and complete whole-message differential suites pass. Generation 10 measurements are in [bench/GEN10.md](bench/GEN10.md). See `THEOREMS.md` for the exact proof boundary and `PROGRESS.md` for executed checks.
 
 ## Pins and sources
 
@@ -12,7 +12,7 @@ This inventory is based on the pinned oracle's actual readers, not just its Rust
 
 ## Boundary and exactness
 
-Input is a byte sequence, with a message boundary at bit offset zero. The normal API accepts exactly 7 or 14 bytes according to DF; all other lengths return an explicit error. The compatibility projection for `Message::from_bytes` additionally records consumed bytes/remainder: that Rust entrypoint accepts a short-format message at the start of a 14-byte slice and returns the unused suffix. `Message::try_from` rejects such trailing data. The main differential suite must distinguish these APIs rather than silently treating them as equivalent.
+Input is a byte sequence, with a message boundary at bit offset zero. The normal API accepts exactly 7 or 14 bytes according to DF; all other lengths return `none` (the CLI emits `null`). The compatibility projection for `Message::from_bytes` additionally records consumed bytes/remainder: that Rust entrypoint accepts a short-format message at the start of a 14-byte slice and returns the unused suffix. `Message::try_from` rejects such trailing data. The main differential suite must distinguish these APIs rather than silently treating them as equivalent.
 
 MSB-first bit numbering is used throughout. Wire bits are counted from 1; MB/ME fields are counted relative to the start of their 56-bit payload. Exact raw fields, including meaningful unavailable/status codes, must remain available for the encoder and bit round-trip theorem. Rounded JSON output alone is not an injective representation of a message. Spare/reserved bits are not assigned new aircraft meaning. Retaining them for a bit-preserving wire representation is distinct from asserting they are standard-defined data.
 
@@ -166,7 +166,7 @@ Commands already run: `git -C vendor/rs1090 rev-parse HEAD`; source inspection w
 
 The checked corpus has172432 lines, no header,10186581bytes, SHA256 `3e5aa149f2d45d675f79960f03c39a6a0e4f7c6acc3c067bebdd7b9be6ce5505`. Count every row, including the first. See `bench/BENCHMARK.md` for exact benchmark preparation and checks.
 
-Checkpoint review must distinguish the complete reference definitions from unproved universal capstones and the tested-only Float/serialization boundary in `THEOREMS.md`. The DF24 parser failure is an observed discrepancy. Other quirks listed here are observed code behavior, not yet automatically classified as standard violations; a discrepancy exception requires a concrete message, both outputs, and an actually read standard clause. Concrete standard/oracle projection probes are recorded in `DISCREPANCIES.md`, with executable Lean expressions and captured outputs. No full differential corpus comparison or proof completion is claimed in this stage.
+The proved universal contracts remain distinct from the tested-only Float/serialization boundary in `THEOREMS.md`. The DF24 parser failure is a documented discrepancy. Other quirks listed here are observed code behavior and are not automatically standard violations; a discrepancy exception requires a concrete message, both outputs and an actually read standard clause. `DISCREPANCIES.md` records the standard/oracle projection probes and classifications. The completed corpus, fixed-seed and fresh-seed campaigns are documented in `bench/GEN10.md` and `PROGRESS.md`.
 
 
 ## Exact JSON key and omission contract

@@ -1,6 +1,6 @@
-# Discrepancy ledger — checkpoint 1
+# Discrepancy ledger
 
-These entries record source review and small oracle probes, not a completed differential campaign. A **confirmed oracle observation** is separate from an accepted differential exemption. The final exemption must contain the executable Lean answer and an actually read standard clause, and must be approved where the spec itself is in question. Do not treat the pending items below as blanket exclusions from testing.
+These entries retain the original source reviews and concrete oracle probes, followed by their implementation and regression evidence. Complete corpus and 10M fixed/fresh-seed campaigns now pass; see [bench/GEN10.md](bench/GEN10.md). A **confirmed oracle observation** is separate from an accepted differential exemption. Each exemption must contain the executable Lean answer and an actually read standard clause, and frozen-model changes require approval. Historical pending wording below is not a blanket exclusion from testing: only the exact cases recognized by the frozen checkers are exempted.
 
 ## D001: Comm-D's two-bit DF is consumed as five bits
 

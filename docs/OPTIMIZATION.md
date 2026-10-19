@@ -1,5 +1,10 @@
 # Verified score optimization order
 
+Generation 10 reached 1.16895× rs1090 decode throughput with the software model
+and zero trusted primitives. The optimization target was reached; further
+optimization is paused. [bench/GEN10.md](../bench/GEN10.md) records the measured result.
+The policy below governs any future optimization.
+
 The user specified this order after reviewing the BDS50 baseline of about
 0.24× rs1090 throughput. The baseline is evidence of a performance gap, not
 evidence that verified software arithmetic cannot close it.
@@ -45,9 +50,10 @@ results and also run check_message_differential.py directly with a newly
 sampled, recorded seed and a newly seeded FuzzCommB corpus. Record seeds
 before generation, retain both results and investigate every finding.
 
-Before any further capstone work, the stream-level decodePositions differential
-and complete upstream unit-vector suite must pass and be frozen with approval.
-After the seven remaining capstones are finished, propose a separate FC for
-the Lean benchmark worker's executable target in frozen lakefile.toml, with
-evidence of exact bench/BENCHMARK.md compliance. Take the whole-decoder baseline
-using the frozen ABAB protocol and retain all raw samples before gen1.
+The following preparation requirements were completed through FC005/FC006:
+the stream-level decodePositions differential
+and complete upstream unit-vector suite passed and were frozen with approval.
+All capstones were completed, the benchmark worker and executable target were
+frozen, and the whole-decoder baseline was taken with the prescribed ABAB
+protocol before generation 1. Historical approvals and hashes remain in
+[FROZEN-CHANGES.md](FROZEN-CHANGES.md).
