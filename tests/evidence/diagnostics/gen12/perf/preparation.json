@@ -1,0 +1,28 @@
+{
+  "status": "prepared",
+  "recorded_utc": "2026-10-19T03:04:36.520558+00:00",
+  "helpers": {
+    "tests/evidence/diagnostics/gen12/perf/finalize_perf_gen12.py": "c1e66324f505b600e74b9b1b01b551fe2156f23e6df2e9ab027ae036a8920759",
+    "tests/evidence/diagnostics/gen12/perf/run_perf_gen12.py": "ef5adf829f48e7eca5e5f6cdd530d8edc290d70ebac16ca00225b553bdad251b",
+    "tests/evidence/diagnostics/gen12/perf/analyze_perf_gen12.py": "2566333340022aeac09f8bb8982aea758af662472612737ce7c34b0aff4c7642"
+  },
+  "adapted_from": {
+    "tests/evidence/diagnostics/gen11/perf/analyze_perf_gen11.py": "ce980af6cc24d5d2a580a9f2116a3eb81ac0f76668d444d71d5f1e6497ab17c8",
+    "tests/evidence/diagnostics/gen11/perf/finalize_perf_gen11.py": "78952e99c0fb4ddb900e177a91a082b167522d5415d820586a1eff80c9a23a6f",
+    "tests/evidence/diagnostics/gen11/perf/run_perf_gen11.py": "d7841b9dbae40a1ed25a52ca2d0b2d0ec5807444297bdf76f8a80a54b217fa70"
+  },
+  "changes": [
+    "Generation paths, exact timed commit and binary hash",
+    "Additional limitation for UInt64 byte-fold inlining and changed frame ownership/ancestor visibility"
+  ],
+  "generated_c_read": {
+    ".lake/build/ir/Impl/Bits.c": "a132b5017496061527a7525ae2091421143d4988c8a277b9de6a2b58aef9cefa"
+  },
+  "source_observations": [
+    "bytesWordPrefix updates UInt64 accumulator and tail-calls; its pair is constructed only in the base branches.",
+    "bytesValue specialized word fold uses UInt64 shift/add; >16 retains original Nat multiply/add fold.",
+    "Current ownership/RC operations may alter stack visibility and cannot be inferred away from sampling."
+  ],
+  "empty_cache_before_capture": true,
+  "no_production_edit_or_build": true
+}

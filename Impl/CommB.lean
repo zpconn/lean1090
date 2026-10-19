@@ -361,6 +361,28 @@ def cbDensity (register word : Nat) : Rat :=
   if terms.isEmpty then 0
   else Binary64.div (terms.foldl Binary64.add 0) (terms.length : Rat)
 
+/-- Every signed difference of the two unsigned ten-bit BDS50 speed codes.
+The immutable entries retain rounded subtraction, absolute value, rounded
+division and rounded negation, including both extreme differences. -/
+def cbWindPenaltyTable : Array Rat := Array.ofFn fun code : Fin 2047 =>
+  Binary64.sub 0
+    (Binary64.div (Binary64.round (2 * ((code.val : Rat) - 1023))).abs 100)
+
+/-- Exact BDS50 wind penalty. Missing TAS or ground-speed status yields zero;
+otherwise the two ten-bit codes index their complete signed-difference table. -/
+def cbWindPenalty50 (word : Nat) : Rat :=
+  if payloadBits word 46 1 == 0 || payloadBits word 24 1 == 0 then 0
+  else
+    let tas := payloadBits word 47 10
+    let gs := payloadBits word 25 10
+    cbWindPenaltyTable[tas + 1023 - gs]'(by
+      have ht := payloadBits_lt word 47 10
+      have hg := payloadBits_lt word 25 10
+      simp only [cbWindPenaltyTable, Array.size_ofFn]
+      change tas < 1024 at ht
+      change gs < 1024 at hg
+      omega)
+
 -- Initial algorithm: Spec/CommB.lean:409.
 /-- rs1090-derived penalty.rs: BDS50 wind and opposite-sign turn penalties,
 BDS60 IAS/Mach-ratio penalty; source operation order is preserved. -/
@@ -368,9 +390,7 @@ def cbPenalty (register word : Nat) : Rat :=
   let value := commBValue register word
   match register with
   | 0x50 =>
-    let p := match value "TAS", value "groundspeed" with
-      | some tas, some gs => Binary64.sub 0 (Binary64.div (Binary64.sub tas gs).abs 100)
-      | _, _ => 0
+    let p := cbWindPenalty50 word
     match value "roll", value "track_rate" with
     | some roll, some rate =>
       if roll.abs > 5 && rate.abs > Binary64.literal (3/10) &&

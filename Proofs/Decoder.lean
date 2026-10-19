@@ -1,6 +1,7 @@
 import Impl.Message
 import Capstones
 import Proofs.CommBTables
+import Proofs.CommBPenalty
 import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.ParityWord
@@ -477,10 +478,12 @@ private theorem decoder_cbDensity_eq : @Impl.cbDensity = @Spec.cbDensity := by
   unfold Impl.cbDensity Spec.cbDensity
   simp only [decoder_Binary64_add_eq, decoder_Binary64_div_eq, decoder_cbDensityTerms_eq]
 private theorem decoder_cbPenalty_eq : @Impl.cbPenalty = @Spec.cbPenalty := by
+  funext register word
   unfold Impl.cbPenalty Spec.cbPenalty
-  simp only [decoder_Binary64_div_eq, decoder_Binary64_literal_eq, decoder_Binary64_sub_eq,
-    decoder_cbMach64_eq, decoder_commBValue_eq]
-  rfl
+  split <;>
+    simp only [CommBPenalty.cbWindPenalty50_eq_runtime, decoder_Binary64_div_eq,
+      decoder_Binary64_literal_eq, decoder_Binary64_sub_eq, decoder_cbMach64_eq,
+      decoder_commBValue_eq] <;> rfl
 private theorem decoder_cbCombinedScore_eq : @Impl.cbCombinedScore = @Spec.cbCombinedScore := by
   unfold Impl.cbCombinedScore Spec.cbCombinedScore
   simp only [decoder_Binary64_add_eq, decoder_cbDensity_eq, decoder_cbPenalty_eq]

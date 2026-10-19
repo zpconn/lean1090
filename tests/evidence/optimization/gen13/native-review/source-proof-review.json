@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewer": "/root/cost_analysis; not the runtime/proof author",
+  "sources": {
+    "Impl/CommB.lean": "716784ccfd58e5a97eca30487c5ab9a632357ecbf21ca7ac2e4ba8aff2de82b9",
+    "Proofs/CommBPenalty.lean": "1123178a389b1dc770862b939c2223c998086df441fd0969d08b068877c33e07"
+  },
+  "inputs": {
+    "Impl/CommB.lean": {
+      "sha256": "716784ccfd58e5a97eca30487c5ab9a632357ecbf21ca7ac2e4ba8aff2de82b9",
+      "bytes": 29455
+    },
+    "Proofs/CommBPenalty.lean": {
+      "sha256": "1123178a389b1dc770862b939c2223c998086df441fd0969d08b068877c33e07",
+      "bytes": 4571
+    },
+    "/home/zpconn/code/lean1090/tests/evidence/optimization/gen13/proof/summary.json": {
+      "sha256": "66181abc3ea9d82d5d99901841687f241f34906fa02fd42ae6b4b5ffb913f71c",
+      "bytes": 4013
+    },
+    "/home/zpconn/code/lean1090/tests/evidence/optimization/gen13/proof/build-01.json": {
+      "sha256": "04a72e8a638c401bc624e6b4dd153553008379c8d2cc6c70cafcb22d89697f87",
+      "bytes": 901
+    },
+    "/home/zpconn/code/lean1090/tests/evidence/optimization/gen13/proof/build-01.log": {
+      "sha256": "8b23e056a115ffb69e38e9479c964d81b13543598dcad2e97179af4dad9a5dd3",
+      "bytes": 4408
+    },
+    "/home/zpconn/code/lean1090/tests/evidence/optimization/gen13/proof/before-Impl-CommB.lean": {
+      "sha256": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+      "bytes": 28591
+    },
+    "/home/zpconn/code/lean1090/tests/evidence/optimization/gen13/proof/runtime.diff": {
+      "sha256": "56e2705feae13430f30652ee8f5afc0495294a3acb41a6e09d2ee9f1e58fb31b",
+      "bytes": 1983
+    }
+  },
+  "helper_facts": [
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.table_size",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.table_get",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.signed_index",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.cbWindPenalty50_eq_raw",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.cbWindPenalty50_eq_runtime",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.missing_both_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.missing_one_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.equal_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.fractional_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.extremes_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBPenalty.overwide_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "kernel_witness_theorems": 6,
+  "all_Nat_runtime_equality_verified": true,
+  "turn_penalty_and_BDS60_source_unchanged": true,
+  "assessment": [
+    "The complete Array.ofFn table has 2,047 entries indexed by TAS code + 1,023 - ground-speed code. Each 10-bit extraction is bounded for every Nat word; signed_index establishes both the table bound and exact Rat difference, explicitly justifying Nat subtraction before casting.",
+    "The table retains round(2*(index-1023)), absolute value, software rounded division by 100 and software subtraction from zero. This is the original rounded TAS-minus-groundspeed expression after exact algebra, without assuming symmetry of rounding or replacing a rounded fraction with an exact rational.",
+    "The raw equality and semantic-field equality quantify every Nat word, with no validity, message-size, corpus or status hypothesis. The semantic proof unfolds the actual BDS50 layout, proves the affine field values through the existing universal affine theorem and checks both independent absent-status cases.",
+    "The only cbPenalty edit replaces the BDS50 local wind value with the live table helper. The entire turn-penalty and BDS60 suffix remains byte-for-byte unchanged; final Binary64.sub p 2 and IAS/Mach ratio operations remain.",
+    "Six kernel witness theorems cover both missing statuses, either missing status, equal speeds, a fractional result distinguishable from exact -1/50, both signed extreme code differences and an extra high bit at 130. They supplement the unconditional proof.",
+    "All eleven printed helper facts and all printed dependencies in the successful targeted log use only allowed axioms. This review binds that existing build and assesses its mathematical source; it does not claim an independent build or native execution."
+  ],
+  "script_sha256": "3827542216073ca42544ad2b97a405574f84937d23db19c0af6eb046a27ae142",
+  "limits": "Static independent mathematical source assessment and replay of retained targeted-build evidence. Integrated refinement and actual native table initialization/call paths are checked separately after build release."
+}

@@ -1,0 +1,12 @@
+{
+  "recorded_utc": "2026-10-19T03:29:33.145806+00:00",
+  "command": [
+    "python3",
+    "tests/evidence/optimization/gen13/benchmark-preparation/prepare.py"
+  ],
+  "exit_code": 1,
+  "source_sha256": "461064fe261934dafc0e40cbebf4d051206ab0913629a0fd3f71ab2f91dee7df",
+  "finding": "Line 15 retained bench/GEN12.md in the pre-existing-output assertion when adapting the helper. That already exists, so preparation stopped before writing any output. No measurement or correctness source changed.",
+  "captured_exception": "AssertionError at prepare.py line 15: assert not (root/'bench/runs/gen13').exists() and not (root/'bench/GEN12.md').exists()",
+  "fix": "Correct the output existence check to bench/GEN13.md."
+}

@@ -1,0 +1,76 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-19T03:27:50.358614+00:00",
+  "findings": [],
+  "native_review_sha256": "0228be252c9a2bb3534bce72c01c4fdcd4f91c580cb71be69cff6a8b5c495fcb",
+  "native_inspection_sha256": "ec78b38ad637b28408a87b50e813b7bf3cb4758de68f502141356d439b5386bc",
+  "integration_review_sha256": "b0ab5e9a2075b69280ac826e79ccf47fd938aeb45d24c83a3347a56e0824618b",
+  "independent_source_proof_review_sha256": "725adea32d569f7c9d68d142b6375fb9f08592575eb3393945783812ee0696ea",
+  "independent_integration_proof_review_sha256": "8e0e9680b2d155871ca4d1dd034cdb7286aba3f5a26a1fd381252375e9949ead",
+  "native_checks": 35,
+  "native_inputs": 142,
+  "native_files": 347,
+  "exact_native_evidence_membership": 350,
+  "bds50_wind_penalty_live_path_verified": true,
+  "independent_cfg": {
+    "instruction_count": 197,
+    "reachable_instructions": 197,
+    "event_sites": {
+      "0xb809b5": "status46",
+      "0xb809d9": "status24",
+      "0xb809fd": "tas47",
+      "0xb80a12": "gs25",
+      "0xb80a78": "table_load"
+    },
+    "normal_exits": [
+      {
+        "events": [
+          "status46"
+        ],
+        "target": "lean_obj_once_cold"
+      },
+      {
+        "events": [
+          "status46"
+        ],
+        "target": "ret"
+      },
+      {
+        "events": [
+          "status46",
+          "status24"
+        ],
+        "target": "lean_obj_once_cold"
+      },
+      {
+        "events": [
+          "status46",
+          "status24"
+        ],
+        "target": "ret"
+      },
+      {
+        "events": [
+          "status46",
+          "status24",
+          "tas47",
+          "gs25",
+          "table_load"
+        ],
+        "target": "ret"
+      }
+    ]
+  },
+  "wind_native_cfg_sha256": "0f3a9cd190454b7796a7d29c1b379c93980220cf88a9e16106dba1676e7bdde9",
+  "other_unchanged_native_sets": 19,
+  "execution_log_bindings": {
+    "tests/evidence/optimization/gen13/native-review/validate.stdout": "2a47a92336c21804a1c33f77a5835d05cf666ce89dcbf6b3fb8da59a39c0f7b4",
+    "tests/evidence/optimization/gen13/native-review/validate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "review_script_sha256": "8a4d4016aa18744e046db862d8bf1067911b93df2e1abeaf3f78c6976a0be79a",
+  "limits": [
+    "Read-only replay of retained independent source/proof/native evidence. No compiler or decoder execution.",
+    "Conservative CFG includes all branch choices and treats calls as returning. No runtime frequency or zero callee-allocation inference.",
+    "Exact software arithmetic remains in eager complete table initialization and in unaffected turn/BDS60 paths. The inspected binary is the integrated CLI, not the future fresh timed worker."
+  ]
+}

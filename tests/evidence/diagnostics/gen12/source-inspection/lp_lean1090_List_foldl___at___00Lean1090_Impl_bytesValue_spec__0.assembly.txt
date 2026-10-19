@@ -1,0 +1,105 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b529f0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0>:
+  b529f0:	push   %r15
+  b529f2:	push   %r14
+  b529f4:	push   %r13
+  b529f6:	push   %r12
+  b529f8:	push   %rbx
+  b529f9:	mov    %rsi,%rbx
+  b529fc:	mov    %rdi,%rax
+  b529ff:	movabs $0x100000000000000,%r15
+  b52a09:	nopl   0x0(%rax)
+  b52a10:	test   $0x1,%bl
+  b52a13:	jne    b52a30 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x40>
+  b52a15:	movzbl 0x7(%rbx),%ecx
+  b52a19:	test   %ecx,%ecx
+  b52a1b:	jne    b52a3e <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x4e>
+  b52a1d:	jmp    b52b2e <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x13e>
+  b52a22:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+  b52a30:	mov    %rbx,%rcx
+  b52a33:	shr    $1,%rcx
+  b52a36:	test   %ecx,%ecx
+  b52a38:	je     b52b2e <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x13e>
+  b52a3e:	mov    0x8(%rbx),%r12
+  b52a42:	mov    0x10(%rbx),%rbx
+  b52a46:	test   $0x1,%al
+  b52a48:	je     b52aa8 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xb8>
+  b52a4a:	mov    %rax,%rcx
+  b52a4d:	shr    $1,%rcx
+  b52a50:	mov    %rax,%rdx
+  b52a53:	and    %r15,%rdx
+  b52a56:	shr    $0x39,%rax
+  b52a5a:	or     %rdx,%rax
+  b52a5d:	je     b52a80 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x90>
+  b52a5f:	mov    $0x100,%edi
+  b52a64:	mov    %rcx,%rsi
+  b52a67:	call   48a42e0 <lean_nat_overflow_mul>
+  b52a6c:	mov    %rax,%rcx
+  b52a6f:	jmp    b52a87 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b52a71:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+  b52a80:	shl    $0x9,%rcx
+  b52a84:	inc    %rcx
+  b52a87:	shr    $1,%r12d
+  b52a8a:	movzbl %r12b,%eax
+  b52a8e:	test   $0x1,%cl
+  b52a91:	je     b52aca <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xda>
+  b52a93:	shr    $1,%rcx
+  b52a96:	add    %rax,%rcx
+  b52a99:	js     b52aef <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xff>
+  b52a9b:	lea    0x1(,%rcx,2),%rax
+  b52aa3:	jmp    b52a10 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b52aa8:	mov    $0x201,%edi
+  b52aad:	mov    %rax,%rsi
+  b52ab0:	mov    %rax,%r14
+  b52ab3:	call   48a4070 <lean_nat_big_mul>
+  b52ab8:	mov    %rax,%rcx
+  b52abb:	mov    (%r14),%eax
+  b52abe:	cmp    $0x2,%eax
+  b52ac1:	jl     b52afc <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x10c>
+  b52ac3:	dec    %eax
+  b52ac5:	mov    %eax,(%r14)
+  b52ac8:	jmp    b52a87 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b52aca:	lea    0x1(,%rax,2),%rsi
+  b52ad2:	mov    %rcx,%rdi
+  b52ad5:	mov    %rcx,%r14
+  b52ad8:	call   48a3c30 <lean_nat_big_add>
+  b52add:	mov    (%r14),%ecx
+  b52ae0:	cmp    $0x2,%ecx
+  b52ae3:	jl     b52b13 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x123>
+  b52ae5:	dec    %ecx
+  b52ae7:	mov    %ecx,(%r14)
+  b52aea:	jmp    b52a10 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b52aef:	mov    %rcx,%rdi
+  b52af2:	call   48a3a90 <lean_big_usize_to_nat>
+  b52af7:	jmp    b52a10 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b52afc:	mov    %rcx,%r13
+  b52aff:	test   %eax,%eax
+  b52b01:	je     b52b0b <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x11b>
+  b52b03:	mov    %r14,%rdi
+  b52b06:	call   48a1570 <lean_dec_ref_cold>
+  b52b0b:	mov    %r13,%rcx
+  b52b0e:	jmp    b52a87 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b52b13:	test   %ecx,%ecx
+  b52b15:	je     b52a10 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b52b1b:	mov    %r14,%rdi
+  b52b1e:	mov    %rax,%r14
+  b52b21:	call   48a1570 <lean_dec_ref_cold>
+  b52b26:	mov    %r14,%rax
+  b52b29:	jmp    b52a10 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b52b2e:	pop    %rbx
+  b52b2f:	pop    %r12
+  b52b31:	pop    %r13
+  b52b33:	pop    %r14
+  b52b35:	pop    %r15
+  b52b37:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

@@ -3,8 +3,8 @@
 Generation 10 reached 1.16895× rs1090 decode throughput with the software model
 and zero trusted primitives. The user subsequently authorized continued
 optimization toward **1.50× headline decode throughput**. Stop for review when
-that target is reached. Generation 11 subsequently measured 1.26834× decode
-and 0.84718× CPR; [bench/GEN11.md](../bench/GEN11.md) retains the complete
+that target is reached. Generation 12 subsequently measured 1.37585× decode
+and 0.89449× CPR; [bench/GEN12.md](../bench/GEN12.md) retains the complete
 measurement. The policy below governs the resumed work.
 
 The user specified this order after reviewing the BDS50 baseline of about

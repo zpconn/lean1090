@@ -1,0 +1,96 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b836b0 <lp_lean1090_Lean1090_Impl_cbScorePasses>:
+  b836b0:	push   %r15
+  b836b2:	push   %r14
+  b836b4:	push   %r12
+  b836b6:	push   %rbx
+  b836b7:	push   %rax
+  b836b8:	mov    %rsi,%r14
+  b836bb:	mov    %rdi,%rbx
+  b836be:	test   $0x1,%r14b
+  b836c2:	jne    b836d4 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x24>
+  b836c4:	mov    (%r14),%eax
+  b836c7:	test   %eax,%eax
+  b836c9:	jle    b83770 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xc0>
+  b836cf:	inc    %eax
+  b836d1:	mov    %eax,(%r14)
+  b836d4:	test   $0x1,%bl
+  b836d7:	jne    b836e7 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x37>
+  b836d9:	mov    (%rbx),%eax
+  b836db:	test   %eax,%eax
+  b836dd:	jle    b83784 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xd4>
+  b836e3:	inc    %eax
+  b836e5:	mov    %eax,(%rbx)
+  b836e7:	mov    $0x28,%edi
+  b836ec:	call   48946a0 <lean_alloc_object>
+  b836f1:	mov    %rax,%r15
+  b836f4:	movl   $0x1,(%rax)
+  b836fa:	movw   $0xf500,0x6(%rax)
+  b83700:	lea    -0x127(%rip),%rax        # b835e0 <lp_lean1090_Lean1090_Impl_cbScorePasses___lam__0___boxed>
+  b83707:	mov    %rax,0x8(%r15)
+  b8370b:	movl   $0x20003,0x10(%r15)
+  b83713:	mov    %rbx,0x18(%r15)
+  b83717:	mov    %r14,0x20(%r15)
+  b8371b:	mov    %rbx,%rdi
+  b8371e:	mov    %r14,%rsi
+  b83721:	call   b826c0 <lp_lean1090_Lean1090_Impl_cbDensityTermsFast>
+  b83726:	mov    %rax,%r12
+  b83729:	mov    %rbx,%rdi
+  b8372c:	mov    %r14,%rsi
+  b8372f:	call   b80c70 <lp_lean1090_Lean1090_Impl_cbPenalty>
+  b83734:	test   $0x1,%r14b
+  b83738:	jne    b83747 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x97>
+  b8373a:	mov    (%r14),%ecx
+  b8373d:	cmp    $0x2,%ecx
+  b83740:	jl     b83797 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xe7>
+  b83742:	dec    %ecx
+  b83744:	mov    %ecx,(%r14)
+  b83747:	test   $0x1,%bl
+  b8374a:	jne    b83757 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xa7>
+  b8374c:	mov    (%rbx),%ecx
+  b8374e:	cmp    $0x2,%ecx
+  b83751:	jl     b837ab <lp_lean1090_Lean1090_Impl_cbScorePasses+0xfb>
+  b83753:	dec    %ecx
+  b83755:	mov    %ecx,(%rbx)
+  b83757:	mov    %r12,%rdi
+  b8375a:	mov    %rax,%rsi
+  b8375d:	mov    %r15,%rdx
+  b83760:	add    $0x8,%rsp
+  b83764:	pop    %rbx
+  b83765:	pop    %r12
+  b83767:	pop    %r14
+  b83769:	pop    %r15
+  b8376b:	jmp    b78ce0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose>
+  b83770:	cmp    $0x90000001,%eax
+  b83775:	jb     b836d4 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x24>
+  b8377b:	lock decl (%r14)
+  b8377f:	jmp    b836d4 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x24>
+  b83784:	cmp    $0x90000001,%eax
+  b83789:	jb     b836e7 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x37>
+  b8378f:	lock decl (%rbx)
+  b83792:	jmp    b836e7 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x37>
+  b83797:	test   %ecx,%ecx
+  b83799:	je     b83747 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x97>
+  b8379b:	mov    %r14,%rdi
+  b8379e:	mov    %rax,%r14
+  b837a1:	call   4894730 <lean_dec_ref_cold>
+  b837a6:	mov    %r14,%rax
+  b837a9:	jmp    b83747 <lp_lean1090_Lean1090_Impl_cbScorePasses+0x97>
+  b837ab:	test   %ecx,%ecx
+  b837ad:	je     b83757 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xa7>
+  b837af:	mov    %rbx,%rdi
+  b837b2:	mov    %rax,%rbx
+  b837b5:	call   4894730 <lean_dec_ref_cold>
+  b837ba:	mov    %rbx,%rax
+  b837bd:	jmp    b83757 <lp_lean1090_Lean1090_Impl_cbScorePasses+0xa7>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

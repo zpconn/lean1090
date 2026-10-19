@@ -1,0 +1,73 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b4fe90 <lp_lean1090_Lean1090_Impl_Parity_interrogator>:
+  b4fe90:	push   %r15
+  b4fe92:	push   %r14
+  b4fe94:	push   %rbx
+  b4fe95:	mov    %rdi,%rbx
+  b4fe98:	test   $0x1,%bl
+  b4fe9b:	je     b4ff32 <lp_lean1090_Lean1090_Impl_Parity_interrogator+0xa2>
+  b4fea1:	mov    $0x1,%eax
+  b4fea6:	cmp    $0x101,%rbx
+  b4fead:	jae    b4ff2c <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x9c>
+  b4feaf:	mov    %rbx,%r15
+  b4feb2:	shr    $0x4,%r15
+  b4feb6:	or     $0x1,%r15
+  b4feba:	mov    $0x7,%edi
+  b4febf:	mov    %r15,%rsi
+  b4fec2:	call   46e5150 <l_BitVec_ofNat>
+  b4fec7:	mov    %rax,%r14
+  b4feca:	test   $0x1,%r15b
+  b4fece:	jne    b4fee1 <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x51>
+  b4fed0:	mov    (%r15),%eax
+  b4fed3:	cmp    $0x2,%eax
+  b4fed6:	jl     b4ff5f <lp_lean1090_Lean1090_Impl_Parity_interrogator+0xcf>
+  b4fedc:	dec    %eax
+  b4fede:	mov    %eax,(%r15)
+  b4fee1:	mov    $0x9,%edi
+  b4fee6:	mov    %rbx,%rsi
+  b4fee9:	call   46e5150 <l_BitVec_ofNat>
+  b4feee:	mov    %rax,%rbx
+  b4fef1:	mov    $0x18,%edi
+  b4fef6:	call   48fdd60 <lean_alloc_small_object_core>
+  b4fefb:	mov    %rax,%r15
+  b4fefe:	movl   $0x1,(%rax)
+  b4ff04:	movw   $0x2,0x6(%rax)
+  b4ff0a:	mov    %r14,0x8(%rax)
+  b4ff0e:	mov    %rbx,0x10(%rax)
+  b4ff12:	mov    $0x10,%edi
+  b4ff17:	call   48fdd60 <lean_alloc_small_object_core>
+  b4ff1c:	movl   $0x1,(%rax)
+  b4ff22:	movw   $0x101,0x6(%rax)
+  b4ff28:	mov    %r15,0x8(%rax)
+  b4ff2c:	pop    %rbx
+  b4ff2d:	pop    %r14
+  b4ff2f:	pop    %r15
+  b4ff31:	ret
+  b4ff32:	mov    $0x101,%esi
+  b4ff37:	mov    %rbx,%rdi
+  b4ff3a:	call   4897be0 <lean_nat_big_lt>
+  b4ff3f:	mov    %eax,%ecx
+  b4ff41:	mov    $0x1,%eax
+  b4ff46:	test   %cl,%cl
+  b4ff48:	je     b4ff2c <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x9c>
+  b4ff4a:	mov    $0x9,%esi
+  b4ff4f:	mov    %rbx,%rdi
+  b4ff52:	call   4898530 <lean_nat_big_shiftr>
+  b4ff57:	mov    %rax,%r15
+  b4ff5a:	jmp    b4feba <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x2a>
+  b4ff5f:	test   %eax,%eax
+  b4ff61:	je     b4fee1 <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x51>
+  b4ff67:	mov    %r15,%rdi
+  b4ff6a:	call   4894730 <lean_dec_ref_cold>
+  b4ff6f:	jmp    b4fee1 <lp_lean1090_Lean1090_Impl_Parity_interrogator+0x51>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

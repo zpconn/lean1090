@@ -12,6 +12,14 @@ stop for review at the new target. All frozen-file, proof, differential,
 fresh-build and isolated ABAB measurement requirements remain in force.
 Zero new trusted primitives are authorized.
 
+**Latest measurement:** generation 12 (`0592f80`), decode **1.375845527971×**
+rs1090 and CPR **0.894487665175×**. The source commit is pushed. Its full gate
+and fixed/fresh 10M campaigns passed; independent measurement review passed
+all 1,978 checks. The complete fresh diagnostic and its review also passed.
+Generation 13 is verified and ready for its committed, isolated benchmark:
+an exact BDS50 wind-penalty table selected from the measured Comm-B costs.
+All proof, gate, fresh-campaign and evidence reviews have passed.
+
 The fresh untimed generation-10 diagnostic and independent review passed:
 all 13 profiles, 172,432 complete outputs, 22 native artifact sets, 117 audited
 Lean sources and 7,318 historical files checked. Frame/CRC is the largest
@@ -81,7 +89,7 @@ Final review SHA-256:
 `5e3fcc6356d27443f272141f562db8d708ad6f8d482ef1baed2c49087e92bafa`.
 The diagnostic hold is released.
 
-**Generation 12 in progress:** convert bytes in UInt64 chunks for lengths up
+**Generation 12 complete:** converted bytes in UInt64 chunks for lengths up
 to 16, avoiding repeated arbitrary-precision multiply/add operations. A
 tail-recursive prefix reader returns the existing suffix without copying the
 prefix; longer lists retain the general natural-number fold. The helper and unconditional all-list equivalence proof passed their targeted
@@ -110,8 +118,22 @@ archive review passed: all 183 inputs, seven component archives (62 files,
 1,198,313,686 bytes), native/proof/fresh bindings, 633 prior gen11 artifacts,
 8,294 older files and all 24 prior CSV rows. Review SHA-256:
 `9c76fb0536a16b2ebaf3556014f33ac0f23093a496a56be5b5462e2b74cd368c`.
-Validation and review jobs are stopped before the clean commit and fresh-build
-benchmark; the plan retains the exact 3/2 target.
+The verified change was committed as
+`0592f80708c92e283a4c802f04b5889d5d69a3aa` and pushed to the private repository under the user's
+configured GitHub identity. All other jobs stopped before a fresh build from
+that clean commit; the actual timed worker SHA-256 is
+`e2c212b470c6b331cf1b11a095adb991392b7aa7a89dea5421018acb6bcbbbee`. Both frozen 3+21 ABAB modes completed on CPU 0,
+retaining 48 samples each, six clean-tree/lock checks and four unchanged
+Ultimate Performance captures. Decode: Lean 595.109526 ms /
+289,748.344576 msg/s, rs1090 818.778780 ms / 210,596.566755 msg/s,
+ratio **1.375845527971×**. CPR: Lean 925.466896 ms / 186,318.928041 msg/s,
+rs1090 827.818723 ms / 208,296.810895 msg/s, ratio **0.894487665175×**.
+All samples are retained in [bench/runs/gen12/](bench/runs/gen12/), with the
+[full report](bench/GEN12.md). Two results rows preserve all 24 previous rows.
+Independent result review passed all 1,978 checks, including every original
+sample and source/native binding. Review SHA-256:
+`726d98a71f25707a3af5d880dff8934b77f9c787249aa7ca763832e65e5a0b77`.
+The 1.50× headline target remains unmet.
 Independent source/proof/native review passed 41 checks with 141 held inputs
 and 221 retained files. The compiled short and medium paths use machine-word
 loops; the prefix allocates only its endpoint box and pair. The arbitrary-
@@ -119,9 +141,64 @@ length fallback remains the original natural-number fold. Compiler borrowing
 changes in Frame/Message were checked against unchanged Lean sources; the
 other 17 production native sets are identical. Two reviewer assumption fixes
 are retained, with no runtime or proof change. Native review SHA-256:
-`9df8ef966e4474e91391d85c49a299d158dc43c04cb6eee1ffb63b2d1ab265f7`. No generation-12
-throughput result is claimed yet. The frozen specification and statements
-remain unchanged, with zero trusted primitives.
+`9df8ef966e4474e91391d85c49a299d158dc43c04cb6eee1ffb63b2d1ab265f7`.
+The frozen specification and statements remain unchanged, with zero trusted
+primitives.
+The fresh generation-12 diagnostic and independent review passed on their
+first completed executions: 13 profiles, 2,547 helper rows, ten penalty-probe
+rows, 239 protected inputs and 9,286 historical files. Comm-B inference is
+now the largest exclusive stage: 5,493,654,948 of 13,089,567,899 instructions
+(41.97%). Its BDS50 candidate penalty used 1,066,037,418 inclusive instructions,
+compared with BDS60's 844,659,720. These nested counts overlap the exclusive
+stages and are diagnostics, not timing predictions.
+[Complete diagnostic](docs/GEN12-COST-BREAKDOWN.md); independent review SHA-256:
+`8e4a4a6b88b7a6a5a3b8607a16c3e8e621d52a0847d37fd6ba98b579b1844f43`.
+The diagnostic hold is released. **Generation 13 in progress:** replace the
+BDS50 wind-penalty calculation with a 2,047-entry immutable table indexed by
+the signed difference of the two ten-bit speed codes. Retain every software
+binary64 rounding operation in its reference body, and prove the lookup for
+all payloads. The final roll/track-rate adjustment and BDS60 remain unchanged.
+The helper build passed first attempt (777 jobs), with eleven permitted-axiom
+facts and six kernel witness theorems. Its unconditional equality is now
+integrated into whole-decoder refinement: the first integrated build passed
+3,521 jobs. The full gate and separate fresh campaign are in progress with
+all runtime/proof/generator sources fixed. Fresh seeds were recorded before
+generation: message 1,867,035,726; Comm-B 1,294,228,047. Independent source/proof
+review passed. Independent compiled-path review passed all 35 checks with
+142 held inputs and 347 retained files; the live lookup and eager table
+constructor preserve the software reference, and all nineteen other native
+sets match generation 12. Review SHA-256:
+`0228be252c9a2bb3534bce72c01c4fdcd4f91c580cb71be69cff6a8b5c495fcb`.
+The separate fresh campaign passed on its first execution: 10,476,164
+messages = 9,542,998 exact matches + 933,166 documented D001 cases, with all
+101,244 direct registers exact. All 32 DF attempts, 70 ADS-B branches and
+14 registers are covered without gaps. The 2,037,018 standard-view differences
+are recorded separately. Independent retention replay verified all 109
+sources, three binaries, 33 artifacts, eleven raw gzip transcripts and three
+difference streams. Review SHA-256:
+`cef68535d6f6745186478df7b3706a6b0e1c0d6d5b453a33e2adfb0231e2ddfa`.
+A reviewer-only obsolete preparation-path assumption was corrected and both
+attempts retained; the campaign itself needed no retry. Benchmark metadata
+preparation likewise retained an initial wrong-generation output-path check
+and its correction before writing any plan or measurement. The final plan
+preserves all 26 prior CSV rows and the exact 3/2 target.
+The fixed full gate passed from 03:19:36 to 03:35:32 UTC, with all 184
+audited inputs unchanged: 23 exact capstone contracts, 152 witness audits,
+1,011 unit assertions and seven differential components. Whole-message
+counts are 10,476,164 = 9,542,689 exact + 933,475 D001; all 101,244 direct
+registers match. All component archives are retained. Final archive review
+passed after recovering one ignored historical Python bytecode cache exactly
+from retained source and its timestamp header. The authoritative old hash
+matches; both cache versions, failed review/recovery attempts and the successful
+recovery are retained. No historical record or correctness input was changed
+or waived. The final review verified all 184 inputs, seven archives (62 files,
+1,198,313,683 bytes), fresh/native/proof bindings, 637 gen12 artifacts,
+9,286 older historical files and all 26 prior CSV rows. Review SHA-256:
+`4c8eb54e34a7232a1d5d917cf8ffa3cd90224e8ade8616d9da6b30071e176689`.
+All verification jobs are stopped. Next: commit the verified generation, then
+fresh-build and measure both frozen ABAB modes from its clean commit. No
+generation-13 throughput claim is made yet.
+
 The publication records below describe completed prior work.
 
 The first compiled finite-step proof was rejected: its `bv_decide` axiom
