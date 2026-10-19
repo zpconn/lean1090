@@ -2,6 +2,15 @@
 
 ## Status and current authorization
 
+**Attribution correction (2026-10-19 UTC):** the user requested that all pushed
+commits be authored by their GitHub account. All 15 original commits now use
+`zpconn <zpconn@gmail.com>` for author and committer; file trees, messages and
+timestamps are byte-identical. Local Git identity is configured accordingly.
+[The mapping and provenance note](docs/COMMIT-ATTRIBUTION.md) preserve the meaning
+of the historical commit IDs below. The rewrite was pushed with an exact
+remote-tip lease, and GitHub confirmed `zpconn` as both author and committer
+for every rewritten commit. No source, test, frozen file or measured artifact changed.
+
 **Privately published (2026-10-19 UTC):**
 [zpconn/lean1090](https://github.com/zpconn/lean1090) is **PRIVATE**, with default
 branch `main`. Source/presentation commit

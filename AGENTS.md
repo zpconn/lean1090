@@ -5,6 +5,11 @@ and after every context reset. Later chat instructions override project files.
 
 ## Current authorization
 
+The user requires all commits to use their GitHub identity: `zpconn <zpconn@gmail.com>`. Repository-local Git configuration is set; do not override
+it with a Codex identity. All 15 previously pushed commits have been rewritten
+without changing their trees, messages or timestamps. Historical IDs below and
+in evidence map to the current history through `docs/COMMIT-ATTRIBUTION.md`.
+
 The user accepted generation 10's measured result and explicitly authorized
 committing all project work, tidying documentation and presentation, and the
 first push to a **private** GitHub repository. This supersedes the earlier

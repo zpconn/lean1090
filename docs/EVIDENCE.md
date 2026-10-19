@@ -6,6 +6,10 @@ unchanged, including failed attempts and superseded proposals. The current
 status is in [PROGRESS.md](../PROGRESS.md); an older report describes the state
 when its command ran.
 
+The owner-requested [commit attribution correction](COMMIT-ATTRIBUTION.md)
+changed commit IDs while preserving every original tree. Historical benchmark
+IDs remain verbatim; the linked mapping resolves them to the current history.
+
 | Material | Retention | How to inspect or reproduce it |
 | --- | --- | --- |
 | Specifications, capstones, frozen guards and test adapters | Git, with approved SHA-256 entries in `spec.lock` | [Frozen-change history](FROZEN-CHANGES.md); `python3 scripts/check_lock.py` |
@@ -43,8 +47,9 @@ remain unchanged so that their recorded hashes continue to match.
 Source and generated-C snapshots, symbol inventories, raw diagnostic profiles,
 before/after records and failed-run logs explain the repository's size.
 They are evidence rather than runtime modules. Removing them, repacking a
-retained file or rewriting history would invalidate existing associations;
-the initial private publication preserves them.
+retained file or changing historical trees would invalidate existing
+associations. The documented attribution correction preserves every tree and
+records the correspondence between original and current commit IDs.
 
 Host evidence deliberately includes operating-system and compiler versions,
 CPU details, process command lines, local filesystem paths and power-plan
