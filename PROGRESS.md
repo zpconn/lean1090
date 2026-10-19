@@ -2,6 +2,33 @@
 
 ## Status and current authorization
 
+**Current state: the 1.50× decode target is reached; stop for user review.**
+Generation 15 measured **1.607053275134× rs1090** in decode mode and
+**0.990643654222×** with CPR. The verified source commit is
+`e659220307538f2aee5398efdb0a9182bff1d778`, authored and committed by
+`zpconn <zpconn@gmail.com>`. All other jobs stopped before its fresh build and
+both frozen ABAB modes. The actual worker SHA-256 is
+`4deead5e3f59d9e1bc6b850d3dd0bfe6b3f0ce3a9b0b2d44263af26345432c08`.
+Decode medians: Lean 507.041386 ms / 340,074.804071 msg/s; rs1090
+814.842520 ms / 211,613.895652 msg/s. CPR medians: Lean 812.869274 ms /
+212,127.589903 msg/s; rs1090 805.263788 ms / 214,131.074276 msg/s.
+All 96 samples are retained (48 per mode), with six clean-tree/lock checks,
+22 freshly built native sets and four Ultimate Performance captures on CPU 0.
+There were no UTC-label backsteps. Outer UTC-minus-monotonic differences
+(+671,880,615 ns decode; +1,206,615,574 ns CPR) remain unadjusted; medians use
+worker monotonic durations. The environment remains WSL2 on an Intel Core
+Ultra 9 285K, with external host workload limitations documented.
+[Report and all raw samples](bench/GEN15.md). The two new CSV rows preserve
+all 30 previous rows. Independent result review passed all 2,026 checks on
+its first attempt, including 8,582 committed historical files, 11,640 manifest
+entries and all 15 retained raw perf captures. Review SHA-256:
+`370f5df1a6abd6717b18652fd61709f85764524cd4eca7ec61d0de3dc271af43`.
+The artifact-commit binding confirms all 186 inputs still match the passing
+full gate and timed source. The source commit has been pushed to the existing
+private repository; all benchmark samples, result rows and reviews accompany
+this progress record. No generation 16, new optimization diagnostic or
+final-deliverable work is authorized until this review checkpoint is resolved.
+
 **Optimization resumed (2026-10-19 UTC):** the user requested continued work
 toward **1.50× rs1090 headline decode throughput**. This supersedes the earlier
 1.10× review stop and publication pause. Start from
@@ -19,12 +46,12 @@ not passed. Its original log, source snapshot and 92 as-found output files
 (1,135,129,422 bytes) are preserved; interruption record SHA-256:
 `7fbab1e070235d0a3673b0852a1f478cc1e2a09f6db3e5d4fc7fe28b99d259fa`.
 The restarted full gate passed from 15:11:33 to 15:26:58 UTC with all 186
-correctness inputs unchanged. The completed fresh campaign is retained. No
-generation 15 timing or commit has occurred yet.
+correctness inputs unchanged. The completed fresh campaign is retained. At that resumption point,
+no generation 15 timing or commit had occurred.
 
 Cleanup recovered about 198 GiB, reducing this repository from 256 GiB to
 58 GiB at the recorded check. All compressed evidence, sources and active work
-were preserved. Current disk readings show WSL with 572 GiB free and Windows
+were preserved. At resumption, disk readings showed WSL with 572 GiB free and Windows
 C: with 223 GiB free; the cause of the later host-space increase was not
 observed. See [docs/DISK-CLEANUP-2026-10-19.md](docs/DISK-CLEANUP-2026-10-19.md)
 and its verification receipts. Historical cache binary paths listed as omitted
@@ -49,7 +76,7 @@ independent flush tests. The strict cleanup helper and all gate inputs are
 unchanged. Independent correction review SHA-256:
 `66fe9441bf19a995638679833f61c75ff25c3a9e994685198141abbce6096d6a`.
 
-**Latest measurement:** generation 14 (`cd749c8`), decode **1.459178582840×**
+**Previous measurement:** generation 14 (`cd749c8`), decode **1.459178582840×**
 rs1090 and CPR **0.933269340154×**. Decode regressed from generation 13's
 1.492757184729×; the exact 1.50× target remains unmet. Both runs are retained
 unchanged. The source commit is pushed. Its full gate and fixed/fresh 10M
@@ -63,7 +90,7 @@ passed review. Final review SHA-256:
 `0409d020646467981d2b0af210429c9505bbb3927c38cde218d9674df491f5e3`.
 Details: [docs/GEN14-COST-BREAKDOWN.md](docs/GEN14-COST-BREAKDOWN.md).
 
-**Generation 15 in progress:** the reviewed diagnostic found that the live
+**Generation 15 implementation and validation:** the reviewed diagnostic found that the live
 Comm-B wire validator reconstructs the exact `2^56` limit by parsing decimal
 text on all 627,880 calls, with 484,723,360 inclusive collected instructions.
 The selected change initializes that immutable format constant once. It does
@@ -89,8 +116,7 @@ review passed, checking all 186 inputs, 62 archived component files
 the interrupted-attempt preservation and sequential cleanup receipts, with
 the wrapper correction separately reviewed. Final review SHA-256:
 `216e336ec8a0d96dc924181dc1bd60217670d5e650a54504369365f42af233dc`.
-The verified source is ready for its generation 15 commit and isolated timing.
-No throughput gain is claimed. Details:
+The verified source was committed and measured as recorded above. Details:
 [docs/GEN15-COMMB-CONSTANT.md](docs/GEN15-COMMB-CONSTANT.md).
 
 The fresh untimed generation-10 diagnostic and independent review passed:

@@ -213,6 +213,14 @@ for path,row in retention['files'].items():
   ck(path.endswith('.gz') and subprocess.run(['git','check-ignore','-q','--',path]).returncode==0,'explicit ignored raw transcript '+path);fresh_ignored+=1
 ck(fresh_committed+fresh_ignored==33,'all fresh retained metadata and raw files bound')
 pre_timing_review_paths=[review_base/name for name in ['gate-archive.json','fresh-retained-hashes.json','native-review/review.json','native-review/inspection-inputs.json','native-review/integration-proof-review.json','independent-review/integration-review.json','independent-review/native-binding-review.json','independent-review/gate-review.json','fresh-independent-review/fresh-retention-review.json','fresh-independent-review/completion.json','benchmark-preparation/plan.json','independent-review/benchmark-preparation-review.json']]
+pre_timing_review_paths += [review_base/name for name in [
+ 'independent-review/gate-review-completion.json','independent-review/resume-readiness.json',
+ 'independent-review/interruption-review.json','independent-review/post-gate-cleanup-review.json',
+ 'independent-review/cleanup-tooling-bindings.json','independent-review/cleanup-revision-bindings.json',
+ 'post-gate-cleanup-identity-review.json','post-gate-message-fsync.json','post-gate-quiescence.json']]
+for folder in ('attempt-01-interrupted-for-cleanup','post-gate-archive-cleanup','post-gate-message-cleanup'):
+ pre_timing_review_paths += sorted(p for p in (review_base/folder).rglob('*') if p.is_file())
+pre_timing_review_paths += [Path('tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019')/name for name in ('validation.json','independent-review.json','completion.json')]
 proof_review_path=Path(prior_gate_review['independent_helper_proof_review']['path']);pre_timing_review_paths.append(proof_review_path)
 for path in pre_timing_review_paths:ck(blob(path)==path.read_bytes(),'committed review artifact '+str(path))
 threshold={'reached':reached,'ratio':{'numerator':3,'denominator':2},'criterion':'2 * rs1090 median ns >= 3 * Lean median ns','left_integer':2*results[0]['median_nanoseconds']['rs1090'],'right_integer':3*results[0]['median_nanoseconds']['lean1090'],'lean_throughput_percent_above_rs1090':(results[0]['lean_over_rust']-1)*100,'cpr_is_separate_headline_exclusion':True,'next':'Stop for user review.' if reached else 'Complete diagnostic and independent review before another optimization.'}

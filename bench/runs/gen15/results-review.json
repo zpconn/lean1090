@@ -1,0 +1,411 @@
+{
+  "schema": 1,
+  "status": "passed_with_documented_clock_and_host_limitations",
+  "reviewed_at_utc": "2026-10-19T15:41:12.918338+00:00",
+  "reviewer": "independent payload_roundtrips agent",
+  "timed_commit": "e659220307538f2aee5398efdb0a9182bff1d778",
+  "binary_sha256": "4deead5e3f59d9e1bc6b850d3dd0bfe6b3f0ce3a9b0b2d44263af26345432c08",
+  "oracle_binary_sha256": "208ae085ba9b9633a5f1fb1e1de8e7ee9deef70c83cb051377c5ac626a9dec10",
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "archive_files_rehashed_and_byte_compared": 48,
+  "automated_archival_evidence": {
+    "files": [
+      "archive-verification.json",
+      "report-verification.json"
+    ],
+    "report_verification_sha256": "c621343390efe861da9baafb5f193953f60f7f28420925e8d7a63363ee80f126",
+    "archive_verification_sha256": "156977070b42e6a822e8a377fe7db33586da9639d6415fa97cc39469a0dbbbd6",
+    "report_sha256": "64b40fc4a9f18233dfba5b20ae1165c5f74bd9cc47f3ba5bc4568491fdbd031c",
+    "exact_integer_outer_clocks": {
+      "decode": {
+        "utc_elapsed_ns": 36258388000,
+        "monotonic_elapsed_ns": 35586507385,
+        "utc_minus_monotonic_ns": 671880615,
+        "sample_backsteps": []
+      },
+      "cpr": {
+        "utc_elapsed_ns": 44096029000,
+        "monotonic_elapsed_ns": 42889413426,
+        "utc_minus_monotonic_ns": 1206615574,
+        "sample_backsteps": []
+      }
+    }
+  },
+  "gate": {
+    "correctness_inputs_verified_against_timed_git_blobs": 186,
+    "fresh_inputs_verified_against_timed_git_blobs": 111,
+    "locked_git_blobs_verified": 104,
+    "full_gate_exit_code": 0,
+    "generated_messages": 10000000,
+    "all_seven_components_zero": true
+  },
+  "native_build": {
+    "project_source_C_object_trace_sets": 22,
+    "removed_paths_recorded": 358,
+    "actual_native_hashes_rechecked": 69,
+    "linked_objects_exact": true,
+    "source_matches_timed_commit": true,
+    "before_after_environment_matches": true,
+    "effective_driver_config_comparisons": 46
+  },
+  "protocol": {
+    "samples_reviewed": 96,
+    "warmups_per_side_per_mode": 3,
+    "measurements_per_side_per_mode": 21,
+    "order": "ABAB, A=rs1090 B=lean1090",
+    "cpu": 0,
+    "six_clean_tree_and_lock_checkpoints": true
+  },
+  "results": [
+    {
+      "mode": "decode",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 814842520,
+        "lean1090": 507041386
+      },
+      "messages_per_second": {
+        "rs1090": 211613.8956518862,
+        "lean1090": 340074.80407131894
+      },
+      "lean_over_rust": 1.6070532751344286,
+      "positions_each_run": 0,
+      "postclock_consumer": "consumed messages=172432 checksum=596195688",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          810869315,
+          819816777
+        ],
+        "lean1090": [
+          501795919,
+          515170757
+        ]
+      },
+      "lean_throughput_change_over_gen14_percent": 12.696532428617168
+    },
+    {
+      "mode": "cpr",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 805263788,
+        "lean1090": 812869274
+      },
+      "messages_per_second": {
+        "rs1090": 214131.0742759986,
+        "lean1090": 212127.58990321978
+      },
+      "lean_over_rust": 0.9906436542218227,
+      "positions_each_run": 11347,
+      "postclock_consumer": "consumed messages=172432 aircraft=29 checksum=596195717",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          803852687,
+          813907319
+        ],
+        "lean1090": [
+          789564229,
+          829005653
+        ]
+      },
+      "lean_throughput_change_over_gen14_percent": 8.205178757931497
+    }
+  ],
+  "power_plan_queries": [
+    {
+      "mode": "decode",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T15:38:34.537024+00:00"
+    },
+    {
+      "mode": "decode",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T15:39:10.551822+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T15:39:11.196477+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T15:39:55.055131+00:00"
+    }
+  ],
+  "utc_sample_backsteps": [],
+  "wrapper_utc_backsteps": [],
+  "outer_interleave_clock_comparisons": [
+    {
+      "mode": "decode",
+      "outer_monotonic_seconds": 35.586507385,
+      "outer_utc_seconds": 36.258388,
+      "utc_minus_monotonic_seconds": 0.6718806149999992
+    },
+    {
+      "mode": "cpr",
+      "outer_monotonic_seconds": 42.889413426,
+      "outer_utc_seconds": 44.096029,
+      "utc_minus_monotonic_seconds": 1.2066155740000042
+    }
+  ],
+  "host_observations": {
+    "before": {
+      "cpu0_one_second_busy_percent": 0.0,
+      "all_cpu_one_second_busy_percent": 0.12505210504376824,
+      "capture_start_utc": "2026-10-19T15:38:32.386406+00:00",
+      "capture_end_utc": "2026-10-19T15:38:33.440281+00:00",
+      "sample_monotonic_seconds": 1.00048688,
+      "sample_utc_seconds": 1.000649,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    },
+    "after": {
+      "cpu0_one_second_busy_percent": 1.0,
+      "all_cpu_one_second_busy_percent": 0.20833333333333334,
+      "capture_start_utc": "2026-10-19T15:39:55.326989+00:00",
+      "capture_end_utc": "2026-10-19T15:39:56.360226+00:00",
+      "sample_monotonic_seconds": 1.000573874,
+      "sample_utc_seconds": 1.00073,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    }
+  },
+  "historical_result_prefix_bytes": 6517,
+  "historical_result_prefix_sha256": "5990fa2b6571dca8c9956f410d3800ae378b3be7f91cb7a093cdf62de6e9277b",
+  "clock_interpretation": "Frozen workers use IO.monoNanosNow and Rust Instant; UTC labels do not calculate sample durations. Outer UTC/monotonic differences are retained, with no samples discarded.",
+  "limitations": [
+    "WSL2 does not expose physical temperatures, frequency/governor state or physical-core scheduling; guest affinity and one-second snapshots cannot prove Windows host-wide isolation.",
+    "Process CPU percentages are lifetime averages. Bracketing guest observations cannot establish continuous absence of competing work.",
+    "Commands are sequential in recorded orchestration; oracle prebuild/checking occurs before worker samples. This review performs no native decoder, test or profile execution.",
+    "Build freshness follows explicit artifact invalidation and observed rebuild commands, not mtimes that can be affected by UTC corrections.",
+    "Cargo profile/config fingerprint hashes are opaque; configuration observations are not a complete Cargo precedence interpreter. Pinned manifests and recorded flags provide the inspectable settings.",
+    "Outer UTC-minus-monotonic differences are decode 671880615 ns and CPR 1206615574 ns. Raw differences and all backsteps remain retained without correction or rerun; sample durations use monotonic clocks.",
+    "Monotonic sample durations remain distinct from UTC labels; unobserved host clock/frequency changes are outside this evidence."
+  ],
+  "fresh_retention_binding": {
+    "committed_files": 21,
+    "ignored_compressed_raw_files": 12,
+    "manifest_is_committed": true
+  },
+  "threshold": {
+    "reached": true,
+    "ratio": {
+      "numerator": 3,
+      "denominator": 2
+    },
+    "criterion": "2 * rs1090 median ns >= 3 * Lean median ns",
+    "left_integer": 1629685040,
+    "right_integer": 1521124158,
+    "lean_throughput_percent_above_rs1090": 60.70532751344287,
+    "cpr_is_separate_headline_exclusion": true,
+    "next": "Stop for user review."
+  },
+  "pre_timing_review_artifacts_committed": {
+    "tests/evidence/optimization/gen15/gate-archive.json": "e47cbc521d5313b7e00e7327d24e7eada64d2b0801394352c23a3c677313a28d",
+    "tests/evidence/optimization/gen15/fresh-retained-hashes.json": "482f4c9af3995694e81693da92caa8d8a6cc8f8468c04c8a70c9c8e4f225042d",
+    "tests/evidence/optimization/gen15/native-review/review.json": "cd64c9e72770cb25ed9b7c52ab241dac8ba3436db961945ba5b9380f912468f8",
+    "tests/evidence/optimization/gen15/native-review/inspection-inputs.json": "dfe0f86c47065b490414ce90f0927f4d84b73e99b6f905eccb6e0de2bfea4b10",
+    "tests/evidence/optimization/gen15/native-review/integration-proof-review.json": "4c7f1dd3bd951d8262d76e3bb801aa74e7b2c0c8ebfad8244770b2a3a4690c49",
+    "tests/evidence/optimization/gen15/independent-review/integration-review.json": "e170f5854b21b1063b181f9a4926e517655610252065faf8ef19af571d104a16",
+    "tests/evidence/optimization/gen15/independent-review/native-binding-review.json": "5aa6aa6dd96256f789063cf08b7d2d5c91fdad92adb22711df99c2f8919dba6a",
+    "tests/evidence/optimization/gen15/independent-review/gate-review.json": "216e336ec8a0d96dc924181dc1bd60217670d5e650a54504369365f42af233dc",
+    "tests/evidence/optimization/gen15/fresh-independent-review/fresh-retention-review.json": "0b92c203ca5e89307bae44062148114f512cdb0f39483af7d07913133cbf8b59",
+    "tests/evidence/optimization/gen15/fresh-independent-review/completion.json": "10130f744c0f23b169e6ee422eeb1967ccf21e3b30f6a762dd12878f273c838e",
+    "tests/evidence/optimization/gen15/benchmark-preparation/plan.json": "e95d5a31fb4f29a81eb44978b56565bc2aeb6d64381295d5b94ba5a4cc42d795",
+    "tests/evidence/optimization/gen15/independent-review/benchmark-preparation-review.json": "495905ac3389c1e5127e195c07c68358b068d7f4665c3410769f35720f6132dd",
+    "tests/evidence/optimization/gen15/independent-review/gate-review-completion.json": "d816bd4237ca78a14e42b0d0cc83eee853639020eee03bda3976ad661263f7a8",
+    "tests/evidence/optimization/gen15/independent-review/resume-readiness.json": "cea0f1bf3492039e8e9df89386cb3b3dff2fff5129c35f11b17595f92b245a84",
+    "tests/evidence/optimization/gen15/independent-review/interruption-review.json": "40c1ecdcfdb6e4ccc236e5401c55fda95f0fc58cfb39c70324b879f489840875",
+    "tests/evidence/optimization/gen15/independent-review/post-gate-cleanup-review.json": "10d7423da4a3c8f0d836dda596bcb1a0434288f328acd5fc22564b8d7aa9e6af",
+    "tests/evidence/optimization/gen15/independent-review/cleanup-tooling-bindings.json": "c24cb9e4c9ad3b6b7420519673db98fe652d3664b41de91e0407c72db626f997",
+    "tests/evidence/optimization/gen15/independent-review/cleanup-revision-bindings.json": "ccc3ef45b619d19e4fc3d6fab9fe1160b7275473d40249a00b791c79be48f7f8",
+    "tests/evidence/optimization/gen15/post-gate-cleanup-identity-review.json": "0744a3a533061942cfa98b30fcd9f21802dff16b7607d35e19ba695ba61aef7c",
+    "tests/evidence/optimization/gen15/post-gate-message-fsync.json": "89d30a85c760a69b9230cb432bf1e443cb58b460fd368a4c58d2f49b68d3bb74",
+    "tests/evidence/optimization/gen15/post-gate-quiescence.json": "c53483a8597084a6397c32f7acf87c224229442ac122c32d12dc92eb3ab33d99",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/components.tsv": "819858acddba98ab87adb36f729cdb0f4246c76418e95ac0697b53d7e55fd384",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/gate-evidence.json": "8d5a99a710984ee42923db2fe272c5346b3dc6db64bbf7fe4d9c741f77b78679",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/gate-full.log": "d6c668b1f07a94304ec4752b15ceed785893c58b3cbbe84552e4d7e110f34196",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/interruption.json": "7fbab1e070235d0a3673b0852a1f478cc1e2a09f6db3e5d4fc7fe28b99d259fa",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/preserve.py": "7fe814ee810bd29005212201d0d4a27a5409ade92435bed97414eb86c67763cf",
+    "tests/evidence/optimization/gen15/attempt-01-interrupted-for-cleanup/run_full_gate.py": "d14fa1909f6b4f3e34c481702c5fea4fcf20d45a7f53dad350b77b7e9fc5d70b",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/archive-result.json": "0611a993768dd1bb1351b35e3252dcc231d740946b8ef7cf219ef1949912d911",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/archive.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/archive.stdout": "03f9bec67f8f673f2b33045987cbb0188a0a5702110a6329d256af335748221d",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/altitude-exhaustive-2m_gjzsq.result.json": "fb1b253fec1b6bce5e0db4022a272337165bdaa063d555c826f7b5cca8d37151",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/altitude-exhaustive-2m_gjzsq.verified.json": "de77e0fc6cd9e60d97f8e78bc33d59c46bf13071fab03d08a67c075fdd0ead50",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/cpr-synthetic-sir6zta1.result.json": "23815a33c63c9f0800f8aba3e001e4d64cb0efedd4239ce8e6f885424f98afa8",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/cpr-synthetic-sir6zta1.verified.json": "0e9f2f938ae26ff69f34fdac1235cd2857fe6c4ff1f015580fd2968d132952e6",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/dte-exhaustive-0nfnwvou.result.json": "02ab2f84b4c93b6ea18ff642aa8ca04c23bd2c6965c5c66e86822a56b449972a",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/dte-exhaustive-0nfnwvou.verified.json": "eaf3eadc5a8bec1010476c390ab16f4be3a6952a88f1c79ec060b9f62b65354f",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/message-differential-0gzplfih.result.json": "ca398b22353e3900c0bad17b42409eaf012e41161383d954235d4a408ab14413",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/message-differential-urml2aic.result.json": "0a204dfd8c5ca048fb33b46fd65d0445c07146f5bf61c77f39c3578f9e1a221b",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/reserved-velocity-q3f3itvr.result.json": "4ceb8073139c8c62471a0eb406fd00868e0e46dc792ebc131758ce7541386187",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/reserved-velocity-q3f3itvr.verified.json": "7471a4f5bcab49058c89b6720912d60e1ebbd6903ec97218d11db94b329715f6",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/result.json": "a53a6caa56612c3895e5c3605a0108fb7c412f0cda402fe48d09a79493a63a7e",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/cleanup/start.json": "7e38c4f586a2925da3adc04db7707e80bd6c86bdfdf6efcfb29c02c4f3c96288",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/result.json": "b1e9235b4ada8521faae4dc3e6b37981d878d400746f9be43d84b111f473712e",
+    "tests/evidence/optimization/gen15/post-gate-archive-cleanup/start.json": "4c91ce09575589af27d27879bb22c60d9e8177fa883c8a4b7aa532c16b4e2aaf",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/message-differential-0gzplfih.result.json": "45f3e2d44af078e91df99958e5fcf7b652d50b92754e6164159872ce62de73c3",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/message-differential-0gzplfih.verified.json": "194c151938fa5aacb52f312d5a75a66ce6b2bc10d17a37f8c795278c4df8c566",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/message-differential-urml2aic.result.json": "030b868ca4cf3f1f9c96886dc11b727d557e55fcf2d967a9fbdc5f08374dee84",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/message-differential-urml2aic.verified.json": "320270b3cb1561e8a5d2eb9d84f56b7bcbbf93ba9916121ce9ee6dbc9685a14e",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/result.json": "2175c5c9547acce5986e3ce58278d99b9677cd2ceeb7e6f37ba8f4cf98c5ff78",
+    "tests/evidence/optimization/gen15/post-gate-message-cleanup/start.json": "bb77c70a206a72edb26c95b3e66e1716dc79eb072f90804ab5d29180d9e3f003",
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/validation.json": "d83f0e562961fd053cc910447bc94640364ee80fff483eea7ec10426fd44c29b",
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review.json": "66fe9441bf19a995638679833f61c75ff25c3a9e994685198141abbce6096d6a",
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/completion.json": "54ec1a287ea0693e6f0175dcc1094a0c2f57eac116692654672da75092ed7cfa",
+    "tests/evidence/optimization/gen15/native-review/source-proof-review.json": "858d917d4d9c90a78bffd7c15532b44f7e8093922261510e306ce8a2312070fc"
+  },
+  "findings": [],
+  "checks_passed": 2026,
+  "no_build_tests_profilers_or_benchmarks_run_by_review": true,
+  "review_script_sha256": "0603409416c52ccc80ce47dd5d06ae8d5cc64ba7faa4f41969e8f7b5492305a6",
+  "historical_manifest_recheck": {
+    "manifest": "tests/evidence/diagnostics/gen14/historical-inputs.json",
+    "sha256": "43d335cbaa2447319d0a96fb2f63c2f7a5146d1798794483ac0075128b36f720",
+    "all_recorded_files": 11640,
+    "all_historical_bytes_including_ignored_caches_unchanged": true,
+    "authorized_results_append": "Historical bench/results.csv is verified as the exact retained 30-row byte prefix; the primary review verifies precisely the two appended rows."
+  },
+  "historical_artifact_review": {
+    "status": "passed",
+    "checked_utc": "2026-10-19T15:41:43.983343+00:00",
+    "committed_files": 8582,
+    "committed_bytes": 440886344,
+    "roots": [
+      "bench/runs/baseline-FC006",
+      "bench/BASELINE.md",
+      "bench/runs/gen1",
+      "bench/runs/gen2",
+      "bench/runs/gen3",
+      "bench/runs/gen4",
+      "bench/runs/gen5",
+      "bench/runs/gen6",
+      "bench/runs/gen7",
+      "bench/runs/gen8",
+      "bench/runs/gen9",
+      "bench/runs/gen10",
+      "bench/runs/gen11",
+      "bench/runs/gen12",
+      "bench/runs/gen13",
+      "bench/runs/gen14",
+      "bench/GEN1.md",
+      "bench/GEN2.md",
+      "bench/GEN3.md",
+      "bench/GEN4.md",
+      "bench/GEN5.md",
+      "bench/GEN6.md",
+      "bench/GEN7.md",
+      "bench/GEN8.md",
+      "bench/GEN9.md",
+      "bench/GEN10.md",
+      "bench/GEN11.md",
+      "bench/GEN12.md",
+      "bench/GEN13.md",
+      "bench/GEN14.md",
+      "tests/evidence/diagnostics/gen0",
+      "tests/evidence/diagnostics/gen1",
+      "tests/evidence/diagnostics/gen2",
+      "tests/evidence/diagnostics/gen3",
+      "tests/evidence/diagnostics/gen4",
+      "tests/evidence/diagnostics/gen5",
+      "tests/evidence/diagnostics/gen6",
+      "tests/evidence/diagnostics/gen7",
+      "tests/evidence/diagnostics/gen8",
+      "tests/evidence/diagnostics/gen9",
+      "tests/evidence/diagnostics/gen10",
+      "tests/evidence/diagnostics/gen11",
+      "tests/evidence/diagnostics/gen12",
+      "tests/evidence/diagnostics/gen13",
+      "tests/evidence/diagnostics/gen14",
+      "docs/GEN0-COST-BREAKDOWN.md",
+      "docs/GEN1-COST-BREAKDOWN.md",
+      "docs/GEN2-COST-BREAKDOWN.md",
+      "docs/GEN3-COST-BREAKDOWN.md",
+      "docs/GEN4-COST-BREAKDOWN.md",
+      "docs/GEN5-COST-BREAKDOWN.md",
+      "docs/GEN6-COST-BREAKDOWN.md",
+      "docs/GEN7-COST-BREAKDOWN.md",
+      "docs/GEN8-COST-BREAKDOWN.md",
+      "docs/GEN9-COST-BREAKDOWN.md",
+      "docs/GEN10-COST-BREAKDOWN.md",
+      "docs/GEN11-COST-BREAKDOWN.md",
+      "docs/GEN12-COST-BREAKDOWN.md",
+      "docs/GEN13-COST-BREAKDOWN.md",
+      "docs/GEN14-COST-BREAKDOWN.md"
+    ],
+    "exact_bytes_equal_timed_commit": true,
+    "tracked_and_untracked_membership_unchanged": true,
+    "prior_raw_perf_hashes": {
+      "tests/evidence/diagnostics/gen0/perf/capture.json": "5efc0e16c52b524ce8b2ac5e28b7ead0c688391257a29400b3bcff69dd18f475",
+      "tests/evidence/diagnostics/gen1/perf/capture.json": "84a9062f37a1801c9105d323088006d0b5bc45dfffca07035c81b550db06c35d",
+      "tests/evidence/diagnostics/gen2/perf/capture.json": "ef4530d4d5dce3b532e29c3d1b4c7c13826ed3a6b9a15738f7152087a329e5c9",
+      "tests/evidence/diagnostics/gen3/perf/capture.json": "8fe03e120871650b9188b216a9dbd9d70d79c2c15b12f8d2c0f10e34f6e2d5dd",
+      "tests/evidence/diagnostics/gen4/perf/capture.json": "e1c1270d8ed8c917bdb09e94f9eab1e57175286eb7865107db4ae57b86fdb1a3",
+      "tests/evidence/diagnostics/gen5/perf/capture.json": "f0525980238d3fc1f1014b2da25983afa086d435045886d6bd665279720bfc59",
+      "tests/evidence/diagnostics/gen6/perf/capture.json": "bb7bb251d4268f6c15b85decb071a497e423263d50f4fe183cf983f60e843f1c",
+      "tests/evidence/diagnostics/gen7/perf/capture.json": "6d370e8b855b09c7c996cf267fb18d16a5ac17710a532165f57435c6169741c9",
+      "tests/evidence/diagnostics/gen8/perf/capture.json": "0b8cd8b75f9d1505ed1c49519b77c8729e3eac5221fc724ff96e50ae57297a46",
+      "tests/evidence/diagnostics/gen9/perf/capture.json": "62c0429edf60f55a6f78cf162e7c3c945cb44ced4d33d1beacf947dbe9776c84",
+      "tests/evidence/diagnostics/gen10/perf/capture.json": "409e2371fdaf4e1930c25d8c104fb000207c23a07066db900c617907fcca9ee8",
+      "tests/evidence/diagnostics/gen11/perf/capture.json": "911ff99bfe25afdcc3e5ab3562fb0325bf2ee45dbc5758ffda17d3f76ad038b6",
+      "tests/evidence/diagnostics/gen12/perf/capture.json": "708d42aaa9184730851857292d4b1ac96700ae374ed1c13d7aa348e7f9d78ff1",
+      "tests/evidence/diagnostics/gen13/perf/capture.json": "2d870b58cc3ebfb1294cae5cc8a0f2d4ca585ada949a618acfcd2beb4c60e9a2",
+      "tests/evidence/diagnostics/gen14/perf/capture.json": "8e5f4789356424b031a210aec9fdd0f6eb2a795acb58aa732753ab7633ad4015"
+    },
+    "checker": "/home/zpconn/code/lean1090/tests/evidence/optimization/gen15/independent-review/check_benchmark_history.py",
+    "checker_sha256": "e406a5d800a36b4c81b3bbc7f6e53ceea8126b7629276af8de138ab1e2308352"
+  }
+}

@@ -33,6 +33,15 @@ All 23 capstone contracts are proved. The runtime uses zero project-specific
 trusted primitives. The current lock has 104 entries and SHA-256
 `5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8`.
 
+## Current review checkpoint
+
+Generation 15 reached the user's 1.50× headline target: decode
+1.607053275134× rs1090; CPR 0.990643654222×. The measured source is
+`e659220307538f2aee5398efdb0a9182bff1d778`. All samples and provenance are in
+`bench/runs/gen15/`, with the report in `bench/GEN15.md`. Stop for user review
+before generation 16 or final-deliverable work. `PROGRESS.md` records the
+independent measurement review and result-artifact publication status.
+
 ## Ground rules
 
 1. **Persistence.** First, save this prompt verbatim to `GOAL.md` (if it isn't already there). Create `AGENTS.md` with the rules in this section, plus a one-line `CLAUDE.md` pointing to it. Keep `PROGRESS.md` current (done, in progress, next, open questions), so a fresh session can resume from GOAL.md, AGENTS.md and PROGRESS.md alone.

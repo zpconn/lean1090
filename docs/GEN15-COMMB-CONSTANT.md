@@ -49,8 +49,10 @@ from 15:11:33 to 15:26:58 UTC with all 186 inputs unchanged. It checked all
 23 capstones, 152 witness axioms, 1,011 unit assertions and seven differential
 components. Its fixed campaign checked 10,476,164 messages: 9,542,689 exact
 matches plus 933,475 documented D001 cases; all 101,244 direct registers match.
-No throughput result is claimed before the committed, clean-build ABAB
-measurement.
+The subsequent clean-commit benchmark measured 1.607053275134× rs1090
+decode throughput and 0.990643654222× with CPR. All samples and environment
+limitations are retained in [the generation 15 report](../bench/GEN15.md).
+The 1.50× decode target is reached; further optimization is stopped for review.
 
 Evidence:
 
