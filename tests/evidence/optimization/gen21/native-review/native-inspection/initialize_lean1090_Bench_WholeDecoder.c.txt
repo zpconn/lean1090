@@ -1,0 +1,31 @@
+6093: LEAN_EXPORT lean_object* initialize_lean1090_Bench_WholeDecoder(uint8_t builtin) {
+6094: lean_object * res;
+6095: if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+6096: _G_initialized = true;
+6097: lean_initialize();
+6098: res = initialize_Init(builtin);
+6099: if (lean_io_result_is_error(res)) return res;
+6100: lean_dec_ref(res);
+6101: res = initialize_Init(builtin);
+6102: if (lean_io_result_is_error(res)) return res;
+6103: lean_dec_ref(res);
+6104: res = initialize_lean1090_Impl(builtin);
+6105: if (lean_io_result_is_error(res)) return res;
+6106: lean_dec_ref(res);
+6107: res = initialize_lean1090_Impl_JSON(builtin);
+6108: if (lean_io_result_is_error(res)) return res;
+6109: lean_dec_ref(res);
+6110: res = initialize_Lean_Data_Json_Parser(builtin);
+6111: if (lean_io_result_is_error(res)) return res;
+6112: lean_dec_ref(res);
+6113: res = initialize_Lean_Data_Json_FromToJson_Basic(builtin);
+6114: if (lean_io_result_is_error(res)) return res;
+6115: lean_dec_ref(res);
+6116: lp_lean1090___private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_expectedMessages = _init_lp_lean1090___private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_expectedMessages();
+6117: lean_mark_persistent(lp_lean1090___private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_expectedMessages);
+6118: lp_lean1090_main___boxed__const__1 = _init_lp_lean1090_main___boxed__const__1();
+6119: lean_mark_persistent(lp_lean1090_main___boxed__const__1);
+6120: lp_lean1090_main___boxed__const__2 = _init_lp_lean1090_main___boxed__const__2();
+6121: lean_mark_persistent(lp_lean1090_main___boxed__const__2);
+6122: return lean_io_result_mk_ok(lean_box(0));
+6123: }

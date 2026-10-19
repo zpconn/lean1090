@@ -52,10 +52,22 @@ archive/plan review also passed. Verified scratch cleanup reclaimed
 11,092,819,968 allocated bytes. The clean-commit fresh-build benchmark and
 archival checks passed; independent measured-result review passed 706 checks.
 Artifact-source binding, presentation refresh and independent presentation
-review passed. All jobs are stopped for artifact publication. CPR diagnostic
-preparation and review are ready, with execution after the artifact commit.
-No generation 21 change is selected. Fresh diagnostics must
-precede that selection.
+review passed. Artifacts were committed and pushed as
+`ee22eab664b16c28382dc85c81d92195b5182fc5` under the user's identity.
+Both fresh diagnostics and independent reviews passed against that commit:
+9,056,220,724 decode instructions and 11,385,505,987 CPR instructions, with
+complete output/state checks. Verified cleanup reclaimed 488,718,336 bytes
+while preserving compressed evidence and unique perf. The source hold is released.
+Generation 21 selects exact integer-times-rational field scaling with one
+normalization in affineValue. Preserve its existing shortcuts and all-input
+refinement. Targeted and combined production/proof builds passed; all 195
+correctness inputs stayed unchanged during the combined build and passed full
+fixed gate. The fresh 10M campaign, replay and independent gate/archive/plan
+review also passed. Source/proof/native review confirms only PayloadBits
+changed among 22 native sets. Verified cleanup reclaimed 11,092,697,088 bytes.
+The benchmark plan is sealed; next commit and measure with all other work
+stopped. No generation 21 throughput result exists yet. See
+docs/GEN21-AFFINE-NORMALIZATION.md.
 
 The independently reviewed reporting helper now adds CPR overhead to every
 new report, with historical values through generation 19 in

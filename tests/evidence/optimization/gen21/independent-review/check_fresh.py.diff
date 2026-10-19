@@ -1,0 +1,22 @@
+--- tests/evidence/optimization/gen20/independent-review/check_fresh.py
++++ tests/evidence/optimization/gen21/independent-review/check_fresh.py
+@@ -6,7 +6,7 @@
+ from datetime import datetime, timezone
+ import gzip, hashlib, json
+ 
+-G = Path('tests/evidence/optimization/gen20')
++G = Path('tests/evidence/optimization/gen21')
+ B = G
+ O = B / 'independent-review/fresh-retention-review.json'
+ 
+@@ -78,8 +78,8 @@
+     assert verify['run_record_sha256'] == sha(B / 'fresh-message-run.json')
+     assert verify['verifier_sha256'] == sha(B / 'fresh-verify.py')
+     assert seeds['recorded_utc'] < execution['started_utc']
+-    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 1008384763
+-    assert seeds['commb_seed'] == verify['commb_seed'] == 2832253467
++    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 812751599
++    assert seeds['commb_seed'] == verify['commb_seed'] == 2219662621
+     for name, digest in seeds['historical_seed_records_sha256'].items():
+         assert sha(name) == digest
+         previous = load(name)

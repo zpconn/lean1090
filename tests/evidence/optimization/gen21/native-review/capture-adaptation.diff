@@ -1,0 +1,32 @@
+--- tests/evidence/optimization/gen20/native-review/capture_native.py
++++ tests/evidence/optimization/gen21/native-review/capture_native.py
+@@ -1,11 +1,11 @@
+ #!/usr/bin/env python3
+-"""Bounded static capture of linked gen20 eight-bit CRC paths; never runs a decoder."""
++"""Bounded static capture of linked gen21 integer affine normalization paths; never runs a decoder."""
+ import sys
+ sys.dont_write_bytecode=True
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import hashlib,json,re,shlex,subprocess
+-ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen20/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
++ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen21/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ read=lambda p:json.loads(Path(p).read_text())
+ b=read(R.parent/'integration/targeted-build.json');assert b['status']=='passed' and b['exit_code']==0
+@@ -34,13 +34,8 @@
+  if filtered:text='\n'.join(x for x in text.splitlines() if filtered(x))+'\n'
+  path=O/(label+'.txt');assert not path.exists();path.write_text(text);commands.append({'argv':argv,'exit_code':run.returncode,'output':str(path),'sha256':sha(path),'stderr':run.stderr});return text
+ P='lp_lean1090_Lean1090_Impl_'
+-requested=[P+name for name in ['Parity_wordStep','Parity_step','Parity_wordBit','Parity_cachedBit','Parity_byteStep','Parity_cachedByte','Parity_syndromeBits','Parity_syndromeBytes','Parity_syndrome','Parity_checksum','Parity_interrogator','frameSyndrome','decode']]
+-# Retain all generated unboxed fold specializations; boxed wrappers add no loop logic.
+-path=Path('.lake/build/ir/Impl/Parity.c')
+-for symbol in re.findall(r'^LEAN_EXPORT [^;\n]*?\b(lp_lean1090_\w+)\([^;]*\)\s*\{',path.read_text(),re.M):
+- if any(key in symbol for key in ['Parity_syndromeBits','Parity_syndromeBytes']) and '___boxed' not in symbol:
+-  if symbol not in requested:requested.append(symbol)
+-requested += ['main','initialize_lean1090_Bench_WholeDecoder','initialize_lean1090_Impl_Parity']
++requested=[P+name for name in ['integerScale','affineValue','payloadInteger','payloadValue','commBValue','Semantics_tableValues','decode']]
++requested += ['main','initialize_lean1090_Bench_WholeDecoder','initialize_lean1090_Impl_PayloadBits']
+ selected=set(requested)
+ syms=cmd(['nm','--defined-only',str(worker)],'selected-symbols',lambda line:line.split() and (line.split()[-1] in selected ))
+ present={line.split()[-1] for line in syms.splitlines()}

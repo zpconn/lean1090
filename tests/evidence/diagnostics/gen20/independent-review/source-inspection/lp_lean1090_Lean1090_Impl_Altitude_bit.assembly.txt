@@ -1,0 +1,62 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b6fcc0 <lp_lean1090_Lean1090_Impl_Altitude_bit>:
+  b6fcc0:	push   %r14
+  b6fcc2:	push   %rbx
+  b6fcc3:	push   %rax
+  b6fcc4:	test   $0x1,%dil
+  b6fcc8:	je     b6fd02 <lp_lean1090_Lean1090_Impl_Altitude_bit+0x42>
+  b6fcca:	test   $0x1,%sil
+  b6fcce:	je     b6fd02 <lp_lean1090_Lean1090_Impl_Altitude_bit+0x42>
+  b6fcd0:	shr    $1,%rdi
+  b6fcd3:	mov    %esi,%ecx
+  b6fcd5:	shr    $1,%ecx
+  b6fcd7:	shr    %cl,%rdi
+  b6fcda:	cmp    $0x80,%rsi
+  b6fce1:	lea    0x1(%rdi,%rdi,1),%rax
+  b6fce6:	mov    $0x1,%ebx
+  b6fceb:	cmovb  %rax,%rbx
+  b6fcef:	test   $0x1,%bl
+  b6fcf2:	je     b6fd0f <lp_lean1090_Lean1090_Impl_Altitude_bit+0x4f>
+  b6fcf4:	and    $0x3,%ebx
+  b6fcf7:	mov    %rbx,%rax
+  b6fcfa:	add    $0x8,%rsp
+  b6fcfe:	pop    %rbx
+  b6fcff:	pop    %r14
+  b6fd01:	ret
+  b6fd02:	call   48a87b0 <lean_nat_big_shiftr>
+  b6fd07:	mov    %rax,%rbx
+  b6fd0a:	test   $0x1,%bl
+  b6fd0d:	jne    b6fcf4 <lp_lean1090_Lean1090_Impl_Altitude_bit+0x34>
+  b6fd0f:	mov    $0x3,%esi
+  b6fd14:	mov    %rbx,%rdi
+  b6fd17:	call   48a7e90 <lean_nat_big_land>
+  b6fd1c:	mov    (%rbx),%ecx
+  b6fd1e:	cmp    $0x2,%ecx
+  b6fd21:	jl     b6fd2f <lp_lean1090_Lean1090_Impl_Altitude_bit+0x6f>
+  b6fd23:	dec    %ecx
+  b6fd25:	mov    %ecx,(%rbx)
+  b6fd27:	add    $0x8,%rsp
+  b6fd2b:	pop    %rbx
+  b6fd2c:	pop    %r14
+  b6fd2e:	ret
+  b6fd2f:	mov    %rax,%r14
+  b6fd32:	test   %ecx,%ecx
+  b6fd34:	je     b6fd3e <lp_lean1090_Lean1090_Impl_Altitude_bit+0x7e>
+  b6fd36:	mov    %rbx,%rdi
+  b6fd39:	call   48a49b0 <lean_dec_ref_cold>
+  b6fd3e:	mov    %r14,%rax
+  b6fd41:	add    $0x8,%rsp
+  b6fd45:	pop    %rbx
+  b6fd46:	pop    %r14
+  b6fd48:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

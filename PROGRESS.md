@@ -35,10 +35,95 @@ Independent presentation review passed all 1,138 checks on its first execution;
 the initial producer directory-preparation failure is retained, and no render
 or measurement was repeated. Independent completion SHA-256:
 `92a9c56bf5e59eee715b2023a0bd9b25df7920298e2d8cd8ce5063e7c3dc9505`.
-All jobs are stopped for the artifact commit and private push. CPR diagnostic
-preparation and its review are ready without any build, profile or history
-snapshot; execution waits for the published artifact commit. No generation 21
-change is selected.
+The reviewed artifacts were committed and pushed to the private repository as
+`ee22eab664b16c28382dc85c81d92195b5182fc5`, under the user's identity, with a
+clean tree at publication. Both fresh diagnostic driver builds passed against
+that source-equivalent commit. With all other jobs stopped, sequential isolated
+actual-worker decode and CPR perf captures passed, preserving all 286 recorded
+inputs (including 195 correctness inputs) and the expected 0/11,347 positions.
+Completion SHA-256:
+`7bab1b92b39e64ba379e2876d47fa785823900ac49da225c6d6f2941e4da7438`.
+Full instruction accounting and complete output/state checks passed, followed
+by both independent reviews. Decode collected 9,056,220,724 instructions; CPR
+collected 11,385,505,987. Comm-B inference is the largest exclusive category in
+both roots. Decode review SHA-256:
+`bb859b3d8e1fecf92dbc1f2c9133aa35e237e5f40cee1ef77111036869557e81`;
+CPR review:
+`0f5f6afef5e6c12488fa6a72cafd3e9fb2f9d7604e81bc666d97f826b6958be7`.
+Reviewer-only wrapper-inlining and status-label assumptions were corrected
+with the failed attempts retained; no producer finding occurred. Verified
+bounded cleanup completed: 273,379,328 bytes from decode scratch and
+215,339,008 from CPR, preserving compressed evidence and unique raw perf.
+Receipts:
+`2a14dd229ea81573590665bb4cb82766d2b9a7a1b369bb82afb85b09fa63068a`,
+`23dce3b997f3c5825e40240f07a5e5c9c0de1204655141a61d86b01bd05944d0`.
+The source/history hold is released.
+
+**Generation 21 in progress:** exact integer-times-rational field scaling with
+one normalization, preserving unit-scale and zero-offset shortcuts. The
+unconditional helper equality will preserve the existing affine and complete
+decoder refinement statements. Direct payloadValue-to-Rat.mul observations
+account for 1,172,225,030 inclusive instructions across semantic and Comm-B
+contexts; these overlap their parent stages and imply no particular speedup.
+The runtime/proof change passed its first targeted build: seven jobs, all
+14 printed facts using permitted axioms, and 10 kernel witnesses. All prior
+theorem types remain unchanged. The combined production/proof build also passed
+on its first execution: 3,539 jobs, 251 printed permitted-axiom facts, and all
+195 correctness inputs unchanged. Build record SHA-256:
+`ba4b69914873faa64958085d914da1f681e3097ebce005442ca94f2072269497`.
+The full fixed gate passed all seven components, 23 capstones, 152 kernel
+witnesses and 1,011 unit assertions, with all 195 correctness inputs unchanged.
+Its 10,476,164 whole messages comprise 9,542,689 exact matches and 933,475
+documented D001 cases; 2,038,998 standard-view differences are recorded
+separately. All 101,244 direct Comm-B cases match, with full 32/70/14 coverage.
+Gate evidence SHA-256:
+`c6e0dc181f924b983c3abb2bd8218b82270e236261f0d650adabc44c233fd5ff`.
+The separate fresh 10M campaign passed on its
+first execution: 10,476,164 whole messages comprise 9,542,872 exact matches
+and 933,292 documented D001 cases; 2,038,585 standard-view differences are
+recorded separately. All 101,244 direct Comm-B cases match, with complete
+32/70/14 coverage. All 120 sources and three binaries remain unchanged.
+Final verifier SHA-256:
+`d92997ff14edfc436be278937628ced47216166ffdfa2263ae44d6a28679f6c3`.
+Independent retained-byte review and frozen comparison-only replay passed on
+their first executions. Verified cleanup removed exactly eight fresh scratch
+files and reclaimed 5,359,366,144 allocated bytes, preserving the active fixed
+run and historical failures. All 33 retained members, 120 sources, three
+binaries and 267 native bindings were rechecked. Completion SHA-256:
+`a1efd45c48660120298fd1924334c83f7c6845c0e42f3f820f4885d66dd15eaf`;
+cleanup SHA-256:
+`5d96490b71b76dbc0465f72d071b0874d257a66135f1ec24065f98d704e58ac9`. Fresh seeds were recorded before
+generation: messages 812,751,599 and Comm-B 2,219,662,621.
+Preflight binds 120 sources, three binaries and all 195 gate inputs to the
+combined build; SHA-256:
+`24052cc99e0178dfef9f9e729ec3b06f1c43a878bb70f1d60eaf9f8c4a208d23`.
+Its preparation passed independent review. Independent source/proof review passed
+158 checks on its first execution, including preservation of all ten prior
+affine theorem statements and every live adapter path. Review SHA-256:
+`1a12b01eada8fcef91957c6489ec32bfa26f25c0b3ce1ef96d050972e10e42fa`.
+Static native review passed, binding 267 inputs and all 22 linked sets. Only
+PayloadBits changed; the other 21 native sets are identical. The live
+payloadValue inlines a single product/gcd normalization with no Rat.mul call,
+while retaining missing-status, unit-scale and zero-offset branches. Review
+SHA-256:
+`9a94b98082ec47d534200c3d41566e649804af3e0943d4b28454bd78c999f32c`.
+A reviewer-only allocator-symbol spelling assumption was corrected with the
+failed attempt retained; production inputs were unchanged.
+Fixed-run archival and verified cleanup removed 26 duplicate scratch files,
+reclaiming another 5,733,330,944 allocated bytes. Together with fresh cleanup,
+11,092,697,088 bytes were reclaimed; retained evidence and historical failures
+remain intact. Final independent gate/archive/plan review passed:
+`8331e7ee35d67be71a91dd23fd241165c7f6c12035c6ee76e9c574f7de514c22`.
+A reviewer-only count assumption was corrected with both attempts retained:
+the integrated log contains 251 axiom-list facts plus nine axiom-free facts.
+The benchmark plan is sealed, binding all validation and the 42 historical
+CSV rows; SHA-256:
+`3205cff63f777308974da723e775176a264baa4294558f2ffd41329ccdb1f16a`.
+Next: commit the verified source, then freshly build and measure both modes
+with all other work stopped. No generation 21 throughput result exists yet.
+
+No frozen, Float callback, software binary64 or trusted-primitive change is
+authorized or intended. [Design](docs/GEN21-AFFINE-NORMALIZATION.md).
 
 A broad precommit formatting check flagged whitespace in byte-preserved
 compiler excerpts and a generated diagnostic report. The wrapper still executed

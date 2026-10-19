@@ -1,0 +1,67 @@
+{
+  "generation": 21,
+  "prepared_utc": "2026-10-19T20:53:55.748637+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen21/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "c468d0570a80c2ad129cc79046b31ba87cdc7023e11734d53945aefdf93becd6",
+  "prior_csv_rows": 42,
+  "fresh_verification": "tests/evidence/optimization/gen21/fresh-final-verification.json",
+  "fresh_verification_sha256": "d92997ff14edfc436be278937628ced47216166ffdfa2263ae44d6a28679f6c3",
+  "title": "exact integer scaling normalization",
+  "change_description": "The existing affine field helper normalizes the integer numerator product directly on its nonunit-scale branch. An unconditional equality preserves exact rational multiplication for every integer and rational scale; identity scaling, zero-offset handling and all status/extraction behavior remain unchanged. [Implementation and proof evidence](../docs/GEN21-AFFINE-NORMALIZATION.md).",
+  "row_note": "Proved exact integer scaling normalization; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "cpr_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "review_threshold": "Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.",
+  "note": "Prepared after completed fixed/fresh/native validation and before timing. Contains no speculative measurement. The unchanged reviewed reporting helper archives only completed measurements.",
+  "status": "prepared_validation_passed_not_measured",
+  "reporting_helper": {
+    "path": "review/diagnostics/archive_generation_benchmark_target.py",
+    "sha256": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312",
+    "independent_review": "tests/evidence/optimization/cpr-overhead-reporting/independent-review.json",
+    "independent_review_sha256": "8318ed72d9250268730c26883efa711ac10a6b79d7faff173c30366ab558c231",
+    "cpr_overhead": "Report both implementations: signed difference of independent CPR/decode mode medians divided by the unchanged corpus count; retain noise and clock limitations."
+  },
+  "requirements": {
+    "correctness_inputs": 195,
+    "fixed_gate_command": [
+      "scripts/check_all.sh",
+      "--full"
+    ],
+    "fixed_generated_messages": 10000000,
+    "fresh_generated_messages": 10000000,
+    "fresh_retained_members": 33,
+    "fresh_source_count": 120,
+    "fresh_binary_count": 3,
+    "native_sets": 22,
+    "full_gate": "tests/evidence/optimization/gen21/gate-evidence.json",
+    "fresh_completion": "tests/evidence/optimization/gen21/independent-review/fresh-completion.json",
+    "native_review": "tests/evidence/optimization/gen21/native-review/review.json",
+    "combined_build": "tests/evidence/optimization/gen21/integration/targeted-build.json",
+    "pre_timing": "Full gate/fresh/native independent passes, clean source commit, all other jobs stopped, unchanged frozen ABAB interleaver in decode and CPR, fresh measured worker with all source/C/object/trace hashes, power-plan and monotonic/UTC evidence."
+  },
+  "pending_plan_sha256": "d57e3ec277dff502b4ba37d76f0034b2f3b4aaee197494993b20e90bbbc5f74b",
+  "validation_bindings": {
+    "full_gate": {
+      "path": "tests/evidence/optimization/gen21/gate-evidence.json",
+      "sha256": "c6e0dc181f924b983c3abb2bd8218b82270e236261f0d650adabc44c233fd5ff"
+    },
+    "fresh_completion": {
+      "path": "tests/evidence/optimization/gen21/independent-review/fresh-completion.json",
+      "sha256": "a1efd45c48660120298fd1924334c83f7c6845c0e42f3f820f4885d66dd15eaf"
+    },
+    "native_review": {
+      "path": "tests/evidence/optimization/gen21/native-review/review.json",
+      "sha256": "9a94b98082ec47d534200c3d41566e649804af3e0943d4b28454bd78c999f32c"
+    },
+    "combined_build": {
+      "path": "tests/evidence/optimization/gen21/integration/targeted-build.json",
+      "sha256": "ba4b69914873faa64958085d914da1f681e3097ebce005442ca94f2072269497"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+771: LEAN_EXPORT lean_object* initialize_lean1090_Impl_PayloadBits(uint8_t builtin) {
+772: lean_object * res;
+773: if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+774: _G_initialized = true;
+775: lean_initialize_runtime_module();
+776: res = initialize_Init(builtin);
+777: if (lean_io_result_is_error(res)) return res;
+778: lean_dec_ref(res);
+779: res = initialize_Init(builtin);
+780: if (lean_io_result_is_error(res)) return res;
+781: lean_dec_ref(res);
+782: res = initialize_lean1090_Model_Types(builtin);
+783: if (lean_io_result_is_error(res)) return res;
+784: lean_dec_ref(res);
+785: return lean_io_result_mk_ok(lean_box(0));
+786: }

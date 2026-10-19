@@ -1,0 +1,60 @@
+--- before/Proofs/AffineValue.lean
++++ Proofs/AffineValue.lean
+@@ -1,15 +1,22 @@
+ import Proofs.PayloadBits
+ import Proofs.PayloadIntegerShift
+ 
+-/-! Identity shortcuts preserve exact affine field semantics on every input. -/
++/-! Integer normalization and identity shortcuts preserve exact affine field semantics. -/
+ namespace Lean1090.Proofs.AffineValue
++
++/-- Direct normalization equals rational multiplication for every integer and
++rational, without sign, magnitude, denominator or field-validity hypotheses. -/
++theorem integerScale_eq (value : Int) (scale : Rat) :
++    Impl.integerScale value scale = (value : Rat) * scale := by
++  simpa only [Impl.integerScale, Rat.num_intCast, Rat.den_intCast, Nat.one_mul] using
++    (Rat.mul_def (value : Rat) scale).symm
+ 
+ /-- Exact equality for every integer and rational pair, including negative
+ scales and offsets. No field-validity or finite-word hypothesis is required. -/
+ theorem affineValue_eq (value : Int) (scale offset : Rat) :
+     Impl.affineValue value scale offset = (value : Rat) * scale + offset := by
+   by_cases unit : scale = 1 <;> by_cases zero : offset = 0 <;>
+-    simp [Impl.affineValue, unit, zero, Rat.mul_one, Rat.add_zero]
++    simp [Impl.affineValue, integerScale_eq, unit, zero, Rat.mul_one, Rat.add_zero]
+ 
+ /-- The complete field projection equals its old body, preserving the exact
+ status predicate, bit extraction, integer interpretation and absent result. -/
+@@ -66,6 +73,23 @@
+       some (-1/6) := by
+   decide +kernel
+ 
++/-- A common denominator factor is cancelled with a negative integer input. -/
++theorem cancellation_witness :
++    Impl.integerScale (-84) (5/14) = -30 := by
++  decide +kernel
++
++/-- Arbitrary-precision inputs beyond machine-word bounds retain exact cancellation. -/
++theorem large_negative_witness :
++    Impl.integerScale (-1267650600228229401496703205376)
++      (3/1267650600228229401496703205376) = -3 := by
++  decide +kernel
++
++/-- A negative scale with no cross cancellation retains a nonintegral result. -/
++theorem negative_fraction_witness :
++    Impl.integerScale 17 (-3/11) = -51/11 := by
++  decide +kernel
++
++#print axioms integerScale_eq
+ #print axioms affineValue_eq
+ #print axioms payloadValue_eq_old
+ #print axioms payloadValue_eq
+@@ -76,5 +100,8 @@
+ #print axioms negative_witness
+ #print axioms missing_status_witness
+ #print axioms zero_scale_witness
++#print axioms cancellation_witness
++#print axioms large_negative_witness
++#print axioms negative_fraction_witness
+ 
+ end Lean1090.Proofs.AffineValue

@@ -1,0 +1,11 @@
+--- tests/evidence/diagnostics/gen19-cpr/independent-review/check_remaining.py
++++ tests/evidence/diagnostics/gen20-cpr/independent-review/check_remaining.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ import ast,json,hashlib
+ from collections import defaultdict,Counter
+-R=Path('tests/evidence/diagnostics/gen19-cpr/independent-review');B=R.parent
++R=Path('tests/evidence/diagnostics/gen20-cpr/independent-review');B=R.parent
+ source=(R/'check_raw.py').read_text();tree=ast.parse(source)
+ # Reuse our independent parser/checks, stopping before its sealed output write.
+ stop=next(i for i,n in enumerate(tree.body) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='result' for t in n.targets))

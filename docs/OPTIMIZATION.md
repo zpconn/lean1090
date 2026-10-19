@@ -1,8 +1,8 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 19 reached
-1.79542× decode and 1.43283× with CPR; [its report](../bench/GEN19.md) retains
+Stop for review only when both measured ratios reach it. Generation 20 reached
+1.85206× decode and 1.48565× with CPR; [its report](../bench/GEN20.md) retains
 all samples and conditions. No project-specific trusted primitive is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
@@ -67,3 +67,30 @@ All capstones were completed, the benchmark worker and executable target were
 frozen, and the whole-decoder baseline was taken with the prescribed ABAB
 protocol before generation 1. Historical approvals and hashes remain in
 [FROZEN-CHANGES.md](FROZEN-CHANGES.md).
+
+## Unselected candidates after generation 20
+
+Generation 21 tests exact integer/rational field normalization. Later choices
+must follow fresh diagnostics of the resulting measured code; the following
+are possibilities, not implemented changes or predicted speedups.
+
+- Exact dyadic inputs can bypass software rounding using the existing
+  `Binary64Dyadic.round_eq` theorem and a proved guard. Measure the admitted
+  population first: division results need not have power-of-two denominators,
+  so the current rounding call count is not a shortcut hit count.
+- The general rounding algorithm could compute its scaled quotient and
+  nearest-even decision directly with integer shifts and division, avoiding
+  intermediate rational normalization. This needs an all-input proof that
+  nearest-even rounding is invariant under the reference fraction reduction.
+- `fromBits` could construct the exact signed dyadic directly, retaining the
+  same finite-value rejection and an unrestricted bit-pattern refinement.
+  The existing Float callbacks and their arithmetic must remain unchanged.
+- Semantic field construction repeats some field decoding for standard and
+  oracle views. Sharing would require exact per-layout proofs, including every
+  documented discrepancy and unrestricted input; identical-looking formulas
+  are insufficient evidence.
+- ScoreGate's multiplication by 2^40 can potentially be moved out of its
+  comparisons using exact integer ceiling/floor division. Its measured tail
+  is smaller than the complete gate cost. Any alternative early decision from
+  term bounds must be proved over all field codes and retain the current
+  uncertain-case fallback. No corpus-specific shortcut is acceptable.

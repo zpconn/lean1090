@@ -1,0 +1,23 @@
+--- tests/evidence/optimization/gen20/integration/run_build.py
++++ tests/evidence/optimization/gen21/integration/run_build.py
+@@ -10,10 +10,7 @@
+ 
+ ROOT = Path(__file__).resolve().parents[5]
+ OUT = Path(__file__).resolve().parent
+-SOURCES = [
+-    'Impl/Parity.lean', 'Proofs/ParityByteBits.lean', 'Proofs/FoldBlocks.lean',
+-    'Proofs/ParityByte.lean', 'Proofs/ParityWord.lean',
+-]
++SOURCES = ['Impl/PayloadBits.lean', 'Proofs/AffineValue.lean']
+ 
+ COMMAND = ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'lean1090',
+            'messageGenerator', 'commbDifferential', 'lean1090-bench']
+@@ -29,7 +26,7 @@
+ 
+ def main():
+     spec = importlib.util.spec_from_file_location(
+-        'gen20_gate_inventory', ROOT / 'review/diagnostics/run_generation_benchmark.py')
++        'gen21_gate_inventory', ROOT / 'review/diagnostics/run_generation_benchmark.py')
+     inventory = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(inventory)
+     path = OUT / 'targeted-build.json'

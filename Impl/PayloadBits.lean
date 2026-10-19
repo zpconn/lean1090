@@ -60,11 +60,16 @@ def payloadInteger (coding : PayloadCoding) (width code : Nat) : Int :=
   if coding = .twosComplement ∧ code ≥ (1 : Nat) <<< (width - 1) then
     (code : Int) - ((1 : Nat) <<< width) else code
 
+/-- Exact scaling of an integer by a rational, normalizing its numerator
+product directly without constructing an intermediate integer rational. -/
+@[inline] def integerScale (value : Int) (scale : Rat) : Rat :=
+  Rat.normalize (value * scale.num) scale.den scale.den_nz
+
 /-- Exact affine interpretation of an integer field. Identity scale and zero
-offset need no rational multiplication or addition; every other case keeps
-the original exact operations in their original order. -/
+offset need no rational multiplication or addition; other cases scale exactly
+before adding the offset. -/
 @[inline] def affineValue (value : Int) (scale offset : Rat) : Rat :=
-  let scaled := if scale == 1 then (value : Rat) else (value : Rat) * scale
+  let scaled := if scale == 1 then (value : Rat) else integerScale value scale
   if offset == 0 then scaled else scaled + offset
 
 -- Initial algorithm: Spec/PayloadBits.lean:46.

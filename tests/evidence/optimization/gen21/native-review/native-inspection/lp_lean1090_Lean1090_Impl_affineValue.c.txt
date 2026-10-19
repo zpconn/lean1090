@@ -1,0 +1,125 @@
+431: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_affineValue(lean_object* v_value_127_, lean_object* v_scale_128_, lean_object* v_offset_129_){
+432: _start:
+433: {
+434: lean_object* v___y_131_; lean_object* v___x_135_; lean_object* v___x_136_; uint8_t v___x_137_; 
+435: v___x_135_ = lean_unsigned_to_nat(1u);
+436: v___x_136_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_affineValue___closed__1, &lp_lean1090_Lean1090_Impl_affineValue___closed__1_once, _init_lp_lean1090_Lean1090_Impl_affineValue___closed__1);
+437: v___x_137_ = l_instDecidableEqRat_decEq(v_scale_128_, v___x_136_);
+438: if (v___x_137_ == 0)
+439: {
+440: lean_object* v_num_138_; lean_object* v_den_139_; lean_object* v___x_141_; uint8_t v_isShared_142_; uint8_t v_isSharedCheck_156_; 
+441: v_num_138_ = lean_ctor_get(v_scale_128_, 0);
+442: v_den_139_ = lean_ctor_get(v_scale_128_, 1);
+443: v_isSharedCheck_156_ = !lean_is_exclusive(v_scale_128_);
+444: if (v_isSharedCheck_156_ == 0)
+445: {
+446: v___x_141_ = v_scale_128_;
+447: v_isShared_142_ = v_isSharedCheck_156_;
+448: goto v_resetjp_140_;
+449: }
+450: else
+451: {
+452: lean_inc(v_den_139_);
+453: lean_inc(v_num_138_);
+454: lean_dec(v_scale_128_);
+455: v___x_141_ = lean_box(0);
+456: v_isShared_142_ = v_isSharedCheck_156_;
+457: goto v_resetjp_140_;
+458: }
+459: v_resetjp_140_:
+460: {
+461: lean_object* v___x_143_; lean_object* v___x_144_; lean_object* v___x_145_; uint8_t v___x_146_; 
+462: v___x_143_ = lean_int_mul(v_value_127_, v_num_138_);
+463: lean_dec(v_num_138_);
+464: lean_dec(v_value_127_);
+465: v___x_144_ = lean_nat_abs(v___x_143_);
+466: v___x_145_ = lean_nat_gcd(v___x_144_, v_den_139_);
+467: lean_dec(v___x_144_);
+468: v___x_146_ = lean_nat_dec_eq(v___x_145_, v___x_135_);
+469: if (v___x_146_ == 0)
+470: {
+471: lean_object* v___x_147_; lean_object* v___x_148_; lean_object* v___x_149_; lean_object* v___x_151_; 
+472: lean_inc(v___x_145_);
+473: v___x_147_ = lean_nat_to_int(v___x_145_);
+474: v___x_148_ = lean_int_div_exact(v___x_143_, v___x_147_);
+475: lean_dec(v___x_147_);
+476: lean_dec(v___x_143_);
+477: v___x_149_ = lean_nat_div_exact(v_den_139_, v___x_145_);
+478: lean_dec(v___x_145_);
+479: lean_dec(v_den_139_);
+480: if (v_isShared_142_ == 0)
+481: {
+482: lean_ctor_set(v___x_141_, 1, v___x_149_);
+483: lean_ctor_set(v___x_141_, 0, v___x_148_);
+484: v___x_151_ = v___x_141_;
+485: goto v_reusejp_150_;
+486: }
+487: else
+488: {
+489: lean_object* v_reuseFailAlloc_152_; 
+490: v_reuseFailAlloc_152_ = lean_alloc_ctor(0, 2, 0);
+491: lean_ctor_set(v_reuseFailAlloc_152_, 0, v___x_148_);
+492: lean_ctor_set(v_reuseFailAlloc_152_, 1, v___x_149_);
+493: v___x_151_ = v_reuseFailAlloc_152_;
+494: goto v_reusejp_150_;
+495: }
+496: v_reusejp_150_:
+497: {
+498: v___y_131_ = v___x_151_;
+499: goto v___jp_130_;
+500: }
+501: }
+502: else
+503: {
+504: lean_object* v___x_154_; 
+505: lean_dec(v___x_145_);
+506: if (v_isShared_142_ == 0)
+507: {
+508: lean_ctor_set(v___x_141_, 0, v___x_143_);
+509: v___x_154_ = v___x_141_;
+510: goto v_reusejp_153_;
+511: }
+512: else
+513: {
+514: lean_object* v_reuseFailAlloc_155_; 
+515: v_reuseFailAlloc_155_ = lean_alloc_ctor(0, 2, 0);
+516: lean_ctor_set(v_reuseFailAlloc_155_, 0, v___x_143_);
+517: lean_ctor_set(v_reuseFailAlloc_155_, 1, v_den_139_);
+518: v___x_154_ = v_reuseFailAlloc_155_;
+519: goto v_reusejp_153_;
+520: }
+521: v_reusejp_153_:
+522: {
+523: v___y_131_ = v___x_154_;
+524: goto v___jp_130_;
+525: }
+526: }
+527: }
+528: }
+529: else
+530: {
+531: lean_object* v___x_157_; 
+532: lean_dec_ref(v_scale_128_);
+533: v___x_157_ = l_Rat_ofInt(v_value_127_);
+534: v___y_131_ = v___x_157_;
+535: goto v___jp_130_;
+536: }
+537: v___jp_130_:
+538: {
+539: lean_object* v___x_132_; uint8_t v___x_133_; 
+540: v___x_132_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_affineValue___closed__0, &lp_lean1090_Lean1090_Impl_affineValue___closed__0_once, _init_lp_lean1090_Lean1090_Impl_affineValue___closed__0);
+541: v___x_133_ = l_instDecidableEqRat_decEq(v_offset_129_, v___x_132_);
+542: if (v___x_133_ == 0)
+543: {
+544: lean_object* v___x_134_; 
+545: v___x_134_ = l_Rat_add(v___y_131_, v_offset_129_);
+546: return v___x_134_;
+547: }
+548: else
+549: {
+550: lean_dec_ref(v_offset_129_);
+551: return v___y_131_;
+552: }
+553: }
+554: }
+555: }

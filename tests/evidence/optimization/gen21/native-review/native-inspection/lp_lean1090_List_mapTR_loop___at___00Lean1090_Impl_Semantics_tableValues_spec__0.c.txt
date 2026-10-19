@@ -1,0 +1,65 @@
+355: LEAN_EXPORT lean_object* lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_Semantics_tableValues_spec__0(lean_object* v_word_1_, lean_object* v_a_2_, lean_object* v_a_3_){
+356: _start:
+357: {
+358: if (lean_obj_tag(v_a_2_) == 0)
+359: {
+360: lean_object* v___x_4_; 
+361: v___x_4_ = l_List_reverse___redArg(v_a_3_);
+362: return v___x_4_;
+363: }
+364: else
+365: {
+366: lean_object* v_head_5_; lean_object* v_tail_6_; lean_object* v___x_8_; uint8_t v_isShared_9_; uint8_t v_isSharedCheck_17_; 
+367: v_head_5_ = lean_ctor_get(v_a_2_, 0);
+368: v_tail_6_ = lean_ctor_get(v_a_2_, 1);
+369: v_isSharedCheck_17_ = !lean_is_exclusive(v_a_2_);
+370: if (v_isSharedCheck_17_ == 0)
+371: {
+372: v___x_8_ = v_a_2_;
+373: v_isShared_9_ = v_isSharedCheck_17_;
+374: goto v_resetjp_7_;
+375: }
+376: else
+377: {
+378: lean_inc(v_tail_6_);
+379: lean_inc(v_head_5_);
+380: lean_dec(v_a_2_);
+381: v___x_8_ = lean_box(0);
+382: v_isShared_9_ = v_isSharedCheck_17_;
+383: goto v_resetjp_7_;
+384: }
+385: v_resetjp_7_:
+386: {
+387: lean_object* v_name_10_; lean_object* v___x_11_; lean_object* v___x_12_; lean_object* v___x_14_; 
+388: v_name_10_ = lean_ctor_get(v_head_5_, 0);
+389: lean_inc_ref(v_name_10_);
+390: v___x_11_ = lp_lean1090_Lean1090_Impl_payloadValue(v_head_5_, v_word_1_);
+391: v___x_12_ = lean_alloc_ctor(0, 2, 0);
+392: lean_ctor_set(v___x_12_, 0, v_name_10_);
+393: lean_ctor_set(v___x_12_, 1, v___x_11_);
+394: if (v_isShared_9_ == 0)
+395: {
+396: lean_ctor_set(v___x_8_, 1, v_a_3_);
+397: lean_ctor_set(v___x_8_, 0, v___x_12_);
+398: v___x_14_ = v___x_8_;
+399: goto v_reusejp_13_;
+400: }
+401: else
+402: {
+403: lean_object* v_reuseFailAlloc_16_; 
+404: v_reuseFailAlloc_16_ = lean_alloc_ctor(1, 2, 0);
+405: lean_ctor_set(v_reuseFailAlloc_16_, 0, v___x_12_);
+406: lean_ctor_set(v_reuseFailAlloc_16_, 1, v_a_3_);
+407: v___x_14_ = v_reuseFailAlloc_16_;
+408: goto v_reusejp_13_;
+409: }
+410: v_reusejp_13_:
+411: {
+412: v_a_2_ = v_tail_6_;
+413: v_a_3_ = v___x_14_;
+414: goto _start;
+415: }
+416: }
+417: }
+418: }
+419: }

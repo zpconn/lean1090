@@ -1,0 +1,29 @@
+--- /home/zpconn/code/lean1090/tests/evidence/diagnostics/gen19-cpr/perf/seal_perf.py
++++ /home/zpconn/code/lean1090/tests/evidence/diagnostics/gen20-cpr/perf/seal_perf.py
+@@ -46,7 +46,7 @@
+ assert analysis['total_samples'] == analysis['visible_CPR_loop_samples'] + analysis['excluded_samples']
+ assert analysis['reported_lost_samples'] == 0
+ assert (E / 'analyze_cpr_perf.py').read_bytes() == (
+-    ROOT / 'tests/evidence/diagnostics/gen18-cpr/perf/analyze_cpr_perf.py').read_bytes()
++    ROOT / 'tests/evidence/diagnostics/gen19-cpr/perf/analyze_cpr_perf.py').read_bytes()
+ result = {
+     'status': 'passed', 'reviewed_at_utc': datetime.now(timezone.utc).isoformat(),
+     'capture_exit_code': 0,
+@@ -56,7 +56,7 @@
+     'analysis_helper_sha256': sha(E / 'analyze_cpr_perf.py'),
+     'captured_input_hash_count': len(capture['before_hashes']),
+     'all_input_hashes_still_match': True,
+-    'gen19_fresh_native_binding': capture['fresh_gen19_binding'],
++    'gen20_fresh_native_binding': capture['fresh_gen20_binding'],
+     'samples': analysis['total_samples'], 'included_decode_stacks': None,
+     'included_cpr_loop_stacks': analysis['visible_CPR_loop_samples'],
+     'excluded_samples': analysis['excluded_samples'],
+@@ -68,7 +68,7 @@
+     'no_throughput_claim': True,
+ }
+ save(E / 'completion.json', result)
+-text = f"""# Generation 19 CPR actual-worker diagnostic sampling
++text = f"""# Generation 20 CPR actual-worker diagnostic sampling
+ 
+ One actual frozen worker run was sampled on CPU 0 with cpu-clock:u at 199 Hz after both diagnostic builds. Decode and CPR captures ran sequentially with other native/profile jobs held. This is not a benchmark. All {result['captured_input_hash_count']} protected inputs and 22 fresh native sets remain unchanged. The explicit source binding relates timed {capture['timed_commit']} to artifact {capture['git_head']}; documentation commits have no measured speed attribution.
+ 
