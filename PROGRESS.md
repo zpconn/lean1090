@@ -12,14 +12,86 @@ stop for review at the new target. All frozen-file, proof, differential,
 fresh-build and isolated ABAB measurement requirements remain in force.
 Zero new trusted primitives are authorized.
 
-**Latest measurement:** generation 13 (`247a28d`), decode **1.492757184729×**
-rs1090 and CPR **0.926632349521×**. This is below the exact 1.50× target.
-The source commit is pushed to the private repository. Its full gate,
-fixed/fresh 10M campaigns and evidence reviews passed;
-independent measurement review passed all 1,981 checks. The complete fresh
-diagnostic and its independent review also passed. Generation 14 is verified
-and ready for committed isolated timing: exact integer bounds for BDS60's
-rounded IAS/Mach ratio gate.
+**Resumed at the user's request (2026-10-19T15:11:34.314754+00:00):**
+the disk-cleanup pause is over. The previously suspended generation 15 gate
+process group is no longer present, so that attempt is retained as interrupted,
+not passed. Its original log, source snapshot and 92 as-found output files
+(1,135,129,422 bytes) are preserved; interruption record SHA-256:
+`7fbab1e070235d0a3673b0852a1f478cc1e2a09f6db3e5d4fc7fe28b99d259fa`.
+The restarted full gate passed from 15:11:33 to 15:26:58 UTC with all 186
+correctness inputs unchanged. The completed fresh campaign is retained. No
+generation 15 timing or commit has occurred yet.
+
+Cleanup recovered about 198 GiB, reducing this repository from 256 GiB to
+58 GiB at the recorded check. All compressed evidence, sources and active work
+were preserved. Current disk readings show WSL with 572 GiB free and Windows
+C: with 223 GiB free; the cause of the later host-space increase was not
+observed. See [docs/DISK-CLEANUP-2026-10-19.md](docs/DISK-CLEANUP-2026-10-19.md)
+and its verification receipts. Historical cache binary paths listed as omitted
+in archive manifests may now be absent; source/hash/command provenance remains.
+No historical compressed evidence was removed.
+
+**Disk-use prevention requested:** archive verification followed by removal
+of byte-identical raw scratch is now a standing workflow rule in AGENTS.md.
+Reusable unfrozen maintenance helpers passed 44 author/independent safety
+tests and review of the actual archived formats. They run after successful
+archival, outside the frozen gate; active runs, unique failures and compressed
+evidence remain protected. The first live run removed four small strata and safely retained both message
+scratch directories after detecting archive filesystem metadata changes. All
+15 archive files still matched their hashes; the two recorded identity changes
+were allocation-only, while the first failed file's original tuple was absent.
+After synchronizing the archive, a fresh strict verification removed both
+complete message scratch sets. In total, this run reclaimed 11,092,762,624
+allocated bytes (10.33 GiB), preserving the interrupted logs and snapshot,
+all compressed evidence and every cleanup receipt. The wrapper now synchronizes copied archives before cleanup inventory; its
+correction passed 25 author tests, 24 independent deletion tests and five
+independent flush tests. The strict cleanup helper and all gate inputs are
+unchanged. Independent correction review SHA-256:
+`66fe9441bf19a995638679833f61c75ff25c3a9e994685198141abbce6096d6a`.
+
+**Latest measurement:** generation 14 (`cd749c8`), decode **1.459178582840×**
+rs1090 and CPR **0.933269340154×**. Decode regressed from generation 13's
+1.492757184729×; the exact 1.50× target remains unmet. Both runs are retained
+unchanged. The source commit is pushed. Its full gate and fixed/fresh 10M
+campaigns passed; independent measurement review passed all 1,983 checks.
+The fresh diagnostic and independent review passed, releasing the source/
+native hold for generation 15 below. Comm-B
+inference remains the largest stage: 4,103,080,791 of 11,699,353,673 collected
+instructions (35.07%). These are diagnostic counts, not timing predictions.
+All 13 profiles, 241 held inputs, 22 native sets and 11,640 historical files
+passed review. Final review SHA-256:
+`0409d020646467981d2b0af210429c9505bbb3927c38cde218d9674df491f5e3`.
+Details: [docs/GEN14-COST-BREAKDOWN.md](docs/GEN14-COST-BREAKDOWN.md).
+
+**Generation 15 in progress:** the reviewed diagnostic found that the live
+Comm-B wire validator reconstructs the exact `2^56` limit by parsing decimal
+text on all 627,880 calls, with 484,723,360 inclusive collected instructions.
+The selected change initializes that immutable format constant once. It does
+not alter the bound, register policy, score arithmetic or input domain.
+The helper and integrated builds passed their first executions; the all-input
+validator equality is definitional, and all six new printed facts use only
+permitted axioms. Generated C initializes the literal once. The restarted full gate passed after the documented interruption, with fixed sources. It checked all 23 capstones, 152 witness axioms, 1,011 unit assertions and all seven differential components. The fixed campaign checked 10,476,164 messages: 9,542,689 exact matches plus 933,475 documented D001 cases; all 101,244 direct Comm-B cases match exactly. The separate fresh 10M campaign
+passed on its first execution: 10,476,164 messages = 9,543,150 exact matches
++ 933,014 documented D001 cases, plus all 101,244 direct Comm-B cases exact.
+All 32 DF attempts, 70 ADS-B branches and 14 registers are covered with zero
+gaps or unclassified differences. The 2,037,305 standard-view differences
+are recorded separately. All 111 sources, three binaries and 33 retained
+artifacts verified unchanged; independent raw replay passed. Fresh seeds:
+messages 3228104537, Comm-B 1212762037, recorded before generation. Independent native review passed 30 checks, verifying 144 held inputs and
+460 retained files. The linked guard directly loads the shared constant;
+19 other production sets are unchanged. Review SHA-256:
+`cd64c9e72770cb25ed9b7c52ab241dac8ba3436db961945ba5b9380f912468f8`.
+Reviewer-only path/format assumptions were corrected with all failed records
+retained; no production changes were needed. The final independent gate/archive
+review passed, checking all 186 inputs, 62 archived component files
+(1,198,313,487 bytes), fresh/native/proof bindings, 658 generation 14 artifacts,
+11,640 older files and the unchanged 30-row result prefix. It also verified
+the interrupted-attempt preservation and sequential cleanup receipts, with
+the wrapper correction separately reviewed. Final review SHA-256:
+`216e336ec8a0d96dc924181dc1bd60217670d5e650a54504369365f42af233dc`.
+The verified source is ready for its generation 15 commit and isolated timing.
+No throughput gain is claimed. Details:
+[docs/GEN15-COMMB-CONSTANT.md](docs/GEN15-COMMB-CONSTANT.md).
 
 The fresh untimed generation-10 diagnostic and independent review passed:
 all 13 profiles, 172,432 complete outputs, 22 native artifact sets, 117 audited
@@ -267,9 +339,31 @@ archives, fresh/native/proof bindings, 648 complete gen13 artifacts,
 10,414 older historical files, all 28 prior CSV rows and the exact 3/2 plan.
 Review SHA-256:
 `28a9f960947768c95719baa795cd31d0c9f6af22cf2f16087fac4d9c773f2ab1`.
-All verification jobs are stopped. Next: commit and fresh-build from the
-clean commit, then measure both frozen ABAB modes. No generation-14
-throughput claim is made yet.
+The verified change was committed as
+`cd749c8192a77a79ba683303f0b743f04ff6bc0c`, under the user's GitHub identity,
+and pushed to the authorized private repository.
+After all other jobs stopped, both frozen ABAB modes completed from its clean
+commit with a fresh worker build. Actual timed worker SHA-256:
+`081a1cabff3d4e3fc58fb790e1e423cdeff672d35ee2a4006eefeed17728a9b7`.
+Decode: Lean 571.418060 ms / 301,761.550904 msg/s; rs1090 833.800995 ms /
+206,802.343765 msg/s; ratio **1.459178582840×**. CPR: Lean 879.566651 ms /
+196,041.993866 msg/s; rs1090 820.872588 ms / 210,059.395966 msg/s;
+ratio **0.933269340154×**. Decode is lower than gen13's 1.492757184729×;
+retain the result unchanged and investigate with a fresh diagnostic rather
+than rerunning this generation. All 48 samples per mode, clean/lock checks,
+fresh native artifacts and four power-plan captures are retained in
+[bench/runs/gen14/](bench/runs/gen14/), with the [full report](bench/GEN14.md).
+Two CSV rows preserve all 28 previous rows. Independent result/history review
+passed first attempt: 1,983 primary checks, all original samples and
+source/native/clean-build bindings, 7,922 committed historical files, fourteen
+prior raw perf captures and 10,414 older snapshot files. Review SHA-256:
+`da017a3a6b7db537ea80f4a6257b5ca76bca03aeaf2cbd76813cc40799b1bb6c`.
+No sample or wrapper UTC backsteps occurred. Recorded outer UTC-minus-monotonic
+differences are −275 ns decode and +406,013,507 ns CPR, retained without
+correction. CPU 0 bracketing utilization was 1%/1%; physical-host, frequency
+and thermal visibility limitations remain documented. The exact 1.50× target
+is unmet. A fresh untimed diagnostic is in progress before selecting the
+next change; no cause is inferred from this timing regression alone.
 
 The publication records below describe completed prior work.
 

@@ -1,0 +1,73 @@
+{
+_start:
+{
+if (lean_obj_tag(v_x_167_) == 0)
+{
+return v_x_166_;
+}
+else
+{
+lean_object* v_head_168_; lean_object* v_tail_169_; lean_object* v_num_170_; lean_object* v_den_171_; lean_object* v_fst_172_; lean_object* v_snd_173_; lean_object* v___x_175_; uint8_t v_isShared_176_; uint8_t v_isSharedCheck_188_; 
+v_head_168_ = lean_ctor_get(v_x_167_, 0);
+v_tail_169_ = lean_ctor_get(v_x_167_, 1);
+v_num_170_ = lean_ctor_get(v_head_168_, 0);
+v_den_171_ = lean_ctor_get(v_head_168_, 1);
+v_fst_172_ = lean_ctor_get(v_x_166_, 0);
+v_snd_173_ = lean_ctor_get(v_x_166_, 1);
+v_isSharedCheck_188_ = !lean_is_exclusive(v_x_166_);
+if (v_isSharedCheck_188_ == 0)
+{
+v___x_175_ = v_x_166_;
+v_isShared_176_ = v_isSharedCheck_188_;
+goto v_resetjp_174_;
+}
+else
+{
+lean_inc(v_snd_173_);
+lean_inc(v_fst_172_);
+lean_dec(v_x_166_);
+v___x_175_ = lean_box(0);
+v_isShared_176_ = v_isSharedCheck_188_;
+goto v_resetjp_174_;
+}
+v_resetjp_174_:
+{
+lean_object* v___x_177_; lean_object* v___x_178_; lean_object* v_numerator_179_; lean_object* v___x_180_; lean_object* v___x_181_; lean_object* v___x_182_; lean_object* v___x_183_; lean_object* v___x_185_; 
+v___x_177_ = lean_nat_div(v_denominator_165_, v_den_171_);
+v___x_178_ = lean_nat_to_int(v___x_177_);
+v_numerator_179_ = lean_int_mul(v_num_170_, v___x_178_);
+lean_dec(v___x_178_);
+v___x_180_ = lean_int_add(v_fst_172_, v_numerator_179_);
+lean_dec(v_fst_172_);
+v___x_181_ = lean_nat_abs(v_numerator_179_);
+lean_dec(v_numerator_179_);
+v___x_182_ = lean_nat_to_int(v___x_181_);
+v___x_183_ = lean_int_add(v_snd_173_, v___x_182_);
+lean_dec(v___x_182_);
+lean_dec(v_snd_173_);
+if (v_isShared_176_ == 0)
+{
+lean_ctor_set(v___x_175_, 1, v___x_183_);
+lean_ctor_set(v___x_175_, 0, v___x_180_);
+v___x_185_ = v___x_175_;
+goto v_reusejp_184_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_187_; 
+v_reuseFailAlloc_187_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v_reuseFailAlloc_187_, 0, v___x_180_);
+lean_ctor_set(v_reuseFailAlloc_187_, 1, v___x_183_);
+v___x_185_ = v_reuseFailAlloc_187_;
+goto v_reusejp_184_;
+}
+v_reusejp_184_:
+{
+lean_object* v___x_186_; 
+v___x_186_ = lp_lean1090_List_foldl___at___00List_foldl___at___00Lean1090_Impl_ScoreGate_scaledTotals_spec__0_spec__0(v_denominator_165_, v___x_185_, v_tail_169_);
+return v___x_186_;
+}
+}
+}
+}
+}

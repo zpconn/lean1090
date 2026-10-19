@@ -1,0 +1,365 @@
+{
+  "schema": 1,
+  "status": "passed_with_documented_clock_and_host_limitations",
+  "reviewed_at_utc": "2026-10-19T04:24:59.435195+00:00",
+  "reviewer": "independent payload_roundtrips agent",
+  "timed_commit": "cd749c8192a77a79ba683303f0b743f04ff6bc0c",
+  "binary_sha256": "081a1cabff3d4e3fc58fb790e1e423cdeff672d35ee2a4006eefeed17728a9b7",
+  "oracle_binary_sha256": "208ae085ba9b9633a5f1fb1e1de8e7ee9deef70c83cb051377c5ac626a9dec10",
+  "spec_lock_sha256": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+  "archive_files_rehashed_and_byte_compared": 48,
+  "automated_archival_evidence": {
+    "files": [
+      "archive-verification.json",
+      "report-verification.json"
+    ],
+    "report_verification_sha256": "081dde7fcc975d218971e77bd2b42898a02eb09aaed436d1bcdb6e204c480c0d",
+    "archive_verification_sha256": "56273b2e33fe57145d5c67f4d248b28406e9a800a402016540f234445b7449fb",
+    "report_sha256": "e9ee49690ac952268dbf4912903c9276d7e70dcdf8394daa86464adfc42c87e3",
+    "exact_integer_outer_clocks": {
+      "decode": {
+        "utc_elapsed_ns": 38419655000,
+        "monotonic_elapsed_ns": 38419655275,
+        "utc_minus_monotonic_ns": -275,
+        "sample_backsteps": []
+      },
+      "cpr": {
+        "utc_elapsed_ns": 45804308000,
+        "monotonic_elapsed_ns": 45398294493,
+        "utc_minus_monotonic_ns": 406013507,
+        "sample_backsteps": []
+      }
+    }
+  },
+  "gate": {
+    "correctness_inputs_verified_against_timed_git_blobs": 185,
+    "fresh_inputs_verified_against_timed_git_blobs": 110,
+    "locked_git_blobs_verified": 104,
+    "full_gate_exit_code": 0,
+    "generated_messages": 10000000,
+    "all_seven_components_zero": true
+  },
+  "native_build": {
+    "project_source_C_object_trace_sets": 22,
+    "removed_paths_recorded": 356,
+    "actual_native_hashes_rechecked": 69,
+    "linked_objects_exact": true,
+    "source_matches_timed_commit": true,
+    "before_after_environment_matches": true,
+    "effective_driver_config_comparisons": 46
+  },
+  "protocol": {
+    "samples_reviewed": 96,
+    "warmups_per_side_per_mode": 3,
+    "measurements_per_side_per_mode": 21,
+    "order": "ABAB, A=rs1090 B=lean1090",
+    "cpu": 0,
+    "six_clean_tree_and_lock_checkpoints": true
+  },
+  "results": [
+    {
+      "mode": "decode",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 833800995,
+        "lean1090": 571418060
+      },
+      "messages_per_second": {
+        "rs1090": 206802.34376549287,
+        "lean1090": 301761.5509037289
+      },
+      "lean_over_rust": 1.4591785828400314,
+      "positions_each_run": 0,
+      "postclock_consumer": "consumed messages=172432 checksum=596195688",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          814290825,
+          867596908
+        ],
+        "lean1090": [
+          535254459,
+          747076234
+        ]
+      },
+      "lean_throughput_change_over_gen13_percent": -4.5383107072254685
+    },
+    {
+      "mode": "cpr",
+      "rows": 48,
+      "warmup_rows": 6,
+      "measured_rows": 42,
+      "median_nanoseconds": {
+        "rs1090": 820872588,
+        "lean1090": 879566651
+      },
+      "messages_per_second": {
+        "rs1090": 210059.39596560143,
+        "lean1090": 196041.99386590885
+      },
+      "lean_over_rust": 0.9332693401537344,
+      "positions_each_run": 11347,
+      "postclock_consumer": "consumed messages=172432 aircraft=29 checksum=596195717",
+      "measured_duration_min_max_ns": {
+        "rs1090": [
+          816303505,
+          832215293
+        ],
+        "lean1090": [
+          838755634,
+          920793097
+        ]
+      },
+      "lean_throughput_change_over_gen13_percent": -0.014920756698866278
+    }
+  ],
+  "power_plan_queries": [
+    {
+      "mode": "decode",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T04:22:02.980837+00:00"
+    },
+    {
+      "mode": "decode",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T04:22:41.151147+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "before",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T04:22:41.840703+00:00"
+    },
+    {
+      "mode": "cpr",
+      "when": "after",
+      "status": "queried",
+      "command": [
+        "/mnt/c/Windows/system32/powercfg.exe",
+        "/getactivescheme"
+      ],
+      "output": "Power Scheme GUID: b96ff06e-8688-42eb-9c00-7c9f42465d2a  (Ultimate Performance)",
+      "scheme_guid": "b96ff06e-8688-42eb-9c00-7c9f42465d2a",
+      "captured_at": "2026-10-19T04:23:27.390019+00:00"
+    }
+  ],
+  "utc_sample_backsteps": [],
+  "wrapper_utc_backsteps": [],
+  "outer_interleave_clock_comparisons": [
+    {
+      "mode": "decode",
+      "outer_monotonic_seconds": 38.419655275,
+      "outer_utc_seconds": 38.419655,
+      "utc_minus_monotonic_seconds": -2.7499999788460627e-07
+    },
+    {
+      "mode": "cpr",
+      "outer_monotonic_seconds": 45.398294493,
+      "outer_utc_seconds": 45.804308,
+      "utc_minus_monotonic_seconds": 0.4060135069999973
+    }
+  ],
+  "host_observations": {
+    "before": {
+      "cpu0_one_second_busy_percent": 1.0,
+      "all_cpu_one_second_busy_percent": 4.208333333333333,
+      "capture_start_utc": "2026-10-19T04:22:00.723899+00:00",
+      "capture_end_utc": "2026-10-19T04:22:01.806127+00:00",
+      "sample_monotonic_seconds": 1.000435306,
+      "sample_utc_seconds": 1.000582,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    },
+    "after": {
+      "cpu0_one_second_busy_percent": 1.0,
+      "all_cpu_one_second_busy_percent": 0.4583333333333333,
+      "capture_start_utc": "2026-10-19T04:23:27.660769+00:00",
+      "capture_end_utc": "2026-10-19T04:23:28.695307+00:00",
+      "sample_monotonic_seconds": 1.000491491,
+      "sample_utc_seconds": 1.000711,
+      "cpufreq": {
+        "reason": "no per-CPU cpufreq interface; typical under WSL2",
+        "status": "unavailable"
+      },
+      "thermal": {
+        "reason": "no thermal zones exposed to this Linux guest",
+        "status": "unavailable"
+      },
+      "hwmon": {
+        "reason": "no hwmon readings exposed to this Linux guest",
+        "status": "unavailable"
+      }
+    }
+  },
+  "historical_result_prefix_bytes": 6063,
+  "historical_result_prefix_sha256": "2d99c643643e2e67644f31458b0c9d8f4ab3f685279d284d6fca7a8deb669a09",
+  "clock_interpretation": "Frozen workers use IO.monoNanosNow and Rust Instant; UTC labels do not calculate sample durations. Outer UTC/monotonic differences are retained, with no samples discarded.",
+  "limitations": [
+    "WSL2 does not expose physical temperatures, frequency/governor state or physical-core scheduling; guest affinity and one-second snapshots cannot prove Windows host-wide isolation.",
+    "Process CPU percentages are lifetime averages. Bracketing guest observations cannot establish continuous absence of competing work.",
+    "Commands are sequential in recorded orchestration; oracle prebuild/checking occurs before worker samples. This review performs no native decoder, test or profile execution.",
+    "Build freshness follows explicit artifact invalidation and observed rebuild commands, not mtimes that can be affected by UTC corrections.",
+    "Cargo profile/config fingerprint hashes are opaque; configuration observations are not a complete Cargo precedence interpreter. Pinned manifests and recorded flags provide the inspectable settings.",
+    "Outer UTC-minus-monotonic differences are decode -275 ns and CPR 406013507 ns. Raw differences and all backsteps remain retained without correction or rerun; sample durations use monotonic clocks.",
+    "Monotonic sample durations remain distinct from UTC labels; unobserved host clock/frequency changes are outside this evidence."
+  ],
+  "fresh_retention_binding": {
+    "committed_files": 21,
+    "ignored_compressed_raw_files": 12,
+    "manifest_is_committed": true
+  },
+  "threshold": {
+    "reached": false,
+    "ratio": {
+      "numerator": 3,
+      "denominator": 2
+    },
+    "criterion": "2 * rs1090 median ns >= 3 * Lean median ns",
+    "left_integer": 1667601990,
+    "right_integer": 1714254180,
+    "lean_throughput_percent_above_rs1090": 45.917858284003145,
+    "cpr_is_separate_headline_exclusion": true,
+    "next": "Complete diagnostic and independent review before another optimization."
+  },
+  "pre_timing_review_artifacts_committed": {
+    "tests/evidence/optimization/gen14/gate-archive.json": "248ff349b25633dd8d12265c14f52b5f881166ec37d3123e1b24b599775f6b6d",
+    "tests/evidence/optimization/gen14/fresh-retained-hashes.json": "f847194419b46f950cfac9cce2bdd132f3dc5a7aca6dfc74b023b1d0e3f12fef",
+    "tests/evidence/optimization/gen14/native-review/review.json": "070ee05e729f6ac730f8e94d7de86a4bd022797832306c9119478d4f627be329",
+    "tests/evidence/optimization/gen14/native-review/inspection-inputs.json": "f8327965703ac2bd0ef3329949feee868247ae705c5ef6ffa2a653551e1a552f",
+    "tests/evidence/optimization/gen14/native-review/integration-proof-review.json": "ba4f92599b53a8a85e0e54274fe2da2744508ae106797426fd85a6bab5a9bf49",
+    "tests/evidence/optimization/gen14/independent-review/integration-review.json": "c24b5b1a0ae797e33a9e00230f5a1f3b35d70a116d20f0ab056061ad06c382ab",
+    "tests/evidence/optimization/gen14/independent-review/native-binding-review.json": "974c0824f97693928352a5704162aeb7617de84e949e29cc88df23e91b307d4d",
+    "tests/evidence/optimization/gen14/independent-review/gate-review.json": "28a9f960947768c95719baa795cd31d0c9f6af22cf2f16087fac4d9c773f2ab1",
+    "tests/evidence/optimization/gen14/fresh-independent-review/fresh-retention-review.json": "f9e53974cd432db9b6328b47f5c89d1e5908be5e810b887fa3efad48432cac5a",
+    "tests/evidence/optimization/gen14/fresh-independent-review/completion.json": "9d56f6408d1170dda3f2a70c798b27e5c031f50470254b3f13653319071a9886",
+    "tests/evidence/optimization/gen14/benchmark-preparation/plan.json": "baaebb521527413f3ab3d9c67a7c492d13069e24d1df01eb36182bf6fee82aa4",
+    "tests/evidence/optimization/gen14/independent-review/benchmark-preparation-review.json": "9f323c74d0c5ff2cfdd596f6faa94091717d5578480b6fd3603555353a9f66bd",
+    "tests/evidence/optimization/gen14/native-review/source-proof-review.json": "b07af730de2e5dda2726ddf6760d913c1ae318dee863c46333c61d6abdc19333"
+  },
+  "findings": [],
+  "checks_passed": 1983,
+  "no_build_tests_profilers_or_benchmarks_run_by_review": true,
+  "review_script_sha256": "4c41a4ac3b3deaf8515b23fc69a91bd8b484f02ab935fd0fcdfbd71e9f12f8e6",
+  "historical_manifest_recheck": {
+    "manifest": "tests/evidence/diagnostics/gen13/historical-inputs.json",
+    "sha256": "b84d6197b2a3d07f2a657f0520383c94e84caae2e822016ef3bac936b3601e55",
+    "all_recorded_files": 10414,
+    "all_historical_bytes_including_ignored_caches_unchanged": true,
+    "authorized_results_append": "Historical bench/results.csv is verified as the exact retained 28-row byte prefix; the primary review verifies precisely the two appended rows."
+  },
+  "historical_artifact_review": {
+    "status": "passed",
+    "checked_utc": "2026-10-19T04:25:20.383433+00:00",
+    "committed_files": 7922,
+    "committed_bytes": 417739825,
+    "roots": [
+      "bench/runs/baseline-FC006",
+      "bench/BASELINE.md",
+      "bench/runs/gen1",
+      "bench/runs/gen2",
+      "bench/runs/gen3",
+      "bench/runs/gen4",
+      "bench/runs/gen5",
+      "bench/runs/gen6",
+      "bench/runs/gen7",
+      "bench/runs/gen8",
+      "bench/runs/gen9",
+      "bench/runs/gen10",
+      "bench/runs/gen11",
+      "bench/runs/gen12",
+      "bench/runs/gen13",
+      "bench/GEN1.md",
+      "bench/GEN2.md",
+      "bench/GEN3.md",
+      "bench/GEN4.md",
+      "bench/GEN5.md",
+      "bench/GEN6.md",
+      "bench/GEN7.md",
+      "bench/GEN8.md",
+      "bench/GEN9.md",
+      "bench/GEN10.md",
+      "bench/GEN11.md",
+      "bench/GEN12.md",
+      "bench/GEN13.md",
+      "tests/evidence/diagnostics/gen0",
+      "tests/evidence/diagnostics/gen1",
+      "tests/evidence/diagnostics/gen2",
+      "tests/evidence/diagnostics/gen3",
+      "tests/evidence/diagnostics/gen4",
+      "tests/evidence/diagnostics/gen5",
+      "tests/evidence/diagnostics/gen6",
+      "tests/evidence/diagnostics/gen7",
+      "tests/evidence/diagnostics/gen8",
+      "tests/evidence/diagnostics/gen9",
+      "tests/evidence/diagnostics/gen10",
+      "tests/evidence/diagnostics/gen11",
+      "tests/evidence/diagnostics/gen12",
+      "tests/evidence/diagnostics/gen13",
+      "docs/GEN0-COST-BREAKDOWN.md",
+      "docs/GEN1-COST-BREAKDOWN.md",
+      "docs/GEN2-COST-BREAKDOWN.md",
+      "docs/GEN3-COST-BREAKDOWN.md",
+      "docs/GEN4-COST-BREAKDOWN.md",
+      "docs/GEN5-COST-BREAKDOWN.md",
+      "docs/GEN6-COST-BREAKDOWN.md",
+      "docs/GEN7-COST-BREAKDOWN.md",
+      "docs/GEN8-COST-BREAKDOWN.md",
+      "docs/GEN9-COST-BREAKDOWN.md",
+      "docs/GEN10-COST-BREAKDOWN.md",
+      "docs/GEN11-COST-BREAKDOWN.md",
+      "docs/GEN12-COST-BREAKDOWN.md",
+      "docs/GEN13-COST-BREAKDOWN.md"
+    ],
+    "exact_bytes_equal_timed_commit": true,
+    "tracked_and_untracked_membership_unchanged": true,
+    "prior_raw_perf_hashes": {
+      "tests/evidence/diagnostics/gen0/perf/capture.json": "5efc0e16c52b524ce8b2ac5e28b7ead0c688391257a29400b3bcff69dd18f475",
+      "tests/evidence/diagnostics/gen1/perf/capture.json": "84a9062f37a1801c9105d323088006d0b5bc45dfffca07035c81b550db06c35d",
+      "tests/evidence/diagnostics/gen2/perf/capture.json": "ef4530d4d5dce3b532e29c3d1b4c7c13826ed3a6b9a15738f7152087a329e5c9",
+      "tests/evidence/diagnostics/gen3/perf/capture.json": "8fe03e120871650b9188b216a9dbd9d70d79c2c15b12f8d2c0f10e34f6e2d5dd",
+      "tests/evidence/diagnostics/gen4/perf/capture.json": "e1c1270d8ed8c917bdb09e94f9eab1e57175286eb7865107db4ae57b86fdb1a3",
+      "tests/evidence/diagnostics/gen5/perf/capture.json": "f0525980238d3fc1f1014b2da25983afa086d435045886d6bd665279720bfc59",
+      "tests/evidence/diagnostics/gen6/perf/capture.json": "bb7bb251d4268f6c15b85decb071a497e423263d50f4fe183cf983f60e843f1c",
+      "tests/evidence/diagnostics/gen7/perf/capture.json": "6d370e8b855b09c7c996cf267fb18d16a5ac17710a532165f57435c6169741c9",
+      "tests/evidence/diagnostics/gen8/perf/capture.json": "0b8cd8b75f9d1505ed1c49519b77c8729e3eac5221fc724ff96e50ae57297a46",
+      "tests/evidence/diagnostics/gen9/perf/capture.json": "62c0429edf60f55a6f78cf162e7c3c945cb44ced4d33d1beacf947dbe9776c84",
+      "tests/evidence/diagnostics/gen10/perf/capture.json": "409e2371fdaf4e1930c25d8c104fb000207c23a07066db900c617907fcca9ee8",
+      "tests/evidence/diagnostics/gen11/perf/capture.json": "911ff99bfe25afdcc3e5ab3562fb0325bf2ee45dbc5758ffda17d3f76ad038b6",
+      "tests/evidence/diagnostics/gen12/perf/capture.json": "708d42aaa9184730851857292d4b1ac96700ae374ed1c13d7aa348e7f9d78ff1",
+      "tests/evidence/diagnostics/gen13/perf/capture.json": "2d870b58cc3ebfb1294cae5cc8a0f2d4ca585ada949a618acfcd2beb4c60e9a2"
+    },
+    "checker": "/home/zpconn/code/lean1090/tests/evidence/optimization/gen14/independent-review/check_benchmark_history.py",
+    "checker_sha256": "85a557a28f53cf385d24ca68ed24461ddeddab81837cfa5d3ee225059d96bc52"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-19T04:43:31.797371+00:00",
+  "findings": [],
+  "native_review_sha256": "cd64c9e72770cb25ed9b7c52ab241dac8ba3436db961945ba5b9380f912468f8",
+  "native_inspection_sha256": "dfe0f86c47065b490414ce90f0927f4d84b73e99b6f905eccb6e0de2bfea4b10",
+  "integration_review_sha256": "e170f5854b21b1063b181f9a4926e517655610252065faf8ef19af571d104a16",
+  "independent_source_proof_review_sha256": "858d917d4d9c90a78bffd7c15532b44f7e8093922261510e306ce8a2312070fc",
+  "independent_integration_proof_review_sha256": "4c7f1dd3bd951d8262d76e3bb801aa74e7b2c0c8ebfad8244770b2a3a4690c49",
+  "native_checks": 30,
+  "native_inputs": 144,
+  "native_files": 460,
+  "exact_native_evidence_membership": 465,
+  "commb_payload_limit_live_path_verified": true,
+  "constant_path_capture_sha256": "41bb77caa635146dc1bf6b23cddb7d4ef3ee13f175472cd263d3c2bc1e7302fe",
+  "independent_ELF_literal": {
+    "virtual_address": "0x2be358",
+    "bytes_hex": "373230353735393430333739323739333600",
+    "matching_load_segments": 1
+  },
+  "live_guard_global_load_precedes_first_branch": true,
+  "live_guard_callers": [
+    "commBCoreEligible",
+    "decodeBDS"
+  ],
+  "other_unchanged_native_sets": 19,
+  "retained_native_reviewer_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed_reviewer_Decoder_shape_assumption",
+      "directory": "validation-attempt-01",
+      "reason": "The unchanged existing rfl proof reduces the transparent constant without spelling its name. Corrected check requires the entire old Decoder body unchanged after removal of the sole new helper import; numerical/native requirements unchanged."
+    },
+    {
+      "attempt": 2,
+      "status": "passed"
+    }
+  ],
+  "retained_source_reviewer_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed_copy_path_assertion",
+      "directory": "proof-review-attempt-01",
+      "reason": "Absolute reviewer-owned baseline paths bypassed the intended proof-inputs prefix; overwrite guard stopped before writing any existing producer/reviewer input. Relative-path normalization corrected, mathematical checks unchanged."
+    },
+    {
+      "attempt": 2,
+      "status": "passed"
+    }
+  ],
+  "execution_log_bindings": {
+    "tests/evidence/optimization/gen15/native-review/validate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen15/native-review/validate.stdout": "24bb363aa9cf35e392a78b7228b0cb4a20e8898c15934baa39c21188c9ad75f6",
+    "tests/evidence/optimization/gen15/native-review/validation-attempt-01/validate.stderr": "f3e12eee58d14dab5ec40f7a12e042779951df576c43817bcd8b939d49cfb5e4",
+    "tests/evidence/optimization/gen15/native-review/validation-attempt-01/validate.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "review_script_sha256": "8a1868a1fd969f2c8e56874cf4a62a6714bcc699c17964c58e8ca846b283204f",
+  "limits": [
+    "Read-only replay of retained proof/native evidence, ELF bytes and callsite inspection; no compiler or decoder execution.",
+    "Initialization still parses the exact format constant once and marks it persistent. The guard still loads/comparisons/dispatches, including arbitrary large Nat comparisons. No zero startup-cost or measured speed claim.",
+    "This inspected binary is the integrated CLI, not the future freshly built timed worker. Every failed reviewer attempt remains intact."
+  ]
+}

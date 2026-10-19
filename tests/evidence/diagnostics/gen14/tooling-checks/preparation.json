@@ -1,0 +1,12 @@
+{
+  "status": "prepared_not_executed",
+  "python_bytecode_policy": "PYTHONDONTWRITEBYTECODE=1 and python3 -B on every Python process; sys.dont_write_bytecode=True before dynamic imports",
+  "scope": "New gen14 diagnostic orchestration only; no shared driver/parser/renderer or production change. All helper counts come from actual retained native contexts. History snapshot and profile workers await isolated perf completion.",
+  "expected_profiles": 13,
+  "expected_output_messages": 172432,
+  "planned_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen14/snapshot_history.py",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B review/diagnostics/run_cost_campaign.py --cache .cache/gen14-costs --jobs 6 --perf-capture tests/evidence/diagnostics/gen14/perf/capture.json",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen14/finalize.py"
+  ]
+}

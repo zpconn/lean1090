@@ -1,0 +1,21 @@
+--- gen14/Impl/CommB.lean
++++ gen15/Impl/CommB.lean
+@@ -264,12 +264,17 @@
+   payloadBits word 14 10 ≤ 500 && cbMach64 word ≤ 1 &&
+   (cbVertical60 word 47).abs ≤ 6000
+ 
++/-- The exclusive upper bound for a 56-bit Comm-B payload. Keeping this exact
++format constant outside the call body avoids reparsing its large Nat literal
++at every register check; it contains no per-message or corpus-derived state. -/
++@[noinline] def commBPayloadLimit : Nat := 2^56
++
+ -- Initial algorithm: Spec/CommB.lean:240.
+ /-- rs1090-derived register decoder predicates before the score gate.
+ BDS10/20/30 use their byte header; only BDS10 additionally checks spare bits.
+ BDS30 accepts every TTI variant and retains otherwise ignored bits. -/
+ def bdsWireValid (register word : Nat) : Bool :=
+-  word < 2^56 && match register with
++  word < commBPayloadLimit && match register with
+   | 0x05 =>
+     let tc := payloadBits word 1 5
+     ((tc ≥ 9 && tc ≤ 18) || (tc ≥ 20 && tc ≤ 22)) && adsbHardValid word

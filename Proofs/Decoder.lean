@@ -3,6 +3,7 @@ import Capstones
 import Proofs.CommBTables
 import Proofs.CommBPenalty
 import Proofs.CommBRatio
+import Proofs.CommBConstant
 import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.ParityWord

@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "finished_utc": "2026-10-19T15:21:57.749647+00:00",
+  "helpers": {
+    "review/diagnostics/cleanup_verified_scratch.py": "72320c1c2032a2e9202dce8390142918497f587910315bb95082fad2f35a4f25",
+    "review/diagnostics/finish_generation_gate.py": "4cbd17b2ca57d34a51707e13d5efbf7b522600b2ca5bf2de0a995480814bf88b",
+    "review/diagnostics/test_cleanup_verified_scratch.py": "0dd331512a68a01e9a91a38c934cb4967c655d80fd76633fc66e31a142c5e142",
+    "review/diagnostics/archive_generation_gate.py": "cbdee009df5943250ab24a4cd9f712c27b3c76e08ced20046714e5733f00577e"
+  },
+  "producer_fixture_tests_reexecuted": 20,
+  "independent_fixture_cases": 24,
+  "actual_component_schemas": [
+    {
+      "archive_root": ".cache/gen14-gate/component-archives/altitude",
+      "exact_gzip_artifacts": 3,
+      "raw_bytes": 2446393,
+      "compressed_sha_supplied_by_seal": true
+    },
+    {
+      "archive_root": ".cache/gen14-gate/component-archives/reserved_velocity",
+      "exact_gzip_artifacts": 5,
+      "raw_bytes": 16096478,
+      "compressed_sha_supplied_by_seal": true
+    },
+    {
+      "archive_root": ".cache/gen14-gate/component-archives/dte",
+      "exact_gzip_artifacts": 7,
+      "raw_bytes": 129825972,
+      "compressed_sha_supplied_by_seal": true
+    },
+    {
+      "archive_root": ".cache/gen14-gate/component-archives/cpr",
+      "exact_gzip_artifacts": 4,
+      "raw_bytes": 404117747,
+      "compressed_sha_supplied_by_seal": true
+    }
+  ],
+  "actual_component_gzip_EOF_SHA_checks": 19,
+  "actual_fresh_summary_metadata_entries": 9,
+  "protected_live_dry_run_deleted_bytes": 0,
+  "current_gate_inputs_rehashed_unchanged": 186,
+  "original_archive_helper_matches_HEAD": true,
+  "resolved_findings": [
+    {
+      "finding": "New receipt directories originally lacked explicit fsync of parent directory links before deletion.",
+      "resolution": "mkdir_durable fsyncs each newly created parent-child link; independent fixture verifies all links plus complete per-file receipt before first unlink."
+    }
+  ],
+  "blocking_findings": [],
+  "reviewed_safeguards": [
+    "Explicit five-prefix, eight-character temporary scratch path allowlist and named sealed archive roots.",
+    "Complete flat regular-file scratch membership; unknown, nested, symlinked or hard-linked inputs retain the complete set.",
+    "SHA-256 and byte-count identity across raw files, compressed retained data and decompressed gzip through EOF.",
+    "Durable before-unlink receipt, immediate input identity recheck, unchanged summary/seal/archive identities and no recursive deletion.",
+    "Mandatory explicit caller protect decision; exact, ancestor and descendant protection preserved.",
+    "Wrapper invokes unchanged archive_generation_gate.py first, retains exit/log hashes and refuses failed or modified archival.",
+    "Default cleanup is dry-run; wrapper default still creates its archive. Apply requires caller attestation of producer quiescence."
+  ],
+  "limits": [
+    "Active processes are not detected. Parent explicitly selected caller-enforced quiescence and a protect list because sandbox process visibility is unreliable. Do not invoke apply until producers are stopped.",
+    "Interrupted partial unlinks are reported as retained_or_interrupted; every candidate was completely verified and durably recorded before any unlink.",
+    "No live deletion, gate, decoder, build, benchmark or profiling run was performed during independent review. Only disposable /tmp fixtures were deleted."
+  ],
+  "artifacts": {
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/actual-fresh-schema.json": {
+      "sha256": "22fa8115ffd5a4f33fb4e4182c484f563ff19d8bc95849f8efd818603209c237",
+      "bytes": 779
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/actual-schemas.json": {
+      "sha256": "270147df35ace19fe8d375c6dbb4496f5acc88c04112d9b1d94665b01f3ecd1c",
+      "bytes": 2515
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/check_safety.py": {
+      "sha256": "07f58898e345b07866464e5f19e72ded21dfe701f45e098a791c7895b805529b",
+      "bytes": 9174
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/independent-cases.json": {
+      "sha256": "5d9e1d0956ea6b6bf886b7466cd8a6c28da5c1efec13a674729a3433a761d19a",
+      "bytes": 2707
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/independent-tests.log": {
+      "sha256": "180e5b6ddeb54e80d229b9e92e8be3f50a5e4cc330fe54796aafa29c04251d9a",
+      "bytes": 46
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/producer-tests.log": {
+      "sha256": "8f0d69ac5f77bf189095e0cf8baad336dd4ee9b11b3484a41f3377a5f84e8deb",
+      "bytes": 2610
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/protected-live-dry-run/message-differential-0gzplfih.result.json": {
+      "sha256": "09a68cbcc91fc2d94322719fdb55becf39c3e79e8120c39cf1944b171b2bba2b",
+      "bytes": 156
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/protected-live-dry-run/result.json": {
+      "sha256": "13813369aa6808348e1b64693e6253506468d4e1ae3e04f031782d4aae88214d",
+      "bytes": 366
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/protected-live-dry-run/start.json": {
+      "sha256": "2918bf03d0b30d9132b88de871d34a0fd726b09ec13ee0f646073369ab149d91",
+      "bytes": 926
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/protected-live.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tests/evidence/maintenance/scratch-cleanup-tooling-20261019/independent-review/protected-live.stdout": {
+      "sha256": "913b7cf3082bdaf547b69796e98499913ef25164e3bae04fff29d0a465877fdc",
+      "bytes": 366
+    }
+  }
+}

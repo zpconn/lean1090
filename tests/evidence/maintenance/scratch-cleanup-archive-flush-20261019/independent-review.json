@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "finished_utc": "2026-10-19T15:35:02.504838+00:00",
+  "helpers": {
+    "review/diagnostics/cleanup_verified_scratch.py": "72320c1c2032a2e9202dce8390142918497f587910315bb95082fad2f35a4f25",
+    "review/diagnostics/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963",
+    "review/diagnostics/test_cleanup_verified_scratch.py": "44c697a9c71e46d05f6e101f01d02fe85da8af6531e125c3737847074a372ca2",
+    "review/diagnostics/archive_generation_gate.py": "cbdee009df5943250ab24a4cd9f712c27b3c76e08ced20046714e5733f00577e"
+  },
+  "producer_validation_sha256": "d83f0e562961fd053cc910447bc94640364ee80fff483eea7ec10426fd44c29b",
+  "producer_tests_reexecuted": 25,
+  "independent_existing_safety_cases_reexecuted": 24,
+  "independent_flush_cases": 5,
+  "total_fixture_cases": 54,
+  "prior_review_evidence_files_unchanged": 24,
+  "current_gate_inputs_unchanged": 186,
+  "source_review": [
+    "cleanup_verified_scratch.py is byte-identical to its previously independently reviewed version, retaining allocated_bytes in every strict identity comparison.",
+    "The wrapper fsyncs all copied files, metadata indexes, status, selected sealed roots and the fresh sibling seal before cleanup/archive_index captures identities.",
+    "All directory links are fsynced from deepest directory through repository root. No archive bytes are rewritten.",
+    "File fsync opens read-only with O_NOFOLLOW and O_NONBLOCK after lstat regular-file check; device/inode and type are rechecked after opening.",
+    "Any file or directory fsync exception propagates before cleanup is invoked. The completed flush record is durable before cleanup starts.",
+    "Existing archive_generation_gate.py remains unchanged; gate/log/source verification is preserved."
+  ],
+  "resolved_review_points": [
+    {
+      "issue": "A FIFO could block before fstat rejected its type.",
+      "resolution": "Added pre-open lstat regular-file rejection and O_NONBLOCK, independently tested without any open."
+    },
+    {
+      "issue": "Fresh-message sibling seal was outside selected archive-root enumeration.",
+      "resolution": "Explicitly fsync fresh-retained-hashes.json before cleanup identity capture, covered by producer and independent ordering checks."
+    }
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "Review performed no live fsync, cleanup, build, decoder, benchmark or profiling operation; only disposable /tmp fixtures were used.",
+    "Quiescence remains an explicit caller precondition; this change does not introduce process detection or weaken exact identity checks.",
+    "A previously archived gate can use a separately retained read-only-fsync step and a new direct-cleanup receipt; this review did not execute that procedure."
+  ],
+  "artifacts": {
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/check_flush.py": {
+      "sha256": "5004885d66877e09ba453d1d3a97ef5361346ca29ea620fdbe164184a410f5b0",
+      "bytes": 3675
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/check_safety.py": {
+      "sha256": "07f58898e345b07866464e5f19e72ded21dfe701f45e098a791c7895b805529b",
+      "bytes": 9174
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/flush-tests.log": {
+      "sha256": "7edf9ff91c54a4081b214b6b80176a633ab5b100209ea18c16da4072c1149e5e",
+      "bytes": 33
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/independent-cases.json": {
+      "sha256": "5d9e1d0956ea6b6bf886b7466cd8a6c28da5c1efec13a674729a3433a761d19a",
+      "bytes": 2707
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/independent-flush-cases.json": {
+      "sha256": "b757d93abd2a821e932cf306624e05014f9ff1b99ded7d1b95834c9af41c9bc2",
+      "bytes": 788
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/independent-tests.log": {
+      "sha256": "180e5b6ddeb54e80d229b9e92e8be3f50a5e4cc330fe54796aafa29c04251d9a",
+      "bytes": 46
+    },
+    "tests/evidence/maintenance/scratch-cleanup-archive-flush-20261019/independent-review/producer-tests.log": {
+      "sha256": "911aea4f78ee43c46915a10c0b4816681e2ea69bf4dd40d20df31ba8c71f06cd",
+      "bytes": 3516
+    }
+  }
+}

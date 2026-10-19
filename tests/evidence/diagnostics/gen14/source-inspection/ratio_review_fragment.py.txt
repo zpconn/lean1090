@@ -1,0 +1,70 @@
+# Bind the new unconditional ratio decision to this exact timed worker.
+ratio=P+'cbRatioOutside250800';ratio_c=body(commb,ratio);penalty_c=body(commb,P+'cbPenalty')
+assert ratio in names
+assert all(x in ratio_c for x in ['lean_nat_to_int(', 'lean_nat_abs(', 'lean_int_add(', 'lean_int_mul(', 'lean_int_sub('])
+assert ratio_c.count('lean_int_dec_lt(')==ratio_c.count('lean_int_dec_le(')==2
+assert ratio_c.count(P+'Binary64_round(')==1 and ratio_c.count('l_Rat_blt(')==2
+assert not any(x in ratio_c for x in ['l_Rat_add(','l_Rat_sub(','l_Rat_mul(','l_Rat_div('])
+round_start=ratio_c.index('v_rounded_')
+assert not any(x in ratio_c[:round_start] for x in [P+'Binary64_round(','l_Rat_blt('])
+for name,token in [(ratio+'___closed__0','lean_cstr_to_nat("2251799813685248")'),(ratio+'___closed__1','lean_unsigned_to_nat(250u)'),(ratio+'___closed__4','lean_unsigned_to_nat(800u)')]:
+ assert token in qbody(commb,'_init_'+name)
+assert penalty_c.count('l_Rat_div(')==penalty_c.count(ratio+'(')==1
+assert penalty_c.index(P+'cbMach64(')<penalty_c.index('l_Rat_div(')<penalty_c.index(ratio+'(')
+assert P+'Binary64_div(' not in penalty_c and P+'commBValue(' in penalty_c
+previous_commb=Path('tests/evidence/diagnostics/gen13/generated-c/Impl/CommB.c').read_text()
+for local in ['cbWindPenalty50','cbWindPenaltyTable___lam__0','cbValid50','cbValid60','cbDensityTerms','cbDensityTermsFast','cbCombinedScore','cbScorePasses','commBCoreEligible','cbQNH64','cbMach64']:
+ assert normalize(body(commb,P+local))==normalize(body(previous_commb,P+local)),local
+ratio_asm=(D/(ratio+'.assembly.txt')).read_text();ratio_rows,ratio_indices=byte_graph(ratio_asm)
+ratio_events={}
+for address,op,arg in ratio_rows:
+ if op in ('call','jmp') and '<'+P+'Binary64_round>' in arg:ratio_events[address]='software_round'
+ if op in ('call','jmp') and '<l_Rat_blt>' in arg:ratio_events[address]='rounded_Rat_compare'
+assert list(ratio_events.values()).count('software_round')==1 and list(ratio_events.values()).count('rounded_Rat_compare')==2
+pending=[(0,())];seen=set();ratio_exits=set()
+while pending:
+ i,trace=pending.pop()
+ if (i,trace) in seen:continue
+ seen.add((i,trace));address,op,arg=ratio_rows[i]
+ if address in ratio_events:trace+=(ratio_events[address],)
+ assert trace.count('software_round')<=1 and trace.count('rounded_Rat_compare')<=2
+ if op=='ret':ratio_exits.add((trace,'ret'));continue
+ if op.startswith('j'):
+  m=re.fullmatch(r'([0-9a-f]+) <([^>]+)>',arg);assert m,arg;target=int(m[1],16)
+  if target in ratio_indices:pending.append((ratio_indices[target],trace))
+  else:assert op=='jmp';ratio_exits.add((trace,m[2]))
+  if op=='jmp':continue
+ assert i+1<len(ratio_rows);pending.append((i+1,trace))
+assert len(ratio_rows)==len({i for i,_ in seen})==776
+assert ratio_exits=={((),'ret'),(('software_round','rounded_Rat_compare'),'ret'),(('software_round','rounded_Rat_compare','rounded_Rat_compare'),'l_Rat_blt')}
+assert {x for x in calls(ratio_asm) if 'Rat_' in x or 'Binary64_' in x}=={'l_Rat_blt',P+'Binary64_round'}
+assert all(x in calls(ratio_asm) for x in ['lean_int_big_mul','lean_int_big_add','lean_int_big_sub'])
+penalty_calls=calls((D/(P+'cbPenalty.assembly.txt')).read_text())
+assert penalty_calls.count('l_Rat_div')==penalty_calls.count(ratio)==1
+assert penalty_calls.index('l_Rat_div')<penalty_calls.index(ratio)
+assert P+'Binary64_div' not in penalty_calls
+ratio_cfg=D/'ratio-native-cfg.json';assert not ratio_cfg.exists()
+ratio_cfg.write_text(json.dumps({'instruction_count':len(ratio_rows),'reachable_instructions':len({i for i,_ in seen}),'event_sites':{hex(a):n for a,n in ratio_events.items()},'normal_exits':[{'events':list(t),'target':s} for t,s in sorted(ratio_exits)],'assembly':str(D/(ratio+'.assembly.txt')),'assembly_sha256':sha(D/(ratio+'.assembly.txt')),'limits':'Every normal path has zero software rounds and comparisons, or one round followed by one/two strict comparisons. This conservative static graph does not infer runtime frequencies, allocation costs or timing.'},indent=2)+'\n')
+ratio_excerpts={}
+for symbol in [ratio,*['_init_'+ratio+'___closed__'+str(i) for i in range(6)],P+'cbPenalty']:
+ piece=qbody(commb,symbol);path=D/(symbol+'.generated-C.txt')
+ if path.exists():assert path.read_text()==piece+'\n'
+ else:path.write_text(piece+'\n')
+ first=commb[:commb.index(piece)].count('\n')+1
+ ratio_excerpts[symbol]={'path':str(path),'sha256':sha(path),'source':'.lake/build/ir/Impl/CommB.c','source_sha256':sha('.lake/build/ir/Impl/CommB.c'),'first_body_line':first,'last_body_line':first+piece.count('\n')}
+ratio_proof=Path('tests/evidence/optimization/gen14/native-review/source-proof-review.json')
+ratio_integration=Path('tests/evidence/optimization/gen14/native-review/integration-proof-review.json')
+assert load(ratio_proof)['all_Rat_runtime_equality_verified'] and load(ratio_proof)['status']=='passed'
+assert load(ratio_integration)['status']=='passed'
+assert load(ratio_integration)['sources']==load('tests/evidence/optimization/gen14/integration/targeted-build.json')['inputs_after']
+for source,digest in load(ratio_integration)['sources'].items():assert sha(source)==digest
+out['bds60_ratio_enclosure_live_path_verified']=True
+out['ratio_enclosure_anchor']=ratio
+out['ratio_enclosure_native_context']={'native_standalone_present':True,'conditional_round_call_sites':1,'rounded_comparison_sites':2,'unconditional_Rat_input_domain':True,'native_cfg':str(ratio_cfg),'native_cfg_sha256':sha(ratio_cfg),'generated_C_excerpts':ratio_excerpts,'independent_helper_review':str(ratio_proof),'independent_helper_review_sha256':sha(ratio_proof),'independent_integration_review':str(ratio_integration),'independent_integration_review_sha256':sha(ratio_integration),'unchanged_other_linked_native_sets':20,'observations':[
+ 'The timed worker forms exact Rat IAS/Mach once in cbPenalty after the unchanged status and positive-Mach guards, then calls the same public ratio predicate used by fast inference and lazy full-model scoring.',
+ 'The enclosure reads canonical numerator/denominator, scales by exact K=2^51 and uses arbitrary-precision Int comparisons. Definite outside and inclusive-inside paths execute no software round or Rat comparison inside this helper.',
+ 'Uncertain paths retain one Binary64.round followed by one or two strict Rat comparisons against 250/800. Independent traversal covers all 776 instructions. Subtracting observed direct round entries from helper entries is valid only after checking raw profiles and this one-round path bound.',
+ 'Rat division in the caller and Int allocation/big-number operations remain. Compiler scalar constants can initialize lazily. This is not an allocation-free or fixed-width claim.',
+ 'All other production/model native sets match generation13; the historical BDS50 wind proof is separately bound to the original code and identical live source/C bodies. Existing tables remain eager; source/proof/refinement statements are unchanged.',
+ 'Raw direct edges and inclusive costs overlap callers and probes. No measured timing regression or future speed gain is inferred from static structure.'
+]}

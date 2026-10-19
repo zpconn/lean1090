@@ -1,0 +1,33 @@
+{
+  "instruction_count": 776,
+  "reachable_instructions": 776,
+  "event_sites": {
+    "0xb88b47": "software_round",
+    "0xb88b6e": "rounded_Rat_compare",
+    "0xb88baa": "rounded_Rat_compare"
+  },
+  "normal_exits": [
+    {
+      "events": [],
+      "target": "ret"
+    },
+    {
+      "events": [
+        "software_round",
+        "rounded_Rat_compare"
+      ],
+      "target": "ret"
+    },
+    {
+      "events": [
+        "software_round",
+        "rounded_Rat_compare",
+        "rounded_Rat_compare"
+      ],
+      "target": "l_Rat_blt"
+    }
+  ],
+  "assembly": "tests/evidence/diagnostics/gen14/source-inspection/lp_lean1090_Lean1090_Impl_cbRatioOutside250800.assembly.txt",
+  "assembly_sha256": "b037aec2d00380f6681a7ae318db71c5adb18779aeb2ae583c09d8d1fdb1d4f1",
+  "limits": "Every normal path has zero software rounds and comparisons, or one round followed by one/two strict comparisons. This conservative static graph does not infer runtime frequencies, allocation costs or timing."
+}

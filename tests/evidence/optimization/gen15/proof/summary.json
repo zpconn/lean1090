@@ -1,0 +1,87 @@
+{
+  "status": "passed",
+  "utc": "2026-10-19T04:37:30.707694+00:00",
+  "attempts": [
+    {
+      "record": "build-01.json",
+      "sha256": "80566f7c5e01bf53d69fb76b9aaaff46d6f11280598a85e86ad4f9369fdf503c",
+      "exit_code": 0,
+      "log_sha256": "ceddbde956a1346e2fab1b3797853d95d0d8e1950a846a0ad58d667df3b9df4d"
+    }
+  ],
+  "sources": {
+    "Impl/CommB.lean": "846504260aedfd8ab165f7ad9a346463728f705bd81fa93a54eebd3c8f66a384",
+    "Proofs/CommBConstant.lean": "040054ea66d57bce50aa25563c353f246894077d698ad53a0539a61d49d3faa2"
+  },
+  "constant": "Lean1090.Impl.commBPayloadLimit",
+  "universal_theorem": "Lean1090.Proofs.CommBConstant.bdsWireValid_eq_old",
+  "universal_domain": "Every Nat register and Nat payload, without scope, width or validity hypotheses; complete old body equality by rfl.",
+  "exact_runtime_scope_check": true,
+  "axiom_facts": [
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.payload_limit_eq",
+      "axioms": []
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.bdsWireValid_eq_old",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.rejects_out_of_range",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.range_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.rejection_boundary_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Lean1090.Proofs.CommBConstant.accepted_and_unsupported_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "kernel_witness_theorems": 3,
+  "witnesses": [
+    "0 and 2^56-1 below the exact bound",
+    "2^56 and 2^130 plus otherwise supported header rejected",
+    "supported 0x20 header accepted; unsupported 0x22 register rejected"
+  ],
+  "generated_c": {
+    "check": "generated-c-check.json",
+    "sha256": "0e45ae14b6a2f4638aa0899f46921d82d970675ee025bb55c637527326f2f281",
+    "new_guard_decimal_parse_calls": 0,
+    "initializer_decimal_parse_calls": 1,
+    "persistent_global": true,
+    "native_binary_review_pending_root_integration": true
+  },
+  "files": {
+    "tests/evidence/optimization/gen15/proof/before.json": "fc26050c4b4fc32a15b267d8202b05fe1278269e696cffe4cd3b79e6ec4f745a",
+    "tests/evidence/optimization/gen15/proof/before-Impl-CommB.lean": "76e93314751faaa0eb9a9ba5703b2af8e0b32059729d6d16b7a9ddde91360c89",
+    "tests/evidence/optimization/gen15/proof/runtime.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen15/proof/run_build.py": "2a66a7df2919deedb459297c701f52d0d071a720a2b88b364e3dc2574177b59b",
+    "tests/evidence/optimization/gen15/proof/check_generated_c.py": "94962d055ec895ff3d56394a5c3c7ade45330c909cd467fdfd56d5e1c62cee4a"
+  },
+  "scope": "Only Impl/CommB.lean and new Proofs/CommBConstant.lean; root separately owns Decoder import. No frozen changes.",
+  "jobs_stopped": true
+}

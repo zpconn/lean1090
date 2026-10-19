@@ -89,3 +89,11 @@ trusted primitives. The current lock has 104 entries and SHA-256
 - Preserve historical evidence and benchmark commits. Build caches, vendor
   checkouts and explicitly ignored large transcripts are not publication
   sources; document their reconstruction rather than force-adding them.
+- Keep disk use bounded. After a campaign finishes, archive and verify its
+  evidence, then remove raw scratch only when every file has a byte-identical
+  retained counterpart. Preserve active runs, unique failures, compressed
+  evidence and all provenance. Record cleanup receipts. Remove rebuildable
+  diagnostic binaries once their source, commands and hashes are retained;
+  retain unique profiler captures. Do not let completed generations accumulate
+  redundant scratch or release-checkout builds. Use unfrozen maintenance
+  helpers; this rule does not authorize changes to the frozen test suite.

@@ -1,0 +1,111 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewer": "/root/cost_analysis; independent of helper/runtime author",
+  "sources": {
+    "Impl/CommB.lean": "846504260aedfd8ab165f7ad9a346463728f705bd81fa93a54eebd3c8f66a384",
+    "Proofs/CommBConstant.lean": "040054ea66d57bce50aa25563c353f246894077d698ad53a0539a61d49d3faa2"
+  },
+  "inputs": {
+    "Impl/CommB.lean": {
+      "sha256": "846504260aedfd8ab165f7ad9a346463728f705bd81fa93a54eebd3c8f66a384",
+      "bytes": 30353
+    },
+    "Proofs/CommBConstant.lean": {
+      "sha256": "040054ea66d57bce50aa25563c353f246894077d698ad53a0539a61d49d3faa2",
+      "bytes": 2653
+    },
+    "tests/evidence/optimization/gen15/proof/summary.json": {
+      "sha256": "af93b9faf42ecc870277d8f6cf163c9c98b95e6fb20a129049bb775d4c49db93",
+      "bytes": 3187
+    },
+    "tests/evidence/optimization/gen15/proof/build-01.json": {
+      "sha256": "80566f7c5e01bf53d69fb76b9aaaff46d6f11280598a85e86ad4f9369fdf503c",
+      "bytes": 904
+    },
+    "tests/evidence/optimization/gen15/proof/build-01.log": {
+      "sha256": "ceddbde956a1346e2fab1b3797853d95d0d8e1950a846a0ad58d667df3b9df4d",
+      "bytes": 973
+    },
+    "tests/evidence/optimization/gen15/proof/before-Impl-CommB.lean": {
+      "sha256": "76e93314751faaa0eb9a9ba5703b2af8e0b32059729d6d16b7a9ddde91360c89",
+      "bytes": 30056
+    },
+    "tests/evidence/optimization/gen15/proof/runtime.diff": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tests/evidence/optimization/gen15/native-review/before/Impl/CommB.lean": {
+      "sha256": "76e93314751faaa0eb9a9ba5703b2af8e0b32059729d6d16b7a9ddde91360c89",
+      "bytes": 30056
+    },
+    "tests/evidence/optimization/gen15/native-review/before-native-inventory.json": {
+      "sha256": "a523c5bd46974b3085be147bd52c390a107187115c6f314a169b63153048e004",
+      "bytes": 26543
+    }
+  },
+  "unconditional_all_register_word_equality_verified": true,
+  "exact_runtime_scope_reconstructed": true,
+  "axiom_facts": [
+    {
+      "name": "Lean1090.Proofs.CommBConstant.payload_limit_eq",
+      "axioms": []
+    },
+    {
+      "name": "Lean1090.Proofs.CommBConstant.bdsWireValid_eq_old",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.CommBConstant.rejects_out_of_range",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.CommBConstant.range_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.CommBConstant.rejection_boundary_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.CommBConstant.accepted_and_unsupported_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    }
+  ],
+  "kernel_witness_theorems": 3,
+  "mathematical_assessment": "The only runtime change is a transparent noinline zero-argument Nat definition exactly equal to 2^56 and substitution of that definition in the existing guard. The full original branch body is textually recovered after unfolding the name; the universal theorem is rfl for every Nat register and word, with no width or validity assumption. Unsupported registers and oversized inputs remain covered. The separate rejection theorem adds only the natural bound it needs. Three kernel witnesses exercise range endpoints, a 130-bit word, accepted and unsupported headers. No primitive, state, approximate arithmetic or theorem change.",
+  "retained_author_diff_note": "The author runtime.diff is empty because the file was already staged before that capture. It is preserved unchanged and is not scope evidence; verified-before-after.diff is independently derived from the saved gen14 source blob and the current source.",
+  "retained_reviewer_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed_copy_path_assertion",
+      "directory": "proof-review-attempt-01",
+      "reason": "Absolute reviewer-owned baseline paths bypassed the intended proof-inputs prefix; overwrite guard stopped before writing any existing producer/reviewer input. Relative-path normalization corrected, mathematical checks unchanged."
+    },
+    {
+      "attempt": 2,
+      "status": "passed"
+    }
+  ],
+  "verified_diff_sha256": "08c64d5e461757609717fd9e5af7257c2321081fc337adcbe97f97f25f489ff0",
+  "script_sha256": "4320b24655a1ce1ee32886beb16389d55e64e9342daea46ced120738b5b1305e",
+  "limits": "Mathematical/source assessment and replay of retained proof-build hashes/axioms only; no independent build. Native global initialization is checked separately after successful integration."
+}
