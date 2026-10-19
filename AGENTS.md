@@ -36,6 +36,17 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
+Generation 23 measured **2.410234595243× decode** and **1.835727795894×
+decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both
+mode targets are reached. Measured source:
+`9b6868f21fcac0a59044153f01e6691d091dbb5c`, under the user's identity.
+All 96 samples and provenance are in `bench/runs/gen23/`; report:
+`bench/GEN23.md`. Signed CPR overhead is 0.596047914540 µs/message for Lean
+and 0.008262097523 for rs1090, including noise between mode medians. Full fixed
+and independent fresh 10M campaigns passed with all 200 correctness inputs
+unchanged. Result review, artifact/source binding and presentation review passed;
+publication remains. Fresh untimed diagnostics precede selecting generation 24.
+
 Generation 22 measured **2.203718886895× decode** and **1.715366461888×
 decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both
 mode targets are reached. Measured source:
@@ -72,7 +83,8 @@ independent retention and replay passed. Verified fresh cleanup reclaimed
 5,359,271,936 bytes of duplicate scratch. Fixed-gate archival and cleanup
 reclaimed another 5,733,335,040 bytes. All 200 correctness inputs remain
 unchanged. Independent archive/plan review passed, with three checker-only
-adaptation failures retained. Commit and timing remain. No speedup is claimed.
+adaptation failures retained. The source commit and isolated timing are complete;
+generation 23's measured results are above.
 No frozen file, Float callback
 or trusted primitive change is authorized. Software arithmetic optimizations
 must retain exact proved refinement. See PROGRESS.md and

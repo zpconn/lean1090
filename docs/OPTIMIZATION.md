@@ -1,8 +1,8 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 22 reached
-2.20372× decode and 1.71537× with CPR; [its report](../bench/GEN22.md) retains
+Stop for review only when both measured ratios reach it. Generation 23 reached
+2.41023× decode and 1.83573× with CPR; [its report](../bench/GEN23.md) retains
 all samples and conditions. No project-specific trusted primitive is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only

@@ -5,7 +5,45 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 22 reached 2.203718886895× decode and
+**Latest measurement: generation 23 reached 2.410234595243× decode and
+1.835727795894× with CPR.** The CPR target remains unmet. Timed source:
+`9b6868f21fcac0a59044153f01e6691d091dbb5c`, authored and committed by
+`zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 325.927027/785.560596 ms
+for decode and 428.704761/786.985246 ms for CPR. Lean throughput increased
+11.64% and 9.83% versus generation 22. Signed CPR overhead is
+0.596047914540 µs/message for Lean and 0.008262097523 for rs1090, calculated
+from separate mode medians and including noise. All 96 samples, six clean-tree
+and lock checks, 22 fresh native sets and four Ultimate Performance power-plan
+captures are retained. Actual timed worker SHA-256:
+`ece1cad565de9b2b45288ee494b2b944e51f3cd6ac00b4728eaa41d94e55d47e`.
+No UTC backsteps occurred; UTC-minus-monotonic differences were +5.976 µs
+(decode) and +4.211 µs (CPR), retained without adjustment. Worker monotonic
+durations determine the result. Environment: Intel Core Ultra 9 285K / WSL2,
+CPU 0, with host-observation limitations retained. The canonical archive and
+reporting checks passed on their first execution; all 48 original files are
+byte-identical and both CSV rows preserve the 46-row historical prefix.
+[Report and raw samples](bench/GEN23.md). Archive SHA-256:
+`1262179a0e57372bb8168068a56d1b7701419d570bd945cd66da108337a76805`.
+Independent result review passed all 727 checks on its first execution:
+`53c46e26572e31fbe0f0a684cafe16c951e7dced380c7fb25a68f42b3158986d`.
+Artifact/source binding also passed: all 200 inputs match the full gate, timed
+commit and current tree. Receipt:
+`0dfd9d4a76f80be9bd33c3d79ee2fedf131e07d25861f9c06cd2ecbe2e7ab926`.
+Presentation refresh passed with 48 CSV rows, 24 GIF frames, 1,200 plotted
+values, 95 links and all 23 capstones verbatim. Producer and root visual
+inspections passed. Independent presentation review passed 1,154 checks;
+completion: `72d0c20935faf656502c5a8ecee2bc066643ed9512277edaa6dd91bdc156829e`.
+Two reviewer-only failures are retained: the system Python lacked Pillow, then
+a diff-header path assumption required correction. The producer passed on its
+first execution, with no repeated render or measurement. Both fresh diagnostic
+preparations passed independent review on their first executions (27 decode
+checks and 76 CPR checks), with no build or profile executed. Receipts:
+`4c94c93d72437ccc24c018dcb8e3e806e790b9a82ac545e93b61523176670179`
+and `09ae371d246942e19f97946337bb03e8c756e8b0d7e6231e3235337358b353c4`.
+Publication and fresh untimed diagnostics of this measured code precede
+selection of generation 24.
+
+**Previous measurement: generation 22 reached 2.203718886895× decode and
 1.715366461888× with CPR.** Decode has reached 2.00×; CPR has not. Continue
 until both targets are met. Timed source:
 `74db41344a9d721c600c554b7e2e0f37b65de938`, authored and committed by
@@ -138,8 +176,9 @@ inventory excluded rejected historical candidates. The corrected reviewer
 checks the exact five selected roots and all retained bytes; no producer data
 or test requirement changed. The benchmark plan is sealed as
 `465d521f878c6608e284d97b356c8016ea0018a31839b8c5edc7659533039bd9`.
-Clean source commit and isolated two-mode timing remain; no throughput gain
-is claimed yet.
+The verified source was committed as `9b6868f21fcac0a59044153f01e6691d091dbb5c`;
+isolated two-mode timing completed as reported above. All other project work
+was stopped throughout the fresh build and measured runs.
 
 **Previous measurement: generation 21 reached 1.963308902434× decode and
 1.539889738438× with CPR.** Neither target had been reached at that generation. The measured

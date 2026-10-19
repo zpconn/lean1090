@@ -8,13 +8,13 @@ decoder's scope, Comm-B inference and CPR position tracking. A separate referenc
 specification describes the wire formats; proofs keep the optimized decoder
 equal to it for **every byte input**.
 
-On the recorded single-core workload, generation 22 reaches **2.20372× rs1090
-throughput for decode and 1.71537× with CPR**. The goal is **2.00× in both modes**;
+On the recorded single-core workload, generation 23 reaches **2.41023× rs1090
+throughput for decode and 1.83573× with CPR**. The goal is **2.00× in both modes**;
 decode has reached its target; CPR remains below target. All 23 capstone contracts are proved. No
 project-specific trusted primitives were added.
 
 [Get started](#try-it) · [Proofs](THEOREMS.md) · [Scope](SCOPE.md) ·
-[Benchmarks](bench/GEN22.md) · [Developer guide](docs/DEVELOPING.md)
+[Benchmarks](bench/GEN23.md) · [Developer guide](docs/DEVELOPING.md)
 
 ## Try it
 
@@ -42,14 +42,14 @@ decodes individual messages. See the [API and setup guide](docs/DEVELOPING.md).
 
 ## Performance
 
-Generation 22, commit `74db41344a9d721c600c554b7e2e0f37b65de938`:
+Generation 23, commit `9b6868f21fcac0a59044153f01e6691d091dbb5c`:
 
 | Workload | lean1090 | rs1090 | Throughput ratio |
 | --- | ---: | ---: | ---: |
-| Decode | **473,909 msg/s** | 215,050 msg/s | **2.20372×** |
-| Decode + CPR | **366,215 msg/s** | 213,491 msg/s | **1.71537×** |
+| Decode | **529,051 msg/s** | 219,502 msg/s | **2.41023×** |
+| Decode + CPR | **402,216 msg/s** | 219,104 msg/s | **1.83573×** |
 
-CPR overhead is **+0.620529339102 µs/message for Lean** and **+0.033958650367 µs/message for rs1090**. It is the difference between independently measured mode medians, includes measurement noise, and is not an isolated timing of CPR work.
+CPR overhead is **+0.596047914540 µs/message for Lean** and **+0.008262097523 µs/message for rs1090**. It is the difference between independently measured mode medians, includes measurement noise, and is not an isolated timing of CPR work.
 
 ![Measured throughput across optimization generations](docs/images/throughput.png)
 
@@ -60,9 +60,9 @@ pairs; medians are reported. The measured host is an Intel Core Ultra 9 285K und
 WSL2 with the Windows Ultimate Performance plan. These are results on that
 workload and machine; they do not establish performance on other hosts or inputs.
 
-[Method and environment](bench/GEN22.md) ·
-[Raw decode samples](bench/runs/gen22/decode/samples.csv) ·
-[Raw CPR samples](bench/runs/gen22/cpr/samples.csv) ·
+[Method and environment](bench/GEN23.md) ·
+[Raw decode samples](bench/runs/gen23/decode/samples.csv) ·
+[Raw CPR samples](bench/runs/gen23/cpr/samples.csv) ·
 [All generations](bench/results.csv) ·
 [CPR overhead history](bench/CPR-OVERHEAD.md) ·
 [Animated history](docs/images/throughput.gif)

@@ -1,0 +1,72 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T22:53:48.601746+00:00",
+  "files": {
+    "tests/evidence/diagnostics/gen23/run_prepared.py": {
+      "sha256": "a265e11a4a05cb9910d1237bca67546bfeaac865fb87a1c2f60ce04a0f07e061",
+      "adapted_from": "tests/evidence/diagnostics/gen22/run_prepared.py",
+      "prior_sha256": "758cdba679abdf8a7b267c78863a9bf50c6a51c669f621e50fe7a044a821d28e"
+    },
+    "tests/evidence/diagnostics/gen23/snapshot_history.py": {
+      "sha256": "0ce03239e8bd5ddf396d1091961fafd08d5978ac6604e089bcb60235ee86d617",
+      "adapted_from": "tests/evidence/diagnostics/gen22/snapshot_history.py",
+      "prior_sha256": "dd2c1d19a134a33de2ec428847da65bd0f9f11f360d29269f10fea14f2cae242"
+    }
+  },
+  "diff_sha256": "82db2af8113cb0f8309026f6a730f2278ebb07fdba07070103d86d0a868d23b6",
+  "artifact_commit": null,
+  "timed_commit": "9b6868f21fcac0a59044153f01e6691d091dbb5c",
+  "worker_sha256": "ece1cad565de9b2b45288ee494b2b944e51f3cd6ac00b4728eaa41d94e55d47e",
+  "benchmark_summary_sha256": "211395667a7cd4c2eb7069ab4c260d107d21c811296a981906c9b8ede6b63cc1",
+  "benchmark_result_review_sha256": "53c46e26572e31fbe0f0a684cafe16c951e7dced380c7fb25a68f42b3158986d",
+  "expected_correctness_input_count": 200,
+  "expected_prior_csv_rows": 48,
+  "generic_helpers": {
+    "review/diagnostics/build_decode_costs.py": "107b85cba1ed3483b04dfcffb5b0826d16b33d100b1abbb0236c06ec5c66a42e",
+    "review/diagnostics/bind_benchmark_history.py": "fc72612cb7a12245265a722f331e88bfcdaf46df4c8dffd9616f2749c6394cf3",
+    "review/diagnostics/run_cost_campaign.py": "307818a1bd54d1083a8f8717950fc004787cab2e98b079f16b1743514d79e6e2",
+    "review/diagnostics/run_native_df.py": "311172bfe88d3ab8ee567c429d290cc91e9120e41496b3a2129b8acf0a15d8f7",
+    "review/diagnostics/profile_decode_costs.py": "19494d6c90c2733f50debeee4ad075e10adbb721f9b455c76d611e8ba1705bbe",
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/archive_cost_campaign.py": "513212241fd3997a8b4f1eec4f390b94f8bfb40e9f70880f342b7366cc56d93a",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "updated_committed_helpers": {
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "diagnostic_tooling_validation": {
+    "path": "tests/evidence/optimization/gen22/diagnostic-tooling/validation.json",
+    "sha256": "3e8fbe78c716c1a9c6bfd3dac399a23ada1822491e788f725facc4d8d22821f2"
+  },
+  "adaptations": [
+    "Generation/path and 197-to-200 inventory changes from final gen22; retain all prior proof guards and require CommBValidity40/50/60.",
+    "No workload, output validation, stage algorithm, frozen helper or shared diagnostic source change. All nine shared helpers are byte-identical to reviewed gen22.",
+    "Compact history binder retains the prior algorithm with only current generation directories/report exclusions; no historical artifact copies."
+  ],
+  "paths": {
+    "decode_cache": ".cache/gen23-costs",
+    "decode_evidence": "tests/evidence/diagnostics/gen23",
+    "cpr_evidence": "tests/evidence/diagnostics/gen23-cpr",
+    "isolated_completion": "tests/evidence/diagnostics/gen23-cpr/isolated-perf-completion.json",
+    "source_review": "tests/evidence/diagnostics/gen23/independent-review/source-review.json"
+  },
+  "commands_executed": "ast.parse and source/metadata hashing only; controllers not imported or executed; no build, history snapshot, native census, profiler, capture or cleanup.",
+  "release_conditions": [
+    "Exact root-supplied pushed artifact commit must equal HEAD, differ from and descend from the measured source, with all 200 current correctness inputs and current native artifacts equal to the measured inputs.",
+    "Independent preparation review and root release before build. Both diagnostic drivers finish before root sequential isolated actual-worker decode/CPR perf.",
+    "Compact history snapshot after root status-doc readiness; full census and 13 profiles only after both isolated captures complete and root releases collection.",
+    "Both complete diagnostic reports/archive reviews pass before exact duplicate cleanup; retain all unique perf, failures, unmatched scratch and compressed history."
+  ],
+  "native_obligations": [
+    "Current source/native review must establish commb_validity_tables_live_path_verified and actual callable cbValid40/50/60, field lookup/table constructor boundaries where present. Record inlined helpers explicitly; do not infer table hits from inclusive costs.",
+    "Preserve raw_word_syndrome_live_path_verified, decode_frame_with_word_anchor, raw_syndrome_anchor, callable byte/bit CRC wrapper/fold anchors, prior integer normalization/power/conversion/bit-extraction checks.",
+    "Actual main path uses the returned parsed word; obsolete standalone decodeFrame/frameSyndrome/checksum/packFields entries remain optional and must not be assumed live. Validate fresh C and linked symbols.",
+    "Postcollection census independently checks parsed fields, returned wire word and direct syndrome against complete retained output and standalone frameSyndrome, outside collection.",
+    "Preserve all 13 profiles, per-DF families, exclusive stages, scored-register probes and complete output digests. Separate observed entries/direct edges, predicted iteration counts and overlapping inclusive costs.",
+    "Use finalized gen22 evidence-local finalizer/extractors when collection is authorized; retain failures and unique perf and clean exact duplicates only after both independent seals."
+  ],
+  "finalization_status": "Evidence-local report/extractor adaptation follows current source/native binding; no finalizer or workload has run."
+}

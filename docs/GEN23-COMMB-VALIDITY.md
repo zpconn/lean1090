@@ -54,7 +54,13 @@ has 9,542,689 exact matches and 933,475 documented D001 cases, with no
 unclassified differences. Fixed-gate archival and verified cleanup reclaimed
 another 5,733,335,040 bytes. Independent archive/plan review passed; three
 checker-only adaptation failures remain retained, without any producer change.
-The frozen two-mode benchmark remains.
+The frozen two-mode benchmark subsequently passed from clean source commit
+`9b6868f21fcac0a59044153f01e6691d091dbb5c`: **2.410234595243× decode** and
+**1.835727795894× CPR**. Lean throughput increased 11.64% and 9.83% versus
+generation 22. Signed CPR overhead is 0.596047914540 µs/message for Lean
+and 0.008262097523 for rs1090, including measurement noise between modes.
+All 96 samples, fresh-build provenance and four Windows power-plan captures
+are retained in the [benchmark report](../bench/GEN23.md).
 
 Native review passed: 161 checks bind 272 inputs and all 22
 native sets. CommB is the sole changed set. The tables initialize persistently
