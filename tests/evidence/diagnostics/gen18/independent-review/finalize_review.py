@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""Seal independent generation-18 review; no builds or native execution."""
+import sys
+sys.dont_write_bytecode=True
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,importlib.util,subprocess
+B=Path('tests/evidence/diagnostics/gen18');R=B/'independent-review'
+def read(p):return json.loads(Path(p).read_text())
+def sha(p):
+ h=hashlib.sha256()
+ with Path(p).open('rb') as f:
+  for x in iter(lambda:f.read(1<<20),b''):h.update(x)
+ return h.hexdigest()
+checks=read(R/'final-checks.json');v=read(B/'validation.json');m=read(B/'archive-manifest.json');c=read(B/'campaign.json');s=read(R/'source-review.json')
+assert checks['status']==v['status']==c['status']=='passed'
+for key,path in [('report',Path('docs/GEN18-COST-BREAKDOWN.md')),('analysis',B/'analysis/analysis.json'),('manifest',B/'archive-manifest.json'),('validation',B/'validation.json'),('source_review',R/'source-review.json')]:assert checks[key+'_sha256']==sha(path)
+assert checks['checker_sha256']==sha(R/'check_final.py')
+derived=set('analysis/ANALYSIS.md analysis/analysis.json analyze.stderr analyze.stdout archive-manifest.json archive.stderr archive.stdout byte-native-counts.json campaign.stderr campaign.stdout constant-contexts.stderr constant-contexts.stdout constant-native-contexts.json context-notes.md finalize.stderr finalize.stdout helper-comparison.json pack-contexts.stderr pack-contexts.stdout pack-fields-direct-costs.json penalty-probe-costs.json ratio-contexts.stderr ratio-contexts.stdout ratio-native-contexts.json report.stderr report.stdout validation.json wind-native-counts.json'.split())
+derived.update('campaign-command.json campaign-prepared.stdout campaign-prepared.stderr power-contexts.stdout power-contexts.stderr power-native-contexts.json'.split())
+derived.update('priority-contexts.stdout priority-contexts.stderr priority-helper-contexts.json'.split())
+expected=set(m['files'])|derived
+actual={str(p.relative_to(B)) for p in B.rglob('*') if p.is_file() and (not p.is_relative_to(R) or str(p.relative_to(B)) in m['files'])}
+assert actual==expected,(actual-expected,expected-actual)
+assert len(m['files'])==486 and len(derived)==37 and len(expected)==523
+assert all(not p.is_symlink() for p in B.rglob('*'))
+for name in ['campaign','finalize','report','pack-contexts','constant-contexts','ratio-contexts','power-contexts','campaign-prepared','priority-contexts','analyze','archive']:assert (B/(name+'.stderr')).read_bytes()==b'',name
+assert read(B/'finalize.stdout')==v
+printed=[json.loads(x) for x in (B/'campaign.stdout').read_text().splitlines() if x]
+assert len(printed)==13 and sorted(printed,key=lambda x:x['mode'])==sorted(c['profiles'],key=lambda x:x['mode'])
+for name,row in m['files'].items():assert sha(B/name)==row['stored_sha256'],name
+for command in s['commands']:assert command['exit_code']==0 and sha(command['output'])==command['sha256']
+for path,row in s['source_C_object_trace_bindings'].items():
+ assert sha(path)==row['source_sha256']
+ for path,h in row['artifacts'].items():assert sha(path)==h
+for key in ['previous_source_review','implementation_native_review']:
+ row=s[key];assert sha(row['path'])==row['sha256']
+assert len(s['unchanged_native_modules'])==21
+for key in ['pack_fields_shift_mask_verified','shared_syndrome_decode_verified','integer_score_gate_verified','affine_payload_value_verified','field_mask_verified','qnh_table_live_path_verified','word_crc_live_path_verified','byte_words_live_path_verified','bds50_wind_penalty_live_path_verified','bds60_ratio_enclosure_live_path_verified','commb_payload_limit_live_path_verified','power_two_table_live_path_verified','dyadic_to_float_live_path_verified']:assert s[key] is True
+history=read(B/'historical-inputs.json')
+tooling=read(R/'producer-tooling-review.json');assert tooling['status']=='passed' and tooling['findings']==[]
+for p,h in tooling['bindings'].items():assert sha(p)==h,p
+sp=importlib.util.spec_from_file_location('review_final_history',B/'snapshot_history.py');hm=importlib.util.module_from_spec(sp);sp.loader.exec_module(hm);assert hm.verify(history)==17095
+assert len(history['binding']['untracked_and_ignored_file_identities'])==275 and len(history['binding']['retained_historical_perf_identities'])==21
+assert len(checks['profiles_independently_recounted'])==13 and checks['total_ir']==v['total_ir']
+assert checks['exclusive_stages']==v['exclusive_stage_ir']
+assert checks['pack_comparisons'][1]['total']==read(B/'pack-fields-direct-costs.json')['generations'][1]['total']
+cleanup=B/'cleanup_cache.py';assert sha(cleanup)==m['files']['cleanup_cache.py']['stored_sha256']
+# Source-reviewed cleanup cannot touch production or archived evidence: own-cache
+# duplicates need decompressed hash+size equality; omitted names are explicit;
+# fsync and strict identities precede unlink; raw perf remains protected.
+assert checks['source_review_sha256']==sha(R/'source-review.json')
+for path,h in c['protected_inputs'].items():assert sha(path)==h,path
+assert len(c['protected_inputs'])==246
+lock=[line.split('  ',1) for line in Path('spec.lock').read_text().splitlines()];assert len(lock)==104
+for h,path in lock:assert sha(path)==h
+assert sha('spec.lock')=='5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8'
+review_files={str(p.relative_to(B)):sha(p) for p in R.rglob('*') if p.is_file() and p.name not in {'independent-review.json','seal-01.log'}}
+result={'status':'passed','reviewed_utc':datetime.now(timezone.utc).isoformat(),'manifest_sha256':sha(B/'archive-manifest.json'),'report_sha256':checks['report_sha256'],'validation_sha256':checks['validation_sha256'],'analysis_sha256':checks['analysis_sha256'],'source_review_sha256':checks['source_review_sha256'],'raw_recount_sha256':sha(R/'final-checks.json'),'primary_archive_members':486,'non_review_evidence_membership_count':len(expected),'supplement_members':sorted(derived),'supplement_hashes':{n:sha(B/n) for n in sorted(derived)},'profiles_independently_recounted':13,'protected_inputs_unchanged':246,'locked_files_unchanged':104,'fresh_native_sets':22,'reused_production_objects':21,'total_ir':checks['total_ir'],'exclusive_stage_ir':checks['exclusive_stages'],'pack_fields_comparisons':checks['pack_comparisons'],'historical_binding_sha256':sha(B/'historical-inputs.json'),'historical_committed_files':17095,'historical_ignored_identities':275,'historical_raw_perf_identities':21,'perf':{k:checks[k] for k in ['perf_raw_samples','perf_visible_decoder_samples','perf_unknown_frame_samples','perf_included_unknown_leaves']},'cleanup_source_sha256':sha(cleanup),'cleanup_source_review':'Passed read-only: exact retained duplicate validation and explicit own-cache rebuildable names; durable pre-unlink receipts; no recursion, raw perf and unbound files preserved. No cleanup executed by reviewer.','reviewer_attempts':[{'log':'final-checks-01.log','status':'passed'},{'log':'seal-01.log','status':'passed'}],'power_tooling_review_sha256':sha(R/'producer-tooling-review.json'),'power_rows_independently_recounted':checks['power_rows_independently_recounted'],'power_contexts_recounted':checks['power_contexts_recounted'],'priority_helper_rows_independently_recounted':checks['priority_helper_rows_independently_recounted'],'priority_contexts_independently_recounted':checks['priority_contexts_independently_recounted'],'dyadic_to_float_live_path_verified':True,'reviewer_files':review_files,'findings':[],'limits':history['limits']+['Instruction costs are diagnostic, not throughput predictions. Inclusive groups overlap and compiler inlining changes observed boundaries.','Current archives and raw profiles were freshly hash-checked; old ignored transcript identities are not a new full-content integrity audit.','Review records pre-cleanup state; a later authorized cleanup requires its own receipt. Parent controls hold release pending CPR review.']}
+p=R/'independent-review.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({'status':'passed','sha256':sha(p),'primary_members':486,'complete_producer_members':len(expected),'total_ir':checks['total_ir']}))

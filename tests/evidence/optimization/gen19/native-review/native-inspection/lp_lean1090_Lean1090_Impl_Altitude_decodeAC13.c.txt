@@ -1,0 +1,149 @@
+480: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Altitude_decodeAC13(lean_object* v_word_153_){
+481: _start:
+482: {
+483: lean_object* v___x_154_; uint8_t v___x_155_; 
+484: v___x_154_ = lean_unsigned_to_nat(8192u);
+485: v___x_155_ = lean_nat_dec_le(v___x_154_, v_word_153_);
+486: if (v___x_155_ == 0)
+487: {
+488: lean_object* v___x_156_; uint8_t v___x_157_; 
+489: v___x_156_ = lean_unsigned_to_nat(0u);
+490: v___x_157_ = lean_nat_dec_eq(v_word_153_, v___x_156_);
+491: if (v___x_157_ == 0)
+492: {
+493: lean_object* v___x_158_; lean_object* v___x_159_; lean_object* v___x_160_; uint8_t v___x_161_; 
+494: v___x_158_ = lean_unsigned_to_nat(6u);
+495: v___x_159_ = lp_lean1090_Lean1090_Impl_Altitude_bit(v_word_153_, v___x_158_);
+496: v___x_160_ = lean_unsigned_to_nat(1u);
+497: v___x_161_ = lean_nat_dec_eq(v___x_159_, v___x_160_);
+498: lean_dec(v___x_159_);
+499: if (v___x_161_ == 0)
+500: {
+501: lean_object* v___x_162_; lean_object* v___x_163_; uint8_t v___x_164_; 
+502: v___x_162_ = lean_unsigned_to_nat(4u);
+503: v___x_163_ = lp_lean1090_Lean1090_Impl_Altitude_bit(v_word_153_, v___x_162_);
+504: v___x_164_ = lean_nat_dec_eq(v___x_163_, v___x_160_);
+505: lean_dec(v___x_163_);
+506: if (v___x_164_ == 0)
+507: {
+508: lean_object* v___x_165_; 
+509: v___x_165_ = lp_lean1090_Lean1090_Impl_Altitude_decodeGillham(v_word_153_);
+510: if (lean_obj_tag(v___x_165_) == 0)
+511: {
+512: lean_object* v___x_166_; 
+513: v___x_166_ = lean_box(0);
+514: return v___x_166_;
+515: }
+516: else
+517: {
+518: lean_object* v_val_167_; lean_object* v___x_169_; uint8_t v_isShared_170_; uint8_t v_isSharedCheck_175_; 
+519: v_val_167_ = lean_ctor_get(v___x_165_, 0);
+520: v_isSharedCheck_175_ = !lean_is_exclusive(v___x_165_);
+521: if (v_isSharedCheck_175_ == 0)
+522: {
+523: v___x_169_ = v___x_165_;
+524: v_isShared_170_ = v_isSharedCheck_175_;
+525: goto v_resetjp_168_;
+526: }
+527: else
+528: {
+529: lean_inc(v_val_167_);
+530: lean_dec(v___x_165_);
+531: v___x_169_ = lean_box(0);
+532: v_isShared_170_ = v_isSharedCheck_175_;
+533: goto v_resetjp_168_;
+534: }
+535: v_resetjp_168_:
+536: {
+537: lean_object* v___x_171_; lean_object* v___x_173_; 
+538: v___x_171_ = lean_alloc_ctor(0, 1, 0);
+539: lean_ctor_set(v___x_171_, 0, v_val_167_);
+540: if (v_isShared_170_ == 0)
+541: {
+542: lean_ctor_set(v___x_169_, 0, v___x_171_);
+543: v___x_173_ = v___x_169_;
+544: goto v_reusejp_172_;
+545: }
+546: else
+547: {
+548: lean_object* v_reuseFailAlloc_174_; 
+549: v_reuseFailAlloc_174_ = lean_alloc_ctor(1, 1, 0);
+550: lean_ctor_set(v_reuseFailAlloc_174_, 0, v___x_171_);
+551: v___x_173_ = v_reuseFailAlloc_174_;
+552: goto v_reusejp_172_;
+553: }
+554: v_reusejp_172_:
+555: {
+556: return v___x_173_;
+557: }
+558: }
+559: }
+560: }
+561: else
+562: {
+563: lean_object* v___x_176_; lean_object* v___x_177_; lean_object* v___x_178_; lean_object* v___x_179_; lean_object* v___x_180_; lean_object* v___x_181_; lean_object* v___x_182_; lean_object* v___x_183_; lean_object* v___x_184_; lean_object* v___x_185_; lean_object* v_n_186_; lean_object* v___x_187_; lean_object* v___x_188_; lean_object* v___x_189_; lean_object* v___x_190_; lean_object* v___x_191_; lean_object* v___x_192_; lean_object* v___x_193_; 
+564: v___x_176_ = lean_unsigned_to_nat(7u);
+565: v___x_177_ = lean_nat_shiftr(v_word_153_, v___x_176_);
+566: v___x_178_ = lean_unsigned_to_nat(32u);
+567: v___x_179_ = lean_nat_mul(v___x_177_, v___x_178_);
+568: lean_dec(v___x_177_);
+569: v___x_180_ = lean_unsigned_to_nat(5u);
+570: v___x_181_ = lp_lean1090_Lean1090_Impl_Altitude_bit(v_word_153_, v___x_180_);
+571: v___x_182_ = lean_unsigned_to_nat(16u);
+572: v___x_183_ = lean_nat_mul(v___x_181_, v___x_182_);
+573: lean_dec(v___x_181_);
+574: v___x_184_ = lean_nat_add(v___x_179_, v___x_183_);
+575: lean_dec(v___x_183_);
+576: lean_dec(v___x_179_);
+577: v___x_185_ = lean_nat_mod(v_word_153_, v___x_182_);
+578: v_n_186_ = lean_nat_add(v___x_184_, v___x_185_);
+579: lean_dec(v___x_185_);
+580: lean_dec(v___x_184_);
+581: v___x_187_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__0, &lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__0_once, _init_lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__0);
+582: v___x_188_ = lean_nat_to_int(v_n_186_);
+583: v___x_189_ = lean_int_mul(v___x_187_, v___x_188_);
+584: lean_dec(v___x_188_);
+585: v___x_190_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__1, &lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__1_once, _init_lp_lean1090_Lean1090_Impl_Altitude_decodeAC13___closed__1);
+586: v___x_191_ = lean_int_sub(v___x_189_, v___x_190_);
+587: lean_dec(v___x_189_);
+588: v___x_192_ = lean_alloc_ctor(0, 1, 0);
+589: lean_ctor_set(v___x_192_, 0, v___x_191_);
+590: v___x_193_ = lean_alloc_ctor(1, 1, 0);
+591: lean_ctor_set(v___x_193_, 0, v___x_192_);
+592: return v___x_193_;
+593: }
+594: }
+595: else
+596: {
+597: lean_object* v___x_194_; lean_object* v___x_195_; lean_object* v___x_196_; lean_object* v___x_197_; lean_object* v___x_198_; lean_object* v___x_199_; lean_object* v___x_200_; lean_object* v___x_201_; 
+598: v___x_194_ = lean_unsigned_to_nat(7u);
+599: v___x_195_ = lean_nat_shiftr(v_word_153_, v___x_194_);
+600: v___x_196_ = lean_unsigned_to_nat(64u);
+601: v___x_197_ = lean_nat_mul(v___x_195_, v___x_196_);
+602: lean_dec(v___x_195_);
+603: v___x_198_ = lean_nat_mod(v_word_153_, v___x_196_);
+604: v___x_199_ = lean_nat_add(v___x_197_, v___x_198_);
+605: lean_dec(v___x_198_);
+606: lean_dec(v___x_197_);
+607: v___x_200_ = lean_alloc_ctor(1, 1, 0);
+608: lean_ctor_set(v___x_200_, 0, v___x_199_);
+609: v___x_201_ = lean_alloc_ctor(1, 1, 0);
+610: lean_ctor_set(v___x_201_, 0, v___x_200_);
+611: return v___x_201_;
+612: }
+613: }
+614: else
+615: {
+616: lean_object* v___x_202_; 
+617: v___x_202_ = lean_box(0);
+618: return v___x_202_;
+619: }
+620: }
+621: else
+622: {
+623: lean_object* v___x_203_; 
+624: v___x_203_ = lean_box(0);
+625: return v___x_203_;
+626: }
+627: }
+628: }

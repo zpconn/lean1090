@@ -45,10 +45,17 @@ small-dyadic integer bit packing to `Impl.CPR.Policy.toFloat`, with the original
 total conversion retained as fallback. Its all-input proof, CPR integration,
 full fixed gate, fresh 10M campaign and final reviews passed. Verified scratch
 cleanup reclaimed 11,092,893,696 allocated bytes. Result and presentation
-reviews passed; the artifacts are ready for commit and push. Fresh decode and CPR
-diagnostic controllers are prepared and independently reviewed; run them
-after the artifact commit before selecting generation 19. No generation 19
-change has been selected.
+reviews passed; artifacts were pushed as
+`9c2745732de1626418b77b468069b12ab8a1e5c1`. Fresh decode and CPR diagnostics, independent
+reviews and bounded cleanup passed. Generation 19 now replaces powers-of-two
+arithmetic with exact natural shifts/masks in four altitude, identity and
+signed-field extraction definitions. Runtime changes and all-input helper proofs
+are complete; the combined 3,536-job integration build passes with 192
+correctness inputs unchanged. Full fixed and fresh 10M campaigns passed,
+including independent native and fresh replay reviews. Verified scratch cleanup
+reclaimed 11,092,008,960 allocated bytes. Final independent gate/archive/plan
+review passed without findings. Commit the verified source and complete the
+isolated clean-commit benchmark before claiming a generation 19 result.
 Keep all existing frozen-file, proof, full-gate,
 isolated benchmark and disk-retention requirements. `PROGRESS.md` records
 current work and review results.

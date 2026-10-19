@@ -16,6 +16,8 @@ import Proofs.SyndromeReuse
 import Proofs.AffineValue
 import Proofs.FrameBits
 import Proofs.CommBQNH
+import Proofs.BitExtraction
+import Proofs.PayloadIntegerShift
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -27,7 +29,7 @@ namespace Lean1090.Proofs
 private theorem decoder_ACASFields_parts_eq : @Impl.acasParts = @Spec.ACASFields.parts := by
   rfl
 private theorem decoder_Altitude_bit_eq : @Impl.Altitude.bit = @Spec.Altitude.bit := by
-  rfl
+  exact BitExtraction.bit_function_eq
 private theorem decoder_Altitude_gray100_eq : @Impl.Altitude.gray100 = @Spec.Altitude.gray100 := by
   unfold Impl.Altitude.gray100 Spec.Altitude.gray100
   simp only [decoder_Altitude_bit_eq]
@@ -35,7 +37,7 @@ private theorem decoder_Altitude_gray500_eq : @Impl.Altitude.gray500 = @Spec.Alt
   unfold Impl.Altitude.gray500 Spec.Altitude.gray500
   simp only [decoder_Altitude_bit_eq]
 private theorem decoder_Altitude_grayDecode_eq : @Impl.Altitude.grayDecode = @Spec.Altitude.grayDecode := by
-  rfl
+  exact BitExtraction.grayDecode_function_eq
 private theorem decoder_Altitude_validGillham_eq :
     @Impl.Altitude.validGillham = @Spec.Altitude.validGillham := by
   unfold Impl.Altitude.validGillham Spec.Altitude.validGillham
@@ -59,7 +61,7 @@ private theorem decoder_Altitude_decodeGNSSMetres_eq :
   rfl
 private theorem decoder_Altitude_oracleAC12_eq : @Impl.Altitude.oracleAC12 = @Spec.Altitude.oracleAC12 := by
   unfold Impl.Altitude.oracleAC12 Spec.Altitude.oracleAC12
-  simp only [decoder_Altitude_decodeAC12_eq]
+  simp only [decoder_Altitude_bit_eq, decoder_Altitude_decodeAC12_eq]
   rfl
 private theorem decoder_Altitude_oracleAC13_eq : @Impl.Altitude.oracleAC13 = @Spec.Altitude.oracleAC13 := by
   unfold Impl.Altitude.oracleAC13 Spec.Altitude.oracleAC13
@@ -207,7 +209,7 @@ private theorem decoder_adsbVerticalRate_eq : @Impl.adsbVerticalRate = @Spec.ads
   unfold Impl.adsbVerticalRate Spec.adsbVerticalRate
   simp only [decoder_adsbSigned_eq, decoder_payloadBits_eq]
 private theorem decoder_identityCode_eq : @Impl.identityCode = @Spec.identityCode := by
-  rfl
+  exact BitExtraction.identityCode_function_eq
 private theorem decoder_Semantics_adsbStandardValues_eq :
     @Impl.Semantics.adsbStandardValues = @Spec.Semantics.adsbStandardValues := by
   unfold Impl.Semantics.adsbStandardValues Spec.Semantics.adsbStandardValues
@@ -239,7 +241,7 @@ private theorem decoder_Semantics_adsbStandardFloats_eq :
   simp only [decoder_Presentation_oracleADSBFloats_eq, decoder_Presentation_standardVelocityComponents_eq,
     decoder_Presentation_velocitySpeed_eq, decoder_Presentation_velocityTrack_eq, decoder_payloadBits_eq]
 private theorem decoder_payloadInteger_eq : @Impl.payloadInteger = @Spec.payloadInteger := by
-  rfl
+  exact PayloadIntegerShift.payloadInteger_function_eq
 private theorem decoder_payloadValue_eq : @Impl.payloadValue = @Spec.payloadValue := by
   funext column word
   exact AffineValue.payloadValue_eq column word

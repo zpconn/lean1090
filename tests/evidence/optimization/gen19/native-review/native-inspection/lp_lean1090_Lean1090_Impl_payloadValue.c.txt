@@ -1,0 +1,99 @@
+385: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_payloadValue(lean_object* v_column_119_, lean_object* v_word_120_){
+386: _start:
+387: {
+388: lean_object* v___y_122_; lean_object* v___y_123_; lean_object* v_start_129_; lean_object* v_width_130_; uint8_t v_coding_131_; lean_object* v_scale_132_; lean_object* v_offset_133_; lean_object* v_status_134_; lean_object* v___x_143_; uint8_t v___x_144_; 
+389: v_start_129_ = lean_ctor_get(v_column_119_, 1);
+390: lean_inc(v_start_129_);
+391: v_width_130_ = lean_ctor_get(v_column_119_, 2);
+392: lean_inc(v_width_130_);
+393: v_coding_131_ = lean_ctor_get_uint8(v_column_119_, sizeof(void*)*6);
+394: v_scale_132_ = lean_ctor_get(v_column_119_, 3);
+395: lean_inc_ref(v_scale_132_);
+396: v_offset_133_ = lean_ctor_get(v_column_119_, 4);
+397: lean_inc_ref(v_offset_133_);
+398: v_status_134_ = lean_ctor_get(v_column_119_, 5);
+399: lean_inc(v_status_134_);
+400: lean_dec_ref(v_column_119_);
+401: v___x_143_ = lean_unsigned_to_nat(0u);
+402: v___x_144_ = lean_nat_dec_eq(v_status_134_, v___x_143_);
+403: if (v___x_144_ == 0)
+404: {
+405: lean_object* v___x_145_; lean_object* v___x_146_; uint8_t v___x_147_; 
+406: v___x_145_ = lean_unsigned_to_nat(1u);
+407: v___x_146_ = lp_lean1090_Lean1090_Impl_payloadBits(v_word_120_, v_status_134_, v___x_145_);
+408: lean_dec(v_status_134_);
+409: v___x_147_ = lean_nat_dec_eq(v___x_146_, v___x_143_);
+410: lean_dec(v___x_146_);
+411: if (v___x_147_ == 0)
+412: {
+413: goto v___jp_135_;
+414: }
+415: else
+416: {
+417: lean_object* v___x_148_; 
+418: lean_dec_ref(v_offset_133_);
+419: lean_dec_ref(v_scale_132_);
+420: lean_dec(v_width_130_);
+421: lean_dec(v_start_129_);
+422: v___x_148_ = lean_box(0);
+423: return v___x_148_;
+424: }
+425: }
+426: else
+427: {
+428: lean_dec(v_status_134_);
+429: goto v___jp_135_;
+430: }
+431: v___jp_121_:
+432: {
+433: lean_object* v___x_124_; uint8_t v___x_125_; 
+434: v___x_124_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_payloadValue___closed__0, &lp_lean1090_Lean1090_Impl_payloadValue___closed__0_once, _init_lp_lean1090_Lean1090_Impl_payloadValue___closed__0);
+435: v___x_125_ = l_instDecidableEqRat_decEq(v___y_122_, v___x_124_);
+436: if (v___x_125_ == 0)
+437: {
+438: lean_object* v___x_126_; lean_object* v___x_127_; 
+439: v___x_126_ = l_Rat_add(v___y_123_, v___y_122_);
+440: v___x_127_ = lean_alloc_ctor(1, 1, 0);
+441: lean_ctor_set(v___x_127_, 0, v___x_126_);
+442: return v___x_127_;
+443: }
+444: else
+445: {
+446: lean_object* v___x_128_; 
+447: lean_dec_ref(v___y_122_);
+448: v___x_128_ = lean_alloc_ctor(1, 1, 0);
+449: lean_ctor_set(v___x_128_, 0, v___y_123_);
+450: return v___x_128_;
+451: }
+452: }
+453: v___jp_135_:
+454: {
+455: lean_object* v___x_136_; lean_object* v___x_137_; lean_object* v___x_138_; uint8_t v___x_139_; 
+456: v___x_136_ = lp_lean1090_Lean1090_Impl_payloadBits(v_word_120_, v_start_129_, v_width_130_);
+457: lean_dec(v_start_129_);
+458: v___x_137_ = lp_lean1090_Lean1090_Impl_payloadInteger(v_coding_131_, v_width_130_, v___x_136_);
+459: lean_dec(v_width_130_);
+460: v___x_138_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_payloadValue___closed__1, &lp_lean1090_Lean1090_Impl_payloadValue___closed__1_once, _init_lp_lean1090_Lean1090_Impl_payloadValue___closed__1);
+461: v___x_139_ = l_instDecidableEqRat_decEq(v_scale_132_, v___x_138_);
+462: if (v___x_139_ == 0)
+463: {
+464: lean_object* v___x_140_; lean_object* v___x_141_; 
+465: v___x_140_ = l_Rat_ofInt(v___x_137_);
+466: v___x_141_ = l_Rat_mul(v___x_140_, v_scale_132_);
+467: lean_dec_ref(v___x_140_);
+468: v___y_122_ = v_offset_133_;
+469: v___y_123_ = v___x_141_;
+470: goto v___jp_121_;
+471: }
+472: else
+473: {
+474: lean_object* v___x_142_; 
+475: lean_dec_ref(v_scale_132_);
+476: v___x_142_ = l_Rat_ofInt(v___x_137_);
+477: v___y_122_ = v_offset_133_;
+478: v___y_123_ = v___x_142_;
+479: goto v___jp_121_;
+480: }
+481: }
+482: }
+483: }

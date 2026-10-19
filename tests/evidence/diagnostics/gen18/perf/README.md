@@ -1,0 +1,5 @@
+# Generation 18 decode actual-worker diagnostic sampling
+
+One actual frozen worker run was sampled on CPU 0 with cpu-clock:u at 199 Hz after both diagnostic builds. Decode and CPR captures ran sequentially with other native/profile jobs held. This is not a benchmark. All 281 protected inputs and 22 fresh native sets remained unchanged. The explicit source binding relates timed c19e00d to artifact 9c27457; documentation commits have no measured speed attribution.
+
+All 226 recorded samples were parsed; 82 have a visible Impl.decode ancestor and 144 are excluded, not assumed to be preparation. Unknown frames appear in 222 stacks, with 3 included unknown leaves. Both retained reports explicitly state zero lost samples. Conditional shares can be biased by inlining, tail calls and unwinding. Eager immutable table startup, including the complete power-of-two table, is outside the visible decode subset; scalar first-use constants may remain inside. No table-hit frequency or throughput effect is inferred from samples.

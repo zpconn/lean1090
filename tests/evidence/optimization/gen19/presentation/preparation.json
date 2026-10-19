@@ -1,0 +1,29 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T19:10:32.924768+00:00",
+  "generation": 19,
+  "expected_csv_rows": 40,
+  "expected_frames": 20,
+  "expected_correctness_inputs": 192,
+  "inputs": {
+    "tests/evidence/optimization/gen18/presentation/run_refresh.py": "f956bb91dfe97abd3cbd05dac367151e1a8f6c68b4684772f0a4afc64a0b1bef",
+    "review/packaging/check_presentation.py": "d21b3ef563e88dd05dd85c50a879a94fa24368404c42e07803cf90c2bb0f188f",
+    "review/presentation/render_throughput.py": "8ae36a8cec232f20b29e540b7664aafa46655c5f1826cd91d5330c03b58d872b",
+    "review/presentation/verify_throughput.py": "4fb0c2bfdde70c6136e4c678501fa31e83dff5937fe71bd95630dc2e181eb7c8"
+  },
+  "files": {
+    "tests/evidence/optimization/gen19/presentation/run_refresh.py": "57997b3c39b499bd56893ace335a5873c0c3aebff38eca8e45f1afe86d9beeaf",
+    "tests/evidence/optimization/gen19/presentation/check_presentation.py": "a11a76ad0cce7a677938d502dc5ec6248fe0ef24bb4544622a1429a1ebeb0db4",
+    "tests/evidence/optimization/gen19/presentation/controller.diff": "8e250e7d2cab87ebf47773ff1560091b1959cde55520a3baa72a06c139dac403",
+    "tests/evidence/optimization/gen19/presentation/checker.diff": "82359b36d08ee9513b6d58143dd52c28574f07575d255acb42382d07847704e7"
+  },
+  "changes": [
+    "No current README/chart or benchmark result changed.",
+    "Only generation/count/path updates, explicit execute/review-hash guard and exact positive-integer median decisions in controller.",
+    "Evidence-local generic checker changes only root resolution and target-status test; conventional flat fresh summary path needs no adaptation.",
+    "Exact inclusive 2/1 decisions derived independently for each mode; all-mode success remains logical AND. No assumption that either or both modes are below target.",
+    "Prior capstone/source/native/chart-history guards retained. No native workload, renderer, checker or future-result read executed."
+  ],
+  "release_command_template": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen19/presentation/run_refresh.py --execute --expected-review-sha256 <actual-passed-gen19-results-review-SHA256>",
+  "syntax_validation": "ast.parse on both prepared sources only; no imports or execution."
+}

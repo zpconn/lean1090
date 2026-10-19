@@ -1,0 +1,62 @@
+{
+  "status": "passed_read_only_source_proof_and_integration_review",
+  "recorded_utc": "2026-10-19T19:00:50.480271+00:00",
+  "findings": [],
+  "initial_source_assessment_sha256": "7c7d8167b68d2cc2d9d1e5988261511b12d2322de7981adf4e9a9844cc414ded",
+  "source_bindings": {
+    "Impl/Altitude.lean": "12a9cd6b5bf23367fe48dcf8ebd0a656701c9641257ec8044a080ec080442750",
+    "Impl/Frame.lean": "54a9142b4c1ca8c0bf4063885fda7dd96d8ede06a23af3ecf18e2b55bd9e0011",
+    "Impl/PayloadBits.lean": "2af621446a488a8095fd735ef77355c282b9321cafcaea1c7d0dba63fdd3ac04",
+    "Proofs/BitExtraction.lean": "da0e286abcdff01fc335b3912ca51425c51baf8db1883309faa362e1160f9613",
+    "Proofs/PayloadIntegerShift.lean": "d49125f68bad6d54f86357c01439dcd80602b377007f2827c98b5637f0dba742",
+    "Proofs/AffineValue.lean": "b283b61ce2755d31bbb3c3ad177ba901ede6b6cc2797700f551cc662b8587caa",
+    "Proofs/Decoder.lean": "caf202f4aeceb6c7f07dd349cbaad93126daf8a12f46f0e820289bfce3a3d662",
+    "Proofs/CommBTables.lean": "827547cd3a41f13f743629cfc03759987e2638211a110a3e9bcfb63814495c6b"
+  },
+  "all_gate_inputs_unchanged": 192,
+  "all_binaries_unchanged": 4,
+  "integrated_build_record_sha256": "107d4bd1109e782d6c66c3a3c250abd6107bcbe54d783265f5787311d0135f01",
+  "integrated_log_sha256": "ba10f1c160c655f65bea3987a626a528e0cff1eec0866c1075d904b982eb86ba",
+  "helper_bit_facts": 15,
+  "targeted_bridge_facts": 214,
+  "integrated_printed_facts": 238,
+  "allowed_axioms_only": true,
+  "existing_statement_counts": {
+    "Proofs/Decoder.lean": 169,
+    "Proofs/AffineValue.lean": 10,
+    "Proofs/CommBTables.lean": 8
+  },
+  "proof_assessment": [
+    "Every natural word/index/width is quantified without validity, representability or machine-width hypothesis. Core Nat identities directly rewrite both optimized operations to the original mathematical expressions.",
+    "Identity equality covers all BitVec13 values and retains the same digit permutation/reserved-bit omission.",
+    "Signed payload equality is for every coding/width/code, including width0 truncated subtraction and codes beyond the modulus; no unintended masking introduced.",
+    "Existing Decoder, affine and Comm-B density statements remain identical. Bridges only replace lost definitional equalities with unconditional proved equalities.",
+    "Nine bit/Gray/identity and six signed/unsigned boundary witnesses use kernel evaluation, not native_decide.",
+    "Bit wrapper preflight failure and two payload/integration elaboration failures remain retained; only final successful logs are used for allowed-axiom conclusions."
+  ],
+  "artifacts": {
+    "tests/evidence/optimization/gen19/bit-proof/summary.json": "21e3891ef9bffd962bb8f772b9cf0dac4f75de970d96cacf6d1d716e67704f1c",
+    "tests/evidence/optimization/gen19/payload-proof/summary.json": "c1588f85e82ed268e2b96dd5ddfd8a540943fd39ddfaefac1df470f04cdbe5ab",
+    "tests/evidence/optimization/gen19/payload-proof/attempt-03/execution.json": "0404c5b7d3e39b456ef24ec4df0a01d6fd3ab91c2d313cf06f7504a01eab922a",
+    "tests/evidence/optimization/gen19/payload-proof/attempt-03/build.log": "14955845abd29cc727e142d52a32faaa085ae420e12beeb41bc15d00347b44cc",
+    "tests/evidence/optimization/gen19/bit-proof/attempt-02/build.log": "458b3581dac1e26887b9140f4a4562930abf88ae62f700c27dc12ba68c7784ad"
+  },
+  "reviewer_sha256": "9f083b7ce548da754d94d13d1876a3c8f6a8e3740b8dc7b9024b3470dac4fff7",
+  "reviewer_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed_reviewer_parser",
+      "reason": "Initial parser omitted the distinct axiom-free log form; original script and log retained.",
+      "source_sha256": "05a09c91c64fcd558c782a4336c96992eadf7bc40e4d92171f5f362c55f8ff27",
+      "log_sha256": "1c7cafbbee5537c5fc1b6f7b99f95fb27e563464b40b41de16f4db6d9ad2e886"
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "log": "source-proof-02.log"
+    }
+  ],
+  "limits": [
+    "No proof build or native execution by this reviewer. Actual native capture is independently owned by fc005_verify; campaign/fixed gate remain separate pending evidence."
+  ]
+}

@@ -13,14 +13,15 @@ open Lean1090.Spec
 open Lean1090.Spec.Altitude
 
 -- Initial algorithm: Spec/Altitude.lean:19.
-/-- Sun, 2nd ed. (2021), ch.13 “Altitude code”, bit permutation: select one LSB-indexed bit. -/
-def bit (word place : Nat) : Nat := (word / 2 ^ place) % 2
+/-- Sun, 2nd ed. (2021), ch.13 “Altitude code”, bit permutation: select one
+LSB-indexed bit. Natural shifts and masks preserve arbitrary words and indices. -/
+def bit (word place : Nat) : Nat := (word >>> place) &&& 1
 
 -- Initial algorithm: Spec/Altitude.lean:22.
 /-- Sun, 2nd ed. (2021), ch.13 “Altitude code”, reflected Gray code: prefix-XOR its bits. -/
 def grayDecode (width word : Nat) : Nat :=
   (List.range width).foldl
-    (fun binary index => binary ^^^ (word / 2 ^ index)) 0
+    (fun binary index => binary ^^^ (word >>> index)) 0
 
 -- Initial algorithm: Spec/Altitude.lean:30.
 /-- Sun, 2nd ed. (2021), ch.13 “Altitude code”: D2 D4 A1 A2 A4 B1 B2 B4 order. -/

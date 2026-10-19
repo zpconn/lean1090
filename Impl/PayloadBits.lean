@@ -54,10 +54,11 @@ def decodePayloadFields (layout : List PayloadColumn) (word : Nat) : List Payloa
   layout.map fun c => ⟨c.name, payloadBits word c.start c.width⟩
 
 -- Initial algorithm: Spec/PayloadBits.lean:41.
-/-- Sun, 2nd ed. (2021), ch.17, signed EHS fields: integer interpretation before scaling. -/
+/-- Sun, 2nd ed. (2021), ch.17, signed EHS fields: integer interpretation
+before scaling. Natural shifts construct exact powers for every width. -/
 def payloadInteger (coding : PayloadCoding) (width code : Nat) : Int :=
-  if coding = .twosComplement ∧ code ≥ 2 ^ (width - 1) then
-    (code : Int) - (2 ^ width : Nat) else code
+  if coding = .twosComplement ∧ code ≥ (1 : Nat) <<< (width - 1) then
+    (code : Int) - ((1 : Nat) <<< width) else code
 
 /-- Exact affine interpretation of an integer field. Identity scale and zero
 offset need no rational multiplication or addition; every other case keeps

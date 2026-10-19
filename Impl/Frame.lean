@@ -93,7 +93,7 @@ def informationBits : FrameBody → Nat
 /-- Annex 10 IV (4th ed.), §3.1.2.6.7.1: exact Mode A identity digits.
 Returned value is the four-digit octal code as a Nat, not decimal text. -/
 def identityCode (code : BitVec 13) : Nat :=
-  let bit := fun n => (code.toNat / 2^n) % 2
+  let bit := fun n => (code.toNat >>> n) &&& 1
   let a := bit 11 + 2 * bit 9 + 4 * bit 7
   let b := bit 5 + 2 * bit 3 + 4 * bit 1
   let c := bit 12 + 2 * bit 10 + 4 * bit 8

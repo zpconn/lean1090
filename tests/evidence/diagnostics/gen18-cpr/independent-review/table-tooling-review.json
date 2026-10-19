@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "reviewed_at_utc": "2026-10-19T18:41:17.444668+00:00",
+  "reviewer": "cost_analysis",
+  "method": "Read-only source review and exact normalized comparison; no native execution, profiling, producer rerun or cleanup.",
+  "bindings": {
+    "tests/evidence/diagnostics/gen18-cpr/write_report.py": "137c8ef050b6e651d38d971d3a96f8ef0fe10523599e27040a3716f1ee56d9ff",
+    "tests/evidence/diagnostics/gen18-cpr/finalize.py": "c5009bd288dfd12233c5a7f14b38cdfa1bdaa15941fd123019fb23933d398b50",
+    "tests/evidence/diagnostics/gen18-cpr/extract_numeric_contexts.py": "4d010d6d32fe86afe0b525ac79ca0e525c9f704f80ad1bfe94ac9e11f0d1e517",
+    "tests/evidence/diagnostics/gen18-cpr/extract_table_contexts.py": "e57f8660a699a9ad1606a69d45a5fd95bb0562a2274fedfa22635460cdf5f26d",
+    "tests/evidence/diagnostics/gen18-cpr/extract_remaining_contexts.py": "59a1b5e9432b22b5d9818b16d19b7d258cbda3a2f5ae28d12cf4b8f1931ef5b3",
+    "tests/evidence/diagnostics/gen18-cpr/cleanup_cache.py": "fd8929722996c7feecf821e3588d174859bbf676148cc44d90f1d2aa860bc6e1",
+    "tests/evidence/diagnostics/gen18-cpr/preparation-correction/correction.json": "abf957423cb5bde1872e002da9b13b9816c8e5aee8e4ce5b307a28108ba30354",
+    "tests/evidence/diagnostics/gen18-cpr/preparation-correction/write_report.py": "f88352c5c5d678b679aa4815373525401ee6f93d71dd8de9d4444c74f082553b",
+    "tests/evidence/diagnostics/gen18-cpr/preparation-correction/finalize.py": "60ef990ad6f0b4c1fd267c3a9efd63a4879f76ff4cd67d1083e504a9793efdcc",
+    "tests/evidence/diagnostics/gen18-cpr/independent-review/source-review.json": "d6a8a070d3ab843b4913e6a1da6bb84e428bdc4304b5b611d6c897b4df3867b2",
+    "tests/evidence/diagnostics/gen17-cpr/write_report.py": "af41a521015a773910a15230f44c0617693a80f598e557acc2194e39b6a371ff",
+    "tests/evidence/diagnostics/gen17-cpr/finalize.py": "2310f7ee58af72a771d9868d51fbae77a44917b45078b63ecebfc1cd9f2c4764",
+    "tests/evidence/diagnostics/gen17-cpr/extract_numeric_contexts.py": "29321c60383fd43dabd0783978d5318643e45adae57ea79e1363426a99aa6d5a",
+    "tests/evidence/diagnostics/gen17-cpr/extract_table_contexts.py": "f3153879a1a546655a15df128dede75263d7808e859ea3bc1869b7c2273e09b6",
+    "tests/evidence/diagnostics/gen17-cpr/cleanup_cache.py": "ac144714c70ca069afe564761d43a4f68625f68132fb8419b5b5c1ef0e4897bc"
+  },
+  "findings": [],
+  "resolved_findings": [
+    {
+      "finding": "Two initial uppercase GEN17 report destinations survived lowercase generation substitution.",
+      "resolution": "Both corrected to GEN18 before report/finalizer execution; original sources and correction record retained. The historical GEN17 report still matches its recorded hash. Subsequent remaining-conversion narrative is separately covered by the final current hashes."
+    }
+  ],
+  "checks": [
+    "Cleanup and table-context extractor are byte-identical to generation17 after generation-path substitutions; all bounded names, gzip EOF/hash/size, archive and source identity, fsync, durable pre-unlink, final review seal and unique raw perf protection remain unchanged.",
+    "Numeric extractor adds only the actual callable toFloatFallback target and explicit overlap/zero/inlining limits. It preserves raw caller edges and reconciliation to helper counts/costs.",
+    "Remaining-conversion extraction binds the actual raw profile and analysis, retains exact caller chains for fromBits/round/exponent/wrapper/fallback, and separately reconciles incoming call counts and inclusive costs against stage helper groups. Every actual fallback edge must originate at the source-verified wrapper.",
+    "Table branch populations remain actual lookup entries minus direct formula calls under the source-proved at-most-one-fallback branch partition. No inclusive-cost subtraction is interpreted as a population.",
+    "Finalizer requires current guarded conversion, one-fallback boundary and zero-case native evidence, full same-generation decode digest equality, unchanged tracking rows/state, raw counts and stable actual-worker capture/source bindings.",
+    "Report distinguishes positive zero and admitted dyadics from fallback, labels inlined packing as lacking a separate boundary and preserves inclusive overlap and conditional perf limitations. Absent rounding/exponent contexts are not presented as universal zero work."
+  ],
+  "limits": [
+    "Independent final raw accounting, evidence membership and producer input checks remain the responsibility of the separate final reviewer. Cleanup may run only after both final diagnostic seals and coordinated quiescence."
+  ]
+}

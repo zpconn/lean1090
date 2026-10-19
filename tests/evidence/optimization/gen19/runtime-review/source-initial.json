@@ -1,0 +1,46 @@
+{
+  "status": "passed_initial_read_only_runtime_assessment",
+  "recorded_utc": "2026-10-19T18:53:04.233457+00:00",
+  "findings": [],
+  "runtime_sha256": {
+    "Impl/Altitude.lean": "12a9cd6b5bf23367fe48dcf8ebd0a656701c9641257ec8044a080ec080442750",
+    "Impl/Frame.lean": "54a9142b4c1ca8c0bf4063885fda7dd96d8ede06a23af3ecf18e2b55bd9e0011",
+    "Impl/PayloadBits.lean": "2af621446a488a8095fd735ef77355c282b9321cafcaea1c7d0dba63fdd3ac04",
+    "Tests/AltitudeDifferential.lean": "b59f28adc245e46c6377c1601e924e357c789a8136df95627d80809a42334f29",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Bench/WholeDecoder.lean": "ea0b8f3a94dfc801bbf0a8ce9091617f2a3eae4e122752e56de3caa5de40592b",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8"
+  },
+  "prior_committed_source_sha256": {
+    "Impl/Altitude.lean": "ee64c737b8cfc7323ce09ba1ed44391f8692065e3baf1feda11953ed07f597fb",
+    "Impl/Frame.lean": "fe59309f7f68424030a32a6c12600532df017469f8a898afe5b80810add4dfc1",
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb"
+  },
+  "baseline_commit": "9c2745732de1626418b77b468069b12ab8a1e5c1",
+  "core_lemma_bindings": {
+    "/home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/src/lean/Init/Data/Nat/Bitwise/Basic.lean": "0196b9eabcb97bd41b9ace0cfb828d2f0f0215085d2eb8972d2c541539c94df3",
+    "/home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/src/lean/Init/Data/Nat/Bitwise/Lemmas.lean": "34404caa511c59ce080cc121108fa45efdf7eac36891ff158ded096f7c900ecb",
+    "/home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/src/lean/Init/Data/Nat/Lemmas.lean": "c4530be5c96b507c13823378db43912a3ba577a2a23944ce222aaa7d193d2581"
+  },
+  "checks": [
+    "Exactly four executable definitions changed; comments aside all remaining runtime text in three modules is identical.",
+    "Altitude.bit uses arbitrary Nat shift before mask, so high input bits and oversized indices keep original total semantics.",
+    "grayDecode keeps List.range order, original accumulator/XOR order and full arbitrary width/word domain; no machine truncation.",
+    "identityCode preserves all digit indices and weighting; reserved bit6 remains unused.",
+    "payloadInteger keeps coding predicate and Int subtraction, including width0 truncated subtraction and noncanonical code values; no new modulo truncation or validity hypothesis.",
+    "Existing frozen altitude/upstream/Comm-B/worker adapters remain byte-identical and call live production entrypoints.",
+    "Only existing core Nat operations are used; no new cache, corpus dependence, trusted primitive or hardware Float arithmetic."
+  ],
+  "boundary_obligations": [
+    "bit zero/place0/high200/above highest index",
+    "Gray width0/width80/over-wide word retained",
+    "all BitVec13 identities including all bits and reserved bit6",
+    "signed width0 code0/1/2; width1; unsigned overwide; midpoint\u22121/midpoint/max; code above modulus; width80"
+  ],
+  "limits": [
+    "Source reasoning only at this stage. Final owner proof/integration logs and fresh linked C/native paths must be independently bound after combined build.",
+    "Exact natural shifts may still allocate on large values; no allocation-free or timing claim."
+  ],
+  "reviewer_sha256": "6ea7c18446f8ecadd57864fdb4cd124aca2ad6f3695bfbeaa64e94d94d19780e"
+}

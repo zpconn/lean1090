@@ -1,0 +1,51 @@
+--- tests/evidence/optimization/gen18/benchmark-preparation/prepare.py
++++ tests/evidence/optimization/gen19/benchmark-preparation/prepare.py
+@@ -17,29 +17,29 @@
+ review = root / 'tests/evidence/optimization/dual-target-reporting/independent-review.json'
+ assert sha(helper) == 'd5fd187fcab621b849303687f1f16bf6eca632ef66eb92b56f1ca6f2ee6b5e72'
+ assert sha(review) == '3ed2081e864a2fd55e34bd8a799a84587873f295baed828585b2ebc291affb4b'
+-fresh = root / 'tests/evidence/optimization/gen18/fresh/fresh-final-verification.json'
+-gate = root / 'tests/evidence/optimization/gen18/gate-evidence.json'
++fresh = root / 'tests/evidence/optimization/gen19/fresh-final-verification.json'
++gate = root / 'tests/evidence/optimization/gen19/gate-evidence.json'
+ assert json.loads(fresh.read_text())['status'] == 'passed'
+ assert json.loads(gate.read_text())['status'] == 'passed'
+ prior = root / 'bench/results.csv'
+ raw = prior.read_bytes()
+-assert len(archive.parse_prior_csv(raw, 18)) == 36
++assert len(archive.parse_prior_csv(raw, 19)) == 38
+ for name in ('results-before.csv', 'plan.json', 'preparation-verification.json'):
+     assert not (out / name).exists()
+-assert not (root / 'bench/runs/gen18').exists()
+-assert not (root / 'bench/GEN18.md').exists()
++assert not (root / 'bench/runs/gen19').exists()
++assert not (root / 'bench/GEN19.md').exists()
+ (out / 'results-before.csv').write_bytes(raw)
+ plan = {
+-    'generation': 18,
++    'generation': 19,
+     'prepared_utc': datetime.now(timezone.utc).isoformat(),
+     'prior_csv_snapshot': str((out / 'results-before.csv').relative_to(root)),
+     'prior_csv_sha256': sha(prior),
+-    'prior_csv_rows': 36,
++    'prior_csv_rows': 38,
+     'fresh_verification': str(fresh.relative_to(root)),
+     'fresh_verification_sha256': sha(fresh),
+-    'title': 'exact dyadic rational-to-Float conversion',
+-    'change_description': 'The live CPR rational-to-Float conversion assembles binary64 bits with exact integer arithmetic for nonzero rationals whose numerator magnitude is below 2^53 and denominator is exactly 2^k with k at most 1074. Zero remains positive zero, and all rejected inputs delegate to the unchanged original conversion. The equality proof covers every rational input and preserves the complete numerical-geography and tracking refinements. [Implementation and proof evidence](../docs/GEN18-DYADIC-CONVERSION.md).',
+-    'row_note': 'Proved exact dyadic bit packing; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB',
++    'title': 'exact natural shift and mask bit extraction',
++    'change_description': 'Four existing definitions use exact natural shifts and masks in altitude bits, Gray decoding, identity bits and signed payload thresholds. Unconditional proofs preserve every natural input and width, every 13-bit identity field, and the existing decoder refinement. No machine-word narrowing or corpus-specific branch is added. [Implementation and proof evidence](../docs/GEN19-SHIFT-EXTRACTION.md).',
++    'row_note': 'Proved exact natural shift/mask extraction; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB',
+     'decode_target_ratio': {'numerator': 2, 'denominator': 1},
+     'cpr_target_ratio': {'numerator': 2, 'denominator': 1},
+     'review_threshold': 'Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.',
+@@ -56,7 +56,7 @@
+     'helper_sha256': sha(helper),
+     'helper_independent_review_sha256': sha(review),
+     'prior_csv_sha256': sha(prior),
+-    'prior_rows': 36,
++    'prior_rows': 38,
+     'fresh_status': 'passed',
+     'fresh_verification_sha256': sha(fresh),
+     'gate_evidence_sha256': sha(gate),

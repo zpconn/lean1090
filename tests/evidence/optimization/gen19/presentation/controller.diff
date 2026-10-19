@@ -1,0 +1,123 @@
+--- tests/evidence/optimization/gen18/presentation/run_refresh.py
++++ tests/evidence/optimization/gen19/presentation/run_refresh.py
+@@ -1,7 +1,8 @@
+ #!/usr/bin/env python3
+-"""Refresh presentation from the reviewed gen18 result; no native execution."""
++"""Refresh presentation from the reviewed gen19 result; no native execution."""
+ import sys
+ sys.dont_write_bytecode = True
++import argparse
+ import csv
+ from datetime import datetime, timezone
+ from decimal import Decimal
+@@ -36,19 +37,25 @@
+     for name, digest in held.items():
+         assert sha(ROOT / name) == digest, name
+ 
+-summary = load(ROOT / 'bench/runs/gen18/summary.json')
+-review = load(ROOT / 'bench/runs/gen18/results-review.json')
++parser = argparse.ArgumentParser(description=__doc__)
++parser.add_argument('--execute', action='store_true')
++parser.add_argument('--expected-review-sha256', required=True)
++args = parser.parse_args()
++assert args.execute, 'Preparation only: execute after root release and independent result PASS.'
++assert re.fullmatch('[0-9a-f]{64}', args.expected_review_sha256)
++summary = load(ROOT / 'bench/runs/gen19/summary.json')
++review = load(ROOT / 'bench/runs/gen19/results-review.json')
+ assert review['status'] == 'passed' and not review['findings']
+-assert review['generation'] == 18 and review['commit'] == summary['commit']
++assert review['generation'] == 19 and review['commit'] == summary['commit']
+ assert review['binary_sha256'] == summary['binary_sha256']
+-assert sha(ROOT / 'bench/runs/gen18/results-review.json') == '26224c15327d4378b3aeba5d3885057ed93b95896e8f2b5c333ae47e58ff0bb8'
+-held = dict(load(ROOT / 'bench/runs/gen18/correctness-inputs.json'))
+-assert len(held) == 190
+-built = load(ROOT / 'bench/runs/gen18/binary-built.json')
++assert sha(ROOT / 'bench/runs/gen19/results-review.json') == args.expected_review_sha256
++held = dict(load(ROOT / 'bench/runs/gen19/correctness-inputs.json'))
++assert len(held) == 192
++built = load(ROOT / 'bench/runs/gen19/binary-built.json')
+ held.update(built['native_hashes'])
+ held['.lake/build/bin/lean1090-bench'] = summary['binary_sha256']
+-for name in ['bench/results.csv', 'bench/GEN18.md', 'bench/runs/gen18/summary.json',
+-             'bench/runs/gen18/results-review.json', 'bench/runs/gen18/archive-verification.json',
++for name in ['bench/results.csv', 'bench/GEN19.md', 'bench/runs/gen19/summary.json',
++             'bench/runs/gen19/results-review.json', 'bench/runs/gen19/archive-verification.json',
+              'review/presentation/render_throughput.py', 'review/presentation/verify_throughput.py',
+              'review/packaging/check_presentation.py']:
+     held[name] = sha(ROOT / name)
+@@ -62,8 +69,8 @@
+     assert hashlib.sha256(blob).hexdigest() == sha(ROOT / name), name
+     prior[name] = {'sha256': sha(ROOT / name), 'git_blob': subprocess.check_output(
+         ['git', 'rev-parse', 'HEAD:' + name], cwd=ROOT, text=True).strip()}
+-record = {'status': 'running', 'started_utc': now(), 'generation': 18,
+-          'timed_commit': summary['commit'], 'review_sha256': sha(ROOT / 'bench/runs/gen18/results-review.json'),
++record = {'status': 'running', 'started_utc': now(), 'generation': 19,
++          'timed_commit': summary['commit'], 'review_sha256': sha(ROOT / 'bench/runs/gen19/results-review.json'),
+           'before_hashes': held, 'prior_presentation': prior,
+           'prior_presentation_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+           'controller_sha256': sha(__file__), 'commands': []}
+@@ -71,18 +78,38 @@
+ try:
+     with (ROOT / 'bench/results.csv').open(newline='') as f:
+         rows = list(csv.DictReader(f))
+-    assert len(rows) == 38
+-    latest = {row['mode']: row for row in rows if row['generation'] == '18'}
+-    previous = {row['mode']: row for row in rows if row['generation'] == '17'}
++    assert len(rows) == 40
++    latest = {row['mode']: row for row in rows if row['generation'] == '19'}
++    previous = {row['mode']: row for row in rows if row['generation'] == '18'}
+     assert set(latest) == {'decode', 'cpr'}
+     ratios = {mode: Decimal(row['lean1090_msg_s']) / Decimal(row['rs1090_msg_s'])
+               for mode, row in latest.items()}
+-    assert all(ratio < 2 for ratio in ratios.values())
++    assert review['results'] == summary['results']
++    measured = {row['mode']: row for row in summary['results']}
++    assert set(measured) == {'decode', 'cpr'}
++    reached = {}
++    for mode in ('decode', 'cpr'):
++        medians = measured[mode]['medians_nanoseconds']
++        assert all(type(medians[name]) is int and medians[name] > 0 for name in ('rs1090', 'lean1090'))
++        assert review[mode + '_target_ratio'] == {'numerator': 2, 'denominator': 1}
++        reached[mode] = medians['rs1090'] >= 2 * medians['lean1090']
++        assert review[mode + '_threshold_reached'] is reached[mode]
++    assert review['all_mode_thresholds_reached'] is all(reached.values())
++    status_text = ('both targets are reached.' if all(reached.values()) else
++                   'decode has reached its target; CPR remains below target.' if reached['decode'] else
++                   'CPR has reached its target; decode remains below target.' if reached['cpr'] else
++                   'neither target is reached.')
++    record['exact_target_status'] = {'target': {'numerator': 2, 'denominator': 1},
++        'mode_reached': reached, 'all_modes_reached': all(reached.values()),
++        'medians_nanoseconds': {mode: row['medians_nanoseconds'] for mode, row in measured.items()},
++        'README_status_text': status_text}
+     original = (ROOT / 'README.md').read_text()
+     prefix, capstones = original.split('<!-- CAPSTONES:BEGIN -->', 1)
+-    prefix = prefix.replace('generation 17', 'generation 18').replace('Generation 17', 'Generation 18')
+-    prefix = prefix.replace('bench/GEN17.md', 'bench/GEN18.md').replace('bench/runs/gen17/', 'bench/runs/gen18/')
+-    prefix = prefix.replace(load(ROOT / 'bench/runs/gen17/summary.json')['commit'], summary['commit'])
++    prefix = prefix.replace('generation 18', 'generation 19').replace('Generation 18', 'Generation 19')
++    prefix = prefix.replace('bench/GEN18.md', 'bench/GEN19.md').replace('bench/runs/gen18/', 'bench/runs/gen19/')
++    prefix = prefix.replace(load(ROOT / 'bench/runs/gen18/summary.json')['commit'], summary['commit'])
++    assert prefix.count('neither target is reached.') == 1
++    prefix = prefix.replace('neither target is reached.', status_text)
+     for mode in ('decode', 'cpr'):
+         old_ratio = Decimal(previous[mode]['lean1090_msg_s']) / Decimal(previous[mode]['rs1090_msg_s'])
+         prefix = prefix.replace(f'{old_ratio:.5f}×', f'{ratios[mode]:.5f}×')
+@@ -95,9 +122,9 @@
+     (ROOT / 'README.md').write_text(prefix + '<!-- CAPSTONES:BEGIN -->' + capstones)
+     assert (ROOT / 'README.md').read_text().split('<!-- CAPSTONES:BEGIN -->', 1)[1] == capstones
+     commands = [
+-        ('render', ['.cache/venv/bin/python', '-B', 'review/presentation/render_throughput.py', '--expected-generations', '19']),
+-        ('verify', ['.cache/venv/bin/python', '-B', 'review/presentation/verify_throughput.py', '--expected-generations', '19', '--output', str((E/'verification.json').relative_to(ROOT)), '--preview-dir', '.cache/presentation-gen18']),
+-        ('readme', ['python3', '-B', str((E/'check_presentation.py').relative_to(ROOT)), '--generation', '18', '--output', str((E/'readme-verification.json').relative_to(ROOT))])]
++        ('render', ['.cache/venv/bin/python', '-B', 'review/presentation/render_throughput.py', '--expected-generations', '20']),
++        ('verify', ['.cache/venv/bin/python', '-B', 'review/presentation/verify_throughput.py', '--expected-generations', '20', '--output', str((E/'verification.json').relative_to(ROOT)), '--preview-dir', '.cache/presentation-gen19']),
++        ('readme', ['python3', '-B', str((E/'check_presentation.py').relative_to(ROOT)), '--generation', '19', '--output', str((E/'readme-verification.json').relative_to(ROOT))])]
+     for label, argv in commands:
+         item = {'label': label, 'argv': argv, 'started_utc': now(), 'environment': {'PYTHONDONTWRITEBYTECODE': '1'}}
+         with (E / (label + '.stdout')).open('x') as out, (E / (label + '.stderr')).open('x') as err:
+@@ -114,4 +141,4 @@
+     record.update(status='failed', finished_utc=now(), error=repr(error), traceback=traceback.format_exc())
+     save(E / 'execution.json', record)
+     raise
+-print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':18}))
++print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':19}))

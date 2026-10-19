@@ -30,9 +30,89 @@ Presentation validation checked all 38 CSV rows, 19 GIF frames, 760 plotted
 values, 93 local links and all 23 capstones verbatim. Visual inspection and
 independent review passed. Completion SHA-256:
 `fc9814b940b8be9e30f190466e95025d652b0866856ea560a0e435f5fa3cec26`.
-Next: commit and push the reviewed artifacts, run the prepared fresh decode
-and CPR diagnostics, and obtain independent review before selecting
-generation 19. No generation 19 change has been selected.
+The reviewed artifacts and presentation were committed and pushed to the
+private repository as `9c2745732de1626418b77b468069b12ab8a1e5c1`.
+Fresh decode and CPR diagnostics completed against this source-equivalent
+commit, including sequential isolated actual-worker profiles with all 281
+protected inputs unchanged. The decode profiles collected 10,744,199,387
+instructions; Comm-B is the largest stage at 3,612,702,399. The CPR profile
+collected 13,073,500,332 instructions, of which the combined decoder accounts
+for 10,747,461,664. All corpus outputs and full tracking/state checks passed.
+These are diagnostic counts, not timing estimates. Both final independent
+reviews passed: decode
+`4c4eca9dfaab86fa3e0f0bb7059b75148fb71b0fbfda593705f833fa96f72136`,
+CPR `49e7719ac8eccdb43e6a493176c98dd616434eadc14c6338e6a8a26e8d76a713`.
+Both verified cleanups completed, reclaiming 275,812,352 bytes (decode) and
+221,917,184 bytes (CPR), with unique perf and compressed evidence retained.
+A separate power-extraction supplement independently passed:
+`98bb212954e760f91e63a5e91728552af2bc86f88c2b7a28cf0667d1cf1b108a`.
+It reconciles all 81 selected caller contexts: 1,467,879 direct power calls
+account for 1,465,999,773 incoming inclusive instructions across the disjoint
+decode families. These are observed costs, not predicted savings. The source
+hold is released.
+
+**Generation 19 selected:** replace power-of-two construction/division with
+exact natural shifts and masks in `Altitude.bit`, `Altitude.grayDecode`,
+`identityCode` and `payloadInteger`. This single strength reduction addresses
+work in Comm-B, semantic decoding and ADS-B while retaining unrestricted
+natural words, indices and widths. It adds no table, cache, hardware primitive
+or frozen change. The runtime edit compiles; the lock and all import guards pass. Altitude and
+identity helper proofs passed their first actual Lean build (10 jobs), with
+15 permitted-axiom facts and nine kernel witnesses. A prior wrapper path
+preflight failed before Lean and is retained. Independent helper review:
+`4ea0c5efe8c3964aca3b8f34aab1ff69a3dec8124f7f62a05b24656a7ebb2dde`.
+Initial independent runtime source review also passed:
+`7c7d8167b68d2cc2d9d1e5988261511b12d2322de7981adf4e9a9844cc414ded`.
+Signed-field helper proofs and existing refinement integration passed the
+2,079-job targeted build on attempt 3. The new module has six kernel witness
+groups; all 214 printed facts use permitted axioms. Two retained failed
+attempts identified old definitional proof shortcuts in CommBTables and
+oracleAC12; explicit existing equalities replace them, with every statement
+unchanged. Independent proof/bridge review passed:
+`a626aa245abd685f0c0b6595927806bf65d1969cbf0e2a72840db83a8232e493`.
+The eight changed/new sources are staged. The combined worker/proof build
+passed all 3,536 jobs on its first execution, with all 192 correctness inputs
+unchanged. Record SHA-256:
+`107d4bd1109e782d6c66c3a3c250abd6107bcbe54d783265f5787311d0135f01`.
+The initial combined staging/build permission review timed out before execution;
+separate staging succeeded and the workspace build passed. The full fixed
+gate passed from 18:58:48 to 19:14:49 UTC with all 192 correctness inputs
+unchanged. All 23 capstones, 152 witness proofs, 1,011 unit assertions and
+seven differential components passed. The fixed campaign checked 10,476,164
+messages: 9,542,689 exact matches plus 933,475 documented D001 cases, with
+2,038,998 standard-view differences recorded separately. All 101,244 direct
+Comm-B cases match exactly. Full-gate record SHA-256:
+`0c9ead457e6e5ace1ea36a5600305320c6858a0cfe47a9cbb8ec8e888c9ea828`.
+Its sealed archive and verified fixed cleanup passed; cleanup reclaimed
+5,733,339,136 allocated bytes. The separate fresh 10M campaign passed on its first execution
+with seeds recorded beforehand: messages 1,890,283,913 and Comm-B
+1,651,874,312. It checked 10,476,164 messages: 9,543,253 exact matches plus
+932,911 documented D001 cases; 2,040,622 standard-view differences are
+recorded separately. All 101,244 direct Comm-B cases match exactly, with
+complete 32/70/14 coverage. All 117 sources and three binaries are unchanged.
+Verifier SHA-256:
+`481df3cbc759c3460573d5b47057e7861d31cbb8bb9ebc9467af9d9b70041290`.
+Its 33-member archive passed independent retention review and frozen
+comparison replay. Cleanup removed only eight verified raw duplicates,
+reclaiming 5,358,669,824 allocated bytes while preserving the active fixed run
+and both historical failure roots. All 33 retained files, 117 sources, three
+binaries and 264 native inputs were rehashed afterward. Completion SHA-256:
+`e080913127a08ba22d6b7422aec391f1e89e5b639cd6ae5e08de7e130f216949`.
+Preflight also bound all 192 correctness inputs. Current
+linked-native review passed 680 checks: exactly the three changed runtime
+modules among 22 native sets, all four definitions reached by live callers,
+and generic natural-number behavior retained. Review SHA-256:
+`1e036f1fd857a672c91d4de2bdf62e54bab00a1b366ef4186303d871f97bb2d5`.
+Independent source/proof/integration review also passed, checking all 187
+existing bridge statements unchanged and 238 integrated permitted-axiom facts.
+The fixed/fresh cleanups together reclaimed 11,092,008,960 allocated bytes.
+Final independent gate/archive/plan review passed on its first execution with
+no findings. It verified all 192 inputs, seven components and 62 retained
+files, source/native/proof review bindings, the fresh replay, all 38 prior
+CSV rows unchanged and both exact 2/1 targets. Review SHA-256:
+`f4165deed8103bdb4d809a81c5b716bd6cae5b8cf29b002b2d10a6cd62acf9f1`.
+The source is ready for commit and the isolated clean-commit two-mode
+benchmark. No generation 19 throughput is claimed yet.
 
 **Previous measurement: generation 17 reached 1.669372647154× decode and
 1.150460800400× with CPR.** Both 2.00× targets remain unmet. The timed source

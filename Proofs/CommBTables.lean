@@ -30,7 +30,7 @@ private theorem density50 (word : Nat) :
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbRollScoreTable, cbRateScoreTable, cbTASScoreTable,
     cbGroundSpeedScoreTable, commBValue, commBLayout,
-    bds50Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, payloadInteger]
+    bds50Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h1 : payloadBits word 1 1 = 0 <;>
     by_cases h35 : payloadBits word 35 1 = 0 <;>
@@ -49,7 +49,7 @@ private theorem density60 (word : Nat) :
     cbIASScoreTable, cbMachScoreTable, cbVerticalScoreTable,
     commBValue, commBLayout, bds60Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, CommBMach.cbMach64_eq_runtime, cbVertical60, cbSigned, verticalMagnitude,
-    payloadInteger]
+    PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h13 : payloadBits word 13 1 = 0 <;>
     by_cases h24 : payloadBits word 24 1 = 0 <;>
@@ -60,7 +60,7 @@ private theorem density44 (word : Nat) :
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbTemperature44ScoreTable, cbWindScoreTable, cbPressureScoreTable,
     commBValue, commBLayout, bds44Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
-    cbScoreField, cbTemperature44, cbSigned, payloadInteger]
+    cbScoreField, cbTemperature44, cbSigned, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^11 = 2048 := by norm_num
   by_cases h5 : payloadBits word 5 1 = 0 <;>
     by_cases h35 : payloadBits word 35 1 = 0 <;> simp_all
@@ -70,7 +70,7 @@ private theorem density45 (word : Nat) :
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbTemperature45ScoreTable, cbPressureScoreTable, commBValue,
     commBLayout, bds45Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
-    cbScoreField, payloadInteger]
+    cbScoreField, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h16 : payloadBits word 16 1 = 0 <;>
     by_cases h27 : payloadBits word 27 1 = 0 <;> simp_all

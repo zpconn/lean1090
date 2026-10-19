@@ -1,4 +1,5 @@
 import Proofs.PayloadBits
+import Proofs.PayloadIntegerShift
 
 /-! Identity shortcuts preserve exact affine field semantics on every input. -/
 namespace Lean1090.Proofs.AffineValue
@@ -25,7 +26,7 @@ theorem payloadValue_eq (column : Spec.PayloadColumn) (word : Nat) :
     Impl.payloadValue column word = Spec.payloadValue column word := by
   rw [payloadValue_eq_old]
   simp only [Spec.payloadValue, PayloadBits.payloadBits_eq,
-    Impl.payloadInteger, Spec.payloadInteger]
+    PayloadIntegerShift.payloadInteger_eq]
 
 /-- Both identity operations are skipped in the live payload projection. -/
 theorem identity_witness :

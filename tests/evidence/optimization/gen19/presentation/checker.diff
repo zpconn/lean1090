@@ -1,0 +1,41 @@
+--- review/packaging/check_presentation.py
++++ tests/evidence/optimization/gen19/presentation/check_presentation.py
+@@ -18,7 +18,7 @@
+ import subprocess
+ from urllib.parse import unquote, urlsplit
+ 
+-ROOT = Path(__file__).resolve().parents[2]
++ROOT = Path(__file__).resolve().parents[5]
+ DOCUMENTS = ['README.md', 'THEOREMS.md', 'SCOPE.md', 'TRUSTED.md',
+              'DISCREPANCIES.md', 'THIRD_PARTY_NOTICES.md', 'docs/README.md',
+              'docs/OPTIMIZATION.md', 'docs/EVIDENCE.md', 'docs/DEVELOPING.md']
+@@ -110,14 +110,26 @@
+     headline = readme.split('## Try it', 1)[0]
+     check('headline_ratios_match_latest_generation', f'generation {generation}' in headline and all(
+         f"{Decimal(measurements[mode]['ratio_recomputed']):.5f}×" in headline for mode in ('decode', 'cpr')))
+-    check('both_current_targets_explicit_and_unmet', '2.00× in both modes' in headline
+-          and 'neither target is reached' in headline
+-          and all(Decimal(m['ratio_recomputed']) < 2 for m in measurements.values()))
++    reached = {}
++    for mode in ('decode', 'cpr'):
++        medians = next(r for r in summary['results'] if r['mode'] == mode)['medians_nanoseconds']
++        assert all(type(medians[name]) is int and medians[name] > 0 for name in ('rs1090', 'lean1090'))
++        reached[mode] = medians['rs1090'] >= 2 * medians['lean1090']
++    status_text = ('both targets are reached.' if all(reached.values()) else
++                   'decode has reached its target; CPR remains below target.' if reached['decode'] else
++                   'CPR has reached its target; decode remains below target.' if reached['cpr'] else
++                   'neither target is reached.')
++    check('both_targets_explicit_and_status_matches_exact_medians', '2.00× in both modes' in headline
++          and status_text in headline)
+     review = json.loads((ROOT / f'bench/runs/gen{generation}/results-review.json').read_text())
+     check('independent_current_result_review_passed', review['status'] in
+           ('passed', 'passed_with_documented_clock_and_host_limitations') and not review['findings']
+           and review['generation'] == generation and review['commit'] == summary['commit']
+           and review['binary_sha256'] == summary['binary_sha256'])
++    check('target_decisions_match_independent_result_review', all(
++        review[mode + '_target_ratio'] == {'numerator': 2, 'denominator': 1}
++        and review[mode + '_threshold_reached'] is reached[mode] for mode in ('decode', 'cpr'))
++        and review['all_mode_thresholds_reached'] is all(reached.values()))
+     campaign_counts = {}
+     for kind in ('fixed', 'fresh'):
+         campaign = json.loads((ROOT / f'tests/evidence/optimization/gen{generation}/{kind}-message/summary.json').read_text())
