@@ -1,0 +1,41 @@
+{
+  "status": "passed_small_fixtures_and_source_checks",
+  "checked_utc": "2026-10-19T21:29:54.010223+00:00",
+  "changed_helpers": {
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "before_record_sha256": "0014c1d9d2ad60fce0492fb00d232a03ab7bbd5c80878d52c4cc14748895eb4c",
+  "diff_sha256": "668278d6f9b70c61c6436255642808547e6616ff43e495a522a28553724de8c8",
+  "fixture_script_sha256": "f969562d1a1f6740cfcbb9e794cff491179f036e79880150e7297bd84b10eb03",
+  "fixture_log_sha256": "a9e5c3c3d811ad16105208de73fdaa67e886bbd3ca1647f74dc21f91942cfeb7",
+  "command": [
+    "python3",
+    "-B",
+    "tests/evidence/optimization/gen22/diagnostic-tooling/check_fixtures.py"
+  ],
+  "exit_code": 0,
+  "first_fixture_execution_passed": true,
+  "correctness_inputs_unchanged": 197,
+  "new_native_flag": "raw_word_syndrome_live_path_verified",
+  "parser_anchor_key": "decode_frame_with_word_anchor",
+  "test_results": {
+    "prior_stage_comparisons": 60,
+    "positive_crc_cases": 2,
+    "negative_crc_cases": 10,
+    "old_and_new_parser_fixtures_passed": true
+  },
+  "scope": [
+    "One new live parser name added to existing frame/CRC boundary and native anchor set; prior stage rules unchanged.",
+    "After-collection census checks returned word and raw syndrome and retains standalone frameSyndrome comparison. It does not put validation work inside collected decoder root.",
+    "Renderer selects strict raw-word boundary checks only with independently verified source flag; old frameSyndrome/checksum requirements retained otherwise.",
+    "Current raw-word report explicitly distinguishes zero collected reconstruction calls from absent/inlined boundaries and retained standalone API."
+  ],
+  "limits": [
+    "No production, correctness inventory, frozen file or historical evidence changed.",
+    "No captured profile was replayed, no generation22 diagnostic/perf run or driver build was executed.",
+    "The updated diagnostic Lean driver will compile in the later authorized diagnostic build; this preparation only ran pure Python fixtures and source checks.",
+    "Actual future worker source/native review must establish the new flag and anchor before raw-word report branch can pass."
+  ]
+}

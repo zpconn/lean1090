@@ -1,0 +1,31 @@
+{
+  "status": "prepared_not_executed",
+  "prepared_utc": "2026-10-19T21:26:11.681280+00:00",
+  "runner_sha256": "a11ccfd66563238d6800f440dfceb8c6501ac24f6c2fef60de3a6dedf506e91e",
+  "prior_runner_sha256": "9944a8f62341e8346ce4662e74c537e5f33547b211befd0960eb602cd727f314",
+  "diff_sha256": "832991454e5b52369a77f8808f3d71a4b4b62e6e32b02d15392b73a2cdc01cb5",
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Decoder",
+    "Proofs.CPRTracking",
+    "lean1090",
+    "messageGenerator",
+    "commbDifferential",
+    "lean1090-bench"
+  ],
+  "expected_correctness_inputs": 197,
+  "new_proof_modules": [
+    "Proofs/FrameWord.lean",
+    "Proofs/RawSyndromeSpec.lean"
+  ],
+  "execution_command": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen22/integration/run_production_build.py --attempt production-01",
+  "guards": [
+    "Wait for root integration release and staged inventory before execution.",
+    "Exact 197-input before/after inventory and six changed-source hashes.",
+    "Every attempt has a new directory, immutable start record, source snapshots, log and execution record.",
+    "Canonical targeted-build.json/log are created exclusively only after a successful attempt; previous failed attempts remain.",
+    "All four production binaries must exist and are hash-bound."
+  ],
+  "no_build_started": true
+}

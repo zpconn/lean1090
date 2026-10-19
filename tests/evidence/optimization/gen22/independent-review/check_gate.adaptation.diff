@@ -1,0 +1,206 @@
+--- tests/evidence/optimization/gen21/independent-review/check_gate.py
++++ tests/evidence/optimization/gen22/independent-review/check_gate.py
+@@ -10,7 +10,7 @@
+ import archive_generation_gate as archive_api
+ import archive_generation_benchmark_target as reporting
+ 
+-B = Path('tests/evidence/optimization/gen21')
++B = Path('tests/evidence/optimization/gen22')
+ F = B
+ OUT = B / 'independent-review/gate-review.json'
+ 
+@@ -32,10 +32,11 @@
+     gate = load(B / 'gate-evidence.json')
+     archive = load(B / 'gate-archive.json')
+     verified = provenance.verify_gate_evidence(gate, sha(B / 'gate-full.log'), current)
+-    assert len(current) == 195 and archive['status'] == 'passed' and archive['generation'] == 21
+-    previous = load('tests/evidence/optimization/gen20/gate-evidence.json')['input_hashes_after']
+-    assert set(current) == set(previous)
+-    assert {p for p in previous if previous[p] != current[p]} == {'Impl/PayloadBits.lean', 'Proofs/AffineValue.lean'}
++    assert len(current) == 197 and archive['status'] == 'passed' and archive['generation'] == 22
++    previous = load('tests/evidence/optimization/gen21/gate-evidence.json')['input_hashes_after']
++    assert set(previous) < set(current)
++    assert set(current) - set(previous) == {'Proofs/FrameWord.lean', 'Proofs/RawSyndromeSpec.lean'}
++    assert {p for p in previous if previous[p] != current[p]} == {'Impl/Frame.lean', 'Impl/Message.lean', 'Proofs/SyndromeReuse.lean', 'Proofs/Decoder.lean'}
+     assert archive['gate_evidence_sha256'] == sha(B / 'gate-evidence.json')
+     assert archive['gate_log_sha256'] == sha(B / 'gate-full.log')
+     assert archive['helper_sha256'] == sha('review/diagnostics/archive_generation_gate.py')
+@@ -174,7 +175,7 @@
+     assert len(retained_fresh) == 33
+     for name, row in retained_fresh.items():
+         assert sha(name) == row['sha256'] and Path(name).stat().st_size == row['bytes']
+-    assert completion['source_count'] == 120 and completion['binary_count'] == 3 and completion['retained_members'] == 33
++    assert completion['source_count'] == 122 and completion['binary_count'] == 3 and completion['retained_members'] == 33
+     for summary in [summaries['message'], fresh]:
+         assert summary['status'] == 'PASS' and summary['generated_messages'] == 10000000
+         counts = summary['message']['counts']
+@@ -187,11 +188,29 @@
+     assert summaries['message']['message']['counts']['D001'] == 933475
+     prep = load(B / 'benchmark-preparation/preparation-verification.json')
+     plan = load(B / 'benchmark-preparation/plan.json')
+-    prepared_review = load(B / 'benchmark-preparation/independent-preparation-review.json')
+-    assert prepared_review['status'] == 'passed_independent_preparation_source_review' and not prepared_review['findings']
+-    assert prepared_review['source_sha256'] == sha(B / 'benchmark-preparation/prepare.py')
+-    assert prepared_review['prior_source_sha256'] == sha('tests/evidence/optimization/gen20/benchmark-preparation/prepare.py')
+-    assert prepared_review['diff_sha256'] == sha(B / 'benchmark-preparation/prepare.diff')
++    # Fold the pending-plan source review into this single consolidated receipt.
++    preparer = B / 'benchmark-preparation/prepare.py'
++    previous_preparer = Path('tests/evidence/optimization/gen21/benchmark-preparation/prepare.py')
++    expected = previous_preparer.read_text()
++    for before, after in [
++        ('d57e3ec277dff502b4ba37d76f0034b2f3b4aaee197494993b20e90bbbc5f74b', '5d39834a68d140816d8d6c152eab5a6fbfba112142926b8894554bd46e5ab4a7'),
++        ("plan['generation'] == 21", "plan['generation'] == 22"),
++        ('parse_prior_csv(raw, 21)', 'parse_prior_csv(raw, 22)'),
++        ("plan['prior_csv_rows'] == 42", "plan['prior_csv_rows'] == 44"),
++        ("requirements['correctness_inputs'] == 195", "requirements['correctness_inputs'] == 197"),
++        ('integer_affine_normalization_live_path_verified', 'raw_word_syndrome_live_path_verified'),
++        ("requirements['fresh_source_count'] == 120", "requirements['fresh_source_count'] == 122"),
++        ('bench/runs/gen21', 'bench/runs/gen22'), ('bench/GEN21.md', 'bench/GEN22.md'),
++        ("'prior_rows': 42", "'prior_rows': 44")]:
++        assert before in expected, before
++        expected = expected.replace(before, after)
++    assert preparer.read_text() == expected
++    correction = load(B / 'benchmark-preparation/preparation-correction.json')
++    initial = Path(correction['initial_source'])
++    assert sha(initial) == correction['before_sha256'] and sha(preparer) == correction['after_sha256']
++    assert initial.read_text().replace('bench/GEN21.md', 'bench/GEN22.md') == preparer.read_text()
++    assert not correction['producer_or_measurement_executed']
++    assert Path('bench/GEN21.md').is_file() and not Path('bench/GEN22.md').exists()
+     assert prep['status'] == 'passed' and prep['plan_sha256'] == sha(B / 'benchmark-preparation/plan.json')
+     assert prep['fresh_verification_sha256'] == sha(F / 'fresh-final-verification.json')
+     assert prep['gate_evidence_sha256'] == sha(B / 'gate-evidence.json')
+@@ -199,21 +218,21 @@
+     assert prep['helper_independent_review_sha256'] == sha('tests/evidence/optimization/cpr-overhead-reporting/independent-review.json')
+     prior = Path(plan['prior_csv_snapshot']).read_bytes()
+     assert prior == Path('bench/results.csv').read_bytes() == subprocess.check_output(['git', 'show', 'HEAD:bench/results.csv'])
+-    assert len(reporting.parse_prior_csv(prior, 21)) == plan['prior_csv_rows'] == 42
++    assert len(reporting.parse_prior_csv(prior, 22)) == plan['prior_csv_rows'] == 44
+     assert hashlib.sha256(prior).hexdigest() == plan['prior_csv_sha256'] == prep['prior_csv_sha256']
+     assert all(reporting.target_ratio(plan, mode) == (2, 1) for mode in ['decode', 'cpr'])
+-    assert not prep['measurement_started'] and not Path('bench/runs/gen21').exists()
++    assert not prep['measurement_started'] and not Path('bench/runs/gen22').exists()
+     integration = load(B / 'integration/targeted-build.json')
+     assert integration['status'] == 'passed' and integration['exit_code'] == 0
+     assert integration['all_inputs_before'] == integration['all_inputs_after'] == current
+     assert integration['command'] == ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench']
+-    assert integration['runner_sha256'] == sha(B / 'integration/run_build.py')
++    assert integration['runner_sha256'] == sha(B / 'integration/run_production_build.py')
+     assert integration['inventory_tool_sha256'] == sha('review/diagnostics/run_generation_benchmark.py')
+     assert integration['log_sha256'] == sha(B / 'integration/targeted-build.log')
+     assert integration['inputs_before'] == integration['inputs_after']
+-    assert set(integration['inputs_after']) == {'Impl/PayloadBits.lean', 'Proofs/AffineValue.lean'}
++    assert set(integration['inputs_after']) == {'Impl/Frame.lean', 'Impl/Message.lean', 'Proofs/FrameWord.lean', 'Proofs/RawSyndromeSpec.lean', 'Proofs/SyndromeReuse.lean', 'Proofs/Decoder.lean'}
+     for name, digest in integration['inputs_after'].items():
+-        assert current[name] == digest == sha(B / 'integration/sources' / name)
++        assert current[name] == digest == sha(B / 'integration' / integration['attempt'] / 'sources' / name)
+     for name, digest in integration['binary_hashes'].items():
+         assert sha(Path('.lake/build/bin') / name) == digest
+     native = load(B / 'native-review/review.json')
+@@ -232,10 +251,10 @@
+         assert sha(name) == digest
+     history = load(F / 'preparation.json')
+     pending_history = {
+-        'tests/evidence/diagnostics/gen20/independent-review/independent-review.json',
+-        'tests/evidence/diagnostics/gen20-cpr/independent-review/independent-review.json',
+-        'tests/evidence/diagnostics/gen20/cleanup-receipt.json',
+-        'tests/evidence/diagnostics/gen20-cpr/cleanup-receipt.json',
++        'tests/evidence/diagnostics/gen21/independent-review/independent-review.json',
++        'tests/evidence/diagnostics/gen21-cpr/independent-review/independent-review.json',
++        'tests/evidence/diagnostics/gen21/cleanup-receipt.json',
++        'tests/evidence/diagnostics/gen21-cpr/cleanup-receipt.json',
+     }
+     history_committed, history_pending = {}, {}
+     for name, digest in history['history_bindings'].items():
+@@ -254,37 +273,52 @@
+     assert source_review['status'] == 'passed' and not source_review['findings']
+     for name, digest in source_review['bindings'].items():
+         assert sha(name) == digest
+-    helper = load(B / 'affine/summary.json')
+-    assert helper['status'] == 'passed' and helper['first_attempt_passed']
+-    assert helper['build_log_sha256'] == sha(B / 'affine/attempt-01/build.log')
+-    assert len(helper['printed_axiom_facts']) == 14 and all(
+-        set(fact['axioms']) <= {'propext', 'Classical.choice', 'Quot.sound'}
+-        for fact in helper['printed_axiom_facts'])
+-    assert helper['kernel_witnesses'] == 10 and len(helper['old_theorem_statements_preserved']) == 10
+-    assert source_review['integer_scale_all_input_refinement_verified']
+-    assert native['integer_affine_normalization_live_path_verified'] and native['linked_native_sets'] == 22
+-    assert native['unchanged_sibling_native_sets'] == 21 and native['source_delta'] == ['Impl/PayloadBits.lean']
++    parser_helper = load(B / 'parser/summary.json')
++    raw_helper = load(B / 'raw-syndrome/summary.json')
++    assert parser_helper['status'] == raw_helper['status'] == 'passed'
++    assert parser_helper['final_attempt'] == 6 and raw_helper['completed_attempt'] == 2
++    assert len(parser_helper['permitted_axiom_facts']) == 10 and len(raw_helper['axiom_facts']) == 12
++    assert parser_helper['kernel_witnesses'] == 6 and len(raw_helper['witnesses']) == 5
++    assert source_review['raw_word_syndrome_all_input_refinement_verified']
++    assert native['raw_word_syndrome_live_path_verified'] and native['linked_native_sets'] == 22
++    assert native['unchanged_sibling_native_sets'] == 20 and native['source_delta'] == ['Impl/Frame.lean', 'Impl/Message.lean']
+     integrated_log = (B / 'integration/targeted-build.log').read_text()
+     integrated_facts = re.findall(r"'([^']+)' depends on axioms:\s*\[([^\]]*)\]", integrated_log)
+     integrated_pure = re.findall(r"'([^']+)' does not depend on any axioms", integrated_log)
+-    assert len(integrated_facts) == 251 and len(integrated_pure) == 9
++    assert len(integrated_facts) == 278 and len(integrated_pure) == 9
+     assert all({x.strip() for x in raw.split(',') if x.strip()} <= {'propext','Classical.choice','Quot.sound'} for _,raw in integrated_facts)
++    integrated_validation = load(B / 'integration/validation.json')
++    assert integrated_validation['build_record_sha256'] == sha(B / 'integration/targeted-build.json')
++    assert len({n for n,_ in integrated_facts} | set(integrated_pure)) == integrated_validation['printed_fact_count'] == 287
++    actual_axioms = {n: [x.strip() for x in raw.split(',') if x.strip()] for n,raw in integrated_facts}
++    actual_axioms.update({n: [] for n in integrated_pure})
++    assert {row['name']:row['axioms'] for row in integrated_validation['printed_axiom_facts']} == actual_axioms
++    recount = load(B / 'integration/validation-correction/correction.json')
++    before_validation = load(recount['before_path'])
++    assert sha(recount['before_path']) == recount['before_sha256']
++    assert sha(recount['after_path']) == recount['after_sha256'] == sha(B / 'integration/validation.json')
++    assert set(k for k in before_validation if before_validation[k] != integrated_validation[k]) == {'printed_axiom_facts', 'printed_fact_count'}
++    old_axioms = {row['name']:row['axioms'] for row in before_validation['printed_axiom_facts']}
++    assert all(actual_axioms[n] == xs for n,xs in old_axioms.items())
++    assert {n:actual_axioms[n] for n in actual_axioms.keys() - old_axioms.keys()} == recount['added_facts']
++    for path,h in recount['unchanged_bindings'].items(): assert sha(path) == h
++
+     assert current['.gitignore'] == previous['.gitignore']
+     preflight = load(F / 'fresh-preflight.json')
+-    assert len(preflight['source_sha256']) == 120 and len(preflight['binary_sha256']) == 3
++    assert len(preflight['source_sha256']) == 122 and len(preflight['binary_sha256']) == 3
+     assert all(current[name] == digest for name, digest in preflight['source_sha256'].items())
+     assert len(Path('spec.lock').read_text().splitlines()) == 104
+     assert provenance.gate_input_hashes() == current
+     result = {'status': 'passed', 'reviewed_utc': datetime.now(timezone.utc).isoformat(), 'findings': [],
+-              'script_sha256': sha(__file__), 'gate_verification': verified, 'gate_inputs': 195,
+-              'proof_review_independence': 'Cost_analysis authored the runtime and AffineValue proof change; this reviewer independently assessed the all-input proof, unchanged statements, generated C and actual linked native path.',
++              'script_sha256': sha(__file__), 'gate_verification': verified, 'gate_inputs': 197,
++              'proof_review_independence': 'Cost_analysis authored parser/runtime, payload_roundtrips authored the Spec-only CRC proof, and root integrated SyndromeReuse/Decoder. This reviewer independently assessed all six sources, preserved theorem types, actual C/object/linked data flow, and frozen live adapters.',
+               'history_committed_at_review': history_committed, 'history_pending_current_commit': history_pending,
+               'contracts': 23, 'kernel_witnesses': 152, 'unit_assertions': 1011,
+               'integrated_axiom_list_facts': len(integrated_facts), 'integrated_axiom_free_facts': len(integrated_pure),
+               'components': names, 'retained_component_files': file_count,
+               'fixed_counts': summaries['message']['message']['counts'], 'fresh_counts': fresh['message']['counts'],
+               'fixed_seed': summaries['message']['seed'], 'fresh_seed': fresh['seed'], 'coverage_each': [32, 70, 14],
+-              'prior_csv_rows': 42, 'target_ratios': {'decode': [2, 1], 'cpr': [2, 1]},
++              'prior_csv_rows': 44, 'target_ratios': {'decode': [2, 1], 'cpr': [2, 1]},
+               'fresh_cleanup': {'files': 8, 'allocated_bytes': fresh_bytes,
+                                 'complete_retained_copies_rechecked': True},
+               'fixed_cleanup': {'roots': fixed_roots, 'files': 26, 'allocated_bytes': fixed_bytes,
+@@ -297,14 +331,19 @@
+                   'independent-review/fresh-completion.json', 'post-fresh-cleanup/result.json',
+                   'post-gate-archive-cleanup/result.json', 'post-gate-archive-cleanup/archive-flush.json',
+                   'benchmark-preparation/plan.json', 'benchmark-preparation/preparation-verification.json',
+-                  'independent-review/source-proof-review.json', 'affine/summary.json',
+-                  'benchmark-preparation/independent-preparation-review.json', 'benchmark-preparation/prepare.diff',
+-                  'integration/targeted-build.json', 'integration/targeted-build.log',
+-                  'independent-review/check_gate.py',
++                  'independent-review/source-proof-review.json', 'parser/summary.json', 'raw-syndrome/summary.json',
++                  'benchmark-preparation/prepare.py', 'benchmark-preparation/prepare.diff',
++                  'benchmark-preparation/preparation-correction.json', 'benchmark-preparation/preparation-initial/prepare.py',
++                  'benchmark-preparation/preparation-initial/prepare.diff', 'benchmark-preparation/plan-pending.json',
++                  'integration/targeted-build.json', 'integration/targeted-build.log', 'integration/validation.json',
++                  'integration/validation-correction/correction.json', 'integration/validation-correction/validation-before.json',
++                  'integration/validation-correction/recount_axioms.py', 'integration/validation-correction/recount-01.log',
++                  'independent-review/gate-review-finding-01.json', 'independent-review/gate-review-01.log',
++                  'independent-review/gate-review-attempt-01/check_gate.py', 'independent-review/check_gate.py',
+                   'independent-review/gate-review-preparation.json', 'preparation.json']},
+               'limits': 'Read-only review; prior generation evidence is bound through its sealed reviews and exact CSV prefix, without recopying historical files. Raw scratch cleanup is separately authorized and receipted after archival.'}
+     OUT.write_text(json.dumps(result, indent=2) + '\n')
+-    print(json.dumps({'status': 'passed', 'review_sha256': sha(OUT), 'gate_inputs': 195, 'components': 7}))
++    print(json.dumps({'status': 'passed', 'review_sha256': sha(OUT), 'gate_inputs': 197, 'components': 7}))
+ 
+ 
+ if __name__ == '__main__':

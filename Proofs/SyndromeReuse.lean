@@ -1,10 +1,15 @@
 import Impl.Message
+import Proofs.FrameWord
+import Proofs.RawSyndromeSpec
+import Proofs.ParityWord
+import Proofs.PackFields
 
 /-!
-Per-frame syndrome sharing preserves the previous public function bodies by
-definitional equality. These statements cover every Frame and byte list, with
-no acceptance, length, parity or corpus assumption. Strict evaluation may do
-the pure CRC calculation before a later rejection; it cannot change a result.
+Per-frame syndrome sharing and parsed-word reuse preserve the previous public
+function bodies. These statements cover every Frame and byte list, with no
+acceptance, parity or corpus assumption. Successful structural parsing retains
+the complete wire word; its CRC equals the field-based syndrome. Strict
+evaluation may do the pure CRC calculation before a later rejection.
 -/
 
 namespace Lean1090.Proofs.SyndromeReuse
@@ -54,11 +59,36 @@ theorem report_old (f : Frame) :
             (reg, Impl.Semantics.commB reg mb.toNat)
         | _ => [])⟩ := rfl
 
-/-- Shared evaluation equals the previous decoder body on every byte input. -/
+private theorem frameSyndrome_eq_spec (f : Frame) :
+    Impl.frameSyndrome f = Spec.frameSyndrome f := by
+  unfold Impl.frameSyndrome Spec.frameSyndrome Impl.Parity.checksum Spec.Parity.checksum
+  rw [ParityWord.syndrome_eq, PackFields.packFields_eq]
+  rfl
+
+/-- The live parser's complete word has exactly the field-based syndrome,
+including received parity and spare bits, for every successful parse. -/
+theorem parsed_syndrome_eq (bytes : List UInt8) (f : Frame) (word : Nat)
+    (parsed : Impl.decodeFrameWithWord bytes = some (f, word)) :
+    Impl.Parity.syndrome (Impl.informationBits f.body + 24) word =
+      Impl.frameSyndrome f := by
+  obtain ⟨decoded, word_eq⟩ := FrameWord.successful_parse bytes f word parsed
+  rw [word_eq, ParityWord.syndrome_eq, frameSyndrome_eq_spec]
+  exact RawSyndromeSpec.syndrome_decodeFrame bytes f decoded
+
+/-- Parsed-word reuse equals the previous decoder body on every byte input. -/
 theorem decode_old (bytes : List UInt8) :
     Impl.decode bytes = (do
       let f ← Impl.decodeFrame bytes
-      if Impl.frameAccepted f then some ⟨f, Impl.report f⟩ else none) := rfl
+      if Impl.frameAccepted f then some ⟨f, Impl.report f⟩ else none) := by
+  unfold Impl.decode
+  cases parsed : Impl.decodeFrameWithWord bytes with
+  | none => simp [Impl.decodeFrame, parsed]
+  | some pair =>
+    rcases pair with ⟨f, word⟩
+    simp only [bind, Option.bind_some]
+    rw [parsed_syndrome_eq bytes f word parsed]
+    simp [Impl.decodeFrame, parsed, Impl.frameAccepted, Impl.report]
+    rfl
 
 /-- Empty input still fails before frame-dependent computation. -/
 theorem empty_input_witness : Impl.decode [] = none := rfl
@@ -78,6 +108,7 @@ theorem bad_parity_witness :
 #print axioms frameAccepted_old
 #print axioms frameAddress_old
 #print axioms report_old
+#print axioms parsed_syndrome_eq
 #print axioms decode_old
 #print axioms empty_input_witness
 #print axioms truncated_input_witness

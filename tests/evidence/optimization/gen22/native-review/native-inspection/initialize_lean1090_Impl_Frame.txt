@@ -1,0 +1,95 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b55dc0 <initialize_lean1090_Impl_Frame>:
+  b55dc0:	push   %rbx
+  b55dc1:	cmpb   $0x0,0x40283f2(%rip)        # 4b7e1ba <_G_initialized>
+  b55dc8:	je     b55dea <initialize_lean1090_Impl_Frame+0x2a>
+  b55dca:	mov    $0x10,%edi
+  b55dcf:	call   490c960 <lean_alloc_small_object_core>
+  b55dd4:	movl   $0x1,(%rax)
+  b55dda:	movw   $0x1,0x6(%rax)
+  b55de0:	movq   $0x1,0x8(%rax)
+  b55de8:	pop    %rbx
+  b55de9:	ret
+  b55dea:	mov    %edi,%ebx
+  b55dec:	movb   $0x1,0x40283c7(%rip)        # 4b7e1ba <_G_initialized>
+  b55df3:	xor    %eax,%eax
+  b55df5:	call   48c3ef0 <lean_initialize_runtime_module>
+  b55dfa:	movzbl %bl,%ebx
+  b55dfd:	mov    %ebx,%edi
+  b55dff:	call   48372a0 <initialize_Init>
+  b55e04:	movzbl 0x7(%rax),%ecx
+  b55e08:	shl    $0x18,%ecx
+  b55e0b:	cmp    $0x1000000,%ecx
+  b55e11:	je     b55e76 <initialize_lean1090_Impl_Frame+0xb6>
+  b55e13:	mov    (%rax),%ecx
+  b55e15:	cmp    $0x2,%ecx
+  b55e18:	jl     b55e88 <initialize_lean1090_Impl_Frame+0xc8>
+  b55e1a:	dec    %ecx
+  b55e1c:	mov    %ecx,(%rax)
+  b55e1e:	mov    %ebx,%edi
+  b55e20:	call   48372a0 <initialize_Init>
+  b55e25:	movzbl 0x7(%rax),%ecx
+  b55e29:	shl    $0x18,%ecx
+  b55e2c:	cmp    $0x1000000,%ecx
+  b55e32:	je     b55e76 <initialize_lean1090_Impl_Frame+0xb6>
+  b55e34:	mov    (%rax),%ecx
+  b55e36:	cmp    $0x2,%ecx
+  b55e39:	jl     b55e96 <initialize_lean1090_Impl_Frame+0xd6>
+  b55e3b:	dec    %ecx
+  b55e3d:	mov    %ecx,(%rax)
+  b55e3f:	mov    %ebx,%edi
+  b55e41:	call   b51960 <initialize_lean1090_Model_Types>
+  b55e46:	movzbl 0x7(%rax),%ecx
+  b55e4a:	shl    $0x18,%ecx
+  b55e4d:	cmp    $0x1000000,%ecx
+  b55e53:	je     b55e76 <initialize_lean1090_Impl_Frame+0xb6>
+  b55e55:	mov    (%rax),%ecx
+  b55e57:	cmp    $0x2,%ecx
+  b55e5a:	jl     b55ea4 <initialize_lean1090_Impl_Frame+0xe4>
+  b55e5c:	dec    %ecx
+  b55e5e:	mov    %ecx,(%rax)
+  b55e60:	mov    %ebx,%edi
+  b55e62:	call   b53c00 <initialize_lean1090_Impl_Bits>
+  b55e67:	movzbl 0x7(%rax),%ecx
+  b55e6b:	shl    $0x18,%ecx
+  b55e6e:	cmp    $0x1000000,%ecx
+  b55e74:	jne    b55e78 <initialize_lean1090_Impl_Frame+0xb8>
+  b55e76:	pop    %rbx
+  b55e77:	ret
+  b55e78:	mov    (%rax),%ecx
+  b55e7a:	cmp    $0x2,%ecx
+  b55e7d:	jl     b55eb2 <initialize_lean1090_Impl_Frame+0xf2>
+  b55e7f:	dec    %ecx
+  b55e81:	mov    %ecx,(%rax)
+  b55e83:	jmp    b55dca <initialize_lean1090_Impl_Frame+0xa>
+  b55e88:	test   %ecx,%ecx
+  b55e8a:	je     b55e1e <initialize_lean1090_Impl_Frame+0x5e>
+  b55e8c:	mov    %rax,%rdi
+  b55e8f:	call   48a3330 <lean_dec_ref_cold>
+  b55e94:	jmp    b55e1e <initialize_lean1090_Impl_Frame+0x5e>
+  b55e96:	test   %ecx,%ecx
+  b55e98:	je     b55e3f <initialize_lean1090_Impl_Frame+0x7f>
+  b55e9a:	mov    %rax,%rdi
+  b55e9d:	call   48a3330 <lean_dec_ref_cold>
+  b55ea2:	jmp    b55e3f <initialize_lean1090_Impl_Frame+0x7f>
+  b55ea4:	test   %ecx,%ecx
+  b55ea6:	je     b55e60 <initialize_lean1090_Impl_Frame+0xa0>
+  b55ea8:	mov    %rax,%rdi
+  b55eab:	call   48a3330 <lean_dec_ref_cold>
+  b55eb0:	jmp    b55e60 <initialize_lean1090_Impl_Frame+0xa0>
+  b55eb2:	test   %ecx,%ecx
+  b55eb4:	je     b55dca <initialize_lean1090_Impl_Frame+0xa>
+  b55eba:	mov    %rax,%rdi
+  b55ebd:	call   48a3330 <lean_dec_ref_cold>
+  b55ec2:	jmp    b55dca <initialize_lean1090_Impl_Frame+0xa>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

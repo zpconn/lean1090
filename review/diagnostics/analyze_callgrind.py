@@ -238,7 +238,7 @@ def stage_for(symbol: str, inherited: str) -> str:
         return "adsb_fields"
     if local in ("frameAltitude", "frameOracleAltitude", "frameIdentity"):
         return "semantic_oracle_values"
-    if local in ("decodeFrame", "frameSyndrome", "frameAddress", "frameAccepted",
+    if local in ("decodeFrame", "decodeFrameWithWord", "frameSyndrome", "frameAddress", "frameAccepted",
                  "frameAddressWithSyndrome", "frameAcceptedWithSyndrome") or (
             symbol.startswith(PREFIX + "Parity_")):
         return "frame_crc"
@@ -296,7 +296,7 @@ def analyze(profile: Profile, root: str, initial: str, extra_anchors=()) -> dict
     root_calls = sum(node.calls[name] for node in profile.nodes.values() for name in roots)
     anchor_names = {
         PREFIX + name for name in (
-            "decode", "decodeFrame", "frameAccepted", "frameSyndrome", "frameAddress",
+            "decode", "decodeFrame", "decodeFrameWithWord", "frameAccepted", "frameSyndrome", "frameAddress",
             "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
             "Parity_checksum", "Parity_syndrome", "Parity_step", "frameADSB",
             "decodeADSB", "adsbHardValid", "frameCommB", "inferCommB",
@@ -408,6 +408,8 @@ def fixture_checks() -> None:
     assert stage_for(PREFIX + "frameAcceptedWithSyndrome", "output_model_control") == "frame_crc"
     assert stage_for(PREFIX + "reportWithSyndrome", "output_model_control") == "output_model_control"
     assert stage_for(DECODE, "output_model_control") == "output_model_control"
+    assert stage_for(PREFIX + "decodeFrameWithWord", "output_model_control") == "frame_crc"
+    assert stage_for(PREFIX + "decodeFrameWithWord", "commb_inference") == "commb_inference"
     text = f"""# callgrind format
 version: 1
 positions: instr line
@@ -474,6 +476,16 @@ totals: 38 8
         result = analyze(parse(path), DECODE, "output_model_control")
         assert result["stage_attribution_complete"]
         assert result["exclusive_stage_events"]["frame_crc"]["Ir"] == 17
+        # The paired parser inherits exactly the old wire-parser partition;
+        # neither its returned word nor its allocation descendants vanish.
+        path.write_text(separated.replace(PREFIX + "decodeFrame", PREFIX + "decodeFrameWithWord"))
+        paired = analyze(parse(path), DECODE, "output_model_control")
+        assert paired["exclusive_stage_events"] == result["exclusive_stage_events"]
+        assert paired["stage_attribution_complete"]
+        paired_anchors = paired["native_anchor_counts_and_non_additive_inclusive_events"]
+        assert paired_anchors[PREFIX + "decodeFrameWithWord"]["native_entries"] == 1
+        assert paired_anchors[PREFIX + "decodeFrameWithWord"]["self_events"] == {"Ir": 3, "Dr": 1}
+        assert PREFIX + "decodeFrame" not in paired_anchors
         # Damaged totals and unexpected costs outside the toggled root fail.
         path.write_text(text.replace("totals: 38 8", "totals: 39 8"))
         try:

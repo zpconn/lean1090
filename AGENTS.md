@@ -50,9 +50,20 @@ separate fresh 10M campaign, independent replay and archive/plan review also
 passed. Verified scratch cleanup reclaimed 11,092,697,088 allocated bytes.
 The clean-commit fresh-build benchmark and archival checks passed.
 Independent measured-result review passed 717 checks; artifact-source binding
-and presentation reviews also passed. Next: commit and push the reviewed
-artifacts, then collect fresh live cost
-diagnostics before selecting another optimization. No frozen, Float callback,
+and presentation reviews also passed. Artifacts were committed and pushed as
+`acdfde75c5c3776ad98286f87ddac07470a0a185`, under the user's identity.
+Fresh diagnostic builds, isolated profiles and both complete instruction
+collections and both independent reviews passed against that source-equivalent
+commit. Verified cleanup reclaimed 488,624,128 bytes, retaining compressed
+evidence and raw perf; source/history hold is released. Generation 22 selects
+reuse of the parsed word for CRC. Parser, reference-syndrome and integrated
+decoder proofs and the combined production/proof build passed. Independent
+source and native reviews passed. The fresh 10M campaign, independent replay
+and verified cleanup passed. The fixed full gate and verified cleanup also
+passed. Final archive/plan review passed after a preserved metadata-only
+fact-count correction; the source commit and isolated timing are next.
+Preserve all existing public types and theorem statements. No gen22
+throughput result exists yet. See docs/GEN22-PARSED-WORD-CRC.md. No frozen, Float callback,
 software binary64 or trusted-primitive change is authorized.
 See docs/GEN21-AFFINE-NORMALIZATION.md and PROGRESS.md for evidence.
 

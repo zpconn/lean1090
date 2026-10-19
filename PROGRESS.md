@@ -36,10 +36,89 @@ Independent presentation review passed; completion SHA-256:
 `f94e4e8c26ce1b3dc646d10a534a68b13b54aaebe8addbed86e5886497a9d193`.
 A reviewer-only prior-generation filter typo was corrected with its first
 attempt retained; the producer passed on its first execution and no rendering
-or measurement was repeated. Next: commit and push these reviewed artifacts,
-then collect fresh cost diagnostics before selecting another optimization.
-Both diagnostic preparations are ready; no new diagnostic ran before this
-artifact commit.
+or measurement was repeated. The reviewed artifacts were committed and
+pushed to the private repository as
+`acdfde75c5c3776ad98286f87ddac07470a0a185`, under the user's identity, with a
+clean tree at publication. Both fresh diagnostic builds passed against that
+source-equivalent commit. Sequential isolated actual-worker decode and CPR
+profiles passed, preserving all 286 recorded inputs (195 correctness inputs)
+and the expected 0/11,347 positions. Completion SHA-256:
+`454e23cc92407d45757c179befab13d7cf72d414070a73ae705e356a3e0ddfc3`.
+Both full instruction collections passed: 8,429,813,030 decode instructions
+and 10,759,005,926 CPR instructions, with complete output/state checks.
+Comm-B inference and frame/CRC are the largest categories. Both final
+independent reviews passed. Decode review SHA-256:
+`f89291e2cbd05b750c08639aac32eb99548a0e288689a3e59c436063ebbdd305`;
+CPR review:
+`83511caec1418f9995fcf0f9cf6a7f7d29edac4236ff4dbe41274ca8f6b30222`.
+The decoder report retains corrected comparison-label and missing-local
+finalizer failures; the CPR report retains a stale-generation perf-sealer key
+correction. Both raw recounts passed on their first execution. No decoder,
+profile or benchmark was rerun. All failures/corrections and sampling limits
+remain in the diagnostic evidence. Verified bounded cleanup completed:
+273,371,136 bytes from decode scratch and 215,252,992 from CPR, preserving
+compressed evidence and unique raw perf. Receipts:
+`3412e1e6d31fee8b2bacd5dff864b0bb0d2c8d9fc84719a7460acba3a4a45c15`,
+`f5092c80b2d07d3ba96f52687bc27013b210a5e56a389af423a637b4ac621a21`.
+The source/history hold is released.
+
+**Generation 22 in progress:** reuse the already parsed word for CRC instead
+of reconstructing the frame's information bits. The public parser delegates
+to the same production helper and preserves its result. Independent parser
+and reference-syndrome proofs now connect this path to the existing complete
+decoder refinement without changing a statement. The parser proof passed with
+six kernel witnesses; the reference-syndrome proof covers parity, spare bits,
+DF19 and Comm-D. Integration passed on its second attempt; the first attempt's
+unfinished final simplification and log are retained. Integration record:
+`f57aa81882bc65a03a64fcf00730256df6afdcadd236441e381a0f3a5f2d6dfa`.
+The combined production/proof build passed on its first execution: 3,544 jobs,
+287 printed facts using permitted axioms, and 197 unchanged correctness inputs.
+The initial metadata counted 283 because it omitted four line-wrapped lists;
+independent review caught the undercount. The corrected recount and original
+record are retained, with no rebuild or source change. Recount receipt:
+`3f2cc8627528f7eff7d0283fe614673645a121f79dfb146eb6b8a3f377755210`.
+Build record: `a8d5ac030bf75d536beb52fcdd1523e87d1c643fd01c9d8b6ea4cbc89566511e`.
+Independent source/proof and native reviews passed. The native review binds
+269 inputs and 22 linked sets: only Frame and Message changed; the other 20
+remain identical. The main path parses once, uses the returned word for one
+CRC, and shares it with acceptance and report construction. Native receipt:
+`cc3155baa4937c194f99067b7dac0a4dbf28cb5353b8a863e60390c0a138e864`.
+The fresh campaign and independent retained-byte/comparison replays passed on
+their first executions: 10,476,164 messages comprise 9,542,883 exact matches
+and 933,281 documented D001 cases; 2,039,012 standard-view differences are
+recorded separately. All 101,244 direct Comm-B cases match, with complete
+32/70/14 coverage. All 122 sources and three binaries remain unchanged.
+Verified cleanup removed eight duplicate scratch files and reclaimed
+5,359,165,440 allocated bytes, preserving the active fixed gate and historical
+failures. Completion: `0920e3861e12c1aeaed9375ee018798b169110b81bd1a1f06570c1b629c70048`.
+The full fixed gate passed all seven components, 23 exact capstone contracts,
+152 audited witnesses and 1,011 unit assertions. Its whole-message counts are
+9,542,689 exact matches plus 933,475 documented D001 cases, with complete
+coverage and no unclassified mismatches. All 197 correctness inputs are
+unchanged. Gate evidence:
+`08326fec75daf19a77336ae310545fd33498e49306ec92e4ffb479ebb0261127`.
+Fixed archival and verified cleanup reclaimed another 5,733,339,136 bytes;
+total duplicate scratch removed is 11,092,504,576 bytes. The benchmark plan
+passed its first execution and is sealed as
+`603416916326bf56af894400b9e99d7f9a99f41864bfafd1fbaf0244bd285252`.
+Its initial, unexecuted preparation had a stale report-name guard; review
+caught it, and both versions are retained. Final archive/plan review passed
+after the derived fact-count correction above. Review:
+`24e7346dc3b448a80f1d1210a5523d65c843d522511e09df31a6c129adefe231`.
+The source commit and isolated benchmark are next.
+Fresh seeds were recorded
+before generation: messages 1,582,934,336 and Comm-B 3,653,937,729.
+The preflight binds 122 sources, three binaries and all 197 inputs:
+`a73e6a26b7927018183f31d71a78e95b7ab65eb849767ce0f7b981beb3225d0d`.
+Measurement remains pending.
+Three unfrozen diagnostic helpers now recognize the paired parser and retain
+the standalone syndrome cross-check outside collected work. Small parser and
+boundary fixtures passed; all 197 correctness inputs remain unchanged. The
+diagnostic Lean driver will be built only after this generation is measured.
+Validation: `3e8fbe78c716c1a9c6bfd3dac399a23ada1822491e788f725facc4d8d22821f2`.
+No frozen file, Float
+callback or trusted primitive change is intended or authorized.
+[Design and diagnostic basis](docs/GEN22-PARSED-WORD-CRC.md).
 
 **Previous measurement: generation 20 reached 1.852064793419× decode and
 1.485653752657× with CPR.** Both 2.00× targets remain unmet. The measured

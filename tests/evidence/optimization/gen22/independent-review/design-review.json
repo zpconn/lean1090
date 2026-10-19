@@ -1,0 +1,56 @@
+{
+  "status": "passed_read_only_design_review_pending_implementation",
+  "reviewed_utc": "2026-10-19T21:19:54.253584+00:00",
+  "baseline_artifact_commit": "acdfde75c5c3776ad98286f87ddac07470a0a185",
+  "baseline_committed_file_sha256": {
+    "Impl/Frame.lean": "54a9142b4c1ca8c0bf4063885fda7dd96d8ede06a23af3ecf18e2b55bd9e0011",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Impl/Parity.lean": "28e045ae6c7723d96ce5ef3749af4726c3b2be149ebe0bfcd6e2944bc1f1f660",
+    "Proofs/SyndromeReuse.lean": "cb442517b984cdafd13e66b7e2001d9b1c0f91c1d630de26a173aaef1d2a2126",
+    "Proofs/Decoder.lean": "caf202f4aeceb6c7f07dd349cbaad93126daf8a12f46f0e820289bfce3a3d662",
+    "Proofs/FrameRoundTrips.lean": "04e7b9a7bb7c969bb2debdf4d08d280a165a13cf761271799f9d039e2c39a8b8",
+    "Proofs/ParityOverlay.lean": "c5cd3437da843c385fe2a1b0c7274edc1ae6e769e97e9214379c67c4b99e135f",
+    "Proofs/WireBytes.lean": "a414900412718b3b69f3fc2ec43d4c4247676bc00ec887bce28dd34f913603b6",
+    "Bench/WholeDecoder.lean": "ea0b8f3a94dfc801bbf0a8ce9091617f2a3eae4e122752e56de3caa5de40592b",
+    "Tests/Tracking.lean": "196f549f758b2e4c78f263c12af1151482465a3670e96b714b5fe8885ffde6cd",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032",
+    "Tests/AltitudeDifferential.lean": "b59f28adc245e46c6377c1601e924e357c789a8136df95627d80809a42334f29",
+    "Tests/ReservedVelocityDifferential.lean": "69a81bffbbcfd229f5bc485bc7d5891e6ab3b728f28497ac16a8fada1a6eb0ab",
+    "Tests/DTEDifferential.lean": "35f0083599b6edfb54c51ec985f34a1b721c55a7641df52b71484f2b687f13d4",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8"
+  },
+  "scope": "Design and existing frozen/live call boundaries only. This is not implementation/proof/native acceptance. No builds, tests or decoder execution.",
+  "finding_count": 0,
+  "findings": [],
+  "observed_existing_boundaries": [
+    "Both frozen whole-decoder timed loops invoke Impl.decode directly, including its complete result. CPR immediately routes that result through the unchanged tracking policy.",
+    "Frozen test adapters call Impl.decode/decodePrefix or existing live specialized APIs. No alternate decoder is required or permitted.",
+    "FrameRoundTrip.encode_decode covers every successfully decoded byte list, retaining every spare/reserved field; RawSyndromeSpec can use it without a corpus assumption.",
+    "Current standalone frameSyndrome, frameAccepted, frameAddress and report have arbitrary Frame semantics; those interfaces must remain meaningful and live.",
+    "Current decoder rejects malformed lengths and unsupported DF before computing its syndrome; later semantic/parity rejection already follows a pure syndrome computation."
+  ],
+  "implementation_proof_obligations": [
+    "Live parser helper result is the exact old Frame paired with the already computed bytesValue, with identical failure behavior for every List UInt8.",
+    "Public decodeFrame delegates to/projectively consumes that same live helper; main decode uses it once and does not re-read bytes.",
+    "Raw syndrome width informationBits frame.body + 24 agrees with full parsed 56/112-bit width, including DF19 and the two-bit Comm-D descriptor.",
+    "Full-word syndrome equals checksum(information) XOR transmitted parity for every successfully parsed byte list; all parity/address/interrogator/DF17 acceptance meanings preserved.",
+    "All original theorem statements, full report fields and both existing Comm-B inference uses remain unchanged; only proof bodies/imports may bridge the new representation.",
+    "All compiled facts list only permitted axioms, with kernel witnesses spanning failure/success, short/long, reserved-bit and parity boundaries.",
+    "No changes to frozen files, runtime trust boundary, tested-only Float callbacks or corpus-specific behavior."
+  ],
+  "native_review_plan": [
+    "Bind coordinated integration, current source/generated C/object/trace and actual linked worker for all 22 production sets; inspect selected function disassemblies only.",
+    "Confirm one live parser/raw-word acquisition and one full-word Parity.syndrome path from main decode, with acceptance/report using the identical computed syndrome.",
+    "Confirm no direct frameParts/packFields/frameSyndrome reconstruction and no second bytesValue call on the main path, without claiming absent standalone symbols imply zero generic work.",
+    "Inspect helper inlining and pair construction/ownership explicitly; no allocation or throughput claim without actual evidence.",
+    "Future diagnostic classifiers must attribute the new parser helper to frame/CRC and observe direct Parity.syndrome calls instead of assuming retired main frameSyndrome/checksum/packFields counts."
+  ],
+  "planned_new_proof_modules": [
+    "Proofs/FrameWord.lean",
+    "Proofs/RawSyndromeSpec.lean"
+  ],
+  "expected_gate_inputs_if_scope_unchanged": 197,
+  "expected_fresh_sources_if_scope_unchanged": 122,
+  "no_runtime_proof_or_frozen_edits": true,
+  "no_build_test_profile_execution": true
+}

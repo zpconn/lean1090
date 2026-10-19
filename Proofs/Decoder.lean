@@ -532,10 +532,7 @@ private theorem decoder_readSurveillance_eq : @Impl.readSurveillance = @Spec.rea
   unfold Impl.readSurveillance Spec.readSurveillance
   simp only [decoder_field_eq]
 private theorem decoder_decodeFrame_eq : @Impl.decodeFrame = @Spec.decodeFrame := by
-  unfold Impl.decodeFrame Spec.decodeFrame
-  simp only [decoder_bytesValue_eq, decoder_field_eq, decoder_frameBytes_eq, decoder_readACAS_eq,
-    decoder_readSurveillance_eq]
-  rfl
+  exact FrameWord.decodeFrame_function_eq
 private theorem decoder_packFields_eq : @Impl.packFields = @Spec.packFields := by
   funext fields
   exact PackFields.packFields_eq fields

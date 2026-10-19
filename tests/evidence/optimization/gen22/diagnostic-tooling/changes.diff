@@ -1,0 +1,173 @@
+--- before/review/diagnostics/analyze_callgrind.py
++++ after/review/diagnostics/analyze_callgrind.py
+@@ -238,7 +238,7 @@
+         return "adsb_fields"
+     if local in ("frameAltitude", "frameOracleAltitude", "frameIdentity"):
+         return "semantic_oracle_values"
+-    if local in ("decodeFrame", "frameSyndrome", "frameAddress", "frameAccepted",
++    if local in ("decodeFrame", "decodeFrameWithWord", "frameSyndrome", "frameAddress", "frameAccepted",
+                  "frameAddressWithSyndrome", "frameAcceptedWithSyndrome") or (
+             symbol.startswith(PREFIX + "Parity_")):
+         return "frame_crc"
+@@ -296,7 +296,7 @@
+     root_calls = sum(node.calls[name] for node in profile.nodes.values() for name in roots)
+     anchor_names = {
+         PREFIX + name for name in (
+-            "decode", "decodeFrame", "frameAccepted", "frameSyndrome", "frameAddress",
++            "decode", "decodeFrame", "decodeFrameWithWord", "frameAccepted", "frameSyndrome", "frameAddress",
+             "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
+             "Parity_checksum", "Parity_syndrome", "Parity_step", "frameADSB",
+             "decodeADSB", "adsbHardValid", "frameCommB", "inferCommB",
+@@ -408,6 +408,8 @@
+     assert stage_for(PREFIX + "frameAcceptedWithSyndrome", "output_model_control") == "frame_crc"
+     assert stage_for(PREFIX + "reportWithSyndrome", "output_model_control") == "output_model_control"
+     assert stage_for(DECODE, "output_model_control") == "output_model_control"
++    assert stage_for(PREFIX + "decodeFrameWithWord", "output_model_control") == "frame_crc"
++    assert stage_for(PREFIX + "decodeFrameWithWord", "commb_inference") == "commb_inference"
+     text = f"""# callgrind format
+ version: 1
+ positions: instr line
+@@ -474,6 +476,16 @@
+         result = analyze(parse(path), DECODE, "output_model_control")
+         assert result["stage_attribution_complete"]
+         assert result["exclusive_stage_events"]["frame_crc"]["Ir"] == 17
++        # The paired parser inherits exactly the old wire-parser partition;
++        # neither its returned word nor its allocation descendants vanish.
++        path.write_text(separated.replace(PREFIX + "decodeFrame", PREFIX + "decodeFrameWithWord"))
++        paired = analyze(parse(path), DECODE, "output_model_control")
++        assert paired["exclusive_stage_events"] == result["exclusive_stage_events"]
++        assert paired["stage_attribution_complete"]
++        paired_anchors = paired["native_anchor_counts_and_non_additive_inclusive_events"]
++        assert paired_anchors[PREFIX + "decodeFrameWithWord"]["native_entries"] == 1
++        assert paired_anchors[PREFIX + "decodeFrameWithWord"]["self_events"] == {"Ir": 3, "Dr": 1}
++        assert PREFIX + "decodeFrame" not in paired_anchors
+         # Damaged totals and unexpected costs outside the toggled root fail.
+         path.write_text(text.replace("totals: 38 8", "totals: 39 8"))
+         try:
+--- before/review/diagnostics/write_cost_report.py
++++ after/review/diagnostics/write_cost_report.py
+@@ -40,6 +40,21 @@
+     else:
+         path.parent.mkdir(parents=True, exist_ok=True)
+         path.write_text(text)
++
++
++def check_crc_boundaries(anchors, source_review, expected):
++    """Require actual boundaries of the independently verified live path."""
++    raw_word = bool(source_review and source_review.get("raw_word_syndrome_live_path_verified"))
++    if raw_word:
++        parser = source_review["decode_frame_with_word_anchor"]
++        assert parser == P + "decodeFrameWithWord"
++        assert anchors[parser]["native_entries"] == expected, "paired parser entry count"
++        for name in ("frameSyndrome", "Parity_checksum", "packFields"):
++            assert anchors.get(P + name, {}).get("native_entries", 0) == 0, name
++    else:
++        assert anchors[P + "frameSyndrome"]["native_entries"] == expected, "frame syndrome entry count"
++        assert anchors[P + "Parity_checksum"]["native_entries"] == expected, "CRC entry count"
++    assert anchors[P + "Parity_syndrome"]["native_entries"] == expected, "CRC syndrome entry count"
+ 
+ 
+ def main():
+@@ -151,6 +166,11 @@
+     native_df = {row["df"]: row for row in native["per_df"]}
+     byte_crc = bool(source_review and source_review.get("byte_crc_live_path_verified"))
+     word_crc = bool(source_review and source_review.get("word_crc_live_path_verified"))
++    raw_word_crc = bool(source_review and source_review.get("raw_word_syndrome_live_path_verified"))
++    if raw_word_crc:
++        assert live_crc and byte_crc
++        assert live_crc["parsed_wire_word_checked"] and live_crc["raw_word_syndrome_checked"]
++        assert live_crc["standalone_frame_syndrome_checked_after_collection"]
+     if byte_crc:
+         assert word_crc and live_crc
+         assert source_review["parity_fold_anchor"] == source_review["parity_byte_fold_anchor"]
+@@ -168,9 +188,7 @@
+         crc = sum((crc_per_df or per_df)[df]["crc_call_predictions"] for df in dfs)
+         steps = (sum(crc_per_df[df]["crc_step_predictions"] for df in dfs) if crc_per_df else
+                  sum(per_df[df]["crc_call_predictions"] * (56 if df < 16 else 112) for df in dfs))
+-        assert anchors[P + "frameSyndrome"]["native_entries"] == crc, (name, "frame syndrome entry count")
+-        assert anchors[P + "Parity_checksum"]["native_entries"] == crc, (name, "CRC entry count")
+-        assert anchors[P + "Parity_syndrome"]["native_entries"] == crc, (name, "CRC syndrome entry count")
++        check_crc_boundaries(anchors, source_review, crc)
+         if word_crc:
+             # The verified UInt32 update is inlined into the one native loop.
+             # Its predicted iterations remain mathematical census data, not entries.
+@@ -305,7 +323,8 @@
+         lines += ["## Shared-syndrome census and native entries", "",
+                   "The original shadow census is retained exactly for historical comparison; its repeated-CRC prediction is not the current expectation. A separate post-decode census reparses every corpus row, checks its frame and syndrome against the retained decoder result, and predicts one syndrome after successful parsing. This work occurs after collection and does not enter the decoder-root counters.", "",
+                   "All 172,432 corpus rows are accepted, as required by the complete retained-output check. This census covers that accepted corpus only. It does not measure malformed frames or frames rejected after parsing; the latter now compute a syndrome before rejection, as documented by the source/native review.", "",
+-                  ("| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed byte-loop entries |" if byte_crc else
++                  ("| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed paired parser / syndrome entries | Observed byte-loop entries |" if raw_word_crc else
++                   "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed byte-loop entries |" if byte_crc else
+                    "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed UInt32 loop entries |" if word_crc else
+                    "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed CRC step entries |"),
+                   "|---|---:|---:|---:|---:|"]
+@@ -313,10 +332,12 @@
+             anchors = profiles[family]["native_anchor_counts_and_non_additive_inclusive_events"]
+             historical = sum(per_df[df]["crc_call_predictions"] for df in dfs)
+             predicted = sum(crc_per_df[df]["crc_call_predictions"] for df in dfs)
+-            actual = anchors[P + "frameSyndrome"]["native_entries"]
+-            checksum = anchors[P + "Parity_checksum"]["native_entries"]
++            actual = anchors[source_review["decode_frame_with_word_anchor"] if raw_word_crc else P + "frameSyndrome"]["native_entries"]
++            checksum = anchors[P + ("Parity_syndrome" if raw_word_crc else "Parity_checksum")]["native_entries"]
+             steps = anchors[source_review["parity_fold_anchor"] if word_crc else P + "Parity_step"]["native_entries"]
+             lines.append(f"| {family} | {historical:,} | {predicted:,} | {actual:,} / {checksum:,} | {steps:,} |")
++        if raw_word_crc:
++            lines += ["", "The live decoder reuses the wire word returned by decodeFrameWithWord. No frameSyndrome, checksum or packFields native entries occur inside these decoder roots. The post-collection census separately rechecks the raw word and compares its syndrome with the standalone frame-syndrome formula; those validation calls are outside collection. Standalone APIs and arbitrary-input proofs remain available. Missing boundaries alone do not establish absence of inlined work: current generated-C/native review establishes the direct raw-word path."]
+         if byte_crc:
+             predicted_iterations = sum(row["crc_step_predictions"] for row in crc_per_df.values())
+             assert predicted_iterations % 8 == 0
+@@ -382,7 +403,7 @@
+               "| Live function | Native entries across families | Inclusive Ir across families |",
+               "|---|---:|---:|"]
+     anchor_symbols = [P + name for name in (
+-        "decodeFrame", "frameSyndrome", "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
++        "decodeFrame", "decodeFrameWithWord", "frameSyndrome", "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
+         "Parity_checksum", "Parity_syndrome", "Parity_step", "cbDensity", "cbPenalty",
+         "Semantics_adsb", "Semantics_commB", "cbCombinedScore")]
+     anchor_symbols += sorted(analysis.get("optional_inclusive_anchor_symbols", []))
+--- before/review/diagnostics/DecodeCosts.lean
++++ after/review/diagnostics/DecodeCosts.lean
+@@ -215,8 +215,10 @@
+   return Json.mkObj [("kind", .str "post_decode_shadow_census"),
+     ("native_call_counts", .bool false), ("per_df", toJson rows)]
+ 
+-/-- Gen6 live-path census after collection. Reparse each retained input and
+-check its exact frame and syndrome against the complete decoder result.
++/-- Live-path census after collection. Reparse each retained input and check
++its exact frame, retained wire word and syndrome against the decoder result.
++Standalone frame-syndrome reconstruction is retained as an additional check,
++outside collection; it is not assumed to occur in the live decoder root.
+ The source/C path computes one syndrome after successful parsing; native
+ profile entries must independently agree with these population predictions.
+ The older shadow census's CRC field is retained only for historical equality. -/
+@@ -227,13 +229,18 @@
+   for h : i in [:inputs.size] do
+     let input := inputs[i]
+     let some message := output[i]? | throw (IO.userError "missing CRC census result")
+-    let some frame := Impl.decodeFrame input.bytes | throw (IO.userError "CRC census parse failed")
++    let some (frame, word) := Impl.decodeFrameWithWord input.bytes |
++      throw (IO.userError "CRC census parse failed")
+     if !(decide (frame = message.fields)) then
+       throw (IO.userError "CRC census parsed fields differ from decoder result")
+-    let syndrome := Impl.frameSyndrome frame
++    if word != Impl.bytesValue input.bytes then
++      throw (IO.userError "CRC census retained wire word differs from byte value")
++    let bits := Impl.informationBits frame.body + 24
++    let syndrome := Impl.Parity.syndrome bits word
++    if syndrome != Impl.frameSyndrome frame then
++      throw (IO.userError "CRC census raw and standalone syndromes differ")
+     if syndrome != message.decoded.crc || !Impl.frameAcceptedWithSyndrome frame syndrome then
+       throw (IO.userError "CRC census syndrome/acceptance differs from decoder result")
+-    let bits := Impl.informationBits frame.body + 24
+     if bits != input.bytes.length * 8 then throw (IO.userError "CRC census width mismatch")
+     counts := counts.modify input.df (· + 1)
+     steps := steps.modify input.df (· + bits)
+@@ -246,6 +253,8 @@
+     ("population", .str "accepted_corpus_only"),
+     ("input_rows", toJson inputs.size), ("retained_accepted_rows", toJson output.size),
+     ("native_call_counts", .bool false), ("parsed_fields_and_syndromes_checked", .bool true),
++    ("parsed_wire_word_checked", .bool true), ("raw_word_syndrome_checked", .bool true),
++    ("standalone_frame_syndrome_checked_after_collection", .bool true),
+     ("historical_crc_prediction", .str "post_decode_shadow_census.per_df[].crc_call_predictions"),
+     ("per_df", toJson rows)]
+ 

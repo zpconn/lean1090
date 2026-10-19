@@ -131,10 +131,11 @@ unsupported DF, DF17 PI failure or oracle payload plausibility failure.
 After parsing succeeds, one pure syndrome calculation supplies acceptance and
 every report use. A later payload-plausibility rejection may now calculate its
 syndrome before rejection; malformed lengths and unsupported DFs still stop at
-`decodeFrame`. This changes evaluation order, not the returned value. -/
+the live frame parser. The parser returns its already decoded wire word, so
+CRC does not reconstruct that word from field assignments. -/
 def decode (bytes : List UInt8) : Option Message := do
-  let f ← decodeFrame bytes
-  let syndrome := frameSyndrome f
+  let (f, word) ← decodeFrameWithWord bytes
+  let syndrome := Parity.syndrome (informationBits f.body + 24) word
   if frameAcceptedWithSyndrome f syndrome then some ⟨f, reportWithSyndrome f syndrome⟩ else none
 
 -- Initial algorithm: Spec/Message.lean:132.

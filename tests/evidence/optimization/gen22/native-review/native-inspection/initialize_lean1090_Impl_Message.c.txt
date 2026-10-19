@@ -1,0 +1,28 @@
+1284: LEAN_EXPORT lean_object* initialize_lean1090_Impl_Message(uint8_t builtin) {
+1285: lean_object * res;
+1286: if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+1287: _G_initialized = true;
+1288: lean_initialize_runtime_module();
+1289: res = initialize_Init(builtin);
+1290: if (lean_io_result_is_error(res)) return res;
+1291: lean_dec_ref(res);
+1292: res = initialize_Init(builtin);
+1293: if (lean_io_result_is_error(res)) return res;
+1294: lean_dec_ref(res);
+1295: res = initialize_lean1090_Model_Types(builtin);
+1296: if (lean_io_result_is_error(res)) return res;
+1297: lean_dec_ref(res);
+1298: res = initialize_lean1090_Impl_Frame(builtin);
+1299: if (lean_io_result_is_error(res)) return res;
+1300: lean_dec_ref(res);
+1301: res = initialize_lean1090_Impl_Parity(builtin);
+1302: if (lean_io_result_is_error(res)) return res;
+1303: lean_dec_ref(res);
+1304: res = initialize_lean1090_Impl_CommB(builtin);
+1305: if (lean_io_result_is_error(res)) return res;
+1306: lean_dec_ref(res);
+1307: res = initialize_lean1090_Impl_Semantics(builtin);
+1308: if (lean_io_result_is_error(res)) return res;
+1309: lean_dec_ref(res);
+1310: return lean_io_result_mk_ok(lean_box(0));
+1311: }

@@ -28,8 +28,9 @@ def readSurveillance (width word : Nat) : SurveillanceFields :=
 -- Initial algorithm: Spec/Frame.lean:26.
 /-- Annex 10 IV (4th ed.), cited layouts on FrameBody: parse one complete
 frame. This layer decodes wire fields, including reserved codes; the semantic
-decoder checks payload validity and applies the separately identified policies. -/
-def decodeFrame (bytes : List UInt8) : Option Frame := do
+decoder checks payload validity and applies the separately identified policies.
+The already parsed word is returned for full-message CRC reuse. -/
+def decodeFrameWithWord (bytes : List UInt8) : Option (Frame × Nat) := do
   let first ← bytes.head?
   let df := first.toNat / 8
   let count := frameBytes df
@@ -55,7 +56,11 @@ def decodeFrame (bytes : List UInt8) : Option Frame := do
           some (.commD (field width 2 1 word) (field width 3 1 word)
             (field width 4 4 word) (field width 8 80 word))
         else none
-    some ⟨body, parity⟩
+    some (⟨body, parity⟩, word)
+
+/-- Public frame parsing projects the same live parser used by the full decoder. -/
+def decodeFrame (bytes : List UInt8) : Option Frame :=
+  (decodeFrameWithWord bytes).map Prod.fst
 
 -- Initial algorithm: Spec/Frame.lean:57.
 /-- Annex 10 IV (4th ed.), §§3.1.2.8.2–3: encoder's ACAS field sequence. -/

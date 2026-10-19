@@ -42,6 +42,21 @@ def write_new_or_identical(path, text):
         path.write_text(text)
 
 
+def check_crc_boundaries(anchors, source_review, expected):
+    """Require actual boundaries of the independently verified live path."""
+    raw_word = bool(source_review and source_review.get("raw_word_syndrome_live_path_verified"))
+    if raw_word:
+        parser = source_review["decode_frame_with_word_anchor"]
+        assert parser == P + "decodeFrameWithWord"
+        assert anchors[parser]["native_entries"] == expected, "paired parser entry count"
+        for name in ("frameSyndrome", "Parity_checksum", "packFields"):
+            assert anchors.get(P + name, {}).get("native_entries", 0) == 0, name
+    else:
+        assert anchors[P + "frameSyndrome"]["native_entries"] == expected, "frame syndrome entry count"
+        assert anchors[P + "Parity_checksum"]["native_entries"] == expected, "CRC entry count"
+    assert anchors[P + "Parity_syndrome"]["native_entries"] == expected, "CRC syndrome entry count"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--analysis", required=True, type=Path)
@@ -151,6 +166,11 @@ def main():
     native_df = {row["df"]: row for row in native["per_df"]}
     byte_crc = bool(source_review and source_review.get("byte_crc_live_path_verified"))
     word_crc = bool(source_review and source_review.get("word_crc_live_path_verified"))
+    raw_word_crc = bool(source_review and source_review.get("raw_word_syndrome_live_path_verified"))
+    if raw_word_crc:
+        assert live_crc and byte_crc
+        assert live_crc["parsed_wire_word_checked"] and live_crc["raw_word_syndrome_checked"]
+        assert live_crc["standalone_frame_syndrome_checked_after_collection"]
     if byte_crc:
         assert word_crc and live_crc
         assert source_review["parity_fold_anchor"] == source_review["parity_byte_fold_anchor"]
@@ -168,9 +188,7 @@ def main():
         crc = sum((crc_per_df or per_df)[df]["crc_call_predictions"] for df in dfs)
         steps = (sum(crc_per_df[df]["crc_step_predictions"] for df in dfs) if crc_per_df else
                  sum(per_df[df]["crc_call_predictions"] * (56 if df < 16 else 112) for df in dfs))
-        assert anchors[P + "frameSyndrome"]["native_entries"] == crc, (name, "frame syndrome entry count")
-        assert anchors[P + "Parity_checksum"]["native_entries"] == crc, (name, "CRC entry count")
-        assert anchors[P + "Parity_syndrome"]["native_entries"] == crc, (name, "CRC syndrome entry count")
+        check_crc_boundaries(anchors, source_review, crc)
         if word_crc:
             # The verified UInt32 update is inlined into the one native loop.
             # Its predicted iterations remain mathematical census data, not entries.
@@ -305,7 +323,8 @@ def main():
         lines += ["## Shared-syndrome census and native entries", "",
                   "The original shadow census is retained exactly for historical comparison; its repeated-CRC prediction is not the current expectation. A separate post-decode census reparses every corpus row, checks its frame and syndrome against the retained decoder result, and predicts one syndrome after successful parsing. This work occurs after collection and does not enter the decoder-root counters.", "",
                   "All 172,432 corpus rows are accepted, as required by the complete retained-output check. This census covers that accepted corpus only. It does not measure malformed frames or frames rejected after parsing; the latter now compute a syndrome before rejection, as documented by the source/native review.", "",
-                  ("| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed byte-loop entries |" if byte_crc else
+                  ("| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed paired parser / syndrome entries | Observed byte-loop entries |" if raw_word_crc else
+                   "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed byte-loop entries |" if byte_crc else
                    "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed UInt32 loop entries |" if word_crc else
                    "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed CRC step entries |"),
                   "|---|---:|---:|---:|---:|"]
@@ -313,10 +332,12 @@ def main():
             anchors = profiles[family]["native_anchor_counts_and_non_additive_inclusive_events"]
             historical = sum(per_df[df]["crc_call_predictions"] for df in dfs)
             predicted = sum(crc_per_df[df]["crc_call_predictions"] for df in dfs)
-            actual = anchors[P + "frameSyndrome"]["native_entries"]
-            checksum = anchors[P + "Parity_checksum"]["native_entries"]
+            actual = anchors[source_review["decode_frame_with_word_anchor"] if raw_word_crc else P + "frameSyndrome"]["native_entries"]
+            checksum = anchors[P + ("Parity_syndrome" if raw_word_crc else "Parity_checksum")]["native_entries"]
             steps = anchors[source_review["parity_fold_anchor"] if word_crc else P + "Parity_step"]["native_entries"]
             lines.append(f"| {family} | {historical:,} | {predicted:,} | {actual:,} / {checksum:,} | {steps:,} |")
+        if raw_word_crc:
+            lines += ["", "The live decoder reuses the wire word returned by decodeFrameWithWord. No frameSyndrome, checksum or packFields native entries occur inside these decoder roots. The post-collection census separately rechecks the raw word and compares its syndrome with the standalone frame-syndrome formula; those validation calls are outside collection. Standalone APIs and arbitrary-input proofs remain available. Missing boundaries alone do not establish absence of inlined work: current generated-C/native review establishes the direct raw-word path."]
         if byte_crc:
             predicted_iterations = sum(row["crc_step_predictions"] for row in crc_per_df.values())
             assert predicted_iterations % 8 == 0
@@ -382,7 +403,7 @@ def main():
               "| Live function | Native entries across families | Inclusive Ir across families |",
               "|---|---:|---:|"]
     anchor_symbols = [P + name for name in (
-        "decodeFrame", "frameSyndrome", "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
+        "decodeFrame", "decodeFrameWithWord", "frameSyndrome", "frameAcceptedWithSyndrome", "frameAddressWithSyndrome", "reportWithSyndrome",
         "Parity_checksum", "Parity_syndrome", "Parity_step", "cbDensity", "cbPenalty",
         "Semantics_adsb", "Semantics_commB", "cbCombinedScore")]
     anchor_symbols += sorted(analysis.get("optional_inclusive_anchor_symbols", []))

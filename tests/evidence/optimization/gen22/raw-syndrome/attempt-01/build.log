@@ -1,0 +1,145 @@
+⚠ [1417/1696] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2033/2045] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+✔ [2039/2045] Built Capstones (1.0s)
+⚠ [2040/2045] Built Proofs.WireBytes (1.1s)
+warning: Proofs/WireBytes.lean: imports `Mathlib.Tactic.Ring` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+info: Proofs/WireBytes.lean:138:0: 'Lean1090.Proofs.WireBytes.bytesValue_valueBytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/WireBytes.lean:139:0: 'Lean1090.Proofs.WireBytes.valueBytes_bytesValue' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2041/2045] Built Proofs.ParityLinear (1.1s)
+info: Proofs/ParityLinear.lean:70:0: 'Lean1090.Proofs.CRCLinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2042/2045] Built Proofs.BitPacking (1.1s)
+info: Proofs/BitPacking.lean:113:0: 'Lean1090.Proofs.BitPacking.field_pack' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2043/2045] Built Proofs.ParityOverlay (1.1s)
+info: Proofs/ParityOverlay.lean:119:0: 'Lean1090.Proofs.ParityOverlay' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [2044/2045] Built Proofs.FrameRoundTrips (1.9s)
+warning: Proofs/FrameRoundTrips.lean: imports `Mathlib.Tactic.IntervalCases` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+info: Proofs/FrameRoundTrips.lean:496:0: 'Lean1090.Proofs.FrameRoundTrip.decode_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/FrameRoundTrips.lean:663:0: 'Lean1090.Proofs.FrameRoundTrips' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2045/2045] Building Proofs.RawSyndromeSpec (6.4s)
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/RawSyndromeSpec.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/RawSyndromeSpec.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/RawSyndromeSpec.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/RawSyndromeSpec.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/RawSyndromeSpec.setup.json --json
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.shortACAS fields✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.shortACAS fields✝).informationBits + 24
+
+case shortACAS
+fields✝ : ACASFields
+⊢ ((FrameBody.shortACAS fields✝).informationBits + 24) / 8 * 8 = (FrameBody.shortACAS fields✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.surveillance identity✝ fields✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.surveillance identity✝ fields✝).informationBits + 24
+
+case surveillance
+identity✝ : Bool
+fields✝ : SurveillanceFields
+⊢ ((FrameBody.surveillance identity✝ fields✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.surveillance identity✝ fields✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.allCall ca✝ aa✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.allCall ca✝ aa✝).informationBits + 24
+
+case allCall
+ca✝ : BitVec 3
+aa✝ : BitVec 24
+⊢ ((FrameBody.allCall ca✝ aa✝).informationBits + 24) / 8 * 8 = (FrameBody.allCall ca✝ aa✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.longACAS fields✝ mv✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.longACAS fields✝ mv✝).informationBits + 24
+
+case longACAS
+fields✝ : ACASFields
+mv✝ : BitVec 56
+⊢ ((FrameBody.longACAS fields✝ mv✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.longACAS fields✝ mv✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.extended supplementary✝ control✝ aa✝ me✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.extended supplementary✝ control✝ aa✝ me✝).informationBits + 24
+
+case extended
+supplementary✝ : Bool
+control✝ : BitVec 3
+aa✝ : BitVec 24
+me✝ : BitVec 56
+⊢ ((FrameBody.extended supplementary✝ control✝ aa✝ me✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.extended supplementary✝ control✝ aa✝ me✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.military af✝ reserved✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.military af✝ reserved✝).informationBits + 24
+
+case military
+af✝ : BitVec 3
+reserved✝ : BitVec 80
+⊢ ((FrameBody.military af✝ reserved✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.military af✝ reserved✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.commB identity✝ fields✝ mb✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.commB identity✝ fields✝ mb✝).informationBits + 24
+
+case commB
+identity✝ : Bool
+fields✝ : SurveillanceFields
+mb✝ : BitVec 56
+⊢ ((FrameBody.commB identity✝ fields✝ mb✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.commB identity✝ fields✝ mb✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:28:17: Tactic `rfl` failed: The left-hand side
+  ((FrameBody.commD spare✝ ke✝ nd✝ md✝).informationBits + 24) / 8 * 8
+is not definitionally equal to the right-hand side
+  (FrameBody.commD spare✝ ke✝ nd✝ md✝).informationBits + 24
+
+case commD
+spare✝ ke✝ : BitVec 1
+nd✝ : BitVec 4
+md✝ : BitVec 80
+⊢ ((FrameBody.commD spare✝ ke✝ nd✝ md✝).informationBits + 24) / 8 * 8 =
+    (FrameBody.commD spare✝ ke✝ nd✝ md✝).informationBits + 24
+error: Proofs/RawSyndromeSpec.lean:37:4: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: Proofs/RawSyndromeSpec.lean:30:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+error: Proofs/RawSyndromeSpec.lean:51:66: Application type mismatch: The argument
+  BitVec.ofNat_toNat ?m.43
+has type
+  ∀ (x : BitVec ?m.42), BitVec.ofNat ?m.43 x.toNat = BitVec.setWidth ?m.43 x
+but is expected to have type
+  BitVec.ofNat 24 f.parity.toNat = f.parity
+in the application
+  Eq.trans (ParityFacts.syndrome_low_word f.body.informationBits f.parity.toNat (BitVec.isLt f.parity))
+    (BitVec.ofNat_toNat ?m.43)
+error: Proofs/RawSyndromeSpec.lean:44:8: (kernel) unknown constant 'Lean1090.Proofs.RawSyndromeSpec.bytesValue_encodeFrame'
+info: Proofs/RawSyndromeSpec.lean:101:0: 'Lean1090.Proofs.RawSyndromeSpec.parts_width' depends on axioms: [propext]
+info: Proofs/RawSyndromeSpec.lean:102:0: 'Lean1090.Proofs.RawSyndromeSpec.encoded_width' depends on axioms: [propext, sorryAx]
+info: Proofs/RawSyndromeSpec.lean:103:0: 'Lean1090.Proofs.RawSyndromeSpec.bytesValue_encodeFrame' does not depend on any axioms
+info: Proofs/RawSyndromeSpec.lean:104:0: 'Lean1090.Proofs.RawSyndromeSpec.syndrome_encodeFrame' depends on axioms: [propext, Quot.sound, syndrome_encodeFrame]
+info: Proofs/RawSyndromeSpec.lean:105:0: 'Lean1090.Proofs.RawSyndromeSpec.syndrome_decodeFrame' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ syndrome_encodeFrame]
+info: Proofs/RawSyndromeSpec.lean:106:0: 'Lean1090.Proofs.RawSyndromeSpec.decoded_width' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/RawSyndromeSpec.lean:107:0: 'Lean1090.Proofs.RawSyndromeSpec.syndrome_decodeFrame_length' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound,
+ syndrome_encodeFrame]
+info: Proofs/RawSyndromeSpec.lean:108:0: 'Lean1090.Proofs.RawSyndromeSpec.short_spares_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/RawSyndromeSpec.lean:109:0: 'Lean1090.Proofs.RawSyndromeSpec.allCall_parity_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/RawSyndromeSpec.lean:110:0: 'Lean1090.Proofs.RawSyndromeSpec.long_extended_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/RawSyndromeSpec.lean:111:0: 'Lean1090.Proofs.RawSyndromeSpec.military_df19_witness' depends on axioms: [propext, Quot.sound]
+info: Proofs/RawSyndromeSpec.lean:112:0: 'Lean1090.Proofs.RawSyndromeSpec.commD_spares_witness' depends on axioms: [propext, Quot.sound]
+Some required targets logged failures:
+- Proofs.RawSyndromeSpec
+error: build failed

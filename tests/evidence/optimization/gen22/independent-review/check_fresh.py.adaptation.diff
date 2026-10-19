@@ -1,0 +1,56 @@
+--- tests/evidence/optimization/gen21/independent-review/check_fresh.py
++++ tests/evidence/optimization/gen22/independent-review/check_fresh.py
+@@ -6,7 +6,7 @@
+ from datetime import datetime, timezone
+ import gzip, hashlib, json
+ 
+-G = Path('tests/evidence/optimization/gen21')
++G = Path('tests/evidence/optimization/gen22')
+ B = G
+ O = B / 'independent-review/fresh-retention-review.json'
+ 
+@@ -50,14 +50,14 @@
+     assert actual == set(manifest['files']) and len(actual) == 33
+     for name, row in manifest['files'].items():
+         assert sha(name) == row['sha256'] and Path(name).stat().st_size == row['bytes']
+-    for kind, count in [('source_sha256', 120), ('binary_sha256', 3)]:
++    for kind, count in [('source_sha256', 122), ('binary_sha256', 3)]:
+         assert run[kind + '_before'] == run[kind + '_after'] == pre[kind]
+         assert len(pre[kind]) == count
+         commb_before = kind if kind == 'source_sha256' else kind + '_before'
+         assert commb[commb_before] == commb[kind + '_after'] == pre[kind]
+         for name, digest in pre[kind].items():
+             assert sha(name) == digest
+-    assert execution['final_source_hash_count'] == manifest['final_source_hash_count'] == verify['source_hash_count'] == 120
++    assert execution['final_source_hash_count'] == manifest['final_source_hash_count'] == verify['source_hash_count'] == 122
+     assert execution['final_binary_hash_count'] == manifest['final_binary_hash_count'] == verify['binary_hash_count'] == 3
+     assert execution['final_source_binary_hashes_match'] and manifest['final_source_binary_hashes_match']
+     assert execution['retained_file_count'] == manifest['exact_membership_count'] == 33
+@@ -78,8 +78,8 @@
+     assert verify['run_record_sha256'] == sha(B / 'fresh-message-run.json')
+     assert verify['verifier_sha256'] == sha(B / 'fresh-verify.py')
+     assert seeds['recorded_utc'] < execution['started_utc']
+-    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 812751599
+-    assert seeds['commb_seed'] == verify['commb_seed'] == 2219662621
++    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 1582934336
++    assert seeds['commb_seed'] == verify['commb_seed'] == 3653937729
+     for name, digest in seeds['historical_seed_records_sha256'].items():
+         assert sha(name) == digest
+         previous = load(name)
+@@ -116,6 +116,7 @@
+     assert native_inputs['integration_record_sha256'] == sha(G / 'integration/targeted-build.json')
+     assert sha(native_inputs['worker']) == native_inputs['worker_sha256']
+     assert native['status'] == 'passed' and not native['findings']
++    assert native['raw_word_syndrome_live_path_verified'] and native['linked_native_sets'] == 22
+     for name, digest in native_inputs['held_inputs'].items():
+         assert sha(name) == digest
+     for name, digest in native['bindings'].items():
+@@ -126,7 +127,7 @@
+         for name, digest in pre[kind].items():
+             assert sha(name) == digest
+     result = {'status': 'passed', 'reviewed_utc': datetime.now(timezone.utc).isoformat(),
+-              'script_sha256': sha(__file__), 'source_hashes': 120, 'binary_hashes': 3, 'exact_retained_members': 33,
++              'script_sha256': sha(__file__), 'source_hashes': 122, 'binary_hashes': 3, 'exact_retained_members': 33,
+               'raw_and_standalone_decompressed': decoded, 'diagnostic_streams_decompressed': streams,
+               'message_counts': counts, 'coverage': [32, 70, 14], 'direct_counts': verify['direct_counts'],
+               'seeds': {'message': seeds['message_seed'], 'commb': seeds['commb_seed']},

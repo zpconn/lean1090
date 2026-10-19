@@ -1,0 +1,143 @@
+--- tests/evidence/diagnostics/gen20/independent-review/check_source.py
++++ tests/evidence/diagnostics/gen21/independent-review/check_source.py
+@@ -6,7 +6,7 @@
+ from collections import deque
+ import hashlib, importlib.util, json, re, subprocess
+ 
+-E = Path('tests/evidence/diagnostics/gen20')
++E = Path('tests/evidence/diagnostics/gen21')
+ D = E / 'independent-review/source-inspection'
+ D.mkdir(parents=True,exist_ok=True)
+ P = 'lp_lean1090_Lean1090_Impl_'
+@@ -28,10 +28,10 @@
+         if depth==0: return text[start:end+1], text[:start].count('\n')+1
+     raise AssertionError(name)
+ 
+-build_path=Path('.cache/gen20-costs/driver/driver-build.json')
+-build=read(build_path); bench=read('bench/runs/gen20/summary.json')
+-native_path=Path('bench/runs/gen20/fresh-native-inputs.json'); native=read(native_path)
+-oldpath=Path('tests/evidence/diagnostics/gen19/independent-review/source-review.json'); old=read(oldpath)
++build_path=Path('.cache/gen21-costs/driver/driver-build.json')
++build=read(build_path); bench=read('bench/runs/gen21/summary.json')
++native_path=Path('bench/runs/gen21/fresh-native-inputs.json'); native=read(native_path)
++oldpath=Path('tests/evidence/diagnostics/gen20/independent-review/source-review.json'); old=read(oldpath)
+ assert build['status']=='passed' and len(native)==22
+ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==build['commit']
+ assert sha(WORKER)==bench['binary_sha256']
+@@ -56,20 +56,20 @@
+ sys.path.insert(0,str(Path('review/diagnostics').resolve()))
+ import bind_benchmark_history
+ binding_path=E/'benchmark-source-binding.json'
+-assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen20/summary.json'),None,
+-    Path('bench/runs/gen20/correctness-inputs.json'))==read(binding_path)
+-
+-old_native={r['source']:r for r in read('bench/runs/gen19/fresh-native-inputs.json')}
++assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen21/summary.json'),None,
++    Path('bench/runs/gen21/correctness-inputs.json'))==read(binding_path)
++
++old_native={r['source']:r for r in read('bench/runs/gen20/fresh-native-inputs.json')}
+ unchanged=[]
+ for row in native:
+-    if row['source']=='Impl/Parity.lean':continue
++    if row['source']=='Impl/PayloadBits.lean':continue
+     before=old_native[row['source']]
+     assert row['source_sha256']==before['source_sha256'],row['source']
+     assert {p:r['sha256'] for p,r in row['artifacts'].items()}=={p:r['sha256'] for p,r in before['artifacts'].items()},row['source']
+     unchanged.append(row['source'])
+ assert len(unchanged)==21
+ # CPRFloat source and native artifacts are unchanged since generation18.
+-oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen19/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
++oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen20/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
+ assert oldfloat==Path('Impl/CPRFloat.lean').read_text()
+ floatpath=Path('.lake/build/ir/Impl/CPRFloat.c');floatc=floatpath.read_text()
+ T=P+'CPR_Policy_toFloat';F=T+'Fallback';Z='_init_'+T+'___closed__1';FI='initialize_lean1090_Impl_CPRFloat'
+@@ -132,6 +132,17 @@
+ assert integer+'(' in body(payload,P+'payloadValue')[0]
+ bit_targets=[(bit,altpath,alt),(gray,altpath,alt),(grayfold,altpath,alt),(identity,framepath,frame),(integer,payloadpath,payload),(P+'payloadValue',payloadpath,payload)]
+ 
++# Current integer affine normalization is inlined in the actual payloadValue.
++pv=body(payload,P+'payloadValue')[0]
++assert pv.count('lean_int_mul(')==pv.count('lean_nat_gcd(')==1
++assert 'lean_nat_abs(' in pv and 'lean_int_div_exact(' in pv and 'lean_nat_div_exact(' in pv
++assert 'l_Rat_mul(' not in pv and 'lean_float' not in pv
++assert pv.count('l_instDecidableEqRat_decEq(')==2 and pv.count('l_Rat_ofInt(')==pv.count('l_Rat_add(')==1
++assert pv.count(P+'payloadBits(')==2 and 'lean_box(0)' in pv and P+'payloadInteger(' in pv
++assert P+'integerScale(' not in pv and P+'affineValue(' not in pv
++integer_scale_c=body(payload,P+'integerScale')[0]
++assert integer_scale_c.count('lean_int_mul(')==integer_scale_c.count('lean_nat_gcd(')==1
++
+ # Current exact byte batching and retained all-width fallback, inspected separately.
+ paritypath=Path('.lake/build/ir/Impl/Parity.c');parityc=paritypath.read_text()
+ parity_names=re.findall(r'LEAN_EXPORT [^\n]+ (\w+)\([^\n]*\)\{',parityc)
+@@ -151,7 +162,7 @@
+ assert bitfold+'(' in body(parityc,P+'Parity_syndromeBits')[0]
+ parity_targets=[(P+'Parity_syndrome',paritypath,parityc),(P+'Parity_syndromeBytes',paritypath,parityc),(P+'Parity_syndromeBits',paritypath,parityc),(bytefold,paritypath,parityc),(bitfold,paritypath,parityc)]
+ 
+-anchors={old[k] for k in old if k.endswith('_anchor') and k!='parity_fold_anchor'}
++anchors={old[k] for k in old if k.endswith('_anchor') and k!='parity_fold_anchor' and old[k] is not None}
+ anchors.update(old['integer_score_gate_anchors'].values())
+ anchors.update([bytefold,bitfold,P+'Parity_syndromeBytes',P+'Parity_syndromeBits'])
+ anchors.update([bit,gray,grayfold,identity,integer,T,F,Z,FI,fold,P+'packFields',P+'decode',P+'frameSyndrome',S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init])
+@@ -181,6 +192,9 @@
+     assert 'lean_nat_big_shiftr' in assemblies[symbol] and re.search(r'\bshr\b',assemblies[symbol])
+ assert '<lean_nat_shiftl>' in assemblies[integer]
+ assert '<'+integer+'>' in assemblies[P+'payloadValue']
++assert '<l_Rat_mul>' not in assemblies[P+'payloadValue']
++for target in ['lean_nat_gcd','lean_int_big_mul','lean_int_big_div_exact','lean_nat_big_div_exact','l_Rat_ofInt','l_Rat_add']:
++    assert '<'+target+'>' in assemblies[P+'payloadValue']
+ assert '<'+identitylambda+'>' not in assemblies[identity]
+ fa=assemblies[fold]
+ assert '<lean_nat_shiftl>' in fa and '<lean_nat_pow>' in fa and '<lean_nat_mul>' not in fa
+@@ -193,9 +207,9 @@
+ assert '<l_Array_ofFn___redArg>' in assemblies[ctor]
+ assert assemblies[init].index('<'+S+'powerTwoTable>')<assemblies[init].index('<lean_mark_persistent>')<assemblies[init].index('<'+S+'maxFinite___closed__3_once>')
+ assert '<'+ctor+'>' in assemblies[init] and '<lean_obj_once_cold>' in assemblies[init]
+-implementation=Path('tests/evidence/optimization/gen20/native-review/review.json')
+-ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['byte_crc_live_path_verified']
+-ni=read('tests/evidence/optimization/gen20/native-review/native-inputs.json')
++implementation=Path('tests/evidence/optimization/gen21/native-review/review.json')
++ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['integer_affine_normalization_live_path_verified']
++ni=read('tests/evidence/optimization/gen21/native-review/native-inputs.json')
+ assert ni['worker_sha256']==sha(WORKER)==bench['binary_sha256']
+ for name,digest in ni['held_inputs'].items():assert sha(name)==digest,name
+ for name,digest in ir['bindings'].items():assert sha(name)==digest,name
+@@ -247,7 +261,7 @@
+     benchmark_source_binding_sha256=sha(binding_path),fresh_native_inputs=str(native_path),
+     fresh_native_inputs_sha256=sha(native_path),fresh_project_modules_verified=22,
+     source_C_object_trace_bindings=bindings,driver_build_manifest=str(build_path),
+-    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen20-costs/driver/decode-costs'),
++    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen21-costs/driver/decode-costs'),
+     reused_production_objects_verified=21,unchanged_driver_input_hashes_verified=len(held),
+     eager_table_initializers=old['eager_table_initializers'],
+     live_generated_C={path:sha(path) for path in old['live_generated_C']},
+@@ -259,7 +273,7 @@
+     symbol_inventory={'path':str(symbols),'sha256':sha(symbols),'filtered':True},
+     unchanged_native_modules=unchanged,
+     previous_source_review={'path':str(oldpath),'sha256':sha(oldpath),
+-        'basis':'All 21 sibling source/C/object/trace sets match generation 19 byte-for-byte. Only Parity changes; current byte and fallback loops plus unchanged conversion/power paths are independently rebound.'},
++        'basis':'All 21 sibling source/C/object/trace sets match generation 20 byte-for-byte. Only PayloadBits changes; current inlined affine normalization plus unchanged CRC/conversion/power paths are independently rebound.'},
+     implementation_native_review={'path':str(implementation),'sha256':sha(implementation)},
+     byte_crc_live_path_verified=True,parity_fold_anchor=bytefold,parity_byte_fold_anchor=bytefold,parity_bit_fold_anchor=bitfold,
+     parity_byte_wrapper_anchor=P+'Parity_syndromeBytes',parity_bit_wrapper_anchor=P+'Parity_syndromeBits',
+@@ -269,14 +283,18 @@
+     dyadic_to_float_at_most_one_fallback_per_entry=True,dyadic_to_float_zero_case_verified=True,
+     dyadic_to_float_control_flow={'path':str(E/'independent-review/tofloat-control-flow.json'),'sha256':sha(E/'independent-review/tofloat-control-flow.json')},
+     review_script=str(Path(__file__)),review_script_sha256=sha(__file__),findings=[],
+-    reviewer_attempts=[{'path':str(E/'independent-review/source-attempt-01/execution.json'),'sha256':sha(E/'independent-review/source-attempt-01/execution.json'),'finding':'Reviewer expected wrappers to inline into syndrome. Actual native code retains callable syndromeBytes/syndromeBits, each tail-calling its correct fold; checker now captures and verifies both edges. Producer/native sources were unchanged.'}],
++    reviewer_attempts=[],
++    integer_affine_normalization_live_path_verified=True,payload_value_anchor=P+'payloadValue',
++    integer_affine_normalization_anchors={'payloadValue':P+'payloadValue','integerScale':None,'affineValue':None,'gcd':'lean_nat_gcd','big_product':'lean_int_big_mul'},
++    integer_affine_normalization_limit='integerScale and affineValue inline into payloadValue. Actual payloadValue entries and direct children are separately observable; absent wrappers do not imply zero cost. Status/unit/offset branches remain. Generic big-integer and ownership paths remain.',
+     observations=['The live inclusive [-1074,1023] guard selects one immutable indexed table read; both outside-range branches call the exact original formula.',
+-        'The table entry constructor calls only powerTwoFormula, and the complete2098-entry array is forced/persisted during module initialization before worker execution.',
++        'The table entry constructor calls only powerTwoFormula, and the complete 2098-entry array is forced/persisted during module initialization before worker execution.',
+         'The prior complete initialization-chain disassembly is rebound to the same actual worker hash; no timing, exponent distribution or table hit rate is inferred.',
+         'The current bit/Gray/identity/signed-field bodies have no direct power/division calls; arbitrary-size Nat fallbacks and unchanged caller routing remain. Inlined identity-lambda work is not treated as zero work.',
+         'All prior decoder paths are still linked; packFields retains its exact Nat-shift and bounded machine-mask/fallback branches.',
+-        'Only Parity changed among the 22 linked sets; all 21 sibling sets, including CPRFloat, remain byte-identical to generation 19.',
++        'Only PayloadBits changed among the 22 linked sets; all 21 sibling sets, including Parity and CPRFloat, remain byte-identical to generation 20.',
+         'toFloat packs exact bits on accepted dyadics, delegates at most once to the unchanged fallback on rejection, and returns cached or lazily initialized positive zero on zero input.',
++        'payloadValue retains one exact numerator-product/gcd normalization site in the nonunit branch, with no Rat.mul call; unit scale and zero offset still bypass their identity operations.',
+         'smallDyadicBits is inlined. The wrapper retains decimal parsing and generic Nat/Int allocation; no allocation-free or measured fast-path-frequency claim is made.'],
+     limits='Read-only source/generated-C/native inspection; no builds, decoder executions, timing or profiles. Actual branch populations and instruction costs require the later raw recount. Historical content is referenced by existing hashes rather than recopied.')
+ for name,digest in held.items():assert sha(name)==digest,name

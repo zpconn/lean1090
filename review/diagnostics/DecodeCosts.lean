@@ -215,8 +215,10 @@ private def census (inputs : Array Input) (output : Array Spec.Message) : IO Jso
   return Json.mkObj [("kind", .str "post_decode_shadow_census"),
     ("native_call_counts", .bool false), ("per_df", toJson rows)]
 
-/-- Gen6 live-path census after collection. Reparse each retained input and
-check its exact frame and syndrome against the complete decoder result.
+/-- Live-path census after collection. Reparse each retained input and check
+its exact frame, retained wire word and syndrome against the decoder result.
+Standalone frame-syndrome reconstruction is retained as an additional check,
+outside collection; it is not assumed to occur in the live decoder root.
 The source/C path computes one syndrome after successful parsing; native
 profile entries must independently agree with these population predictions.
 The older shadow census's CRC field is retained only for historical equality. -/
@@ -227,13 +229,18 @@ private def crcCensus (inputs : Array Input) (output : Array Spec.Message) : IO 
   for h : i in [:inputs.size] do
     let input := inputs[i]
     let some message := output[i]? | throw (IO.userError "missing CRC census result")
-    let some frame := Impl.decodeFrame input.bytes | throw (IO.userError "CRC census parse failed")
+    let some (frame, word) := Impl.decodeFrameWithWord input.bytes |
+      throw (IO.userError "CRC census parse failed")
     if !(decide (frame = message.fields)) then
       throw (IO.userError "CRC census parsed fields differ from decoder result")
-    let syndrome := Impl.frameSyndrome frame
+    if word != Impl.bytesValue input.bytes then
+      throw (IO.userError "CRC census retained wire word differs from byte value")
+    let bits := Impl.informationBits frame.body + 24
+    let syndrome := Impl.Parity.syndrome bits word
+    if syndrome != Impl.frameSyndrome frame then
+      throw (IO.userError "CRC census raw and standalone syndromes differ")
     if syndrome != message.decoded.crc || !Impl.frameAcceptedWithSyndrome frame syndrome then
       throw (IO.userError "CRC census syndrome/acceptance differs from decoder result")
-    let bits := Impl.informationBits frame.body + 24
     if bits != input.bytes.length * 8 then throw (IO.userError "CRC census width mismatch")
     counts := counts.modify input.df (· + 1)
     steps := steps.modify input.df (· + bits)
@@ -246,6 +253,8 @@ private def crcCensus (inputs : Array Input) (output : Array Spec.Message) : IO 
     ("population", .str "accepted_corpus_only"),
     ("input_rows", toJson inputs.size), ("retained_accepted_rows", toJson output.size),
     ("native_call_counts", .bool false), ("parsed_fields_and_syndromes_checked", .bool true),
+    ("parsed_wire_word_checked", .bool true), ("raw_word_syndrome_checked", .bool true),
+    ("standalone_frame_syndrome_checked_after_collection", .bool true),
     ("historical_crc_prediction", .str "post_decode_shadow_census.per_df[].crc_call_predictions"),
     ("per_df", toJson rows)]
 

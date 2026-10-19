@@ -1,0 +1,26 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T21:37:53.299838+00:00",
+  "source": "tests/evidence/optimization/gen21/independent-review/check_benchmark_result.py",
+  "source_sha256": "2376acc2120746f1d2cab880a2f52af7c0916fa0c3371426dc6c7bd9ae258a35",
+  "reviewer": "tests/evidence/optimization/gen22/independent-review/check_benchmark_result.py",
+  "reviewer_sha256": "68dd64d4168d326e2a55bcab71ad08d5c948b1a5f2cb5dbd79b5be154e1c7475",
+  "diff_sha256": "a4cfd13653b538ce3243774c7a18d022a7f1b7d3b7821fe387e60f79da9b8d56",
+  "bindings": {
+    "tests/evidence/optimization/gen22/benchmark-preparation/plan-pending.json": "5d39834a68d140816d8d6c152eab5a6fbfba112142926b8894554bd46e5ab4a7",
+    "tests/evidence/optimization/gen22/benchmark-preparation/results-before.csv": "23f78b183ab2f132789e8224d5bae5e5bd17172d83d02db6e5687ac5353a37fd",
+    "tests/evidence/optimization/gen22/preparation.json": "bd1c9524cc95364c645626dfa2fbf31df1d58c7d229963e33359b93e856e516f",
+    "review/diagnostics/archive_generation_benchmark_target.py": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312",
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac"
+  },
+  "adaptations": [
+    "Only generation/path changes 21 to 22; current correctness cardinality 195 to 197, fresh sources 120 to 122, prior CSV rows 42 to 44.",
+    "All 96 raw rows, independent integer medians, both signed CPR overhead calculations, both exact 2/1 decisions, clean source identity, fresh native provenance, clock/power/environment, archive and report reconstruction checks retained.",
+    "Current generation uses the existing flat fresh evidence and committed final gate-review schema; final source commit and raw measurement paths remain unresolved."
+  ],
+  "syntax_validation": "ast.parse only; reviewer and imported helpers were not executed.",
+  "future_command_template": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen22/independent-review/check_benchmark_result.py --source .cache/bench-runs/gen22-<actual-timed-commit-prefix> --plan tests/evidence/optimization/gen22/benchmark-preparation/plan.json",
+  "execution_guard": "Root must release only after both measured modes, canonical archive, final plan and clean timed source commit are available. Preserve the reviewer source, exact command, log and completion under a new numbered attempt before any execution; retain failures without overwriting artifacts.",
+  "no_measurement_or_producer_execution": true,
+  "no_speculative_results": true
+}

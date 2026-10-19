@@ -1,0 +1,251 @@
+{
+  "classification": "one-pass diagnostic cpu-clock stack attribution; no throughput claim",
+  "total_samples": 216,
+  "decode_descendant_samples": 70,
+  "excluded_samples": 146,
+  "excluded_by_visible_context": {
+    "no decode or worker frame; may include unwind failures": 6,
+    "worker other phase, no decode frame": 118,
+    "worker decode-loop stack, no decode frame": 22
+  },
+  "all_samples_with_unknown_frame": 213,
+  "total_period": 1085427000,
+  "decode_descendant_period": 351758750,
+  "disjoint_top_stages": {
+    "frame extraction": 10,
+    "shared frame syndrome": 14,
+    "report/projection": 44,
+    "decode self/other": 2
+  },
+  "disjoint_detail_stages": {
+    "frame extraction": 10,
+    "shared frame syndrome": 14,
+    "Comm-B semantic projection": 11,
+    "report other/self/unresolved substage": 15,
+    "Comm-B inference and raw payload": 12,
+    "ADS-B raw payload": 1,
+    "ADS-B semantic projection": 5,
+    "decode self/other": 2
+  },
+  "nested_overlapping_categories": {
+    "GMP/mpz (inclusive overlap)": 34,
+    "exact rounded-ratio enclosure (inclusive overlap)": 2,
+    "Parity (inclusive overlap)": 5,
+    "Rat (inclusive overlap)": 9,
+    "exact score enclosure (inclusive overlap)": 11
+  },
+  "decode_leaf_top30": [
+    [
+      "[unknown]",
+      12
+    ],
+    [
+      "lean_alloc_small_object_core",
+      5
+    ],
+    [
+      "malloc",
+      5
+    ],
+    [
+      "__gmpz_add",
+      4
+    ],
+    [
+      "realloc",
+      4
+    ],
+    [
+      "cfree",
+      4
+    ],
+    [
+      "lean_dec_ref_cold",
+      3
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadValue",
+      3
+    ],
+    [
+      "mi_free",
+      3
+    ],
+    [
+      "l_List_elem___at___00Lean_Meta_Occurrences_contains_spec__0",
+      2
+    ],
+    [
+      "l_List_lengthTR___redArg",
+      2
+    ],
+    [
+      "_mi_malloc_generic(mi_theap_s*, unsigned long, unsigned long, mi_page_s**)",
+      2
+    ],
+    [
+      "lean::mpz::~mpz()",
+      1
+    ],
+    [
+      "mi_page_free_list_extend(mi_page_s*, unsigned long, unsigned long)",
+      1
+    ],
+    [
+      "__gmpz_set_str",
+      1
+    ],
+    [
+      "__gmpz_add_ui",
+      1
+    ],
+    [
+      "l_List_reverseAux___redArg",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_field",
+      1
+    ],
+    [
+      "lean_int_big_add",
+      1
+    ],
+    [
+      "lp_lean1090___private_Init_Data_Nat_Fold_0__Nat_foldTR_loop___at___00Lean1090_Impl_Parity_syndromeBytes_spec__0___redArg",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_commBValue",
+      1
+    ],
+    [
+      "__gmpz_init_set",
+      1
+    ],
+    [
+      "__gmpz_mul",
+      1
+    ],
+    [
+      "std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::push_back(char)",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      1
+    ],
+    [
+      "lp_lean1090_List_all___at___00Lean1090_Impl_cbValid19_spec__0",
+      1
+    ],
+    [
+      "lean_nat_big_mul",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_decode",
+      1
+    ],
+    [
+      "_mi_arenas_page_abandon(mi_page_s*, mi_theap_s*)",
+      1
+    ],
+    [
+      "mi_malloc",
+      1
+    ]
+  ],
+  "all_samples_leaf_top20": [
+    [
+      "lean_dec_ref_cold",
+      27
+    ],
+    [
+      "malloc",
+      19
+    ],
+    [
+      "[unknown]",
+      18
+    ],
+    [
+      "lean_alloc_small_object_core",
+      16
+    ],
+    [
+      "cfree",
+      16
+    ],
+    [
+      "mi_free",
+      9
+    ],
+    [
+      "__gmpz_add",
+      9
+    ],
+    [
+      "lean_string_utf8_get",
+      4
+    ],
+    [
+      "realloc",
+      4
+    ],
+    [
+      "lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)",
+      3
+    ],
+    [
+      "__gmpz_clear",
+      3
+    ],
+    [
+      "std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::push_back(char)",
+      3
+    ],
+    [
+      "mi_malloc",
+      3
+    ],
+    [
+      "lean_free_object",
+      3
+    ],
+    [
+      "l_Lean_Json_Parser_natCore",
+      3
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadValue",
+      3
+    ],
+    [
+      "l_List_lengthTR___redArg",
+      3
+    ],
+    [
+      "lean::mpz::~mpz()",
+      2
+    ],
+    [
+      "malloc@plt",
+      2
+    ],
+    [
+      "lean::cmp(lean::mpz const&, int)",
+      2
+    ]
+  ],
+  "limitations": [
+    "Only samples with the exact live Impl.decode frame are included. Missing/unwound/truncated ancestors can exclude real decoder samples; excluded samples are not assumed to be preparation.",
+    "Substages use visible symbol names; inlining and tail calls can erase stage frames. report-other remains explicit rather than guessed. The gen12 byte path inlines bounded UInt64 byte folds into bytesValue; the prefix helper is live, and the original Nat fold remains for inputs longer than sixteen bytes. Changed ownership/tail-call conventions can change visible ancestors without proving a change in semantic-stage cost.",
+    "Percentages within decoded stacks are conditional on successful stack attribution and may be biased; see whole-process leaf samples and excluded count.",
+    "Software cpu-clock samples are statistical CPU-time evidence, not hardware instructions/cycles or a benchmark.",
+    "Inclusive nested categories overlap; only disjoint stage tables sum to included samples.",
+    "The live BDS60 ratio gate uses exact integer enclosure arithmetic and a software-rounding fallback; it still receives an eagerly normalized exact ratio. Inlining/tail-call visibility prevents attributing that division by assumption. This generation eagerly initializes 13 immutable density tables, the 1024-entry Mach table, the 4096-entry QNH table the 2047-entry BDS50 wind-penalty table and the 2098-entry format-exponent power table during module startup before main; such costs are excluded from decode-root samples when their actual stacks are outside Impl.decode, never charged to the steady-state decision by assumption.",
+    "The worker runs through Lean runtime worker-thread startup; parent/child hardware/thread attribution was checked by visible decode stacks.",
+    "Compilation completed and Callgrind/native diagnostics were held during capture; other agents could read evidence or prepare orchestration. No benchmark or comparative timing claim."
+  ]
+}
