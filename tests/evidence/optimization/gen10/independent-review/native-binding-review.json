@@ -1,0 +1,125 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-19T00:33:51.901423+00:00",
+  "native_review_sha256": "65a6f7a693c52fc4be1dc9d5df3c5bbcc99139acd64745e653e5740b6c8eb154",
+  "native_inspection_sha256": "79b68f2321b0b3892429c60c6493a8161765f6b84017405840a2bd2eda137703",
+  "integration_review_sha256": "5ff428d4f08a3d8001d7bf1aa69fb59c24f74cb302d41e2c3f472f5258a7b98b",
+  "native_checks": 44,
+  "native_inputs": 139,
+  "native_files": 191,
+  "linked_project_sets": 21,
+  "other_unchanged_native_sets": 19,
+  "qnh_table_live_path_verified": true,
+  "independently_derived_native_lookup_paths": {
+    "cbValid40": [
+      {
+        "address": "0xb7d038",
+        "op": "lea",
+        "args": "0x3ff51d1(%rip),%rax        # 4b72210 <lp_lean1090_Lean1090_Impl_cbQNHValueTable>"
+      },
+      {
+        "address": "0xb7d03f",
+        "op": "mov",
+        "args": "(%rax),%r15"
+      },
+      {
+        "address": "0xb7d042",
+        "op": "mov",
+        "args": "$0x39,%esi"
+      },
+      {
+        "address": "0xb7d047",
+        "op": "mov",
+        "args": "$0x19,%edx"
+      },
+      {
+        "address": "0xb7d04c",
+        "op": "mov",
+        "args": "%rbx,%rdi"
+      },
+      {
+        "address": "0xb7d04f",
+        "op": "call",
+        "args": "b4a3e0 <lp_lean1090_Lean1090_Impl_payloadBits>"
+      },
+      {
+        "address": "0xb7d054",
+        "op": "mov",
+        "args": "%rax,%rcx"
+      },
+      {
+        "address": "0xb7d057",
+        "op": "and",
+        "args": "$0xfffffffffffffffe,%rcx"
+      },
+      {
+        "address": "0xb7d05b",
+        "op": "mov",
+        "args": "0x18(%r15,%rcx,4),%rbx"
+      }
+    ],
+    "cbDensityTerms": [
+      {
+        "address": "0xb7f696",
+        "op": "lea",
+        "args": "0x3ff2b73(%rip),%rax        # 4b72210 <lp_lean1090_Lean1090_Impl_cbQNHValueTable>"
+      },
+      {
+        "address": "0xb7f69d",
+        "op": "mov",
+        "args": "(%rax),%r13"
+      },
+      {
+        "address": "0xb7f6a0",
+        "op": "mov",
+        "args": "$0x39,%esi"
+      },
+      {
+        "address": "0xb7f6a5",
+        "op": "mov",
+        "args": "$0x19,%edx"
+      },
+      {
+        "address": "0xb7f6aa",
+        "op": "mov",
+        "args": "%rbx,%rdi"
+      },
+      {
+        "address": "0xb7f6ad",
+        "op": "call",
+        "args": "b4a3e0 <lp_lean1090_Lean1090_Impl_payloadBits>"
+      },
+      {
+        "address": "0xb7f6b2",
+        "op": "mov",
+        "args": "%rax,%rcx"
+      },
+      {
+        "address": "0xb7f6b5",
+        "op": "and",
+        "args": "$0xfffffffffffffffe,%rcx"
+      },
+      {
+        "address": "0xb7f6b9",
+        "op": "mov",
+        "args": "0x18(%r13,%rcx,4),%r13"
+      }
+    ]
+  },
+  "standalone_QNH_wrapper_inlined": true,
+  "cli_sha256": "33c316d077d1ec1b389b7f22b7b654cbd95da6cef598445ce59244db87cb6fbe",
+  "review_script_sha256": "7eb1635208fe27e7694936e810e810160b8bdcf4f520ea9d5b110957089003de",
+  "all_reviewed_input_hashes_match": true,
+  "findings": [],
+  "conclusions": [
+    "The actual complete table constructor has 4096 entries; its entry closure preserves rounded literal 1/10, software multiplication and software addition of 800 in that order. Module initialization builds and marks it persistent before CLI main.",
+    "The public lookup C/object body performs only the unchanged field extraction and proved-bounded borrowed array read. Its standalone CLI symbol is inlined, and both live hard-validity and full-software density callers contain the actual field-code table load.",
+    "Each independently reconstructed native lookup sequence uses tagged start 28 and width 12, the live payloadBits function, tag-bit removal and an indexed entry load, with no intervening branch or software binary64 operation.",
+    "The candidate/accepted-record validation and exact software fallback retain their live paths. The shared CRC and integer score gate remain live; the other 19 production source/C/object/trace sets match gen9. No adapter-only copy or corpus cache is present."
+  ],
+  "limits": [
+    "Static retained generated C/object/linked CLI evidence only; the future freshly built timed worker must be rebound independently.",
+    "Table startup precedes message processing; absence of the standalone wrapper means inlining, not zero QNH work. No runtime call populations or throughput are inferred.",
+    "No compiler, decoder, test, profiler or benchmark was executed by this reviewer."
+  ]
+}

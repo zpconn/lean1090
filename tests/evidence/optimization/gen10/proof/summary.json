@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-10-19T00:27:37.050064+00:00",
+  "sources": {
+    "Impl/CommB.lean": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+    "Proofs/CommBQNH.lean": "8964a05667900106dbeb69a4815f9767680eb98f5a673d696c4cf3a9821a923c"
+  },
+  "attempts": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.CommBQNH"
+      ],
+      "exit_code": 0,
+      "log": "tests/evidence/optimization/gen10/proof/build-01.log",
+      "log_sha256": "1e48dfebacea2ca03d7c80c90b9ec5ac19e047ebf2a881b7a53d2a994e7a1056",
+      "note": "First targeted build passes without warnings; source snapshots retained."
+    }
+  ],
+  "theorems": {
+    "table_size": "propext, Classical.choice, Quot.sound",
+    "table_get": "propext, Classical.choice, Quot.sound",
+    "cbQNH64_eq_runtime": "propext, Classical.choice, Quot.sound",
+    "cbQNH64_eq": "propext, Classical.choice, Quot.sound",
+    "zero_witness": "propext, Classical.choice, Quot.sound",
+    "fractional_witness": "propext, Classical.choice, Quot.sound",
+    "plausibility_boundary_witness": "propext, Classical.choice, Quot.sound",
+    "maximal_witness": "propext, Classical.choice, Quot.sound",
+    "maximal_wide_witness": "propext, Classical.choice, Quot.sound"
+  },
+  "scope_check": "Exact replacement of only the former cbQNH64 body with a complete immutable 4096-code table and the checked live lookup; all other Impl/CommB.lean bytes unchanged.",
+  "domain": "Every Nat word, including over-wide words and implausible field codes. No validity, length, corpus, score or altitude hypothesis.",
+  "witnesses": [
+    "code 0 = 800",
+    "code 1 > 800 and differs from exact decimal 800.1",
+    "codes 3999/4000/4001 bracket inclusive 1200",
+    "code 4095 = 1209.5",
+    "code 4095 with bit 130 set equals the frozen reference without that high bit"
+  ],
+  "integration_api": [
+    "Lean1090.Proofs.CommBQNH.cbQNH64_eq_runtime (word : Nat)",
+    "Lean1090.Proofs.CommBQNH.cbQNH64_eq (word : Nat) : Impl.cbQNH64 word = Spec.cbQNH64 word"
+  ],
+  "limitations": "Targeted helper proof build only. Decoder integration, whole gate, native caller inspection, campaigns and benchmark remain parent-owned subsequent work. No extra trust or frozen-file changes."
+}

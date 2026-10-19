@@ -1,0 +1,567 @@
+{
+  "status": "passed_integrated_build_and_universal_refinement_review",
+  "reviewed_utc": "2026-10-19T00:30:01.658662+00:00",
+  "prior_source_review_sha256": "2dfcfd183803425a51010604b93d67dd9704958e3d0a3349e76e30896809d794",
+  "final_source_sha256": {
+    "Impl/CommB.lean": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+    "Proofs/CommBQNH.lean": "8964a05667900106dbeb69a4815f9767680eb98f5a673d696c4cf3a9821a923c",
+    "Proofs/Decoder.lean": "98bb3479003db7c91e30031dddb1df2b386c8669550cade936bf107ca75c8bb4",
+    "Proofs/CommBTables.lean": "5f28466527bb7668487f93c9061e41976d0ff6baeb00584f1374556aa5fdb6ea"
+  },
+  "unchanged_sources": {
+    "Proofs/ScoreGate.lean": "ff3e26b8f8bffebaf363d6db3c73e49430e482f6cd56f549dc9caae4ac9819dd",
+    "Proofs/ScoreGateInteger.lean": "2927ea9e43a7fb539b96ef2624548177ff273862033d5963e7470e0b03631d9e",
+    "Proofs/AffineValue.lean": "c40af9b160755314d417d2d88a9038163cc80aaf38798f13fb6da6e2ad3debc5",
+    "Proofs/CommBMach.lean": "286f5531097b652f97a039c63868f53e30f0972897bdd1f3f68508b641c6bc34",
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb",
+    "Impl/Frame.lean": "fe59309f7f68424030a32a6c12600532df017469f8a898afe5b80810add4dfc1",
+    "Impl/Semantics.lean": "903d9e23106fa79a6acd34cd62e3dd86ccf72b51252a422271435a391c034b29",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Impl/Parity.lean": "ec0beb1835491622abdf6162e31c7790949ab7eed3222cde23f38eea51b20c1b"
+  },
+  "successful_integrated_build": {
+    "manifest": "tests/evidence/optimization/gen10/integration/targeted-build.json",
+    "manifest_sha256": "725d825fea999bf3c3c839119b1bc1bd98ceeaac5a39ef1a0e2a3f6b3b64c8bd",
+    "log": "tests/evidence/optimization/gen10/integration/targeted-build.log",
+    "log_sha256": "3b4acf159a2f3d3d2e8b553f4d18924bfbab1b48eb710162c6313c5142c11547",
+    "exit_code": 0,
+    "jobs": 3515,
+    "record": {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Decoder",
+        "lean1090",
+        "messageGenerator",
+        "commbDifferential"
+      ],
+      "started_utc": "2026-10-19T00:27:45.649993+00:00",
+      "started_monotonic_ns": 103019166139475,
+      "inputs_before": {
+        "Impl/CommB.lean": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+        "Proofs/CommBQNH.lean": "8964a05667900106dbeb69a4815f9767680eb98f5a673d696c4cf3a9821a923c",
+        "Proofs/Decoder.lean": "98bb3479003db7c91e30031dddb1df2b386c8669550cade936bf107ca75c8bb4",
+        "Proofs/CommBTables.lean": "5f28466527bb7668487f93c9061e41976d0ff6baeb00584f1374556aa5fdb6ea"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T00:28:24.110359+00:00",
+      "finished_monotonic_ns": 103056849808535,
+      "inputs_after": {
+        "Impl/CommB.lean": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+        "Proofs/CommBQNH.lean": "8964a05667900106dbeb69a4815f9767680eb98f5a673d696c4cf3a9821a923c",
+        "Proofs/Decoder.lean": "98bb3479003db7c91e30031dddb1df2b386c8669550cade936bf107ca75c8bb4",
+        "Proofs/CommBTables.lean": "5f28466527bb7668487f93c9061e41976d0ff6baeb00584f1374556aa5fdb6ea"
+      },
+      "log_sha256": "3b4acf159a2f3d3d2e8b553f4d18924bfbab1b48eb710162c6313c5142c11547",
+      "status": "passed"
+    }
+  },
+  "reviewer_attempt": {
+    "attempt": 2,
+    "failed_script_sha256": "ca1ce8adc6a91189882f9187f8bada42dd15ad97dab19f4ba5d0dfa932eb353d",
+    "failed_log_sha256": "73dc4477e05c6bf593650b08d92542ce9c1f98002131beecedfb231cd81a6860",
+    "correction": "The first reviewer incorrectly rejected every warning. The completed integration contains five pre-existing module-system import advisories in unchanged Spec/Parity, Spec/CPRFormula and Proofs/ScoreGateInteger; the corrected review explicitly checks exactly those warnings. No source, proof or build artifact changed."
+  },
+  "retained_build_warnings": [
+    "warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file",
+    "warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file",
+    "warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file",
+    "warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Data.Rat.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file",
+    "warning: Proofs/ScoreGateInteger.lean: imports `Mathlib.Algebra.BigOperators.Group.List.Lemmas` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file"
+  ],
+  "all_successful_printed_axioms": {
+    "Lean1090.Proofs.PayloadBits.payloadWordBits_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PayloadBits.payloadBits_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Impl.payloadBits_lt": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PayloadBits.zero_width_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PayloadBits.last_fast_width_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PayloadBits.first_fallback_width_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PayloadBits.word_boundary_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.table_size": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.table_get": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.cbQNH64_eq_runtime": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.cbQNH64_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.zero_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.fractional_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.plausibility_boundary_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.maximal_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBQNH.maximal_wide_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.table_size": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.table_get": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.cbMach64_eq_runtime": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.cbMach64_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.zero_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.plausibility_boundary_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBMach.maximal_wide_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.affineValue_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.payloadValue_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.payloadValue_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.identity_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.scaled_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.offset_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.both_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.negative_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.missing_status_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.AffineValue.zero_scale_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.field_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.field_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.zero_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.last_fast_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.first_fallback_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.wide_fallback_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.cross_word_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.high_shift_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.start_underflow_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.FrameBits.width_underflow_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.frameAccepted_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.frameAddress_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.report_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.frameAccepted_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.frameAddress_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.report_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.decode_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.empty_input_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.truncated_input_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.SyndromeReuse.bad_parity_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ParityBits.wordBit_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ParityBits.cachedBit_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ParityBits.high_boundary_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ParityBits.fallback_boundary_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Facts.round_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.commonDenominator_pos": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.denominator_dvd": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.scaledNumerator_cast": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.scaledTotals_cast": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.choose_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.accept_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.reject_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.fallback_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.empty_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.dyadic_denominator_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.product_denominator_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGateInteger.product_decision_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.nearestEven_error": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_quantum": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.powerTwo_sub_nat": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.quantum_relative_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_relative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.round_error_of_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.fold_error": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.density_error_and_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.score_error": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.sandwichGate_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.scoreGate_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Binary64Error.sandwichGate_at_threshold": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.choose_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.choose_at_threshold": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.accept_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.reject_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.fallback_witness": [
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.reference_threshold_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.ScoreGate.threshold_refinement_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmeticFacts.field_arithmetic_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmeticFacts.mach_positive_lower_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmeticFacts.gaussian_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmeticFacts.laplace_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmeticFacts.divisors_nonzero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBArithmetic": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBTables.density_terms_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.CommBTables.density_terms_length": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.DTEOracleRefinement": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.Refinement": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "Lean1090.Proofs.PrefixRefinement": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "integration_change": "Only helper imports and proof bodies changed: Decoder uses funext and the unconditional frozen-reference QNH equality, while the unchanged density40 table-equality proof rewrites the unconditional runtime QNH equality instead of unfolding the former arithmetic body. Every theorem type and hypothesis is unchanged. The existing final Refinement and PrefixRefinement compile against the live table.",
+  "findings": [],
+  "review_script_sha256": "cfd6d5dc66d37d96112454e7d633e4e3c9d128b64916eec899e6b43849c6c113",
+  "limits": "Read-only source and completed-build evidence review. No compiler, decoder or test run by this reviewer. Fixed/fresh full gate and generated C/native binding are separate checks."
+}

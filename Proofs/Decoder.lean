@@ -8,6 +8,7 @@ import Proofs.CommBMach
 import Proofs.SyndromeReuse
 import Proofs.AffineValue
 import Proofs.FrameBits
+import Proofs.CommBQNH
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -426,9 +427,8 @@ private theorem decoder_cbValid21_eq : @Impl.cbValid21 = @Spec.cbValid21 := by
   simp only [decoder_cbCharacter_eq, decoder_cbDashPlaceholder_eq, decoder_cbRegistrationCodes_eq,
     decoder_payloadBits_eq]
 private theorem decoder_cbQNH64_eq : @Impl.cbQNH64 = @Spec.cbQNH64 := by
-  unfold Impl.cbQNH64 Spec.cbQNH64
-  simp only [decoder_Binary64_add_eq, decoder_Binary64_literal_eq, decoder_Binary64_mul_eq,
-    decoder_payloadBits_eq]
+  funext word
+  exact CommBQNH.cbQNH64_eq word
 private theorem decoder_cbStatus_eq : @Impl.cbStatus = @Spec.cbStatus := by
   unfold Impl.cbStatus Spec.cbStatus
   simp only [decoder_payloadBits_eq]

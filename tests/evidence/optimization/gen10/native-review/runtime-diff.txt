@@ -1,0 +1,23 @@
+diff --git a/Impl/CommB.lean b/Impl/CommB.lean
+index 2c0269c..07ed58c 100644
+--- a/Impl/CommB.lean
++++ b/Impl/CommB.lean
+@@ -45,10 +45,16 @@ def cbVertical60 (word start : Nat) : Rat :=
+   if magnitude == 0 || magnitude == 511 then 0 else cbSigned word start 10 * 32
+ 
+ -- Initial algorithm: Spec/CommB.lean:48.
++/-- Exact BDS40 QNH values for all 4096 twelve-bit field codes. The immutable
++table preserves literal rounding, multiplication and addition in that order. -/
++def cbQNHValueTable : Array Rat := Array.ofFn fun code : Fin 4096 =>
++  Binary64.add (Binary64.mul (code.val : Rat)
++    (Binary64.literal (1 / 10))) 800
++
+ /-- rs1090-derived bds40.rs: binary64 `raw * 0.1 + 800`, preserving two rounds. -/
+ def cbQNH64 (word : Nat) : Rat :=
+-  Binary64.add (Binary64.mul (payloadBits word 28 12 : Rat)
+-    (Binary64.literal (1 / 10))) 800
++  cbQNHValueTable[payloadBits word 28 12]'(by
++    simpa only [cbQNHValueTable, Array.size_ofFn] using payloadBits_lt word 28 12)
+ 
+ -- Initial algorithm: Spec/CommB.lean:53.
+ /-- Exact BDS60 Mach values for all 1024 ten-bit field codes. The immutable

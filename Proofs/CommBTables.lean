@@ -3,6 +3,7 @@ import Proofs.CommBArithmetic
 import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.AffineValue
+import Proofs.CommBQNH
 
 /-!
 Exact immutable density tables. Every equality is symbolic in the complete
@@ -20,7 +21,8 @@ private theorem density40 (word : Nat) :
     cbDensityTermsFast 0x40 word = cbDensityTerms 0x40 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbQNHScoreTable, cbSelectedScoreTable, commBValue, commBLayout,
-    bds40Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, cbQNH64]
+    bds40Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField,
+    CommBQNH.cbQNH64_eq_runtime]
   repeat' split <;> simp_all
 
 private theorem density50 (word : Nat) :

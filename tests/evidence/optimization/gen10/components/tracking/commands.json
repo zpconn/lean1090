@@ -1,0 +1,117 @@
+[
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0015234947204589844,
+    "stderr": "",
+    "stdout": "685dfaa34c5ab186c691bca3cfe2a22e12517d30\n"
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "vendor/rs1090",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--",
+      "crates/rs1090",
+      "Cargo.toml",
+      "Cargo.lock"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0016145706176757812,
+    "stderr": "",
+    "stdout": ""
+  },
+  {
+    "command": [
+      "python3",
+      "scripts/check_lock.py"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.01806163787841797,
+    "stderr": "",
+    "stdout": "Lock audit: 104 frozen files match SHA-256.\n"
+  },
+  {
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--version"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.646634578704834,
+    "stderr": "",
+    "stdout": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)\n"
+  },
+  {
+    "command": [
+      "cargo",
+      "--version"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.008592605590820312,
+    "stderr": "",
+    "stdout": "cargo 1.93.1 (083ac5135 2025-12-15)\n"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--offline",
+      "--locked",
+      "--profile",
+      "dist",
+      "--manifest-path",
+      "differential/tracking-oracle/Cargo.toml",
+      "--target-dir",
+      ".cache/rs1090-target"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.0651085376739502,
+    "stderr": "    Finished `dist` profile [optimized] target(s) in 0.05s\n",
+    "stdout": ""
+  },
+  {
+    "command": [
+      "lake",
+      "build",
+      "Impl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.7053675651550293,
+    "stderr": "",
+    "stdout": "Build completed successfully (20 jobs).\n"
+  },
+  {
+    "command": [
+      "/home/zpconn/code/lean1090/.cache/rs1090-target/dist/lean1090-tracking-oracle"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.763922929763794,
+    "stderr": "",
+    "stdout": null
+  },
+  {
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "Tests/Tracking.lean",
+      "/home/zpconn/code/lean1090/tests/evidence/tracking-diagnostic/airports.jsonl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 14.011237382888794,
+    "stderr": "",
+    "stdout": null
+  }
+]

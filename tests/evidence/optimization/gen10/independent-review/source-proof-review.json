@@ -1,0 +1,161 @@
+{
+  "status": "passed_source_and_universal_helper_proof_review",
+  "reviewed_utc": "2026-10-19T00:29:19.828414+00:00",
+  "source_sha256": {
+    "Impl/CommB.lean": "3cc6b80332f575bc89309bc0f83e837e14286f0cf6bd3b8d85ce75d50d30a71b",
+    "Proofs/CommBQNH.lean": "8964a05667900106dbeb69a4815f9767680eb98f5a673d696c4cf3a9821a923c"
+  },
+  "unchanged_live_source_sha256": {
+    "Impl/Binary64.lean": "2d5e83875906b7a4e53cb5ff62e97060bd4113617b655e0082ed14d6820f9de6",
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb",
+    "Impl/Bits.lean": "0820f68552c9a48630fa183a00a6c9a67d4bd74209ab4d33f61886dc6e2e8d3e",
+    "Impl/Frame.lean": "fe59309f7f68424030a32a6c12600532df017469f8a898afe5b80810add4dfc1",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Impl/Semantics.lean": "903d9e23106fa79a6acd34cd62e3dd86ccf72b51252a422271435a391c034b29",
+    "Impl/ScoreGate.lean": "471a48cecb1f4374dcced2adaec0bd5a639aa61d8f47ec80e9a23af9aafe7776",
+    "Impl/CommBLayouts.lean": "85558b5ddc27f6eb5422db9e7ff720019d85e9908f3e2ed4c3466ef95ada0cff",
+    "Impl/Parity.lean": "ec0beb1835491622abdf6162e31c7790949ab7eed3222cde23f38eea51b20c1b",
+    "TRUSTED.md": "e62861e0943b047863430104f779d04fcf449d39115e9b9ce5bbbd86d40e5041"
+  },
+  "runtime_import_graph": {
+    "Impl.CommB": [
+      "Impl.CommBLayouts",
+      "Impl.ADSB",
+      "Impl.Binary64",
+      "Impl.ScoreGate"
+    ],
+    "Impl.ScoreGate": [
+      "Std"
+    ],
+    "Impl.Binary64": [
+      "Std"
+    ],
+    "Impl.ADSB": [
+      "Impl.PayloadBits",
+      "Impl.Altitude",
+      "Impl.Frame"
+    ],
+    "Impl.Frame": [
+      "Model.Types",
+      "Impl.Bits"
+    ],
+    "Impl.Bits": [
+      "Impl.PayloadBits"
+    ],
+    "Impl.PayloadBits": [
+      "Model.Types"
+    ],
+    "Model.Types": [
+      "Std"
+    ],
+    "Impl.Altitude": [
+      "Model.Types"
+    ],
+    "Impl.CommBLayouts": [
+      "Impl.PayloadBits"
+    ]
+  },
+  "proof_summary_sha256": "fcee7b67a4942debf66719da88627aa2b8b120e52ef75f2d4a386449d5ffbae4",
+  "successful_helper_build": {
+    "manifest": "tests/evidence/optimization/gen10/proof/build-01-result.json",
+    "manifest_sha256": "2d5d7a733b7a299683d65f90f9f4401ee269054a13a76cc0ccb2b05c28db3643",
+    "log": "tests/evidence/optimization/gen10/proof/build-01.log",
+    "log_sha256": "1e48dfebacea2ca03d7c80c90b9ec5ac19e047ebf2a881b7a53d2a994e7a1056",
+    "exit_code": 0,
+    "jobs": 21
+  },
+  "reviewer_attempt": 1,
+  "printed_axioms": {
+    "table_size": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "table_get": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "cbQNH64_eq_runtime": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "cbQNH64_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "zero_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "fractional_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "plausibility_boundary_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "maximal_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "maximal_wide_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "universal_statements": {
+    "table_size": "theorem table_size : Impl.cbQNHValueTable.size = 4096",
+    "table_get": "theorem table_get (code : Fin 4096) :\n    Impl.cbQNHValueTable[code.val]'(by simp [table_size]) =\n      Impl.Binary64.add (Impl.Binary64.mul (code.val : Rat)\n        (Impl.Binary64.literal (1 / 10))) 800",
+    "cbQNH64_eq_runtime": "theorem cbQNH64_eq_runtime (word : Nat) :\n    Impl.cbQNH64 word =\n      Impl.Binary64.add (Impl.Binary64.mul (Impl.payloadBits word 28 12 : Rat)\n        (Impl.Binary64.literal (1 / 10))) 800",
+    "cbQNH64_eq": "theorem cbQNH64_eq (word : Nat) : Impl.cbQNH64 word = Spec.cbQNH64 word"
+  },
+  "witnesses": [
+    "fractional_witness",
+    "maximal_wide_witness",
+    "maximal_witness",
+    "plausibility_boundary_witness",
+    "zero_witness"
+  ],
+  "frozen_file_hashes_checked": 104,
+  "frozen_adapter_sources_checked": [
+    "Bench/WholeDecoder.lean",
+    "Capstones.lean",
+    "Tests/AltitudeDifferential.lean",
+    "Tests/CommBDifferential.lean",
+    "Tests/DTEDifferential.lean",
+    "Tests/Numeric.lean",
+    "Tests/ReservedVelocityDifferential.lean",
+    "Tests/Tracking.lean",
+    "Tests/Upstream.lean",
+    "Tests/UpstreamCorpus.lean",
+    "scripts/AuditBDS50.lean",
+    "scripts/Final.lean",
+    "scripts/FuzzCPR.lean"
+  ],
+  "review_script_sha256": "fe573ac1f04a46f04851a874bac1981d204585de5ed8a5482475bf0720b22be3",
+  "findings": [],
+  "reasoning": [
+    "The global immutable Array.ofFn table contains exactly all 4096 twelve-bit codes, including codes above the receiver plausibility limit. The only key is the unchanged extraction payloadBits word 28 12.",
+    "Each entry evaluates the software Binary64 literal 1/10, multiplication by the code and addition of 800 in exactly the original order. It preserves literal rounding and the two arithmetic rounds; it does not replace these with one rational affine calculation or hardware floating point.",
+    "Both runtime and frozen-reference equalities quantify every Nat payload with no validity, bounded-word, score, plausibility, field-status or corpus hypothesis. Checked indexing uses the universal payloadBits_lt bound, so arbitrary over-wide Nat words are covered.",
+    "The lookup equality simplifies Array.ofFn/get for an arbitrary code, then the frozen-reference equality rewrites the existing all-input payload extraction refinement. No code enumeration, acceptance test or decoder hypothesis appears in the proof.",
+    "Five kernel witnesses cover the zero code at 800, a fractional result which explicitly differs from decimal 800.1, codes 3999/4000/4001 around the inclusive 1200 limit, maximum code 4095 and a payload with bit 130 set. These supplement the universal equalities.",
+    "The entire runtime diff is exactly the immutable value-table definition and cbQNH64 lookup. Existing density score tables, field layouts, status/sentinel checks, bounds, penalties, score order, selection strategy and semantic presentation are byte-identical.",
+    "Existing cbValid40 checks and the full software cbDensityTerms fallback still call the same public cbQNH64, which now reads this complete table. Frozen decodeBDS/semantic/whole-message adapters continue through the live shared validation/inference path; there is no separate legacy copy.",
+    "The runtime transitive local import graph remains Model/Impl/Std only, and all 104 frozen hashes and TRUSTED.md remain unchanged. No new primitive, corpus data dependency or message cache is present."
+  ],
+  "limits": [
+    "Read-only source and completed owner proof-build/axiom review; no compiler, decoder, test, profiler or benchmark executed by this reviewer.",
+    "Integrated refinement, generated-C/native binding and full fixed/fresh campaigns are separate checks.",
+    "No timing or speedup is claimed."
+  ]
+}

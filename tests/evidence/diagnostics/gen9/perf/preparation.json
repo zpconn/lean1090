@@ -1,0 +1,29 @@
+{
+  "status": "prepared_waiting_for_benchmark_review_driver_build_and_root_release",
+  "prepared_utc": "2026-10-19T00:18:45.456958+00:00",
+  "expected_commit": "0fb54f0661c4cd589816277b1a8996a9969bdc44",
+  "expected_binary_sha256": "48dff3c83eebe85eaf857b3ce0c04e3b03e29a57cdb518f5c3d451532e16eccd",
+  "helpers": {
+    "tests/evidence/diagnostics/gen9/perf/run_perf_gen9.py": "37f184e2f82f273e17b3e8b49d6bcde460dfc3dd8fab0c1df92d17a56853e971",
+    "tests/evidence/diagnostics/gen9/perf/analyze_perf_gen9.py": "80a84eb078795e0a9db98866ecf339f0bfc068c69a954375fc86ef6f71512582",
+    "tests/evidence/diagnostics/gen9/perf/finalize_perf_gen9.py": "4c3c0f7cc22eaacc6d7aeddd26bc78dc90488cbe381b91dfa286f11e808e7724"
+  },
+  "adapted_from": {
+    "tests/evidence/diagnostics/gen8/perf/run_perf_gen8.py": "0112cd8dbc44d9f877bdaaf16ebd950491d00bea9dd102c84d5bc55dfda07b45",
+    "tests/evidence/diagnostics/gen8/perf/analyze_perf_gen8.py": "779c9ef0ac738f1c656d929183d5fc40abf9f85105aa1e01e558ee043dbd90cd",
+    "tests/evidence/diagnostics/gen8/perf/finalize_perf_gen8.py": "5038aa64ee289b12ee79304d923df596513b5e98d8a7b739b71fd133acb846e2"
+  },
+  "syntax": "All three Python sources parsed with ast.parse only. No helper, decoder, build, test or profiler was executed.",
+  "adaptation": "Updated generation paths and exact timed commit/binary bindings; all 22 linked source/C/object/trace checks and held source/proof snapshots remain. Existing visible decoder/report/shared-syndrome classification and every unknown/excluded-stack limitation remain unchanged.",
+  "generated_c_read": {
+    ".lake/build/ir/Impl/Bits.c": "007bd4e0cce630abeac5d791e95c8a374d7a6fea9f6b171b43eba60560e061f5",
+    ".lake/build/ir/Impl/Message.c": "b577e69ece46582f2aea911b7ce0338807a39384bef1ac014ebba7149121e34b",
+    ".lake/build/ir/Impl/PayloadBits.c": "dd28b9b0874373a164c7f49122bcb0441ec7f4e7899e5db8a92ec307d2eb1e68"
+  },
+  "generated_c_observations": [
+    "Bits.c field lines95-133 checks width<64, performs the unrestricted Nat shift before UInt64 conversion and native mask; width>=64 preserves pow/div/BitVec.ofNat.",
+    "Message.c still computes one local syndrome below decode and passes it to acceptance/reportWithSyndrome; analyzer separately labels this visible shared-syndrome ancestry.",
+    "PayloadBits.c still performs status handling and inline exact identity shortcuts in payloadValue; the analyzer does not infer the absence of work from an inlined helper name."
+  ],
+  "required_next_step": "Await independent benchmark review, completed diagnostic driver build with no compiler/native work, then explicit root capture release. Only then create readiness.json and run capture."
+}
