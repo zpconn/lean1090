@@ -1,0 +1,143 @@
+{
+  "status": "passed_source_and_universal_helper_proof_review",
+  "reviewed_utc": "2026-10-18T23:56:28.387135+00:00",
+  "source_sha256": {
+    "Impl/Bits.lean": "0820f68552c9a48630fa183a00a6c9a67d4bd74209ab4d33f61886dc6e2e8d3e",
+    "Proofs/FrameBits.lean": "beb3edefe61098abc5eb7d29993fbbb71f95217d8c5f468cf5410e340217ec88"
+  },
+  "unchanged_live_source_sha256": {
+    "Impl/PayloadBits.lean": "e37853173fc238d6b379be89bc5606c33088f7fdf25e3e8be8103efa9f8bb8cb",
+    "Proofs/PayloadBits.lean": "07949b7d09ab9fcb5da374175dbaed7c86d02fa3355f7e0b6e1799f7f3dec352",
+    "Impl/Frame.lean": "fe59309f7f68424030a32a6c12600532df017469f8a898afe5b80810add4dfc1",
+    "Impl/Message.lean": "0ebbcc0d0174dd286d14e19b3d7e17c153796e55035848302d092da11ffa41a9",
+    "Impl/CommB.lean": "d2a4c4910e6e867abc5df33355e3340740e2adb928532122c0eb610b0fbe7481",
+    "Impl/Semantics.lean": "903d9e23106fa79a6acd34cd62e3dd86ccf72b51252a422271435a391c034b29",
+    "Impl/Parity.lean": "ec0beb1835491622abdf6162e31c7790949ab7eed3222cde23f38eea51b20c1b",
+    "TRUSTED.md": "e62861e0943b047863430104f779d04fcf449d39115e9b9ce5bbbd86d40e5041"
+  },
+  "runtime_import_graph": {
+    "Impl.Bits": [
+      "Impl.PayloadBits"
+    ],
+    "Impl.PayloadBits": [
+      "Model.Types"
+    ],
+    "Model.Types": [
+      "Std"
+    ]
+  },
+  "proof_summary_sha256": "2beebbef93b17e979f489219962667730630a41714b54af6fe15022536a5de48",
+  "successful_helper_build": {
+    "manifest": "tests/evidence/optimization/gen9/proof/build-01-result.json",
+    "manifest_sha256": "1b920e2fcfa60a9a38f3528c39390e697e884ca8ea071ae121c4b41bdeb78d6a",
+    "log": "tests/evidence/optimization/gen9/proof/build-01.log",
+    "log_sha256": "cd8f47388baefd3bad54f60ff21bc8a2774ea2a03095088461ef2cde15dc1327",
+    "exit_code": 0,
+    "jobs": 8
+  },
+  "reviewer_attempt": {
+    "attempt": 2,
+    "prior_script_sha256": "b43d6e35cfa9420ed5c3c8b9f5873600e81d7233b2e5f7775f2e8b7593ace33e",
+    "prior_log_sha256": "3fee34990e9176810f5eb6daabe09511c756414e292168676ea7307d2050af86",
+    "correction": "The first source-pattern assertion used local name frame; the unchanged live decoder uses f. Only the reviewer pattern was corrected; no source or build evidence changed."
+  },
+  "printed_axioms": {
+    "field_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "field_eq_old": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "zero_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "last_fast_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "first_fallback_width_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "wide_fallback_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "cross_word_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "high_shift_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "start_underflow_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "width_underflow_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "universal_statements": {
+    "field_eq": "theorem field_eq (total start width word : Nat) :\n    Impl.field total start width word = Spec.field total start width word",
+    "field_eq_old": "theorem field_eq_old (total start width word : Nat) :\n    Impl.field total start width word =\n      BitVec.ofNat width (word / 2 ^ (total - start - width))"
+  },
+  "witnesses": [
+    "cross_word_witness",
+    "first_fallback_width_witness",
+    "high_shift_witness",
+    "last_fast_width_witness",
+    "start_underflow_witness",
+    "wide_fallback_witness",
+    "width_underflow_witness",
+    "zero_width_witness"
+  ],
+  "frozen_file_hashes_checked": 104,
+  "frozen_adapter_sources_checked": [
+    "Bench/WholeDecoder.lean",
+    "Capstones.lean",
+    "Tests/AltitudeDifferential.lean",
+    "Tests/CommBDifferential.lean",
+    "Tests/DTEDifferential.lean",
+    "Tests/Numeric.lean",
+    "Tests/ReservedVelocityDifferential.lean",
+    "Tests/Tracking.lean",
+    "Tests/Upstream.lean",
+    "Tests/UpstreamCorpus.lean",
+    "scripts/AuditBDS50.lean",
+    "scripts/Final.lean",
+    "scripts/FuzzCPR.lean"
+  ],
+  "review_script_sha256": "e3bbec11eeed958220fd29f46c06fe0ee09b4f88ead20c12aea55efab774be0c",
+  "findings": [],
+  "reasoning": [
+    "Both equality statements quantify arbitrary Nat total, start, width and word with no layout, bounded-word, byte-length or decoder-acceptance premise. The old-body equality is exactly the frozen Spec.field formula.",
+    "For width below 64, the full arbitrary-precision Nat is shifted by the original left-associated truncating subtraction total - start - width before conversion to UInt64. This preserves fields crossing bit 64 and shifts beyond 64; conversion before this shift would not.",
+    "The reused machine helper is instantiated with native shift zero. The only other native shift is the mask width, proved below 64, so native modulo-64 shift counts cannot change the intended result.",
+    "The core-only mask lemma establishes the exact mask 2^width - 1, including width zero; Nat.and_le_right gives the strict BitVec bound. BitVec.ofNatLT introduces no additional modulo computation in its source body.",
+    "The refinement compares BitVec.toNat, instantiates the existing general helper theorem on the already-shifted arbitrary Nat at shift zero, then uses Nat.shiftRight_eq_div_pow. Widths at least 64 use the old constructor/division/power expression unchanged.",
+    "Eight kernel witnesses cover widths 0, 63, 64 and 80, a field crossing bit 64, shift 242, oversized start and width subtraction underflow. They supplement the unrestricted equality rather than limiting it.",
+    "Only the field body/docstring and a cycle-free runtime import changed. bytesValue, frameBytes, packFields, frame parsing, CRC, payload extraction, inference and semantic projections are unchanged. DF19 and DF24-31 continue to use the live wide fallback for their 80-bit fields.",
+    "decode reaches the unchanged decodeFrame and its readACAS/readSurveillance/public field calls. No legacy adapter-specific copy, corpus condition, memoization, new table, trusted primitive or frozen change is introduced."
+  ],
+  "limits": [
+    "Read-only source and completed owner build/axiom review; no compiler, decoder, test, profiler or benchmark executed by this reviewer.",
+    "Integrated decoder refinement, generated-C/native path binding and complete fixed/fresh gates are separate checks.",
+    "No performance improvement is claimed before the fresh committed benchmark."
+  ]
+}

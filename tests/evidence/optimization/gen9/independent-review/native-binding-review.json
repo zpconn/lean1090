@@ -1,0 +1,64 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-18T23:59:58.613485+00:00",
+  "native_review_sha256": "fa23cf3b6b7c8c12aa192dc00d0189ac6e096fd5243b77faee1e26d491c13907",
+  "native_inspection_sha256": "35178d62058196d2e9902dd074be76d30bd715f0d3dc4159224ac886b132b0da",
+  "integration_review_sha256": "3b5390ffacd736235c8b7cda670bb36f42bdf72da8e416c41a01306612e89d20",
+  "native_checks": 38,
+  "native_inputs": 138,
+  "native_files": 179,
+  "linked_project_sets": 21,
+  "other_unchanged_native_sets": 19,
+  "field_branch_analysis_verified": true,
+  "independently_derived_native_branches": {
+    "narrow": {
+      "entry": "0xb4b414",
+      "reachable_instructions": 117,
+      "calls": [
+        "lean_dec_ref_cold",
+        "lean_nat_big_shiftr",
+        "lean_nat_big_sub",
+        "lean_uint64_of_big_nat"
+      ],
+      "return_shift_and_mask_flags": [
+        [
+          true,
+          true
+        ]
+      ]
+    },
+    "wide": {
+      "entry": "0xb4b524",
+      "reachable_instructions": 128,
+      "calls": [
+        "l_BitVec_ofNat",
+        "lean_dec_ref_cold",
+        "lean_nat_big_div",
+        "lean_nat_big_sub",
+        "lean_nat_pow"
+      ],
+      "return_shift_and_mask_flags": [
+        [
+          false,
+          false
+        ]
+      ]
+    }
+  },
+  "live_decodeFrame_field_call_sites": 26,
+  "cli_sha256": "ac2443eee11a55e970598c0924f3fa9953ef9438bd3285b94cdd9dc2682d6103",
+  "review_script_sha256": "6fbac7e1b16029d112123e8e74a6ec1103304b2329b9c46239b8c601fcd97e08",
+  "all_reviewed_input_hashes_match": true,
+  "findings": [],
+  "conclusions": [
+    "The actual width guard selects a narrow Nat-shift-before-conversion and native mask path, or the unchanged power/division/BitVec fallback. Every conservatively explored narrow return follows both the shift and mask, and never reaches division, power or generic BitVec construction.",
+    "Small-Nat native shift code masks machine shift counts only transiently: its explicit count comparison and conditional move give zero for large counts. Big-Nat shifts use the runtime helper before conversion. Width masking follows the proved below-64 guard.",
+    "All 26 retained decodeFrame field callsites use the same live field symbol; decode still calls the same decodeFrame and one shared frameSyndrome. No adapter-only or corpus-specific copy exists.",
+    "The 19 other production source/C/object/trace sets equal gen8. bytesValue, packFields, frameBytes and their folds remain equivalent generated C modulo local names; score and software fallback paths remain live."
+  ],
+  "limits": [
+    "Static retained C and integrated CLI assembly inspection only; the future freshly built timed worker must be rebound independently.",
+    "Intraprocedural branch traversal derives width-guard successors and conservatively explores other branches, assuming calls return. It supports compiler review and does not replace the universal Lean proof.",
+    "No compiler, test, decoder, profiler or benchmark was run, and no performance claim follows from this static review."
+  ]
+}

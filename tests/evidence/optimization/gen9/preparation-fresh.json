@@ -1,0 +1,36 @@
+{
+  "status": "prepared_not_executed",
+  "prepared_utc": "2026-10-18T23:45:08.301620+00:00",
+  "seed_record_sha256": "2236771cbcb9980d0babd4f8ede519608a57a1181f0d6aa8582abc0da0c18076",
+  "message_seed": 4063364224,
+  "commb_seed": 3086385107,
+  "helpers": {
+    "tests/evidence/optimization/gen9/fresh-run-campaign.py": "f56e8d04e72a8c153be98c50b36c5ee60d08c877f1978b2981c39619b55b6726",
+    "tests/evidence/optimization/gen9/fresh-verify.py": "87040f573364dec9ab77c1c2c14b5d187aa389e52865848fbe89b06b5fd5efab",
+    "tests/evidence/optimization/gen9/fresh-retained-hashes.py": "d7a5ba5fc7d8d685919928987388c262b94e502d1ac12cb5c9c076f63127f0d0",
+    "tests/evidence/optimization/gen9/fresh-orchestrate.py": "55f1498a7e81c6cf62cbd3456f756a2366c4b2e3513e284526b14d9ad7a9780f"
+  },
+  "adapted_from": {
+    "tests/evidence/optimization/gen8/fresh-run-campaign.py": "4b9bc1b4cdbf3f26f7e144f5a27361febe06d473d8a3adaa21db35fbcbf4b320",
+    "tests/evidence/optimization/gen8/fresh-verify.py": "9cd9ac8ec77e87fe82d4c56b4773fc5a4cc4247dbcebc9fb92233286a02c35e3",
+    "tests/evidence/optimization/gen8/fresh-retained-hashes.py": "03e894b6a7f9e71ca6735f8036a86c072ab2c06070b09d698dfbd354f8baa2d0",
+    "tests/evidence/optimization/gen8/fresh-orchestrate.py": "22f35f50368c987a4922b2c19804e4df5202d59e6b13ece6d96eea5f9a79f2e5"
+  },
+  "syntax_check": "ast.parse only; no helper, generator, build, test or native workload executed.",
+  "execution_guard": "Requires later explicit root fresh-preflight.json, exact seed/helper hashes, passing integrated-build record/log hashes and empty success outputs. It also now requires the prepared cache directory and refuses existing fresh fixture artifacts. Preflight remains absent.",
+  "cache_initial_state": {
+    "path": ".cache/gen9-gate",
+    "created_utc": "2026-10-18T23:45:08.296640+00:00",
+    "previously_absent": true,
+    "initial_entries": []
+  },
+  "retained_checks": [
+    "Exact gen8 33-file success membership preserved byte-for-byte.",
+    "All nine raw transcripts and two standalone snapshots retain compressed/decompressed checks.",
+    "Three additional diagnostic streams retain gzip CRC, compressed/decompressed hashes and exact row counts.",
+    "All source/binary before/after and final current-file rechecks are preserved; previous source inventory advances to gen8 and adds any new Lean files dynamically.",
+    "All helper/log/exit provenance and overwrite refusals are preserved; failures propagate and are retained."
+  ],
+  "changes_from_prior": "Generation paths and prior-generation inventory updated; added cache-directory/existing-fixture assertions to prevent repeating gen8 setup failure. All other checker logic unchanged.",
+  "prior_retention_manifest_sha256": "78e0d3ae77ab25070560ab1b3744d5280cae31cb5fa2a7cad6bd1dd71b8c0854"
+}

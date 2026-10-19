@@ -1,0 +1,79 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b4ba80 <initialize_lean1090_Impl_Bits>:
+  b4ba80:	push   %rbx
+  b4ba81:	cmpb   $0x0,0x4023499(%rip)        # 4b6ef21 <_G_initialized>
+  b4ba88:	je     b4baaa <initialize_lean1090_Impl_Bits+0x2a>
+  b4ba8a:	mov    $0x10,%edi
+  b4ba8f:	call   48fd0e0 <lean_alloc_small_object_core>
+  b4ba94:	movl   $0x1,(%rax)
+  b4ba9a:	movw   $0x1,0x6(%rax)
+  b4baa0:	movq   $0x1,0x8(%rax)
+  b4baa8:	pop    %rbx
+  b4baa9:	ret
+  b4baaa:	mov    %edi,%ebx
+  b4baac:	movb   $0x1,0x402346e(%rip)        # 4b6ef21 <_G_initialized>
+  b4bab3:	xor    %eax,%eax
+  b4bab5:	call   48b4670 <lean_initialize_runtime_module>
+  b4baba:	movzbl %bl,%ebx
+  b4babd:	mov    %ebx,%edi
+  b4babf:	call   4827a10 <initialize_Init>
+  b4bac4:	movzbl 0x7(%rax),%ecx
+  b4bac8:	shl    $0x18,%ecx
+  b4bacb:	cmp    $0x1000000,%ecx
+  b4bad1:	je     b4bb15 <initialize_lean1090_Impl_Bits+0x95>
+  b4bad3:	mov    (%rax),%ecx
+  b4bad5:	cmp    $0x2,%ecx
+  b4bad8:	jl     b4bb27 <initialize_lean1090_Impl_Bits+0xa7>
+  b4bada:	dec    %ecx
+  b4badc:	mov    %ecx,(%rax)
+  b4bade:	mov    %ebx,%edi
+  b4bae0:	call   4827a10 <initialize_Init>
+  b4bae5:	movzbl 0x7(%rax),%ecx
+  b4bae9:	shl    $0x18,%ecx
+  b4baec:	cmp    $0x1000000,%ecx
+  b4baf2:	je     b4bb15 <initialize_lean1090_Impl_Bits+0x95>
+  b4baf4:	mov    (%rax),%ecx
+  b4baf6:	cmp    $0x2,%ecx
+  b4baf9:	jl     b4bb35 <initialize_lean1090_Impl_Bits+0xb5>
+  b4bafb:	dec    %ecx
+  b4bafd:	mov    %ecx,(%rax)
+  b4baff:	mov    %ebx,%edi
+  b4bb01:	call   b4b1b0 <initialize_lean1090_Impl_PayloadBits>
+  b4bb06:	movzbl 0x7(%rax),%ecx
+  b4bb0a:	shl    $0x18,%ecx
+  b4bb0d:	cmp    $0x1000000,%ecx
+  b4bb13:	jne    b4bb17 <initialize_lean1090_Impl_Bits+0x97>
+  b4bb15:	pop    %rbx
+  b4bb16:	ret
+  b4bb17:	mov    (%rax),%ecx
+  b4bb19:	cmp    $0x2,%ecx
+  b4bb1c:	jl     b4bb43 <initialize_lean1090_Impl_Bits+0xc3>
+  b4bb1e:	dec    %ecx
+  b4bb20:	mov    %ecx,(%rax)
+  b4bb22:	jmp    b4ba8a <initialize_lean1090_Impl_Bits+0xa>
+  b4bb27:	test   %ecx,%ecx
+  b4bb29:	je     b4bade <initialize_lean1090_Impl_Bits+0x5e>
+  b4bb2b:	mov    %rax,%rdi
+  b4bb2e:	call   4893ab0 <lean_dec_ref_cold>
+  b4bb33:	jmp    b4bade <initialize_lean1090_Impl_Bits+0x5e>
+  b4bb35:	test   %ecx,%ecx
+  b4bb37:	je     b4baff <initialize_lean1090_Impl_Bits+0x7f>
+  b4bb39:	mov    %rax,%rdi
+  b4bb3c:	call   4893ab0 <lean_dec_ref_cold>
+  b4bb41:	jmp    b4baff <initialize_lean1090_Impl_Bits+0x7f>
+  b4bb43:	test   %ecx,%ecx
+  b4bb45:	je     b4ba8a <initialize_lean1090_Impl_Bits+0xa>
+  b4bb4b:	mov    %rax,%rdi
+  b4bb4e:	call   4893ab0 <lean_dec_ref_cold>
+  b4bb53:	jmp    b4ba8a <initialize_lean1090_Impl_Bits+0xa>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

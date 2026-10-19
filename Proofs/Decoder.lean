@@ -7,6 +7,7 @@ import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.SyndromeReuse
 import Proofs.AffineValue
+import Proofs.FrameBits
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -516,7 +517,8 @@ private theorem decoder_commBRegisters_eq : @Impl.commBRegisters = @Spec.commBRe
   unfold Impl.commBRegisters Spec.commBRegisters
   simp only [decoder_commBCoreRegisters_eq]
 private theorem decoder_field_eq : @Impl.field = @Spec.field := by
-  rfl
+  funext total start width word
+  exact FrameBits.field_eq total start width word
 private theorem decoder_frameBytes_eq : @Impl.frameBytes = @Spec.frameBytes := by
   rfl
 private theorem decoder_readACAS_eq : @Impl.readACAS = @Spec.readACAS := by

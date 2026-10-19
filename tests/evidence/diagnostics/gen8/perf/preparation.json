@@ -1,0 +1,29 @@
+{
+  "status": "prepared_waiting_for_explicit_root_release",
+  "prepared_utc": "2026-10-18T23:42:22.639259+00:00",
+  "expected_commit": "78286f12feb79f8d8e3cdf2411ebd274161d1c3d",
+  "expected_binary_sha256": "da5ebfa685b052a3b534001fc2a1d4ead02995e40f2ea077e6f8d6328b4dde31",
+  "helpers": {
+    "tests/evidence/diagnostics/gen8/perf/run_perf_gen8.py": "0112cd8dbc44d9f877bdaaf16ebd950491d00bea9dd102c84d5bc55dfda07b45",
+    "tests/evidence/diagnostics/gen8/perf/analyze_perf_gen8.py": "779c9ef0ac738f1c656d929183d5fc40abf9f85105aa1e01e558ee043dbd90cd",
+    "tests/evidence/diagnostics/gen8/perf/finalize_perf_gen8.py": "5038aa64ee289b12ee79304d923df596513b5e98d8a7b739b71fd133acb846e2"
+  },
+  "adapted_from": {
+    "tests/evidence/diagnostics/gen7/perf/run_perf_gen7.py": "3d9ba414f72a79fe8dd9b5cabfa80f83557de9aa07eac1cfd5f2d0b427f3798a",
+    "tests/evidence/diagnostics/gen7/perf/analyze_perf_gen7.py": "01c0e1598aca0d4534cc5b34cb146e0ca982fe208178ed654773c7696d491d73",
+    "tests/evidence/diagnostics/gen7/perf/finalize_perf_gen7.py": "03fda68f3ad556ffac2ab076efba2c9ce30d7466e362e2e09ccf8485bcc8739d"
+  },
+  "adaptation": "Advanced generation paths and exact timed commit/binary bindings. Kept all native/source checks and existing shared-syndrome/reportWithSyndrome stack classifications. No capture, decoder workload or compiler was run during preparation.",
+  "syntax": "All three Python sources parsed with ast.parse without execution.",
+  "generated_c_read": {
+    ".lake/build/ir/Impl/PayloadBits.c": "dd28b9b0874373a164c7f49122bcb0441ec7f4e7899e5db8a92ec307d2eb1e68",
+    ".lake/build/ir/Impl/Message.c": "b577e69ece46582f2aea911b7ce0338807a39384bef1ac014ebba7149121e34b",
+    ".lake/build/ir/Impl/ScoreGate.c": "9a490ed56d4eb274ec2406409dc57a1ff323775ee1d6f7a72afd4f2e3bdfae08"
+  },
+  "generated_c_observations": [
+    "PayloadBits.c payloadValue lines 385-483 retain status rejection and extraction, inline scale==1 and offset==0 guards, and keep Rat_mul/Rat_add on nonidentity branches.",
+    "Message.c decode lines 1066-1134 still computes a single local frame syndrome and supplies the same value to acceptance and reportWithSyndrome.",
+    "ScoreGate.c retains exact Int enclosure comparisons and a single lean_apply_1 call in the uncertain branch; this helper is unchanged by gen8."
+  ],
+  "required_next_step": "Wait for explicit root authorization after diagnostic driver build and all compiler/native work stops; record readiness.json with exact driver-build hash before capture."
+}

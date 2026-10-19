@@ -1,0 +1,30 @@
+diff --git a/Impl/Bits.lean b/Impl/Bits.lean
+index 4e34597..e747057 100644
+--- a/Impl/Bits.lean
++++ b/Impl/Bits.lean
+@@ -1,4 +1,4 @@
+-import Model.Types
++import Impl.PayloadBits
+ 
+ /-!
+ Initial complete runtime path, implementing the frozen pure algorithms.
+@@ -18,9 +18,17 @@ def bytesValue (bytes : List UInt8) : Nat :=
+ 
+ -- Initial algorithm: Spec/Bits.lean:17.
+ /-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: extract a zero-based MSB-first field.
+-All protocol callers supply a field contained within `total` bits. -/
++All protocol callers supply a field contained within `total` bits. The native
++mask follows an arbitrary natural-number shift, so unrestricted words and
++truncating position subtraction preserve the reference behavior as well. -/
+ def field (total start width word : Nat) : BitVec width :=
+-  BitVec.ofNat width (word / 2 ^ (total - start - width))
++  if small : width < 64 then
++    BitVec.ofNatLT (payloadWordBits (word >>> (total - start - width)).toUInt64 0 width) (by
++      unfold payloadWordBits
++      rw [UInt64.toNat_and, payloadWordMask_toNat width small]
++      exact Nat.lt_of_le_of_lt Nat.and_le_right
++        (Nat.sub_lt (Nat.two_pow_pos width) (by decide)))
++  else BitVec.ofNat width (word / 2 ^ (total - start - width))
+ 
+ -- Initial algorithm: Spec/Bits.lean:27.
+ /-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: concatenate separately supplied fields. -/

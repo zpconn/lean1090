@@ -1,0 +1,75 @@
+{
+  "status": "passed",
+  "recorded_utc": "2026-10-18T23:55:17.355415+00:00",
+  "build_attempts": 1,
+  "targeted_command": [
+    "lake",
+    "build",
+    "Proofs.FrameBits"
+  ],
+  "build_exit_code": 0,
+  "log_sha256": "cd8f47388baefd3bad54f60ff21bc8a2774ea2a03095088461ef2cde15dc1327",
+  "source_sha256": {
+    "Impl/Bits.lean": "0820f68552c9a48630fa183a00a6c9a67d4bd74209ab4d33f61886dc6e2e8d3e",
+    "Proofs/FrameBits.lean": "beb3edefe61098abc5eb7d29993fbbb71f95217d8c5f468cf5410e340217ec88"
+  },
+  "facts": {
+    "field_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "field_eq_old": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "zero_width_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "last_fast_width_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "first_fallback_width_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "wide_fallback_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "cross_word_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "high_shift_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "start_underflow_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "width_underflow_witness": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "api": [
+    "Lean1090.Proofs.FrameBits.field_eq (total start width word : Nat) : Impl.field total start width word = Spec.field total start width word",
+    "Lean1090.Proofs.FrameBits.field_eq_old (total start width word : Nat) : Impl.field total start width word = BitVec.ofNat width (word / 2 ^ (total - start - width))"
+  ],
+  "runtime_scope": "Only Impl.Bits changes: imports cycle-free Impl.PayloadBits and replaces field body with width<64 shift-before-conversion/mask/checked-constructor path; original formula remains for widths >=64. Other functions unchanged.",
+  "domain": "Arbitrary Nat total/start/width/word, no hypotheses. Proof reduces the native low mask via existing payloadWordBits_eq at shift0 after the unrestricted Nat shift. Eight kernel witnesses cover zero/63/64/80 widths, crossing bit64, shift242, start underflow and width underflow.",
+  "native_validation": "Only the Lean helper module was built; root owns integrated native build and independent C review. No full gate, fresh campaign or timing run here."
+}
