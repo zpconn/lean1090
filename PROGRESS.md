@@ -2,37 +2,54 @@
 
 ## Status and current authorization
 
-**Private publication in progress (2026-10-19 UTC):** the user explicitly
-authorized committing all work, presentation cleanup and the first push to a
-private repository. [zpconn/lean1090](https://github.com/zpconn/lean1090) has been
-created and verified **PRIVATE**; no source has been pushed yet. This overrides
-the earlier review pause and original public-repository requirement. No further
-optimization, frozen-file change or trusted primitive was introduced.
+**Privately published (2026-10-19 UTC):**
+[zpconn/lean1090](https://github.com/zpconn/lean1090) is **PRIVATE**, with default
+branch `main`. Source/presentation commit
+`f9a53b642f01c2d1396275955eba5b2a5af597e2` was pushed after verification from a
+clean local clone; `git ls-remote` confirmed the exact remote commit. This update
+records the final verification evidence. The user's explicit private-push
+instruction supersedes the original public-repository requirement and earlier
+review pause. No further optimization, frozen-file change or trusted primitive
+was introduced.
 
 Done: README with all 23 exact capstone statements, trust/scope limits and raw
 benchmark links; an 11-frame generation-history GIF and static plot; developer
 and evidence guides; pinned dependency bootstrap; third-party notices; current
 status prose cleanup; independent checks of 92 links and 28 presentation claims.
-The generation-10 measurements and source commit remain unchanged. All original
+The generation-10 measurements and source commit remain unchanged. Original
 history and retained evidence are preserved; build caches and designated large
 regenerable transcripts remain ignored.
 
-`scripts/check_all.sh --full` passed for publication with 181 unchanged audited
-inputs, all 23 final contracts, 152 axiom-audited witnesses, 1,011 upstream unit
-assertions and all seven differential components. The separate fresh campaign
-used message seed **3111244820** and Comm-B seed **2426725490**: 10,476,164 messages
-(9,543,060 exact plus 933,104 documented D001 cases), 101,244 exact direct Comm-B
-comparisons, all 32 DF attempts / 70 ADS-B branches / 14 registers, and zero
-unclassified mismatches. All 106 source and three binary hashes stayed unchanged.
-Commands, summaries, hashes and retention records are under
-[tests/evidence/publication/](tests/evidence/publication/).
+Final verification in this publication session:
 
-In progress: commit the packaged sources and evidence, then run the complete
-quick gate from that clean local clone with a fresh project build. External
-Lean dependency caches and Cargo packages may be reused, explicitly recorded.
-Next: after that check passes, push the source commit privately, commit the
-clean-clone/publication evidence, and push the follow-up. No open implementation
-question blocks publication. Further optimization requires a new instruction.
+- `scripts/check_all.sh --full` passed with 181 unchanged audited inputs, all
+  23 final contracts, 152 axiom-audited witnesses, 1,011 upstream unit assertions
+  and all seven differential components. The fixed campaign checked 10,476,164
+  messages: 9,542,689 exact plus 933,475 documented D001 cases.
+- A separate fresh campaign used message seed **3111244820** and Comm-B seed
+  **2426725490**: 10,476,164 messages (9,543,060 exact plus 933,104 D001),
+  101,244 exact direct Comm-B comparisons, all 32 DF attempts / 70 ADS-B branches
+  / 14 registers, and zero unclassified mismatches. All 106 source and three
+  binary hashes stayed unchanged.
+- `scripts/check_all.sh --quick` passed from the clean clone of the published
+  source commit. Project Lean objects and Rust targets were initially absent;
+  only pinned external dependency caches were reused and verified unchanged.
+  It checked 576,164 messages (566,792 exact plus 9,372 D001), all 101,244 direct
+  Comm-B cases, complete scoped coverage, and all other mandatory strata.
+  Every one of the 181 correctness inputs matched before and after, across
+  both checkouts. Only generated evidence changed.
+- The unchanged 104-entry lock passed. The source push, private visibility and
+  default branch were verified through Git and GitHub API commands.
+
+Commands, summaries, hashes, source/copy inventories and publication records:
+[tests/evidence/publication/](tests/evidence/publication/).
+The clean-clone check reuses compiled external Mathlib dependencies; it is not a
+claim of rebuilding the Lean toolchain or all of Mathlib from scratch. Network
+dependency preparation is recorded separately. Benchmark results remain the
+accepted generation-10 measurements; no new timing run is claimed.
+
+No implementation work or open question remains for this publication request.
+Further optimization or any frozen-file change requires a new instruction.
 
 ## Historical development log (newest first)
 

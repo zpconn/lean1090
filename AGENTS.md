@@ -12,6 +12,11 @@ review pause and GOAL.md's public-repository/first-push approval requirement.
 Do not ask for that approval again. No additional optimization, frozen-file
 change or trusted primitive is authorized by the publication task.
 
+The private repository is `https://github.com/zpconn/lean1090`, default branch
+`main`. The verified source/presentation commit `f9a53b6` has been pushed;
+`PROGRESS.md` and `tests/evidence/publication/` record final validation.
+Publication is complete; wait for a new task before further implementation.
+
 Generation 10's verified source commit is
 `d51a3040984beb6f0f96b0f4fcf225ba2622a7e0`. Decode reached 1.168948811789×
 rs1090; CPR reached 0.790786943138×. Retain the measured artifacts unchanged.
