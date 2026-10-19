@@ -1,0 +1,107 @@
+--- tests/evidence/optimization/gen20/independent-review/check_benchmark_result.py
++++ tests/evidence/optimization/gen21/independent-review/check_benchmark_result.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Read-only gen20 result review; run only after both modes and archival finish.
++"""Read-only gen21 result review; run only after both modes and archival finish.
+ 
+ Reuses reviewed validation APIs, independently derives medians and exact targets,
+ and binds current-generation inputs. Historical checks use sealed review hashes
+@@ -27,8 +27,8 @@
+ import archive_generation_benchmark_target as archive
+ import run_generation_benchmark as runner
+ 
+-GEN = 20
+-EVIDENCE = ROOT / 'tests/evidence/optimization/gen20'
++GEN = 21
++EVIDENCE = ROOT / 'tests/evidence/optimization/gen21'
+ checks = 0
+ 
+ 
+@@ -96,7 +96,7 @@
+     parser.add_argument('--plan', type=Path, required=True)
+     args = parser.parse_args()
+     source, plan_path = args.source.resolve(), args.plan.resolve()
+-    destination = ROOT / 'bench/runs/gen20'
++    destination = ROOT / 'bench/runs/gen21'
+     output = destination / 'results-review.json'
+     require(not output.exists(), 'refuse to overwrite previous review')
+     plan = load(plan_path)
+@@ -106,7 +106,7 @@
+     data = archive.validate_source(source, GEN)
+     summary, build = data['summary'], data['build']
+     commit = summary['commit']
+-    require(source == ROOT / '.cache/bench-runs' / ('gen20-' + commit[:7]), 'wrong source path')
++    require(source == ROOT / '.cache/bench-runs' / ('gen21-' + commit[:7]), 'wrong source path')
+     require(git('rev-parse', 'HEAD').decode().strip() == commit, 'HEAD differs from timed source')
+     attribution = git('show', '-s', '--format=%an <%ae>%n%cn <%ce>', commit).decode().splitlines()
+     require(attribution == ['zpconn <zpconn@gmail.com>'] * 2, 'wrong author or committer')
+@@ -135,20 +135,17 @@
+     require(len(inputs) == 195 and inputs == runner.gate_input_hashes(), 'current correctness inventory differs')
+     for name, digest in inputs.items():
+         require(archive.committed_sha(commit, name) == digest, 'gate input not committed: ' + name)
+-    commit_record_path = EVIDENCE / 'independent-review/commit-verification.json'
+-    require(sha(commit_record_path) == '85d1498ba0489e3c86e9374a0b68e2cd85b6bd0ed4d8d01622c1d73dc5607c31',
+-            'retained commit verification changed')
+-    commit_record = load(commit_record_path)
+-    require(commit_record['status'] == 'passed' and commit_record['head'] == commit
+-            and commit_record['author'] == 'zpconn <zpconn@gmail.com>'
+-            and commit_record['clean_tree'] and commit_record['gate_inputs_match']
+-            and commit_record['gate_input_count'] == len(inputs), 'commit verification differs')
+-    require(commit_record['format_exit_code'] == 0 and not commit_record['format_stdout']
+-            and not commit_record['format_stderr'] and bool(commit_record['prior_wrapper_error']),
+-            'authored-source formatting or retained wrapper failure record differs')
+-    require(datetime.fromisoformat(commit_record['recorded_utc'])
+-            < datetime.fromisoformat(load(source / 'commands.json')[0]['start']['utc']),
+-            'commit verification was not retained before benchmark preparation')
++    # Gen20 had a separately retained commit-wrapper exception; gen21 does not.
++    # Bind all six actual frozen-runner clean-tree checkpoints instead.
++    clean_checkpoints = {}
++    for name in ('before-build', 'before-decode', 'after-decode', 'before-cpr', 'after-cpr', 'after-timing'):
++        path = source / (name + '-git.json')
++        checkpoint = load(path)
++        require(checkpoint['clean'] and not checkpoint['stdout'] and checkpoint['commit'] == commit,
++                'nonclean or different timed checkpoint: ' + name)
++        require(checkpoint['command'] == ['git', 'status', '--porcelain=v1', '--untracked-files=all'],
++                'clean checkpoint command differs: ' + name)
++        clean_checkpoints[name] = sha(path)
+     frozen = dict((name, digest) for digest, name in
+                   (line.split('  ', 1) for line in (ROOT / 'spec.lock').read_text().splitlines()))
+     require(len(frozen) == 104, 'wrong frozen membership')
+@@ -201,7 +198,7 @@
+     prior_sha = hashlib.sha256(prior).hexdigest()
+     require(prior_sha == plan['prior_csv_sha256'] == preparation['prior_csv_sha256'], 'prior CSV seal differs')
+     old_rows = archive.parse_prior_csv(prior, GEN)
+-    require(len(old_rows) == plan['prior_csv_rows'] == 40, 'wrong prior row count')
++    require(len(old_rows) == plan['prior_csv_rows'] == 42, 'wrong prior row count')
+     appended = io.StringIO(newline='')
+     writer = csv.writer(appended, lineterminator='\n')
+     decisions = {}
+@@ -227,7 +224,7 @@
+     require(archive.cpr_overhead(data['results']) == overhead, 'reporting overhead API differs')
+     require((ROOT / 'bench/results.csv').read_bytes() == prior + appended.getvalue().encode(),
+             'CSV prior bytes or two appended rows differ')
+-    report = ROOT / 'bench/GEN20.md'
++    report = ROOT / 'bench/GEN21.md'
+     expected_report = archive.report_text(plan, data, source, old_rows, fresh)
+     require(report.read_bytes() == expected_report.encode() and sha(report) == report_receipt['report_sha256'],
+             'report reconstruction differs')
+@@ -285,15 +282,14 @@
+         'cpu_affinity': [0], 'results': data['results'], **target_fields,
+         'cpr_overhead': overhead,
+         'clocks': data['clocks'], 'wrapper_backsteps': data['wrapper_backsteps'],
+-        'power_plan_guid': data['power_plan_guid'], 'prior_rows_preserved': 40, 'rows_appended': 2,
++        'power_plan_guid': data['power_plan_guid'], 'prior_rows_preserved': 42, 'rows_appended': 2,
+         'prior_csv_sha256': prior_sha, 'csv_after_sha256': sha(ROOT / 'bench/results.csv'),
+         'report_sha256': sha(report), 'archive_verification_sha256': sha(destination / 'archive-verification.json'),
+         'report_verification_sha256': sha(destination / 'report-verification.json'),
+         'fresh_completion_sha256': sha(completion_path), 'gate_review_sha256': sha(gate_review_path), 'gate': data['gate'],
+         'current_gate_input_sha256': inputs,
+-        'commit_verification_sha256': sha(commit_record_path),
+-        'retained_commit_wrapper_error': commit_record['prior_wrapper_error'],
+-        'history_scope': 'Prior sealed review hashes, their committed blobs, and exact 40-row CSV byte prefix; no new historical copies.',
++        'clean_checkpoint_sha256': clean_checkpoints,
++        'history_scope': 'Prior sealed review hashes, their committed blobs, and exact 42-row CSV byte prefix; no new historical copies.',
+         'environment': {'platform': environments[0]['platform'], 'compiler': environments[0]['c_compiler'],
+                         'host_limits': {side: host['limitations'] for side, host in hosts.items()}},
+         'limitations': ['Worker monotonic durations alone determine medians; raw UTC differences/backsteps are retained without correction.',

@@ -1,8 +1,8 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 20 reached
-1.85206× decode and 1.48565× with CPR; [its report](../bench/GEN20.md) retains
+Stop for review only when both measured ratios reach it. Generation 21 reached
+1.96331× decode and 1.53989× with CPR; [its report](../bench/GEN21.md) retains
 all samples and conditions. No project-specific trusted primitive is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
@@ -70,7 +70,7 @@ protocol before generation 1. Historical approvals and hashes remain in
 
 ## Unselected candidates after generation 20
 
-Generation 21 tests exact integer/rational field normalization. Later choices
+Generation 21 measured exact integer/rational field normalization. Later choices
 must follow fresh diagnostics of the resulting measured code; the following
 are possibilities, not implemented changes or predicted speedups.
 

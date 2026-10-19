@@ -1,0 +1,174 @@
+{
+  "status": "passed",
+  "generation": 21,
+  "completed_utc": "2026-10-19T21:01:05.863730+00:00",
+  "benchmark_review_sha256": "ac4c821d2d4880952277aae614d85140c1d9ab5f40522c3572f7b626faf50011",
+  "timed_commit": "11fbf4e0c8c196d70cd838dd2a14516f586fc4c5",
+  "csv_rows": 44,
+  "gif_frames": 22,
+  "exact_target_status": {
+    "target": {
+      "numerator": 2,
+      "denominator": 1
+    },
+    "mode_reached": {
+      "decode": false,
+      "cpr": false
+    },
+    "all_modes_reached": false,
+    "medians_nanoseconds": {
+      "decode": {
+        "rs1090": 801808975,
+        "lean1090": 408396750
+      },
+      "cpr": {
+        "rs1090": 806863139,
+        "lean1090": 523974619
+      }
+    },
+    "README_status_text": "neither target is reached."
+  },
+  "signed_cpr_overhead": {
+    "source_sha256": "9d2e208900cfe956b6ff261635d4b5baa8221cb95923a5eec9cfbc2a83720078",
+    "exact_inputs": {
+      "messages_per_interval": 172432,
+      "formula": "1e6 / cpr_messages_per_second - 1e6 / decode_messages_per_second",
+      "interpretation": "Difference of independently measured mode medians; includes measurement noise. Signed values are retained without clamping.",
+      "implementations": {
+        "lean1090": {
+          "median_nanoseconds": {
+            "decode": 408396750,
+            "cpr": 523974619
+          },
+          "difference_nanoseconds": 115577869,
+          "microseconds_per_message_divisor": 172432000,
+          "microseconds_per_message": 0.670280858541338
+        },
+        "rs1090": {
+          "median_nanoseconds": {
+            "decode": 801808975,
+            "cpr": 806863139
+          },
+          "difference_nanoseconds": 5054164,
+          "microseconds_per_message_divisor": 172432000,
+          "microseconds_per_message": 0.029311055952491418
+        }
+      }
+    },
+    "displayed_microseconds_per_message": {
+      "lean1090": "+0.670280858541",
+      "rs1090": "+0.029311055952"
+    }
+  },
+  "csv_sha256": "23f78b183ab2f132789e8224d5bae5e5bd17172d83d02db6e5687ac5353a37fd",
+  "csv_unchanged": true,
+  "commands": [
+    {
+      "label": "render",
+      "argv": [
+        ".cache/venv/bin/python",
+        "-B",
+        "review/presentation/render_throughput.py",
+        "--expected-generations",
+        "22"
+      ],
+      "started_utc": "2026-10-19T21:00:40.821617+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T21:00:44.216875+00:00",
+      "stdout_sha256": "8a5f9eec4e236f6d0e2c9c59abbde45c919c4e16fe8cce04ca4ce744961d7f90",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "verify",
+      "argv": [
+        ".cache/venv/bin/python",
+        "-B",
+        "review/presentation/verify_throughput.py",
+        "--expected-generations",
+        "22",
+        "--output",
+        "tests/evidence/optimization/gen21/presentation/verification.json",
+        "--preview-dir",
+        ".cache/presentation-gen21"
+      ],
+      "started_utc": "2026-10-19T21:00:44.254472+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T21:00:47.613246+00:00",
+      "stdout_sha256": "2cad32261b47244ef0dd73a406ae988d000257d75bf89cdc6cd473e0be95eec9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "readme",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/evidence/optimization/gen21/presentation/check_presentation.py",
+        "--generation",
+        "21",
+        "--output",
+        "tests/evidence/optimization/gen21/presentation/readme-verification.json"
+      ],
+      "started_utc": "2026-10-19T21:00:47.650503+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T21:00:47.682507+00:00",
+      "stdout_sha256": "933af08180db527a066935a45b74c666191049e99327ad1df2b6a2c7e9214fbe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "outputs": {
+    "README.md": "20cac68468754cfc450e62e89448976bf07d0cb09f600a5fe7e80e67d5e49744",
+    "docs/images/throughput-data.json": "00f76e46102652242857c61bf4ccda86c4fa97539cf3c0a155651374082c271b",
+    "docs/images/throughput.gif": "3ecaca97ce940e71872dc961d8c94248345f5438c83092e3863c23e0986a4a38",
+    "docs/images/throughput.png": "98d7c39d3849a133c6f19da76789fc42db892ca5dd57411acb04855edaed4587",
+    "docs/images/throughput.svg": "eccfb5dff8120c88c4348fa99e23c71ed58e584cc1f1d247f8ffceb532555705",
+    "review/packaging/check_presentation.py": "d21b3ef563e88dd05dd85c50a879a94fa24368404c42e07803cf90c2bb0f188f",
+    "review/presentation/render_throughput.py": "8ae36a8cec232f20b29e540b7664aafa46655c5f1826cd91d5330c03b58d872b",
+    "review/presentation/verify_throughput.py": "4fb0c2bfdde70c6136e4c678501fa31e83dff5937fe71bd95630dc2e181eb7c8",
+    "tests/evidence/optimization/gen21/presentation/check_presentation.py": "8791d43eec58eaa832391f024405d36d4b5a5f267d3b410e92de57a7a875bc32",
+    "tests/evidence/optimization/gen21/presentation/check_presentation.py.diff": "98a7de1a648eded1b6378ff61409f5ac6c11dacf534f9b90ff07c0c688635cef",
+    "tests/evidence/optimization/gen21/presentation/controller.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen21/presentation/controller.stdout": "f7f785ed22c750ee9f5b35974a1d5b97af7244ae41ab6fa915c6a20882825bf8",
+    "tests/evidence/optimization/gen21/presentation/execution.json": "4545ef9e608012b61b0d8da164c20b68c5494eaaad9774e0c41d0b3048e00d94",
+    "tests/evidence/optimization/gen21/presentation/preparation.json": "f5c7e48047ef637bd78ecb0f6479ba03cf0b9b185b29e0c7ac6601f6e4961e30",
+    "tests/evidence/optimization/gen21/presentation/prepare.py": "f0587dc5f19e3569c24a5f13f3d2385ca403e3d2ff26b9db64a385ea01d82c52",
+    "tests/evidence/optimization/gen21/presentation/readme-verification.json": "6781ca5781b53fc48a50ff6467b5e1ab9e3b1e1630b527529da9c744316553a5",
+    "tests/evidence/optimization/gen21/presentation/readme.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen21/presentation/readme.stdout": "933af08180db527a066935a45b74c666191049e99327ad1df2b6a2c7e9214fbe",
+    "tests/evidence/optimization/gen21/presentation/render.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen21/presentation/render.stdout": "8a5f9eec4e236f6d0e2c9c59abbde45c919c4e16fe8cce04ca4ce744961d7f90",
+    "tests/evidence/optimization/gen21/presentation/run_refresh.py": "914d2f3b549ceca0516508df58a200ac64b479bad8374739808b95cfe9e2a4ae",
+    "tests/evidence/optimization/gen21/presentation/run_refresh.py.diff": "a703a973bf82019a087551520ff1db9ba13f9ec7603707b33c86a0939f2beac6",
+    "tests/evidence/optimization/gen21/presentation/seal_presentation.py": "3bab7bae96e91f010d7fdbb999731fb34f393f6016477160b13de1ea158b2739",
+    "tests/evidence/optimization/gen21/presentation/seal_presentation.py.diff": "1d9255d444914ed9577ec8a4307c14eecc0f55b9f502a447ea9d028eeb19880e",
+    "tests/evidence/optimization/gen21/presentation/verification.json": "2cad32261b47244ef0dd73a406ae988d000257d75bf89cdc6cd473e0be95eec9",
+    "tests/evidence/optimization/gen21/presentation/verify.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen21/presentation/verify.stdout": "2cad32261b47244ef0dd73a406ae988d000257d75bf89cdc6cd473e0be95eec9",
+    "tests/evidence/optimization/gen21/presentation/visual-review.json": "c6e0b25eca310d90e7e5518894c75f50b91c322d412b7e278423fc0cbe4cde48"
+  },
+  "checks": {
+    "source_artist_frame_values": 1012,
+    "README_checks": 32,
+    "local_links": 95,
+    "capstones_verbatim": true,
+    "correctness_inputs": 195,
+    "all_held_inputs_rehashed_at_completion": 275,
+    "all_correctness_and_measured_native_inputs_held": true
+  },
+  "prior_presentation_git_binding": "11fbf4e0c8c196d70cd838dd2a14516f586fc4c5",
+  "producer_attempts": [
+    {
+      "attempt": 1,
+      "status": "passed"
+    }
+  ],
+  "limitations": "Presentation only. No benchmark, decoder, proof build or profiler executed. Original presentation remains in Git history; all benchmark CSV/report/archive bytes retained. Evidence-local checker adds exact per-mode and conjunctive target status plus signed CPR overhead from exact medians; generic checker and renderer are unchanged. Separate independent presentation review follows this producer seal."
+}

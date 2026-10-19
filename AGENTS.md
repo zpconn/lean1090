@@ -36,38 +36,25 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 20 measured decode 1.852064793419× rs1090 and CPR
-1.485653752657×. Both 2.00× targets remain unmet. The measured source is
-`d3a10f60e7e83a35c53d5e4066a82dce048ad2be`, under the user's identity.
-All 96 samples and provenance are in `bench/runs/gen20/`, with the report in
-`bench/GEN20.md`. CPR overhead is 0.673603983019 µs/message for Lean and
-0.077853872831 for rs1090, as a difference between mode medians including noise.
+Generation 21 measured decode 1.963308902434× rs1090 and CPR
+1.539889738438×. Both 2.00× targets remain unmet. The measured source is
+`11fbf4e0c8c196d70cd838dd2a14516f586fc4c5`, under the user's identity.
+All 96 samples and provenance are in `bench/runs/gen21/`, with the report in
+`bench/GEN21.md`. CPR overhead is 0.670280858541 µs/message for Lean and
+0.029311055952 for rs1090, as a difference between mode medians including noise.
 
-Generation 20 batches eight exact CRC bit updates per loop iteration. Its
-unconditional proofs preserve every natural width and word; the original bit
-loop remains the live fallback. No table, Float code, trusted primitive or
-frozen change was added. The full gate passed with 195 unchanged inputs and
-all 23 capstones. The separate fresh 10M campaign, independent replay and
-archive/plan review also passed. Verified scratch cleanup reclaimed
-11,092,819,968 allocated bytes. The clean-commit fresh-build benchmark and
-archival checks passed; independent measured-result review passed 706 checks.
-Artifact-source binding, presentation refresh and independent presentation
-review passed. Artifacts were committed and pushed as
-`ee22eab664b16c28382dc85c81d92195b5182fc5` under the user's identity.
-Both fresh diagnostics and independent reviews passed against that commit:
-9,056,220,724 decode instructions and 11,385,505,987 CPR instructions, with
-complete output/state checks. Verified cleanup reclaimed 488,718,336 bytes
-while preserving compressed evidence and unique perf. The source hold is released.
-Generation 21 selects exact integer-times-rational field scaling with one
-normalization in affineValue. Preserve its existing shortcuts and all-input
-refinement. Targeted and combined production/proof builds passed; all 195
-correctness inputs stayed unchanged during the combined build and passed full
-fixed gate. The fresh 10M campaign, replay and independent gate/archive/plan
-review also passed. Source/proof/native review confirms only PayloadBits
-changed among 22 native sets. Verified cleanup reclaimed 11,092,697,088 bytes.
-The benchmark plan is sealed; next commit and measure with all other work
-stopped. No generation 21 throughput result exists yet. See
-docs/GEN21-AFFINE-NORMALIZATION.md.
+Generation 21 normalizes integer-times-rational field scaling directly,
+with an unconditional equality preserving all affine and decoder contracts.
+The full gate passed with 195 unchanged inputs and all 23 capstones. The
+separate fresh 10M campaign, independent replay and archive/plan review also
+passed. Verified scratch cleanup reclaimed 11,092,697,088 allocated bytes.
+The clean-commit fresh-build benchmark and archival checks passed.
+Independent measured-result review passed 717 checks; artifact-source binding
+and presentation reviews also passed. Next: commit and push the reviewed
+artifacts, then collect fresh live cost
+diagnostics before selecting another optimization. No frozen, Float callback,
+software binary64 or trusted-primitive change is authorized.
+See docs/GEN21-AFFINE-NORMALIZATION.md and PROGRESS.md for evidence.
 
 The independently reviewed reporting helper now adds CPR overhead to every
 new report, with historical values through generation 19 in

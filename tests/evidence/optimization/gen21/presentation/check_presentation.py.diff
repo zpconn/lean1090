@@ -1,0 +1,33 @@
+--- tests/evidence/optimization/gen20/presentation/check_presentation.py
++++ tests/evidence/optimization/gen21/presentation/check_presentation.py
+@@ -52,7 +52,7 @@
+     generation = args.generation
+     assert generation >= 0
+     inputs = set(DOCUMENTS + ['Capstones.lean', 'scripts/Final.lean', 'bench/results.csv',
+-        f'bench/runs/gen{generation}/summary.json', f'bench/runs/gen{generation}/results-review.json',
++        f'bench/runs/gen{generation}/summary.json', f'bench/runs/gen{generation}/report-verification.json', f'bench/runs/gen{generation}/results-review.json',
+         f'tests/evidence/optimization/gen{generation}/fixed-message/summary.json',
+         f'tests/evidence/optimization/gen{generation}/fresh-message/summary.json',
+         f'tests/evidence/optimization/gen{generation}/gate-full.log',
+@@ -130,6 +130,21 @@
+         review[mode + '_target_ratio'] == {'numerator': 2, 'denominator': 1}
+         and review[mode + '_threshold_reached'] is reached[mode] for mode in ('decode', 'cpr'))
+         and review['all_mode_thresholds_reached'] is all(reached.values()))
++    overhead = json.loads((ROOT / f'bench/runs/gen{generation}/report-verification.json').read_text())['cpr_overhead']
++    modes = {row['mode']: row['medians_nanoseconds'] for row in summary['results']}
++    expected = {}
++    for implementation in ('lean1090', 'rs1090'):
++        difference = modes['cpr'][implementation] - modes['decode'][implementation]
++        item = overhead['implementations'][implementation]
++        assert item['median_nanoseconds'] == {mode: modes[mode][implementation] for mode in ('decode', 'cpr')}
++        assert item['difference_nanoseconds'] == difference and item['microseconds_per_message_divisor'] == 172432000
++        expected[implementation] = format(Decimal(difference) / Decimal(172432000), '+.12f')
++    check('README_signed_CPR_overheads_match_exact_medians', overhead['messages_per_interval'] == 172432
++          and f"**{expected['lean1090']} µs/message for Lean**" in readme
++          and f"**{expected['rs1090']} µs/message for rs1090**" in readme)
++    check('README_CPR_overhead_scope_and_noise_disclosed', all(text in readme for text in
++          ('difference between independently measured mode medians', 'includes measurement noise',
++           'not an isolated timing of CPR work')))
+     campaign_counts = {}
+     for kind in ('fixed', 'fresh'):
+         campaign = json.loads((ROOT / f'tests/evidence/optimization/gen{generation}/{kind}-message/summary.json').read_text())

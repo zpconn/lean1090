@@ -5,7 +5,43 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 20 reached 1.852064793419× decode and
+**Latest measurement: generation 21 reached 1.963308902434× decode and
+1.539889738438× with CPR.** Both 2.00× targets remain unmet. The measured
+source is `11fbf4e0c8c196d70cd838dd2a14516f586fc4c5`, authored and committed
+by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 408.396750/801.808975 ms
+for decode and 523.974619/806.863139 ms for CPR. Lean throughput increased
+by 6.34% and 5.05% versus generation 20. Signed CPR overhead is
+0.670280858541 µs/message for Lean and 0.029311055952 for rs1090, as a
+difference between separate mode medians including noise. All 96 samples,
+six clean-tree/lock checks, 22 fresh native sets and four Ultimate Performance
+power-plan captures are retained. Actual worker SHA-256:
+`861d722aee03c73147893797c9876bac3ee1337120516e2a45d2bd3c664d34f5`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +626,046,915 ns
+(decode) and +1,381,926,382 ns (CPR) remain unadjusted. Worker monotonic
+durations determine the results. Environment: Intel Core Ultra 9 285K /
+WSL2, CPU 0; host workload limits remain documented.
+[Report and raw samples](bench/GEN21.md). The frozen benchmark and archival
+checks passed. Independent measured-result review passed all 717 checks on
+its first execution, reproducing both signed overhead values and all samples.
+Review SHA-256:
+`ac4c821d2d4880952277aae614d85140c1d9ab5f40522c3572f7b626faf50011`.
+Artifact-source binding passed with all 195 inputs equal to the passed full
+gate, timed commit and current tree; SHA-256:
+`5e0c25c365e30fc7790732ca43151c10909bda168adbc33e6493a2b75c3e5d6b`.
+Presentation refresh passed: 44 CSV rows, 22 GIF frames, 1,012 plotted values,
+95 links and all 23 capstones verbatim. Producer and root visual inspections
+passed. Producer completion SHA-256:
+`9c796bb559bebaa8ee06b9f6426fef8a15d684746b404bb527042ecbbdd92e54`.
+Independent presentation review passed; completion SHA-256:
+`f94e4e8c26ce1b3dc646d10a534a68b13b54aaebe8addbed86e5886497a9d193`.
+A reviewer-only prior-generation filter typo was corrected with its first
+attempt retained; the producer passed on its first execution and no rendering
+or measurement was repeated. Next: commit and push these reviewed artifacts,
+then collect fresh cost diagnostics before selecting another optimization.
+Both diagnostic preparations are ready; no new diagnostic ran before this
+artifact commit.
+
+**Previous measurement: generation 20 reached 1.852064793419× decode and
 1.485653752657× with CPR.** Both 2.00× targets remain unmet. The measured
 source is `d3a10f60e7e83a35c53d5e4066a82dce048ad2be`, authored and committed
 by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 434.308678/804.367812 ms
@@ -59,9 +95,9 @@ Receipts:
 `23dce3b997f3c5825e40240f07a5e5c9c0de1204655141a61d86b01bd05944d0`.
 The source/history hold is released.
 
-**Generation 21 in progress:** exact integer-times-rational field scaling with
+**Generation 21 implementation and validation:** exact integer-times-rational field scaling with
 one normalization, preserving unit-scale and zero-offset shortcuts. The
-unconditional helper equality will preserve the existing affine and complete
+unconditional helper equality preserves the existing affine and complete
 decoder refinement statements. Direct payloadValue-to-Rat.mul observations
 account for 1,172,225,030 inclusive instructions across semantic and Comm-B
 contexts; these overlap their parent stages and imply no particular speedup.
@@ -119,8 +155,8 @@ the integrated log contains 251 axiom-list facts plus nine axiom-free facts.
 The benchmark plan is sealed, binding all validation and the 42 historical
 CSV rows; SHA-256:
 `3205cff63f777308974da723e775176a264baa4294558f2ffd41329ccdb1f16a`.
-Next: commit the verified source, then freshly build and measure both modes
-with all other work stopped. No generation 21 throughput result exists yet.
+The verified source was committed, freshly built and measured with all other
+work stopped; results are recorded above.
 
 No frozen, Float callback, software binary64 or trusted-primitive change is
 authorized or intended. [Design](docs/GEN21-AFFINE-NORMALIZATION.md).

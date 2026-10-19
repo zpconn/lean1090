@@ -1,0 +1,27 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T20:59:41.317912+00:00",
+  "source": "tests/evidence/optimization/gen20/independent-review/check_benchmark_result.py",
+  "source_sha256": "dbc5c79460c5104fb37fef54ceb83782ca8060a07cda72a4d09e03d926d36db4",
+  "reviewer": "tests/evidence/optimization/gen21/independent-review/check_benchmark_result.py",
+  "reviewer_sha256": "2376acc2120746f1d2cab880a2f52af7c0916fa0c3371426dc6c7bd9ae258a35",
+  "diff_sha256": "2aa7ec5e13e254ca03791a93dd1e9f80c31cb0383eb107a237bffd7b9334550d",
+  "adaptations": [
+    "Generation21 paths and 42 prior rows.",
+    "Gen20-only commit-wrapper exception record replaced with explicit six actual clean-runner checkpoint bindings; generic validator already validates them. No gen21 commit-wrapper exception exists.",
+    "All 96 raw rows, native provenance, exact target calculations, signed overhead, clocks/power/environment and archive checks retained."
+  ],
+  "inspection_errors_retained": [
+    {
+      "command": "sed -n 1,160p bench/runs/gen21/archive.json",
+      "exit_code": 2,
+      "reason": "Nonexistent guessed filename; actual artifact is archive-verification.json."
+    },
+    {
+      "command": "cat tests/evidence/optimization/gen21/commit-verification.json",
+      "exit_code": 1,
+      "reason": "No standalone gen21 commit exception record; actual six runner checkpoints bind clean source."
+    }
+  ],
+  "no_producer_mutation": true
+}

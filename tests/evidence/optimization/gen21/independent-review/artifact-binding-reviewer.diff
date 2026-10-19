@@ -1,0 +1,79 @@
+--- tests/evidence/optimization/gen20/independent-review/check_artifact_commit_inputs.py
++++ tests/evidence/optimization/gen21/independent-review/check_artifact_commit_inputs.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Bind gen20 result artifacts to the passing gate; no commit or native work."""
++"""Bind gen21 result artifacts to the passing gate; no commit or native work."""
+ import sys
+ sys.dont_write_bytecode = True
+ import hashlib
+@@ -13,9 +13,9 @@
+ sys.path.insert(0, str(ROOT / 'review/diagnostics'))
+ import run_generation_benchmark as provenance
+ 
+-BASE = ROOT / 'tests/evidence/optimization/gen20'
++BASE = ROOT / 'tests/evidence/optimization/gen21'
+ OUT = BASE / 'independent-review'
+-BENCH = ROOT / 'bench/runs/gen20'
++BENCH = ROOT / 'bench/runs/gen21'
+ 
+ 
+ def sha(path):
+@@ -36,11 +36,11 @@
+     assert not output.exists(), 'refuse to overwrite an earlier artifact binding'
+     review = load(BENCH / 'results-review.json')
+     assert review['status'] == 'passed' and review['findings'] == []
+-    assert sha(BENCH / 'results-review.json') == 'e06a8581344ad8dcf87fc58897c4c72edee764ac2487eb95053c2d5fe7455a23'
+-    assert review['total_samples'] == 96 and review['checks_passed'] == 706
++    assert sha(BENCH / 'results-review.json') == 'ac4c821d2d4880952277aae614d85140c1d9ab5f40522c3572f7b626faf50011'
++    assert review['total_samples'] == 96 and review['checks_passed'] == 717
+     assert review['decode_target_ratio'] == review['cpr_target_ratio'] == {'numerator': 2, 'denominator': 1}
+     commit = review['commit']
+-    assert git('rev-parse', 'HEAD').decode().strip() == commit == 'd3a10f60e7e83a35c53d5e4066a82dce048ad2be'
++    assert git('rev-parse', 'HEAD').decode().strip() == commit == '11fbf4e0c8c196d70cd838dd2a14516f586fc4c5'
+     gate = load(BASE / 'gate-evidence.json')
+     inputs = provenance.gate_input_hashes()
+     assert len(inputs) == 195
+@@ -57,19 +57,21 @@
+                  for r in review['results']}
+     assert decisions == {'decode': review['decode_threshold_reached'], 'cpr': review['cpr_threshold_reached']}
+     assert all(decisions.values()) == review['all_mode_thresholds_reached']
+-    assert sha(ROOT / 'bench/GEN20.md') == review['report_sha256']
++    assert sha(ROOT / 'bench/GEN21.md') == review['report_sha256']
+     assert sha(ROOT / 'bench/results.csv') == review['csv_after_sha256']
+     assert review['cpr_overhead'] == load(BENCH / 'report-verification.json')['cpr_overhead']
+-    assert review['commit_verification_sha256'] == sha(OUT / 'commit-verification.json')
+-    assert review['retained_commit_wrapper_error'] == load(OUT / 'commit-verification.json')['prior_wrapper_error']
++    for name, digest in review['clean_checkpoint_sha256'].items():
++        assert sha(BENCH / (name + '-git.json')) == digest
++        checkpoint = load(BENCH / (name + '-git.json'))
++        assert checkpoint['commit'] == commit and checkpoint['clean'] and not checkpoint['stdout']
+     paths = [BENCH / name for name in ('results-review.json', 'archive-verification.json', 'report-verification.json',
+                                      'correctness-inputs.json', 'binary-built.json')]
+     paths += [BASE / name for name in ('gate-evidence.json', 'gate-full.log', 'gate-archive.json', 'fresh-final-verification.json')]
+     paths += [OUT / name for name in ('gate-review.json', 'check_benchmark_result.py',
+                                      'benchmark-result-review-01.log', 'check_artifact_commit_inputs.py')]
+-    paths += [ROOT / 'bench/GEN20.md', ROOT / 'bench/results.csv']
++    paths += [ROOT / 'bench/GEN21.md', ROOT / 'bench/results.csv']
+     paths += [BASE / 'independent-review/fresh-completion.json', BASE / 'benchmark-preparation/plan.json']
+-    paths += [OUT / 'commit-verification.json', OUT / 'reviewer-adaptations/commit-record-binding.json', OUT / 'reviewer-adaptations/commit-record-binding.diff']
++    paths += [OUT / 'benchmark-result-review-preparation.json', OUT / 'benchmark-result-reviewer.diff', OUT / 'artifact-binding-preparation.json']
+     files = {str(p.relative_to(ROOT)): {'sha256': sha(p), 'bytes': p.stat().st_size} for p in paths}
+     status = git('status', '--porcelain=v1', '--untracked-files=all').decode()
+     assert provenance.gate_input_hashes() == inputs
+@@ -78,13 +80,13 @@
+         'recorded_utc': datetime.now(timezone.utc).isoformat(), 'timed_commit': commit,
+         'correctness_input_count': len(inputs), 'gate_validation': gate_validation,
+         'all_inputs_match_passed_full_gate_current_tree_and_timed_commit': True,
+-        'correctness_inventory': 'bench/runs/gen20/correctness-inputs.json',
++        'correctness_inventory': 'bench/runs/gen21/correctness-inputs.json',
+         'correctness_inventory_sha256': sha(BENCH / 'correctness-inputs.json'),
+         'files': files, 'current_git_status': status,
+         'configured_identity': 'zpconn <zpconn@gmail.com>', 'target_ratio_each_mode': {'numerator': 2, 'denominator': 1},
+         'exact_target_decisions': decisions, 'both_targets_reached': all(decisions.values()),
+         'cpr_overhead': review['cpr_overhead'],
+-        'retained_commit_wrapper_error': review['retained_commit_wrapper_error'],
++        'clean_checkpoint_sha256': review['clean_checkpoint_sha256'],
+         'build_test_benchmark_or_git_mutation_performed': False, 'findings': [],
+         'scope': 'The existing passing full gate covers every unchanged correctness input. This record binds the already-reviewed result artifacts for the parent-controlled artifact commit, without copying historical trees or running a replacement gate. Concurrent parent documentation updates are outside this correctness inventory.'}
+     with output.open('x') as stream:
