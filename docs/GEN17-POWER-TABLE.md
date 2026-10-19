@@ -56,7 +56,8 @@ differential components with all 188 correctness inputs unchanged. Its
 standard-view differences remain separately recorded. The final independent
 gate, archive and benchmark-plan review passed. Verified duplicate cleanup
 reclaimed 11,092,623,360 allocated bytes while preserving compressed evidence.
-No generation 17 throughput measurement exists yet. The frozen benchmark will
-retain the compiled program's initialization behavior without moving or
-subtracting its cost. Commands, source snapshots, logs and reviews are under
+The frozen benchmark measured 1.669372647154× decode and 1.150460800400× CPR
+throughput against rs1090. Both 2.00× targets remain unmet. It retained the
+compiled program's initialization behavior without moving or subtracting its
+cost. [Measurements and raw samples](../bench/GEN17.md). Commands, source snapshots, logs and reviews are under
 [`tests/evidence/optimization/gen17`](../tests/evidence/optimization/gen17/).

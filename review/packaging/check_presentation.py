@@ -7,6 +7,8 @@ This checker builds nothing. --check-cli runs just the README's one-message
 example using an already-built executable.
 """
 import argparse
+import sys
+sys.dont_write_bytecode = True
 import csv
 from decimal import Decimal
 import hashlib
@@ -45,12 +47,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / '.cache/presentation-check.json')
     parser.add_argument('--check-cli', action='store_true')
+    parser.add_argument('--generation', type=int, default=17)
     args = parser.parse_args()
+    generation = args.generation
+    assert generation >= 0
     inputs = set(DOCUMENTS + ['Capstones.lean', 'scripts/Final.lean', 'bench/results.csv',
-        'bench/runs/gen10/summary.json', 'bench/runs/gen10/results-review.json',
-        'tests/evidence/optimization/gen10/fixed-message/summary.json',
-        'tests/evidence/optimization/gen10/fresh-message/summary.json',
-        'tests/evidence/optimization/gen10/gate-full.log',
+        f'bench/runs/gen{generation}/summary.json', f'bench/runs/gen{generation}/results-review.json',
+        f'tests/evidence/optimization/gen{generation}/fixed-message/summary.json',
+        f'tests/evidence/optimization/gen{generation}/fresh-message/summary.json',
+        f'tests/evidence/optimization/gen{generation}/gate-full.log',
         'docs/images/throughput-data.json', 'docs/licenses/rust-libm-0.2.16.txt'])
     before = {p: sha(ROOT / p) for p in sorted(inputs)}
     readme = (ROOT / 'README.md').read_text()
@@ -72,7 +77,8 @@ def main():
     theorem_blocks = re.findall(r'```lean\n(.*?)\n```', (ROOT / 'THEOREMS.md').read_text(), re.S)
     check('theorem_guide_contains_all_exact_definitions', all(d in theorem_blocks for d in source_defs))
     check('README_discloses_numerical_and_physical_model_limits', all(x in readme for x in
-        ('tested, not proved equal to real arithmetic', 'unmodeled physical receiver', 'every byte input', 'CPR remains slower')))
+        ('tested, not proved equal to real arithmetic', 'unmodeled physical receiver', 'every byte input',
+         'they do not establish performance on other hosts or inputs')))
     check('README_preserves_matched_measurement_scope', all(x in readme for x in
         ('recorded single-core workload', 'including construction of its complete result',
          '172,432', 'three warmup pairs', '21 interleaved AB', 'medians')))
@@ -87,8 +93,10 @@ def main():
     check('README_coverage_claim_is_scoped', 'complete branch coverage' not in readme)
     with (ROOT / 'bench/results.csv').open(newline='') as stream:
         rows = list(csv.DictReader(stream))
-    current = {r['mode']: r for r in rows if int(r['generation']) == 10}
-    summary = json.loads((ROOT / 'bench/runs/gen10/summary.json').read_text())
+    current = {r['mode']: r for r in rows if int(r['generation']) == generation}
+    check('latest_generation_has_exactly_both_modes', set(current) == {'decode', 'cpr'}
+          and len(rows) == 2 * (generation + 1))
+    summary = json.loads((ROOT / f'bench/runs/gen{generation}/summary.json').read_text())
     check('README_timed_commit_is_current_recorded_generation', summary['commit'] in readme and all(r['commit'] == summary['commit'] for r in current.values()))
     measurements = {}
     for mode in ('decode', 'cpr'):
@@ -99,13 +107,20 @@ def main():
             (f"{Decimal(row['lean1090_msg_s']):,.0f} msg/s", f"{Decimal(row['rs1090_msg_s']):,.0f} msg/s", f'{ratio:.5f}×')))
         recorded = next(r for r in summary['results'] if r['mode'] == mode)
         check(mode + '_CSV_agrees_with_native_sample_summary', abs(ratio - Decimal(str(recorded['lean_over_rust']))) < Decimal('1e-14'))
-    improvement = (Decimal(measurements['decode']['ratio_recomputed']) - 1) * 100
-    check('headline_percentage_is_throughput_improvement', f'{improvement:.2f}% more messages' in readme)
-    review = json.loads((ROOT / 'bench/runs/gen10/results-review.json').read_text())
-    check('independent_gen10_result_review_passed', review['status'] == 'passed_with_documented_clock_and_host_limitations' and not review['findings'])
+    headline = readme.split('## Try it', 1)[0]
+    check('headline_ratios_match_latest_generation', f'generation {generation}' in headline and all(
+        f"{Decimal(measurements[mode]['ratio_recomputed']):.5f}×" in headline for mode in ('decode', 'cpr')))
+    check('both_current_targets_explicit_and_unmet', '2.00× in both modes' in headline
+          and 'neither target is reached' in headline
+          and all(Decimal(m['ratio_recomputed']) < 2 for m in measurements.values()))
+    review = json.loads((ROOT / f'bench/runs/gen{generation}/results-review.json').read_text())
+    check('independent_current_result_review_passed', review['status'] in
+          ('passed', 'passed_with_documented_clock_and_host_limitations') and not review['findings']
+          and review['generation'] == generation and review['commit'] == summary['commit']
+          and review['binary_sha256'] == summary['binary_sha256'])
     campaign_counts = {}
     for kind in ('fixed', 'fresh'):
-        campaign = json.loads((ROOT / f'tests/evidence/optimization/gen10/{kind}-message/summary.json').read_text())
+        campaign = json.loads((ROOT / f'tests/evidence/optimization/gen{generation}/{kind}-message/summary.json').read_text())
         count = campaign['message']['counts']
         campaign_counts[kind] = count
         check(kind + '_whole_message_claim_and_scope_match', campaign['status'] == 'PASS' and count['messages'] == 10476164
@@ -113,15 +128,16 @@ def main():
               and len(campaign['message']['df']) == 32 and len(campaign['message']['adsb']) == 70
               and len(campaign['message']['commb']) == 14 and not campaign['message']['coverage_errors']
               and not campaign['message']['mismatch_fields'])
-    log = (ROOT / 'tests/evidence/optimization/gen10/gate-full.log').read_text()
+    log = (ROOT / f'tests/evidence/optimization/gen{generation}/gate-full.log').read_text()
     check('unit_and_witness_claims_are_in_full_gate_evidence',
           '  "assertions": 1011,' in log and '  "expanded_checks": 1011,' in log
           and 'Witness axiom audit: 152 proofs; only the three permitted axioms (or fewer).' in log)
     check('all_capstone_types_and_axioms_passed_the_full_gate',
           'Final manifest: 23 exact theorem types and permitted axioms.' in log)
     graph = json.loads((ROOT / 'docs/images/throughput-data.json').read_text())
-    check('graph_binds_current_CSV_and_all_11_generations', graph['source_sha256'] == sha(ROOT / 'bench/results.csv')
-          and graph['generations'] == list(range(11)) and graph['frame_count'] == 11
+    check('graph_binds_current_CSV_and_all_generations', graph['source_sha256'] == sha(ROOT / 'bench/results.csv')
+          and graph['generations'] == list(range(generation + 1)) and graph['frame_count'] == generation + 1
+          and Decimal(graph['target_ratio']) == Decimal('2.00')
           and [{k: v for k, v in r.items() if k != 'ratio_recomputed'} for r in graph['rows']] == rows)
     check('graph_artifact_hashes_match', all(sha(ROOT / 'docs/images' / name) == row['sha256'] for name, row in graph['outputs'].items()))
     links = []
@@ -158,7 +174,8 @@ def main():
         check('README_example_matches_actual_already_built_CLI', result.returncode == 0 and not result.stderr
               and json.loads(result.stdout) == expected and sha(executable) == binary_before)
     check('all_reviewed_input_bytes_unchanged_during_check', all(sha(ROOT / p) == digest for p, digest in before.items()))
-    output = {'status': 'passed' if not findings else 'failed', 'checks': checks, 'findings': findings,
+    output = {'status': 'passed' if not findings else 'failed', 'generation': generation,
+              'checks': checks, 'findings': findings,
               'inputs': before, 'capstones': names, 'measurements': measurements, 'campaign_counts': campaign_counts,
               'local_links': links, 'cli_example': cli, 'checker_sha256': sha(__file__),
               'scope': 'Current documentation only. Historical reports and evidence snapshots intentionally excluded; no build, test campaign, native profile or benchmark execution.'}

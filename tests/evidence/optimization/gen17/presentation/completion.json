@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "generation": 17,
+  "csv_rows": 36,
+  "gif_frames": 18,
+  "target": "2.00 in both modes",
+  "csv_sha256": "3d7e0460eab8ed6a4bea1daac3c553fa7a5eb38cbf4c79cbceeb461ee36256e1",
+  "csv_unchanged": true,
+  "commands": [
+    [
+      "PYTHONDONTWRITEBYTECODE=1",
+      ".cache/venv/bin/python",
+      "-B",
+      "review/presentation/render_throughput.py",
+      "--expected-generations",
+      "18"
+    ],
+    [
+      "PYTHONDONTWRITEBYTECODE=1",
+      ".cache/venv/bin/python",
+      "-B",
+      "review/presentation/verify_throughput.py",
+      "--expected-generations",
+      "18",
+      "--output",
+      "tests/evidence/optimization/gen17/presentation/verification.json",
+      "--preview-dir",
+      ".cache/presentation-gen17"
+    ],
+    [
+      "PYTHONDONTWRITEBYTECODE=1",
+      "python3",
+      "-B",
+      "review/packaging/check_presentation.py",
+      "--generation",
+      "17",
+      "--output",
+      "tests/evidence/optimization/gen17/presentation/readme-verification.json"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "outputs": {
+    "README.md": "dcf929b4c624c62fc61a7713a2f04e3e1bc7cedd2abe9c1b3d7265041c99e876",
+    "review/presentation/render_throughput.py": "8ae36a8cec232f20b29e540b7664aafa46655c5f1826cd91d5330c03b58d872b",
+    "review/presentation/verify_throughput.py": "4fb0c2bfdde70c6136e4c678501fa31e83dff5937fe71bd95630dc2e181eb7c8",
+    "review/packaging/check_presentation.py": "d21b3ef563e88dd05dd85c50a879a94fa24368404c42e07803cf90c2bb0f188f",
+    "docs/images/throughput-data.json": "15fe622ca8bc60c8af07b83234aea7dc28d428d015480818ef45ab8dd6d879ba",
+    "docs/images/throughput.png": "c978d83d85c91ec46958e6f9c07821513ceb18859af4587d8f4e7aef2d52c14f",
+    "docs/images/throughput.svg": "1d1ab4d539bc6ed15b0c29101846b9f7c510c57113466325baac21c6f70942a5",
+    "docs/images/throughput.gif": "ad99cea007c070afee3dab4ad791cec1d3e890ab5852ae85c53deab999f675a5",
+    "tests/evidence/optimization/gen17/presentation/verification.json": "a63dbba31edaae28352fae62f7a0f0bab93378f2cda2aa134d656f160d64a63e",
+    "tests/evidence/optimization/gen17/presentation/readme-verification.json": "d3bc8bdc34aab4d2fb6a39f1b44170f1bd9a7cc722c9631af687992e955ab8c4",
+    "tests/evidence/optimization/gen17/presentation/visual-review.json": "486c784b4e69c271cf817123d249470f902315f7f91fd3989ef03dc834045f46"
+  },
+  "checks": {
+    "source_artist_frame_checks": 684,
+    "README_checks": 29,
+    "local_links": 93,
+    "capstones_verbatim": true
+  },
+  "limits": "Presentation only. No benchmark, profile, decoder or proof build executed. Prior presentation files remain in Git history; measured CSV/archive/report bytes were not edited."
+}

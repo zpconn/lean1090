@@ -5,7 +5,36 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 16 reached 1.668888276454× decode and
+**Latest measurement: generation 17 reached 1.669372647154× decode and
+1.150460800400× with CPR.** Both 2.00× targets remain unmet. The timed source
+is `0f7882f3f949118c6871a40bc012bb8a957a6a3d`, authored and committed by
+`zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 483.182346/806.611392 ms
+for decode and 706.958588/813.328143 ms for CPR. All 96 samples, six clean-tree
+and lock checks, 22 freshly built native sets and four Ultimate Performance
+captures are retained. Actual worker SHA-256:
+`04b075aff3a04861d9cdb0e8d7388fe43a9fdfc0dc3a317de6a4525edb213a13`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +589,956,114 ns
+(decode) and +601,948,078 ns (CPR) remain unadjusted. Worker monotonic durations
+determine the results. The environment remains Intel Core Ultra 9 285K / WSL2,
+CPU 0, with host workload limitations documented. [Report and samples](bench/GEN17.md).
+The archive helper initially rejected the run directory's naming convention;
+the completed directory was renamed and all 48 original files verified
+byte-identical. No timing was rerun, sample changed or helper modified. The
+relocation record is in `tests/evidence/optimization/gen17/benchmark-preparation/`.
+Independent result review passed all 678 checks on its first execution:
+`8c81102ff81069b4e4989f665520db9ce1a4ac90d775b2dbd3d45aad4b00a8d2`.
+Artifact-commit binding confirms all 188 inputs still match the passed gate,
+timed source and current tree:
+`6dec94304275632ada9b41d30475682fcc48db745141310b83da8fb3a765aa52`.
+The README and charts now show generation 17 and the unmet 2.00× targets.
+Presentation validation checked all 36 CSV rows, 18 GIF frames, 684 plotted
+values, 93 links and all 23 capstones verbatim. Visual inspection and a separate
+read-only review passed. Completion SHA-256:
+`4bd5029763d3ed7e92ba0ecf70a8fb9e14b5ede2bf28d7b7f66ea18ce66df86b`.
+The reviewed result artifacts are ready for commit and private push. Next:
+fresh untimed decode and CPR diagnostics before selecting generation 18.
+
+**Previous measurement: generation 16 reached 1.668888276454× decode and
 1.029132958936× with CPR.** Neither 2.00× target is reached. The measured source
 is `1593898c4425fb174ba4085ab68691feba28124e`, authored and committed by
 `zpconn <zpconn@gmail.com>`. Decode medians are 483.018968 ms for Lean and
@@ -102,9 +131,9 @@ the unchanged 34-row CSV prefix and both exact 2/1 targets. Review SHA-256:
 `fe14b67f2435e228eb70a7fe910e6fc2adaad5f6f24e1a30b791c796924b879e`.
 The fixed cleanup reclaimed another 5,733,330,944 allocated bytes; combined
 fixed/fresh cleanup reclaimed 11,092,623,360 bytes while preserving compressed
-evidence and unique earlier failures. The source is ready to commit, then
-measure from a clean fresh build with all other work stopped. No generation
-17 timing exists yet.
+evidence and unique earlier failures. The source was committed and both modes
+were measured from its clean fresh build with all other work stopped; results
+are recorded above.
 [Implementation and proof](docs/GEN17-POWER-TABLE.md).
 
 Read-only planning for a possible later CPR change identified an exact dyadic

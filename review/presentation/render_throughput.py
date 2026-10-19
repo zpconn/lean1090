@@ -5,6 +5,8 @@ Run with the project's existing plotting environment; no decoder or benchmark
 is executed. The GIF has one distinct frame per recorded generation.
 """
 import argparse
+import sys
+sys.dont_write_bytecode = True
 import csv
 from decimal import Decimal
 import hashlib
@@ -26,7 +28,7 @@ INK = '#233042'
 GREY = '#68727D'
 GOLD = '#AD7015'
 GRID = '#E4E8EC'
-TARGET = Decimal('1.10')
+TARGET = Decimal('2.00')
 MODES = ('decode', 'cpr')
 
 
@@ -81,10 +83,10 @@ def draw(generations, rows, last):
     cpr = [float(rows[g, 'cpr']['ratio_recomputed']) for g in shown]
     generation = shown[-1]
     fig.text(0.065, 0.95, 'lean1090 throughput', fontsize=21, weight='bold')
-    fig.text(0.065, 0.909, 'Single core · measured generations · decode is the headline workload',
+    fig.text(0.065, 0.909, 'Single core · measured generations · decode and decode + CPR',
              fontsize=11, color=GREY)
     fig.text(0.95, 0.95, f'GENERATION {generation}', ha='right', fontsize=10.5, weight='bold', color=GREY)
-    fig.text(0.95, 0.853, f'Decode  {ratio[-1]:.2f}×    ·    CPR  {cpr[-1]:.2f}×',
+    fig.text(0.95, 0.853, f'Decode  {ratio[-1]:.2f}×    ·    Decode + CPR  {cpr[-1]:.2f}×',
              ha='right', fontsize=12, weight='bold')
     top.set_title('Decode throughput · thousand messages / second', loc='left', fontsize=10.5, pad=11)
     lean_line, = top.plot(shown, decode, color=BLUE, lw=2.6, marker='o', ms=5.5,
@@ -104,13 +106,14 @@ def draw(generations, rows, last):
                  textcoords='offset points', ha='center', color=GREY, fontsize=10)
     bottom.set_title("Lean throughput / that generation's rs1090 throughput", loc='left', fontsize=10.5, pad=10)
     bottom.axhline(float(TARGET), color=INK, lw=1.2, linestyle=(0, (5, 4)), zorder=1)
-    bottom.text(0.16, float(TARGET) + 0.045, 'Target 1.10×', fontsize=10, color=INK)
+    bottom.text(0.16, float(TARGET) + 0.045, f'Target {TARGET:.2f}× · both modes', fontsize=10, color=INK)
     bottom.axhline(1.0, color='#B5BEC7', lw=0.7, zorder=0)
     bottom.plot(shown, ratio, color=BLUE, lw=2.6, marker='o', ms=5.5, label='Decode', zorder=3)
     bottom.plot(shown, cpr, color=GOLD, lw=1.8, linestyle=(0, (3, 2)), marker='^',
-                ms=5, markerfacecolor='white', label='CPR · secondary', zorder=2)
+                ms=5, markerfacecolor='white', label='Decode + CPR', zorder=2)
     bottom.legend(loc='lower right', frameon=False, ncol=2, borderaxespad=0.3, fontsize=10)
-    bottom.set_ylim(0, max(1.35, max(float(rows[g, m]['ratio_recomputed']) for g in generations for m in MODES) * 1.14))
+    bottom.set_ylim(0, max(float(TARGET) * 1.15,
+                          max(float(rows[g, m]['ratio_recomputed']) for g in generations for m in MODES) * 1.14))
     bottom.yaxis.set_major_locator(MultipleLocator(0.25))
     bottom.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f'{value:g}×'))
     bottom.set_xlabel('Optimization generation', labelpad=9)
@@ -131,7 +134,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', type=Path, default=Path('bench/results.csv'))
     parser.add_argument('--output-dir', type=Path, default=Path('docs/images'))
-    parser.add_argument('--expected-generations', type=int, default=11)
+    parser.add_argument('--expected-generations', type=int, default=18)
     args = parser.parse_args()
     original = args.input.read_bytes()
     generations, rows = load_rows(args.input)
