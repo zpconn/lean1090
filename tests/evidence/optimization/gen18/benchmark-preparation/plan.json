@@ -1,0 +1,22 @@
+{
+  "generation": 18,
+  "prepared_utc": "2026-10-19T18:18:57.604862+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen18/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "3d7e0460eab8ed6a4bea1daac3c553fa7a5eb38cbf4c79cbceeb461ee36256e1",
+  "prior_csv_rows": 36,
+  "fresh_verification": "tests/evidence/optimization/gen18/fresh/fresh-final-verification.json",
+  "fresh_verification_sha256": "1fc521f1d3a0d0dade3ad5bc77b364d39f519de36d548c34afdeeb6a8c8fe31e",
+  "title": "exact dyadic rational-to-Float conversion",
+  "change_description": "The live CPR rational-to-Float conversion assembles binary64 bits with exact integer arithmetic for nonzero rationals whose numerator magnitude is below 2^53 and denominator is exactly 2^k with k at most 1074. Zero remains positive zero, and all rejected inputs delegate to the unchanged original conversion. The equality proof covers every rational input and preserves the complete numerical-geography and tracking refinements. [Implementation and proof evidence](../docs/GEN18-DYADIC-CONVERSION.md).",
+  "row_note": "Proved exact dyadic bit packing; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "cpr_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "review_threshold": "Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.",
+  "note": "Prepared before timing. Contains no speculative measurement. The reviewed reporting helper only archives a completed run."
+}

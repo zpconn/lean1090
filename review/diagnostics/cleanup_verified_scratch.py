@@ -119,8 +119,9 @@ def seal_for(root):
         require(document.get('status') == 'passed', 'gate archive is not sealed/pass')
         rows = document['components'][component]['retained_files']
         expected = {row['path']: row for row in rows.values()}
-    elif (len(parts) == 5 and parts[:3] == ('tests', 'evidence', 'optimization')
-          and re.fullmatch(r'gen[1-9][0-9]*', parts[3]) and parts[4] == 'fresh-message'):
+    elif (len(parts) in (5, 6) and parts[:3] == ('tests', 'evidence', 'optimization')
+          and re.fullmatch(r'gen[1-9][0-9]*', parts[3])
+          and parts[4:] in (('fresh-message',), ('fresh', 'fresh-message'))):
         seal = root.parent / 'fresh-retained-hashes.json'
         document, sha, signature = read_bound(seal)
         require(document.get('status') == 'passed', 'fresh archive is not sealed/pass')

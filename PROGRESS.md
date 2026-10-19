@@ -31,8 +31,99 @@ Presentation validation checked all 36 CSV rows, 18 GIF frames, 684 plotted
 values, 93 links and all 23 capstones verbatim. Visual inspection and a separate
 read-only review passed. Completion SHA-256:
 `4bd5029763d3ed7e92ba0ecf70a8fb9e14b5ede2bf28d7b7f66ea18ce66df86b`.
-The reviewed result artifacts are ready for commit and private push. Next:
-fresh untimed decode and CPR diagnostics before selecting generation 18.
+The reviewed result artifacts and presentation were committed and pushed to
+the private repository as `9d441eb3bdbaa17adbb289c3d82afe20307ad28b`.
+Fresh untimed decode and CPR diagnostics completed against that
+source-equivalent commit before selecting generation 18. Both driver builds
+and the descendant source binding passed. Sequential isolated actual-worker
+decode/CPR captures passed with all 279 protected inputs unchanged. All 13
+decode instruction profiles passed; the CPR collection also passed its full
+input, airport, tracking-output and final-state checks. Reports and independent
+raw-accounting reviews passed. Decode review SHA-256:
+`dac5257265edab74b9d8f8821ce6afffab04bdc7649dfbd663328b1d31f29c3c`;
+CPR review:
+`f8a8b47c5d486dbbc65a0f71210de87fc91e9251af853e5ddb843333e5a05f76`.
+Decode collected 10,744,218,389 instructions; Comm-B remains its largest stage
+at 3,612,702,286. CPR collected 15,901,328,066; numeric geography remains its
+largest detailed category at 3,857,692,962. Both reviewed cleanups completed,
+reclaiming 275,820,544 and 233,095,168 allocated bytes while retaining compressed
+evidence and unique raw perf captures. This releases the source hold.
+
+**Generation 18 selected:** an exact integer bit-packing path for
+`Impl.CPR.Policy.toFloat`, whose 103,138 calls account for 3,333,981,092
+overlapping inclusive instructions in numeric geography. This is diagnostic
+evidence, not a speedup prediction or a measured fast-path hit rate. The guard
+requires nonzero numerator magnitude below 2^53, denominator exactly 2^k and
+k ≤ 1074. Zero remains positive zero; every other value retains the original
+total conversion, including negative-underflow behavior. Prove exact exponent,
+rounding and bit assembly, then equality of the complete conversion for every
+rational input and integration into the existing CPR refinement statements.
+The guard covers finite binary64-derived rationals of magnitude below 2^53;
+it does not cover every dyadic rational of that magnitude. No frozen changes,
+trusted primitives, cross-message caches or hardware arithmetic are added.
+Implementation and proof work are complete. The central dyadic helper
+build passed all 2,040 jobs after two routine simplifier/lemma-application
+corrections; both attempts are retained. Its exponent, scaling, integer-rounding
+and exact-rounding facts use only permitted axioms. Independent source/log
+review passed (`75d5acfcd5d415f94bd1219483517e8c3ebfe88bbbc68f222bb10a992ed28094`).
+The runtime compiles, and the lock/import guards passed. Bit assembly and CPR
+integration passed the 2,048-job targeted build; all 20 printed packing/tracking
+facts use permitted axioms. The first attempt's absolute-value and let-reduction
+fixes are retained. Kernel witnesses cover both signs at subnormal/normal
+boundaries, the largest admitted numerator, guard exclusions and underflow ties.
+The combined build passed all 3,534 jobs on its first execution, with all four
+changed/new sources and 190 correctness inputs unchanged. Record SHA-256:
+`a4f3ddba1bced3edac6b70cfcd7be9be37a3b49f0cd4f59b64a94968b1efada3`.
+An additional unfrozen conversion probe passed all 33,174 cases: 17,388 fast,
+15,758 fallback and 28 zero cases, with 32,756 finite-bit checks and no mismatch.
+These selected probe counts are not corpus hit rates or timings. Its first
+execution preserved all 190 correctness inputs and four binaries. Completion:
+`5cabef2f7921c57b5ebb12042d35b4f119e5801f29f37a4dfb0e3f4717fe95e8`.
+The full fixed gate passed from 18:02:27 to 18:18:36 UTC with all 190
+correctness inputs unchanged. It checked all 23 capstones, 152 witness proofs,
+1,011 unit assertions and seven differential components. The fixed campaign
+checked 10,476,164 messages: 9,542,689 exact matches + 933,475 documented D001
+cases; 2,038,998 standard-view differences remain separately recorded.
+All 101,244 direct Comm-B cases match exactly, with complete coverage.
+Full-gate record SHA-256:
+`93d94f75ed06e97358da45b35367fc2e6f26876806effa3bc25f05bbb165cacb`.
+No generation 18 measurement has completed. The separate fresh campaign passed on its first execution with
+seeds recorded beforehand: messages 22,240,697 and Comm-B 2,968,091,489.
+It checked 10,476,164 messages: 9,543,003 exact matches + 933,161 documented
+D001 cases, with 2,039,700 standard-view differences recorded separately.
+All 101,244 direct Comm-B cases matched exactly, with complete 32/70/14 branch
+coverage and no unclassified differences. All 115 sources and three binaries
+remained unchanged. Fresh verification SHA-256:
+`1fc521f1d3a0d0dade3ad5bc77b364d39f519de36d548c34afdeeb6a8c8fe31e`.
+Independent retention review passed all 33 members; frozen comparison replay
+also passed on its first execution. Fresh cleanup removed only eight verified
+raw duplicates and reclaimed 5,359,562,752 allocated bytes, preserving the
+active fixed run and both historical failure roots. All retained files, sources
+and binaries were rehashed afterward. Completion SHA-256:
+`2a4d4252ee5710d7c771453ffe41e7b6d36e9a1b9d99dad40beb458829b64a06`.
+Independent source/proof and linked-native reviews passed. The native review
+bound all 22 linked sets and 262 held inputs; only CPRFloat's set changed.
+Its actual wrapper executes the integer fast path and retains the original
+fallback. Decimal Nat parsing and lazy scalar initialization remain in the
+generated program, so no allocation-free claim is made. Native review:
+`2eb0ef7172a7ac0df89651e3bfd46244b584ffe52d31a46482b6b79b5b1873bd`.
+The new nested fresh-evidence directory needed a scoped ignore rule and an
+exact additional archive-root shape in the unfrozen cleanup helper. Both
+were reviewed; all 31 cleanup fixtures passed independently. No locked or
+captured correctness input changed. Fixed-gate archival and verified duplicate
+cleanup passed, reclaiming another 5,733,330,944 allocated bytes. Combined
+fixed/fresh cleanup reclaimed 11,092,893,696 bytes while preserving compressed
+evidence and unique failures. Final independent gate/archive/plan review
+passed, checking all 190 inputs, 104 locks, seven components and 62 retained
+files, both campaigns, the source/proof/native/probe reviews and both cleanup
+receipts. It preserved all 36 prior CSV rows and the separate exact 2/1
+targets. Review SHA-256:
+`a3aba9a73f0044243785a8b04636b627a6405c86ca2565fc413fd04fdfa22142`.
+A reviewer-only assumption about two diagnostic seals awaiting this commit
+was corrected with its failed attempt retained; producer evidence was
+unchanged. All jobs are stopped for the source commit and isolated measurement.
+The next diagnostic controllers are prepared and independently reviewed;
+they have not run and require the completed, reviewed generation 18 benchmark.
 
 **Previous measurement: generation 16 reached 1.668888276454× decode and
 1.029132958936× with CPR.** Neither 2.00× target is reached. The measured source

@@ -1,0 +1,60 @@
+{
+  "status": "passed_read_only_source_and_proof_review",
+  "recorded_utc": "2026-10-19T18:02:33.920002+00:00",
+  "findings": [],
+  "checks": {
+    "old_total_conversion_body_byte_identical_after_rename": true,
+    "all_later_geography_definitions_byte_identical": true,
+    "zero_branch_returns_positive_zero": true,
+    "nonzero_guard_ensures_positive_magnitude": true,
+    "numerator_bound_implies_log2_at_most_52": true,
+    "denominator_equality_is_exact_power_of_two_not_approximate_test": true,
+    "k_bound_prevents_negative_subnormal_shift": true,
+    "normal_shift_52_minus_high_nonnegative": true,
+    "exponent_high_minus_k_at_most_52_no_overflow_in_fast_branch": true,
+    "subnormal_branch_result_below_2pow52": true,
+    "normal_subtraction_protected_by_positive_biased_exponent": true,
+    "packed_bits_below_2pow64_for_both_signs": true,
+    "negative_underflow_and_nondyadic_inputs_keep_old_fallback": true,
+    "no_message_or_corpus_dependent_guard": true,
+    "all_input_conversion_theorem_has_no_corpus_or_valid_coordinate_hypothesis": true,
+    "proof_equality_established_before_existing_Float_ofBits_boundary": true,
+    "live_frozen_worker_and_tracking_adapters_still_call_toFloat_or_numericalGeography": true
+  },
+  "reasoning": [
+    "For canonical nonzero n/2^k, 1\u2264n<2^53 gives 0\u2264high\u226452. The exact exponent high\u2212k lies between \u22121074 and 52.",
+    "If high\u2212k<\u22121022, then high+1074\u2212k\u226451. Thus n<<(1074\u2212k) is a positive subnormal fraction below 2^52.",
+    "Otherwise biased exponent is at least 1 and at most 1075. n<<(52\u2212high) lies in [2^52,2^53), so the subtraction removes the hidden bit without Nat underflow and fraction/exponent do not overlap.",
+    "Sign adds exactly 2^63; the magnitude encoding stays below that bit. toUInt64 does not truncate any admitted packed bit.",
+    "All fallback cases preserve the exact original operation order; negative values that round to zero retain original positive-zero behavior.",
+    "Central round_eq proves representability using exact scaled integer nearest-even, not an assumption about accepted coordinates. Packing theorem rewrites the same old Float.ofBits argument; no Float arithmetic semantics are newly assumed.",
+    "This source/proof assessment is supplemented by owner kernel build logs, a separately prepared executable bit-equivalence probe, and post-integration native inspection. No build/probe run is claimed here."
+  ],
+  "files": {
+    "Impl/CPRFloat.lean": "d97d975cad3056e52c1c007d71c6063458a2aecc0fc9b53fd6de8992bf093a31",
+    "Proofs/Binary64Dyadic.lean": "916bdfabcd69af7a85431ba82bc8fd0ca23ccb75dbf21934b526ec17b5aa3451",
+    "Proofs/CPRFloatFast.lean": "86a9b4d0d86752ed8032870a907aa0dd1dca9b642a4ea23a09c51266bf3e178e",
+    "Proofs/CPRTracking.lean": "668ca875ff0a427b2b8b2f71a394f72e4373ae9f68bcd56995f8b8090f8f2aae",
+    "Tests/Tracking.lean": "196f549f758b2e4c78f263c12af1151482465a3670e96b714b5fe8885ffde6cd",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032",
+    "Tests/UpstreamCorpus.lean": "28fbfcd5816440cc3f32c264ba8390993c9d29cba400e0fb4f13297006a90a2c",
+    "scripts/FuzzCPR.lean": "21d4c583f08fce9cdb71b6491d5004adbe2c248cc330c9a13a25398aba2f96e8",
+    "Bench/WholeDecoder.lean": "ea0b8f3a94dfc801bbf0a8ce9091617f2a3eae4e122752e56de3caa5de40592b",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8"
+  },
+  "helper_build_summary": {
+    "path": "tests/evidence/optimization/gen18/dyadic-proof/summary.json",
+    "sha256": "65e6646a91b505e9935f53025254c54fa67703c3e9ec16fab63ac27f088328c9"
+  },
+  "packing_build_summary": {
+    "path": "tests/evidence/optimization/gen18/packing-proof/summary.json",
+    "sha256": "71d0607865142b60b264fdde5035e57891c4237a158d40d2235d93b56d7a17c7"
+  },
+  "native_review_plan": [
+    "Verify actual worker toFloat guards and zero path, both normal/subnormal shift packing and original fallback call.",
+    "Verify live haversine/local/reference/tracking callers reach guarded toFloat, and frozen adapter callers do not retain obsolete alternate conversion.",
+    "Bind exact current source/C/object/trace and worker hashes after integrated build; verify initializer order and unchanged module sets.",
+    "Inspect exact fallback only where present; absent wrapper symbols must not imply zero inlined work."
+  ],
+  "reviewer_sha256": "258953ca75d8c5bccfda0dfe83505e2b7871e59e91bb108125577f08313f8b46"
+}

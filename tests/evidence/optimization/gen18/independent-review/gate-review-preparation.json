@@ -1,0 +1,70 @@
+{
+  "status": "prepared_not_executed",
+  "prepared_utc": "2026-10-19T18:12:31.214919+00:00",
+  "reviewer_scripts": {
+    "tests/evidence/optimization/gen18/independent-review/check_gate.py": "adca8c6ff3cc5c33239029944d71bf38f757537f1474d347e4fa591f1549705a",
+    "tests/evidence/optimization/gen18/independent-review/check_benchmark_result.py": "5549e5d9aeeecead9a7b4e13605d65e351f46c5d85d177ef5a0045ec37a102bc"
+  },
+  "prior_scripts": {
+    "tests/evidence/optimization/gen17/independent-review/check_gate.py": "a81dc9a74393ab7533e74032920cba64015d9fec949491107169008988f6023f",
+    "tests/evidence/optimization/gen17/independent-review/check_benchmark_result.py": "de872ee91ff867d743c6c0de5e669cb2326f70ee2564c5e71b4a384d91485663"
+  },
+  "root_release_required_before_gate_review": true,
+  "gate_command": [
+    "python3",
+    "-B",
+    "tests/evidence/optimization/gen18/independent-review/check_gate.py",
+    "--execute-after-root-ready"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "prerequisites": [
+    "tests/evidence/optimization/gen18/gate-evidence.json",
+    "tests/evidence/optimization/gen18/gate-full.log",
+    "tests/evidence/optimization/gen18/components.tsv",
+    "tests/evidence/optimization/gen18/gate-archive.json",
+    "tests/evidence/optimization/gen18/post-gate-archive-cleanup/result.json",
+    "tests/evidence/optimization/gen18/post-gate-archive-cleanup/archive-flush.json",
+    "tests/evidence/optimization/gen18/post-gate-archive-cleanup/cleanup/result.json",
+    "tests/evidence/optimization/gen18/fresh/fresh-final-verification.json",
+    "tests/evidence/optimization/gen18/fresh/fresh-retained-hashes.json",
+    "tests/evidence/optimization/gen18/fresh/independent-review/fresh-retention-review.json",
+    "tests/evidence/optimization/gen18/fresh/independent-review/comparison-replay.json",
+    "tests/evidence/optimization/gen18/fresh/independent-review/fresh-completion.json",
+    "tests/evidence/optimization/gen18/fresh/post-fresh-cleanup/result.json",
+    "tests/evidence/optimization/gen18/benchmark-preparation/plan.json",
+    "tests/evidence/optimization/gen18/benchmark-preparation/preparation-verification.json"
+  ],
+  "expected_correctness_inputs": 190,
+  "expected_added": [
+    "Proofs/Binary64Dyadic.lean",
+    "Proofs/CPRFloatFast.lean"
+  ],
+  "expected_changed": [
+    "Impl/CPRFloat.lean",
+    "Proofs/CPRTracking.lean"
+  ],
+  "frozen_entries": 104,
+  "fixed_components": 7,
+  "fixed_retained_members": 62,
+  "fresh_retained_members": 33,
+  "fresh_sources": 115,
+  "fresh_binaries": 3,
+  "prior_csv_rows": 36,
+  "targets": {
+    "decode": [
+      2,
+      1
+    ],
+    "cpr": [
+      2,
+      1
+    ]
+  },
+  "benchmark_review_note": "Prepared for canonical .cache/bench-runs/gen18-<timed commit prefix> after both modes and archival. No generation17 relocation assumptions or speculative timings remain. Output will be the sole new bench/runs/gen18/results-review.json.",
+  "limits": [
+    "Only syntax parsing and source preparation were performed. No prepared reviewer, gate, decoder, benchmark, profiler or cleanup executed.",
+    "Central mathematical proof independence is supplied by root; this reviewer authored Binary64Dyadic."
+  ]
+}

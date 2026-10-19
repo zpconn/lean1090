@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "reviewed_utc": "2026-10-19T18:00:41.933125+00:00",
+  "source_sha256": "916bdfabcd69af7a85431ba82bc8fd0ca23ccb75dbf21934b526ec17b5aa3451",
+  "summary_sha256": "65e6646a91b505e9935f53025254c54fa67703c3e9ec16fab63ac27f088328c9",
+  "successful_build_record_sha256": "e418399149ff969b39411177b223c6398cd0b9fe0025a983654b419197d35358",
+  "successful_build_log_sha256": "6ccfbed26549111aeda6fe1c60c08b46b89241ed908b01450ba52cb67d5447ef",
+  "permitted_facts": {
+    "Lean1090.Proofs.Binary64Dyadic.exponent_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Dyadic.scaled_eq_nat": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Dyadic.nearestEven_nat": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.Binary64Dyadic.round_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_review": [
+    "Exponent lemma uses the canonical denominator power and Nat.log2 lower bound to exclude the candidate decrement.",
+    "Scaling lemma rewrites rational absolute value and powers of two, with an explicit nonnegative integer exponent.",
+    "Round lemma handles zero, bounds numerator log2 and the clamped quantum, proves the scaled value is an integer and restores the original sign.",
+    "The statements quantify over all Rat values with explicit arithmetic hypotheses; no decoder, corpus, Float primitive or additional axiom appears."
+  ],
+  "failed_attempt_preserved": true,
+  "additional_build_run": false
+}

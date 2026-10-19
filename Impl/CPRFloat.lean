@@ -19,7 +19,7 @@ open Lean1090.Spec.CPR Lean1090.Spec.CPR.Policy
 /-- Rust f64 finite representation: round an exact rational once, then
 construct its binary64 bits. This avoids first rounding numerator/denominator
 separately. Overflow is represented by signed infinity. -/
-def toFloat (value : Rat) : Float :=
+def toFloatFallback (value : Rat) : Float :=
   let rounded := Binary64.round value
   let sign := if rounded < 0 then 2^63 else 0
   let magnitude := rounded.abs
@@ -31,6 +31,29 @@ def toFloat (value : Rat) : Float :=
     else sign + (exponent + 1023).toNat * 2^52 +
       (magnitude / Binary64.powerTwo (exponent - 52)).floor.toNat - 2^52
   Float.ofBits bits.toUInt64
+
+/-- Exact bit assembly for the nonzero dyadic inputs admitted by `toFloat`.
+The helper is total; its equality proof uses the caller's explicit bounds. -/
+@[inline] def smallDyadicBits (negative : Bool) (numerator denominatorExponent : Nat) : Nat :=
+  let high := numerator.log2
+  let exponent := (high : Int) - (denominatorExponent : Int)
+  let sign := if negative then 2^63 else 0
+  if exponent < -1022 then
+    sign + (numerator <<< (1074 - denominatorExponent))
+  else sign + (exponent + 1023).toNat * 2^52 +
+    (numerator <<< (52 - high)) - 2^52
+
+/-- Pack already representable small dyadics using exact integer arithmetic.
+Zero retains positive zero. Every input outside the explicit guard uses the
+original total software-binary64 conversion, including its underflow behavior. -/
+def toFloat (value : Rat) : Float :=
+  if value.num == 0 then Float.ofBits 0 else
+  let numerator := value.num.natAbs
+  let denominatorExponent := value.den.log2
+  if numerator < 2^53 ∧ denominatorExponent ≤ 1074 ∧
+      value.den = 1 <<< denominatorExponent then
+    Float.ofBits (smallDyadicBits (decide (value.num < 0)) numerator denominatorExponent).toUInt64
+  else toFloatFallback value
 
 /-- rs1090 cpr.rs `haversine`: same f64 operation order, Earth radius6371km,
 degree-to-radian conversion, sin/cos, sqrt and atan2. This step is tested only. -/

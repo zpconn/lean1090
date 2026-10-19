@@ -1,0 +1,29 @@
+{
+  "status": "passed_read_only_source_review",
+  "reviewed_at_utc": "2026-10-19T18:01:15.708433+00:00",
+  "bindings": {
+    "tests/evidence/optimization/gen18/integration/run_build.py": "1049b79988024f80542c78f1262b290c41782c06ec2c8bd82682f5c006408880",
+    "tests/evidence/optimization/gen18/run_full_gate.py": "356d97e8c62a2b7cacfbd70887bc9c988c08df2dbde85aae6fadf198e4537fb9",
+    "tests/evidence/optimization/gen18/benchmark-preparation/prepare.py": "31aba92c4178902dcc1ce35ed640a0186d05ddcd5185f3afd7f08cd2d6055256",
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac",
+    "review/diagnostics/archive_generation_benchmark_target.py": "d5fd187fcab621b849303687f1f16bf6eca632ef66eb92b56f1ca6f2ee6b5e72",
+    "tests/evidence/optimization/dual-target-reporting/independent-review.json": "3ed2081e864a2fd55e34bd8a799a84587873f295baed828585b2ebc291affb4b",
+    "scripts/check_all.sh": "5f155f2d9fa1563d829a7e65313b3475da9ed99a07cffbdd0390e61b5de91966",
+    "bench/interleave.py": "b9b0bd460e0322427f080ec09d1f982d68c39325713e9279d4e84d12a196af7b",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "bench/results.csv": "3d7e0460eab8ed6a4bea1daac3c553fa7a5eb38cbf4c79cbceeb461ee36256e1"
+  },
+  "findings": [],
+  "checks": [
+    "Integration builds exactly Decoder, CPRTracking, CLI, generator, direct Comm-B executable and frozen worker; four assigned source snapshots and full tracked/frozen gate inventory are captured before/after, with successful status requiring equality and exit 0.",
+    "Full-gate script path is gen18/run_full_gate.py (not integration/run_full_gate.py). It invokes unchanged scripts/check_all.sh --full; the gate maps --full to 10,000,000 generated messages. Before/after inventories and exact log SHA are retained.",
+    "Inventory helper rejects new unstaged correctness inputs; new modules must be staged before integration/gate capture.",
+    "Benchmark preparation requires pending fresh and fixed verification status passed before any plan/results snapshot write. Current CSV has exactly the 36 ordered generation0\u201317 mode rows. Existing generation18 archive/report/plan destinations reject.",
+    "Exact reviewed dual-mode archiver and review hashes match. Both targets are numerator2/denominator1, evaluated independently by integer median cross multiplication; no averaging, timer adjustment or speculative measurement.",
+    "Frozen interleaver hash matches spec.lock. Existing benchmark runner verifies passed gate source/log binding, clean source, fresh production build, CPU0 affinity and both frozen modes; archiver validates 48 original files/raw samples before copying and preserving the prior CSV prefix."
+  ],
+  "limits": [
+    "Static preparation review only: none of these scripts was executed, no build/gate/benchmark was launched, and future fresh/gate/native source associations still require the planned executed verification.",
+    "Central Binary64Dyadic mathematical proof was authored by this reviewer and is excluded from any claim of independent proof assessment."
+  ]
+}

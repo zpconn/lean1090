@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "recorded_utc": "2026-10-19T18:05:21.786949+00:00",
+  "source_before": {
+    "review/diagnostics/cleanup_verified_scratch.py": "72320c1c2032a2e9202dce8390142918497f587910315bb95082fad2f35a4f25",
+    "review/diagnostics/test_cleanup_verified_scratch.py": "44c697a9c71e46d05f6e101f01d02fe85da8af6531e125c3737847074a372ca2",
+    "review/diagnostics/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963"
+  },
+  "source_after": {
+    "review/diagnostics/cleanup_verified_scratch.py": "cb115045f0743cce197d1d9af1d66678dd76a9a96b1babb5eca4d3d519dc31ce",
+    "review/diagnostics/test_cleanup_verified_scratch.py": "aead73253730d405073567601fb874fa02080f5d795f7f6db24337d695e9598d",
+    "review/diagnostics/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963"
+  },
+  "command": [
+    "python3",
+    "review/diagnostics/test_cleanup_verified_scratch.py"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_code": 0,
+  "tests": 31,
+  "tests_log_sha256": "ad4a7b49d7a28f7e2021bb5c79acf7fce433fbf71f4bfbf9df3ecab63705c1c5",
+  "new_tests": 6,
+  "change": "Only seal_for archive-root recognition accepts exact genN/fresh/fresh-message alongside original genN/fresh-message; both bind sibling fresh-retained-hashes.json.",
+  "safety_checks": [
+    "Old-path dry-run/apply and all prior 25 cases retained.",
+    "Nested dry-run leaves bytes intact; nested apply requires durable verification receipt and leaves archive/seal bytes intact.",
+    "Eight malformed nearby roots rejected; missing own sibling seal rejects despite an outer seal.",
+    "Failed seal and extra archive member reject; seal mutation after durable receipt blocks unlink."
+  ],
+  "all_190_active_gate_inputs_unchanged": true,
+  "finish_generation_gate_unchanged": true,
+  "no_live_cleanup_executed": true,
+  "requires_independent_review_before_cleanup": true,
+  "files": {
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/tests-01.log": "ad4a7b49d7a28f7e2021bb5c79acf7fce433fbf71f4bfbf9df3ecab63705c1c5",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/cleanup_verified_scratch.diff": "5ea9b00a34d142dbf90fe20f34c99c4ff6dde05f125582b94cf730ddcdf7e09b",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/test_cleanup_verified_scratch.diff": "ceb3d44feea49c377e461ae3b7f66c1d082781a47b0b2a3c533f322b07d79ec4",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before.json": "4c885e4519f8b87b8a39026febbc9451f0e5e2a9057c96e18f35936d6ce8ab06",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/test_cleanup_verified_scratch.py": "44c697a9c71e46d05f6e101f01d02fe85da8af6531e125c3737847074a372ca2",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/cleanup_verified_scratch.py": "72320c1c2032a2e9202dce8390142918497f587910315bb95082fad2f35a4f25",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/test_cleanup_verified_scratch.py": "aead73253730d405073567601fb874fa02080f5d795f7f6db24337d695e9598d",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/cleanup_verified_scratch.py": "cb115045f0743cce197d1d9af1d66678dd76a9a96b1babb5eca4d3d519dc31ce",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963"
+  }
+}

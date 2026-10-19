@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "recorded_utc": "2026-10-19T18:01:05.702029+00:00",
+  "sources": {
+    "Proofs/CPRFloatFast.lean": "86a9b4d0d86752ed8032870a907aa0dd1dca9b642a4ea23a09c51266bf3e178e",
+    "Proofs/CPRTracking.lean": "668ca875ff0a427b2b8b2f71a394f72e4373ae9f68bcd56995f8b8090f8f2aae",
+    "Proofs/Binary64Dyadic.lean": "916bdfabcd69af7a85431ba82bc8fd0ca23ccb75dbf21934b526ec17b5aa3451",
+    "Impl/CPRFloat.lean": "d97d975cad3056e52c1c007d71c6063458a2aecc0fc9b53fd6de8992bf093a31"
+  },
+  "before_tracking_sha256": "2903483dab726d4ea5f8e5cb3e8fd58018a3968b5a051c2bfbb3d825ba5a9dd7",
+  "attempts": [
+    {
+      "path": "attempt-01/result.json",
+      "sha256": "a52ef3f6d173cab4778b5b47266186cc9fb551d680881d3174580525a01a5f8f",
+      "status": "failed",
+      "reason": "Absolute-value nonzero fact needed direct positivity proof; second split needed let reduction. Failed source and log retained."
+    },
+    {
+      "path": "attempt-02/result.json",
+      "sha256": "91abaf1a67b2d2f21a0ea9b6c945770bdf4202b8c58dd80687c286263622e7a2",
+      "status": "passed"
+    }
+  ],
+  "build_log_sha256": "d9a0495ade843471f521e2e74345a50b6be004b1fb58f85eee88f3217f73cc96",
+  "target": "Proofs.CPRTracking",
+  "jobs": 2048,
+  "packing_printed_facts": 10,
+  "tracking_printed_facts": 10,
+  "all_printed_axioms_permitted": true,
+  "theorems": [
+    "Lean1090.Proofs.CPRFloatFast.fallback_eq",
+    "Lean1090.Proofs.CPRFloatFast.smallDyadic_eq",
+    "Lean1090.Proofs.CPRFloatFast.toFloat_eq",
+    "Lean1090.Proofs.CPRFloatFast.toFloat_function_eq"
+  ],
+  "public_refinement_domain": "Every Rat, no added hypothesis; exact Float.ofBits argument equality and unchanged total fallback.",
+  "witnesses": [
+    "positive zero",
+    "both signs at minimum subnormal",
+    "both signs at largest subnormal and minimum normal",
+    "both signs at largest admitted numerator",
+    "numerator, denominator and nondyadic guard rejections",
+    "positive and negative half-quantum ties to zero and three-quarter-quantum rounding"
+  ],
+  "limitations": [
+    "The guarded helper assumes its explicit dyadic bounds; the final public theorem is unconditional.",
+    "No real-number semantics for opaque Float arithmetic asserted."
+  ],
+  "all_lake_jobs_stopped": true
+}

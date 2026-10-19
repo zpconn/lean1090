@@ -1,0 +1,49 @@
+{
+  "status": "passed_read_only_probe_review",
+  "recorded_utc": "2026-10-19T18:06:51.015366+00:00",
+  "script_sha256": "61d247409d985c2bff56faf75f0cddbed453513d62d8b3da92f14740938aef15",
+  "bindings": {
+    "tests/evidence/optimization/gen18/runtime-review/probe/completion.json": "5cabef2f7921c57b5ebb12042d35b4f119e5801f29f37a4dfb0e3f4717fe95e8",
+    "tests/evidence/optimization/gen18/runtime-review/probe/inputs.json": "aa6b58ca8b88712ce23af91b2a2b84116e77b84792270b057532ca94203dc9b4",
+    "tests/evidence/optimization/gen18/runtime-review/probe/seed.json": "08de8e91a32a86b6560c98d75a1beda8d64e51fafc05349dad6c1a3b324b44e5",
+    "tests/evidence/optimization/gen18/runtime-review/probe/prepare_inputs.py": "d671ba17a6786094fe413f78f5f5e583ed46363d3f064a271317b34070bee2f3",
+    "tests/evidence/optimization/gen18/runtime-review/probe/inputs.tsv.gz": "310fe4e34f58666f2721b0711907de1d7730a0035c3aed307bb2e8526b2405ad",
+    "tests/evidence/optimization/gen18/runtime-review/probe/attempt-01/execution.json": "112183c3f4d8637ea4295b68180b5620402bea00df60ffea098a7278d1253f87",
+    "tests/evidence/optimization/gen18/runtime-review/probe/attempt-01/stdout.log": "f4ba719e9aee79713199bf310e954d97c09a0334776e8c9430753b74643bf06f",
+    "review/diagnostics/Gen18FloatProbe.lean": "b588396a5341b76316b150d61715062acbf8c90968c5bcab4e1825be3f206b8e"
+  },
+  "cases": 33174,
+  "finite_checks": 32756,
+  "branches": {
+    "zero": 28,
+    "fast": 17388,
+    "fallback": 15758
+  },
+  "classes": {
+    "exponent-boundary": 24564,
+    "seeded-finite": 8192,
+    "dyadic-boundary": 338,
+    "nondyadic-or-wide": 80
+  },
+  "independently_recomputed_output_fnv1a64": 9982493918657592758,
+  "all_finite_exponent_sign_endpoint_combinations": 24564,
+  "seeded_finite_patterns_replayed": 8192,
+  "held_inputs_rehashed": 194,
+  "reviewer_attempts": [
+    {
+      "log": "probe-review-01.log",
+      "status": "failed_reviewer_stdout_schema",
+      "reason": "Lean emitted two constructor-name linter warnings before the JSON record; prior checker incorrectly parsed entire stdout as JSON."
+    },
+    {
+      "log": "probe-review-02.log",
+      "status": "passed"
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Recorded Lean --run probe compares live toFloat against its original fallback; this review does not rerun either decoder.",
+    "Python Fraction-to-float conversion independently reproduced the full recorded aggregate output digest, with rational zero canonicalized to positive zero. This is supplemental test evidence, not a replacement for the kernel theorem.",
+    "No corpus fast-path hit rate or timing inference."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewed_utc": "2026-10-19T18:09:10.949632+00:00",
+  "bindings": {
+    "tests/evidence/optimization/gen18/independent-review/check_cleanup_tooling.py": "7a0bd29791ef6c457c01575928325ca6ed1784a550a06fe92331bc47c94c93f1",
+    "tests/evidence/optimization/gen18/independent-review/cleanup-tests-01.log": "250c04909e83cf14ff680b921979008e842f551bbe31c569ca073e93eab5a329",
+    "tests/evidence/optimization/gen18/integration/targeted-build.json": "a4f3ddba1bced3edac6b70cfcd7be9be37a3b49f0cd4f59b64a94968b1efada3",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/validation.json": "1092454642cc59ccc7bdc9e1bf60ad2e37bedc135e4b08be9bf90ebff290ea5e",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/cleanup_verified_scratch.diff": "5ea9b00a34d142dbf90fe20f34c99c4ff6dde05f125582b94cf730ddcdf7e09b",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/test_cleanup_verified_scratch.diff": "ceb3d44feea49c377e461ae3b7f66c1d082781a47b0b2a3c533f322b07d79ec4",
+    "review/diagnostics/cleanup_verified_scratch.py": "cb115045f0743cce197d1d9af1d66678dd76a9a96b1babb5eca4d3d519dc31ce",
+    "review/diagnostics/test_cleanup_verified_scratch.py": "aead73253730d405073567601fb874fa02080f5d795f7f6db24337d695e9598d",
+    "review/diagnostics/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963"
+  },
+  "producer_evidence_hashes_verified": {
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/tests-01.log": "ad4a7b49d7a28f7e2021bb5c79acf7fce433fbf71f4bfbf9df3ecab63705c1c5",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/cleanup_verified_scratch.diff": "5ea9b00a34d142dbf90fe20f34c99c4ff6dde05f125582b94cf730ddcdf7e09b",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/test_cleanup_verified_scratch.diff": "ceb3d44feea49c377e461ae3b7f66c1d082781a47b0b2a3c533f322b07d79ec4",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before.json": "4c885e4519f8b87b8a39026febbc9451f0e5e2a9057c96e18f35936d6ce8ab06",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/test_cleanup_verified_scratch.py": "44c697a9c71e46d05f6e101f01d02fe85da8af6531e125c3737847074a372ca2",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/cleanup_verified_scratch.py": "72320c1c2032a2e9202dce8390142918497f587910315bb95082fad2f35a4f25",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/before/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/test_cleanup_verified_scratch.py": "aead73253730d405073567601fb874fa02080f5d795f7f6db24337d695e9598d",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/cleanup_verified_scratch.py": "cb115045f0743cce197d1d9af1d66678dd76a9a96b1babb5eca4d3d519dc31ce",
+    "tests/evidence/optimization/gen18/fresh/cleanup-tooling/after/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963"
+  },
+  "independently_reexecuted_isolated_tests": 31,
+  "command": [
+    "python3",
+    "-B",
+    "review/diagnostics/test_cleanup_verified_scratch.py"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "all_190_gate_inputs_unchanged": true,
+  "no_live_cleanup": true,
+  "assessment": [
+    "The sole helper change admits exact genN/fresh/fresh-message beside the original genN/fresh-message shape, with positive nonzero generation syntax.",
+    "Both forms use their own sibling fresh-retained-hashes.json; a parent seal cannot authorize the nested root.",
+    "All existing safety code is byte-identical: complete direct membership, gzip EOF/size/SHA, regular-file and alias protections, explicit quiescence/protection, durable pre-unlink receipts and exact identity rechecks.",
+    "All prior test method ASTs are unchanged; six new tests cover positive dry-run/apply, eight malformed paths, missing/failed/changed seals and extra unsealed members.",
+    "finish_generation_gate.py is unchanged. Quiescence remains a caller precondition; this helper does not claim active-process detection."
+  ]
+}

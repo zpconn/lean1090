@@ -43,7 +43,14 @@ All samples and provenance are in `bench/runs/gen17/`, with the report in
 `bench/GEN17.md`. Both 2.00× targets remain unmet. Generation 17 is the immutable
 exact `Binary64.powerTwo` format-exponent table with unrestricted formula
 fallback. Its proofs, full fixed gate, fresh 10M campaign and final gate review
-passed. Fresh decode and CPR diagnostics must precede selection of generation 18.
+passed. Fresh decode and CPR diagnostics, independent reviews and bounded
+cleanup also passed. Generation 18 is now the exact small-dyadic integer
+bit-packing path for `Impl.CPR.Policy.toFloat`, with its original total
+conversion retained as fallback. Its all-input proof and CPR integration pass
+their targeted builds. The combined build and full fixed and fresh 10M
+validation passed. Evidence archival, verified scratch cleanup and final
+independent review passed. Source commit and isolated measurement are next;
+no generation 18 speedup is claimed.
 Keep all existing frozen-file, proof, full-gate,
 isolated benchmark and disk-retention requirements. `PROGRESS.md` records
 current work and review results.

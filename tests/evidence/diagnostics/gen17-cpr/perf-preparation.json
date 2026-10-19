@@ -1,0 +1,31 @@
+{
+  "status": "prepared_not_executed",
+  "template": "tests/evidence/diagnostics/gen16-cpr/run_isolated_perf.py",
+  "template_sha256": "ddc094e7da45e4abb548251ba1362c7412a886f3fe8c37cc5f80dbdbe8629f9e",
+  "script": "tests/evidence/diagnostics/gen17-cpr/run_isolated_perf.py",
+  "script_sha256": "28f90a718614cd9e98d513877f241d9ff55058be1a54dbd41f8f533e10b8c996",
+  "timed_commit": "0f7882f3f949118c6871a40bc012bb8a957a6a3d",
+  "artifact_commit": "9d441eb3bdbaa17adbb289c3d82afe20307ad28b",
+  "worker_sha256": "04b075aff3a04861d9cdb0e8d7388fe43a9fdfc0dc3a317de6a4525edb213a13",
+  "driver_manifests": {
+    ".cache/gen17-costs/driver/driver-build.json": "1c577fe62bd53d24c35899f8b00f44c9d7fb8202aa7bde78b240cbac1726a426",
+    ".cache/gen17-cpr-costs/driver-final/driver-build.json": "b00b4a2f5365e0fb9a40e24efb542acef020103aebfbef4080a0e82283d8f598"
+  },
+  "binding_sha256": "335a28a7794dc047a765508d9150b8f8709a5b8834717224f7079a333c4fc57d",
+  "benchmark_review_sha256": "8c81102ff81069b4e4989f665520db9ce1a4ac90d775b2dbd3d45aad4b00a8d2",
+  "correctness_input_count": 188,
+  "sequence": [
+    "decode",
+    "cpr"
+  ],
+  "method": "One actual frozen-worker run/quit pass per mode; CPU0, cpu-clock:u199Hz, DWARF16384. Durations remain raw diagnostic output and are not benchmark results. All other builds/native/profiles/review I/O must be stopped by root before launch.",
+  "changes_from_reviewed_template": [
+    "Generation paths and actual fresh commit/worker/driver/binding hashes.",
+    "Explicit passed independent benchmark review and all188 correctness inputs.",
+    "Union includes both diagnostic artifact/native manifest inputs; no overwrite of perf destinations.",
+    "Bytecode suppression and optional Git locks disabled from startup."
+  ],
+  "syntax_validation": "ast.parse only; no capture or decoder invocation",
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/diagnostics/gen17-cpr/run_isolated_perf.py",
+  "release": "Prepared for root; do not execute before explicit isolated-perf release."
+}

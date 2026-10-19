@@ -1,0 +1,13 @@
+fatal: path 'tests/evidence/diagnostics/gen17/independent-review/independent-review.json' exists on disk, but not in 'HEAD'
+Traceback (most recent call last):
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen18/independent-review/check_gate.py", line 298, in <module>
+    main()
+  File "/home/zpconn/code/lean1090/tests/evidence/optimization/gen18/independent-review/check_gate.py", line 223, in main
+    assert hashlib.sha256(subprocess.check_output(['git', 'show', 'HEAD:' + name])).hexdigest() == digest
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'show', 'HEAD:tests/evidence/diagnostics/gen17/independent-review/independent-review.json']' returned non-zero exit status 128.

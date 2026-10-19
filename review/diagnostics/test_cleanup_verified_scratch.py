@@ -151,6 +151,81 @@ class CleanupSafety(unittest.TestCase):
         self.seal(fresh=True)
         self.assertEqual(self.run_cleanup()['results'][0]['status'], 'would_delete')
 
+    def nested_fresh_archive(self):
+        self.archive = self.root / 'tests/evidence/optimization/gen18/fresh/fresh-message'
+        write(self.archive / 'input.hex.gz', gzip.compress(self.raw, mtime=0))
+        self.seal(fresh=True)
+
+    def test_nested_fresh_dry_run_keeps_every_byte(self):
+        self.nested_fresh_archive()
+        result = self.run_cleanup()
+        self.assertEqual(result['results'][0]['status'], 'would_delete')
+        self.assertEqual((self.scratch / 'input.hex').read_bytes(), self.raw)
+        self.assertEqual(result['deleted_allocated_bytes'], 0)
+
+    def test_nested_fresh_apply_is_durable_and_archive_immutable(self):
+        self.nested_fresh_archive()
+        paths = list(self.archive.iterdir()) + [self.archive.parent / 'fresh-retained-hashes.json']
+        before = {p: p.read_bytes() for p in paths}
+        original = Path.unlink
+        def guarded_unlink(path, *args, **kwargs):
+            self.assertTrue((self.receipt / (self.scratch.name + '.verified.json')).is_file())
+            self.assertEqual({p: p.read_bytes() for p in paths}, before)
+            return original(path, *args, **kwargs)
+        with patch.object(Path, 'unlink', guarded_unlink):
+            result = self.run_cleanup(True)
+        self.assertEqual(result['results'][0]['status'], 'deleted')
+        self.assertFalse(self.scratch.exists())
+        self.assertEqual({p: p.read_bytes() for p in paths}, before)
+
+    def test_nested_fresh_nearby_root_shapes_rejected(self):
+        variants = ['gen18/fresh', 'gen18/fresh-message/child',
+                    'gen18/other/fresh-message', 'gen18/fresh/fresh-message/child',
+                    'gen18/fresh/fresh/fresh-message', 'gen0/fresh/fresh-message',
+                    'gen018/fresh/fresh-message', 'gen-18/fresh/fresh-message']
+        for name in variants:
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                tool.seal_for(self.root / 'tests/evidence/optimization' / name)
+        self.assertEqual((self.scratch / 'input.hex').read_bytes(), self.raw)
+
+    def test_nested_fresh_requires_own_sibling_seal(self):
+        self.nested_fresh_archive()
+        own = self.archive.parent / 'fresh-retained-hashes.json'
+        wrong = self.archive.parent.parent / 'fresh-retained-hashes.json'
+        write(wrong, own.read_bytes())
+        own.unlink()
+        with self.assertRaises(FileNotFoundError):
+            self.run_cleanup(True)
+        self.assertTrue(self.scratch.exists())
+        self.assertFalse(self.receipt.exists())
+
+    def test_nested_fresh_failed_or_extra_member_seal_rejected(self):
+        self.nested_fresh_archive()
+        p = self.archive.parent / 'fresh-retained-hashes.json'
+        data = json.loads(p.read_text())
+        data['status'] = 'failed'
+        p.write_text(json.dumps(data))
+        with self.assertRaises(ValueError):
+            self.run_cleanup(True)
+        data['status'] = 'passed'
+        p.write_text(json.dumps(data))
+        write(self.archive / 'unsealed.log', b'unknown')
+        with self.assertRaises(ValueError):
+            self.run_cleanup(True)
+        self.assertTrue(self.scratch.exists())
+        self.assertFalse(self.receipt.exists())
+
+    def test_nested_fresh_seal_mutation_after_receipt_prevents_unlink(self):
+        self.nested_fresh_archive()
+        original = tool.durable
+        def change(path, data):
+            original(path, data)
+            if path.name.endswith('.verified.json'):
+                write(self.archive.parent / 'fresh-retained-hashes.json', b'changed')
+        with patch.object(tool, 'durable', change):
+            self.assertEqual(self.run_cleanup(True)['results'][0]['status'], 'retained_or_interrupted')
+        self.assertTrue(self.scratch.exists())
+
     def test_all_supported_small_strata_without_compressed_summary_hash(self):
         for i, (prefix, component) in enumerate((('altitude-exhaustive', 'altitude'),
                 ('reserved-velocity', 'reserved_velocity'), ('dte-exhaustive', 'dte'), ('cpr-synthetic', 'cpr'))):

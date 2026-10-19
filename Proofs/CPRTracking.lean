@@ -3,6 +3,7 @@ import Spec.CPRFloat
 import Impl.CPRPolicy
 import Impl.CPRFloat
 import Proofs.Binary64Runtime
+import Proofs.CPRFloatFast
 
 /-! Runtime CPR policy refinement through the exact binary64 arithmetic bridge.
 The numerical geography is an explicit argument on both sides, as required
@@ -67,10 +68,8 @@ theorem cprGlobalRefinement (even odd : Spec.CPR.Encoded) (latestOdd : Bool) :
     Impl.CPR.decodeGlobal even odd latestOdd = Spec.CPR.decodeGlobal even odd latestOdd := rfl
 
 /-- All rational inputs produce the same specified Float program result. -/
-theorem cprToFloatRefinement : @Impl.CPR.Policy.toFloat = @Spec.CPR.Policy.toFloat := by
-  unfold Impl.CPR.Policy.toFloat Spec.CPR.Policy.toFloat
-  simp only [Binary64Runtime.round_function_eq, Binary64Runtime.exponent_function_eq,
-    Binary64Runtime.powerTwo_function_eq]
+theorem cprToFloatRefinement : @Impl.CPR.Policy.toFloat = @Spec.CPR.Policy.toFloat :=
+  CPRFloatFast.toFloat_function_eq
 
 /-- Finite, infinite and NaN distance interpretations are all preserved. -/
 theorem cprDistanceFromFloatRefinement :

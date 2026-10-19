@@ -1,0 +1,148 @@
+464: LEAN_EXPORT double lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat(lean_object* v_value_97_){
+465: _start:
+466: {
+467: lean_object* v___y_99_; lean_object* v_num_102_; lean_object* v_den_103_; lean_object* v___x_104_; lean_object* v___x_105_; uint8_t v___x_106_; 
+468: v_num_102_ = lean_ctor_get(v_value_97_, 0);
+469: v_den_103_ = lean_ctor_get(v_value_97_, 1);
+470: v___x_104_ = lean_unsigned_to_nat(0u);
+471: v___x_105_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__0, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__0_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__0);
+472: v___x_106_ = lean_int_dec_eq(v_num_102_, v___x_105_);
+473: if (v___x_106_ == 0)
+474: {
+475: lean_object* v_numerator_107_; lean_object* v___x_108_; uint8_t v___x_109_; 
+476: v_numerator_107_ = lean_nat_abs(v_num_102_);
+477: v___x_108_ = lean_cstr_to_nat("9007199254740992");
+478: v___x_109_ = lean_nat_dec_lt(v_numerator_107_, v___x_108_);
+479: if (v___x_109_ == 0)
+480: {
+481: double v___x_110_; 
+482: lean_dec(v_numerator_107_);
+483: v___x_110_ = lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback(v_value_97_);
+484: return v___x_110_;
+485: }
+486: else
+487: {
+488: lean_object* v_denominatorExponent_111_; lean_object* v___x_112_; uint8_t v___x_113_; 
+489: v_denominatorExponent_111_ = lean_nat_log2(v_den_103_);
+490: v___x_112_ = lean_unsigned_to_nat(1074u);
+491: v___x_113_ = lean_nat_dec_le(v_denominatorExponent_111_, v___x_112_);
+492: if (v___x_113_ == 0)
+493: {
+494: double v___x_114_; 
+495: lean_dec(v_denominatorExponent_111_);
+496: lean_dec(v_numerator_107_);
+497: v___x_114_ = lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback(v_value_97_);
+498: return v___x_114_;
+499: }
+500: else
+501: {
+502: lean_object* v___x_115_; lean_object* v___x_116_; uint8_t v___x_117_; 
+503: v___x_115_ = lean_unsigned_to_nat(1u);
+504: v___x_116_ = lean_nat_shiftl(v___x_115_, v_denominatorExponent_111_);
+505: v___x_117_ = lean_nat_dec_eq(v_den_103_, v___x_116_);
+506: lean_dec(v___x_116_);
+507: if (v___x_117_ == 0)
+508: {
+509: double v___x_118_; 
+510: lean_dec(v_denominatorExponent_111_);
+511: lean_dec(v_numerator_107_);
+512: v___x_118_ = lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback(v_value_97_);
+513: return v___x_118_;
+514: }
+515: else
+516: {
+517: uint8_t v___x_119_; lean_object* v_high_120_; lean_object* v___x_121_; lean_object* v___x_122_; lean_object* v_exponent_123_; lean_object* v___y_125_; 
+518: lean_inc(v_num_102_);
+519: lean_dec_ref(v_value_97_);
+520: v___x_119_ = lean_int_dec_lt(v_num_102_, v___x_105_);
+521: lean_dec(v_num_102_);
+522: v_high_120_ = lean_nat_log2(v_numerator_107_);
+523: lean_inc(v_high_120_);
+524: v___x_121_ = lean_nat_to_int(v_high_120_);
+525: lean_inc(v_denominatorExponent_111_);
+526: v___x_122_ = lean_nat_to_int(v_denominatorExponent_111_);
+527: v_exponent_123_ = lean_int_sub(v___x_121_, v___x_122_);
+528: lean_dec(v___x_122_);
+529: lean_dec(v___x_121_);
+530: if (v___x_119_ == 0)
+531: {
+532: v___y_125_ = v___x_104_;
+533: goto v___jp_124_;
+534: }
+535: else
+536: {
+537: lean_object* v___x_142_; 
+538: v___x_142_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8);
+539: v___y_125_ = v___x_142_;
+540: goto v___jp_124_;
+541: }
+542: v___jp_124_:
+543: {
+544: lean_object* v___x_126_; uint8_t v___x_127_; 
+545: v___x_126_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3);
+546: v___x_127_ = lean_int_dec_lt(v_exponent_123_, v___x_126_);
+547: if (v___x_127_ == 0)
+548: {
+549: lean_object* v___x_128_; lean_object* v___x_129_; lean_object* v___x_130_; lean_object* v___x_131_; lean_object* v___x_132_; lean_object* v___x_133_; lean_object* v___x_134_; lean_object* v___x_135_; lean_object* v___x_136_; lean_object* v___x_137_; lean_object* v___x_138_; 
+550: lean_dec(v_denominatorExponent_111_);
+551: v___x_128_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1);
+552: v___x_129_ = lean_int_add(v_exponent_123_, v___x_128_);
+553: lean_dec(v_exponent_123_);
+554: v___x_130_ = l_Int_toNat(v___x_129_);
+555: lean_dec(v___x_129_);
+556: v___x_131_ = lean_unsigned_to_nat(52u);
+557: v___x_132_ = lean_cstr_to_nat("4503599627370496");
+558: v___x_133_ = lean_nat_mul(v___x_130_, v___x_132_);
+559: lean_dec(v___x_130_);
+560: v___x_134_ = lean_nat_add(v___y_125_, v___x_133_);
+561: lean_dec(v___x_133_);
+562: v___x_135_ = lean_nat_sub(v___x_131_, v_high_120_);
+563: lean_dec(v_high_120_);
+564: v___x_136_ = lean_nat_shiftl(v_numerator_107_, v___x_135_);
+565: lean_dec(v___x_135_);
+566: lean_dec(v_numerator_107_);
+567: v___x_137_ = lean_nat_add(v___x_134_, v___x_136_);
+568: lean_dec(v___x_136_);
+569: lean_dec(v___x_134_);
+570: v___x_138_ = lean_nat_sub(v___x_137_, v___x_132_);
+571: lean_dec(v___x_137_);
+572: v___y_99_ = v___x_138_;
+573: goto v___jp_98_;
+574: }
+575: else
+576: {
+577: lean_object* v___x_139_; lean_object* v___x_140_; lean_object* v___x_141_; 
+578: lean_dec(v_exponent_123_);
+579: lean_dec(v_high_120_);
+580: v___x_139_ = lean_nat_sub(v___x_112_, v_denominatorExponent_111_);
+581: lean_dec(v_denominatorExponent_111_);
+582: v___x_140_ = lean_nat_shiftl(v_numerator_107_, v___x_139_);
+583: lean_dec(v___x_139_);
+584: lean_dec(v_numerator_107_);
+585: v___x_141_ = lean_nat_add(v___y_125_, v___x_140_);
+586: lean_dec(v___x_140_);
+587: v___y_99_ = v___x_141_;
+588: goto v___jp_98_;
+589: }
+590: }
+591: }
+592: }
+593: }
+594: }
+595: else
+596: {
+597: double v___x_143_; 
+598: lean_dec_ref(v_value_97_);
+599: v___x_143_ = lean_float_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__1, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__1_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloat___closed__1);
+600: return v___x_143_;
+601: }
+602: v___jp_98_:
+603: {
+604: uint64_t v___x_100_; double v___x_101_; 
+605: v___x_100_ = lean_uint64_of_nat(v___y_99_);
+606: lean_dec(v___y_99_);
+607: v___x_101_ = lean_float_of_bits(v___x_100_);
+608: return v___x_101_;
+609: }
+610: }
+611: }
