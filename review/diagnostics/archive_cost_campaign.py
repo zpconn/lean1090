@@ -103,7 +103,8 @@ def main():
                 archive(trace, Path("build-traces") / trace.relative_to(".lake/build/ir"))
     for name in ["DecodeCosts.lean", "build_decode_costs.py", "profile_decode_costs.py",
                  "run_cost_campaign.py", "run_native_df.py", "analyze_callgrind.py",
-                 "write_cost_report.py", "archive_cost_campaign.py"]:
+                 "write_cost_report.py", "archive_cost_campaign.py", "bind_benchmark_history.py",
+                 "run_generation_benchmark.py"]:
         archive(Path("review/diagnostics") / name, Path("tooling") / name)
     archive(Path(".cache/profiling-tools/packages.json"), "profiling-tools/packages.json")
     archive(Path(".cache/profiling-tools/bin/valgrind"), "profiling-tools/valgrind-wrapper")

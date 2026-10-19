@@ -14,13 +14,17 @@ The user accepted generation 10's measured result and explicitly authorized
 committing all project work, tidying documentation and presentation, and the
 first push to a **private** GitHub repository. This supersedes the earlier
 review pause and GOAL.md's public-repository/first-push approval requirement.
-Do not ask for that approval again. No additional optimization, frozen-file
-change or trusted primitive is authorized by the publication task.
+Do not ask for that approval again. The subsequent user instruction authorizes
+continued optimization toward **1.50× rs1090 headline decode throughput** and
+pushing verified generations to the same private repository. Stop for review
+when that target is reached. No frozen-file change or trusted primitive is
+authorized.
 
 The private repository is `https://github.com/zpconn/lean1090`, default branch
 `main`. The verified source/presentation commit `f9a53b6` has been pushed;
 `PROGRESS.md` and `tests/evidence/publication/` record final validation.
-Publication is complete; wait for a new task before further implementation.
+Publication is complete; the new optimization task starts from commit
+`95bc97d75d83190371768950e56ef7cc0825308d` and generation 10's measured code.
 
 Generation 10's verified source commit is
 `d51a3040984beb6f0f96b0f4fcf225ba2622a7e0`. Decode reached 1.168948811789×
@@ -74,7 +78,7 @@ trusted primitives. The current lock has 104 entries and SHA-256
 - At milestones and the final 10M run, run the fixed-seed gate and a separate
   whole-message campaign with freshly sampled, recorded message and Comm-B
   seeds. Preserve every finding and coverage count.
-- If optimization is authorized again, complete an untimed live-decoder cost
+- Complete an untimed live-decoder cost
   breakdown before selecting each change. Preserve software binary64 semantics;
   exact field-code tables and proved integer bounds may use the full model as
   fallback. No hardware Float primitive is authorized. Never cache corpus

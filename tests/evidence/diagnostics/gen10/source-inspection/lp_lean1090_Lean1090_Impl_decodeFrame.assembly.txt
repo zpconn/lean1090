@@ -1,0 +1,845 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b53210 <lp_lean1090_Lean1090_Impl_decodeFrame>:
+  b53210:	push   %rbp
+  b53211:	push   %r15
+  b53213:	push   %r14
+  b53215:	push   %r13
+  b53217:	push   %r12
+  b53219:	push   %rbx
+  b5321a:	sub    $0x28,%rsp
+  b5321e:	mov    %rdi,%r15
+  b53221:	call   47080a0 <l_List_head_x3f___redArg>
+  b53226:	test   $0x1,%al
+  b53228:	jne    b5323d <lp_lean1090_Lean1090_Impl_decodeFrame+0x2d>
+  b5322a:	movzbl 0x7(%rax),%ecx
+  b5322e:	mov    $0x1,%r13d
+  b53234:	test   %ecx,%ecx
+  b53236:	jne    b53251 <lp_lean1090_Lean1090_Impl_decodeFrame+0x41>
+  b53238:	jmp    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b5323d:	mov    %rax,%rcx
+  b53240:	shr    $1,%rcx
+  b53243:	mov    $0x1,%r13d
+  b53249:	test   %ecx,%ecx
+  b5324b:	je     b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b53251:	mov    0x8(%rax),%rbp
+  b53255:	mov    (%rax),%ecx
+  b53257:	mov    %ecx,0x4(%rsp)
+  b5325b:	cmp    $0x1,%ecx
+  b5325e:	jne    b53265 <lp_lean1090_Lean1090_Impl_decodeFrame+0x55>
+  b53260:	mov    %rax,%r12
+  b53263:	jmp    b53294 <lp_lean1090_Lean1090_Impl_decodeFrame+0x84>
+  b53265:	test   $0x1,%bpl
+  b53269:	jne    b5327b <lp_lean1090_Lean1090_Impl_decodeFrame+0x6b>
+  b5326b:	mov    0x0(%rbp),%ecx
+  b5326e:	test   %ecx,%ecx
+  b53270:	jle    b53c4f <lp_lean1090_Lean1090_Impl_decodeFrame+0xa3f>
+  b53276:	inc    %ecx
+  b53278:	mov    %ecx,0x0(%rbp)
+  b5327b:	mov    $0x1,%r12d
+  b53281:	test   $0x1,%al
+  b53283:	jne    b53294 <lp_lean1090_Lean1090_Impl_decodeFrame+0x84>
+  b53285:	mov    (%rax),%ecx
+  b53287:	cmp    $0x2,%ecx
+  b5328a:	jl     b53c64 <lp_lean1090_Lean1090_Impl_decodeFrame+0xa54>
+  b53290:	dec    %ecx
+  b53292:	mov    %ecx,(%rax)
+  b53294:	test   $0x1,%bpl
+  b53298:	jne    b532ab <lp_lean1090_Lean1090_Impl_decodeFrame+0x9b>
+  b5329a:	mov    0x0(%rbp),%eax
+  b5329d:	cmp    $0x2,%eax
+  b532a0:	jl     b53bea <lp_lean1090_Lean1090_Impl_decodeFrame+0x9da>
+  b532a6:	dec    %eax
+  b532a8:	mov    %eax,0x0(%rbp)
+  b532ab:	shr    $0x3,%ebp
+  b532ae:	and    $0x3e,%ebp
+  b532b1:	lea    0x1(%rbp),%rbx
+  b532b5:	mov    %rbx,%rdi
+  b532b8:	call   b52f30 <lp_lean1090_Lean1090_Impl_frameBytes>
+  b532bd:	mov    %rax,%r14
+  b532c0:	mov    %r15,%rdi
+  b532c3:	call   46f2790 <l_List_lengthTR___redArg>
+  b532c8:	test   $0x1,%al
+  b532ca:	je     b53305 <lp_lean1090_Lean1090_Impl_decodeFrame+0xf5>
+  b532cc:	test   $0x1,%r14b
+  b532d0:	je     b53336 <lp_lean1090_Lean1090_Impl_decodeFrame+0x126>
+  b532d2:	cmp    %r14,%rax
+  b532d5:	je     b53345 <lp_lean1090_Lean1090_Impl_decodeFrame+0x135>
+  b532d7:	test   $0x1,%r14b
+  b532db:	jne    b532ee <lp_lean1090_Lean1090_Impl_decodeFrame+0xde>
+  b532dd:	mov    (%r14),%eax
+  b532e0:	cmp    $0x2,%eax
+  b532e3:	jl     b53c3a <lp_lean1090_Lean1090_Impl_decodeFrame+0xa2a>
+  b532e9:	dec    %eax
+  b532eb:	mov    %eax,(%r14)
+  b532ee:	test   $0x1,%r12b
+  b532f2:	jne    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b532f8:	mov    %r12,%rdi
+  b532fb:	call   48a0c50 <lean_free_object>
+  b53300:	jmp    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b53305:	mov    %r12,0x8(%rsp)
+  b5330a:	mov    %rax,%rdi
+  b5330d:	mov    %r14,%rsi
+  b53310:	mov    %rax,%r12
+  b53313:	call   48a41c0 <lean_nat_big_eq>
+  b53318:	mov    (%r12),%ecx
+  b5331c:	cmp    $0x2,%ecx
+  b5331f:	jl     b53ea3 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc93>
+  b53325:	dec    %ecx
+  b53327:	mov    %ecx,(%r12)
+  b5332b:	test   %al,%al
+  b5332d:	mov    0x8(%rsp),%r12
+  b53332:	je     b532d7 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc7>
+  b53334:	jmp    b53345 <lp_lean1090_Lean1090_Impl_decodeFrame+0x135>
+  b53336:	mov    %rax,%rdi
+  b53339:	mov    %r14,%rsi
+  b5333c:	call   48a41c0 <lean_nat_big_eq>
+  b53341:	test   %al,%al
+  b53343:	je     b532d7 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc7>
+  b53345:	test   $0x1,%r14b
+  b53349:	mov    %r12,0x8(%rsp)
+  b5334e:	je     b53bff <lp_lean1090_Lean1090_Impl_decodeFrame+0x9ef>
+  b53354:	mov    %r14,%rdi
+  b53357:	shr    $1,%rdi
+  b5335a:	je     b5338b <lp_lean1090_Lean1090_Impl_decodeFrame+0x17b>
+  b5335c:	movabs $0x2000000000000000,%rax
+  b53366:	and    %r14,%rax
+  b53369:	shr    $0x3e,%r14
+  b5336d:	or     %rax,%r14
+  b53370:	je     b53381 <lp_lean1090_Lean1090_Impl_decodeFrame+0x171>
+  b53372:	mov    $0x8,%esi
+  b53377:	call   48a3ae0 <lean_nat_overflow_mul>
+  b5337c:	mov    %rax,%r14
+  b5337f:	jmp    b5338b <lp_lean1090_Lean1090_Impl_decodeFrame+0x17b>
+  b53381:	shl    $0x4,%rdi
+  b53385:	inc    %rdi
+  b53388:	mov    %rdi,%r14
+  b5338b:	mov    %r15,%rdi
+  b5338e:	call   b528c0 <lp_lean1090_Lean1090_Impl_bytesValue>
+  b53393:	mov    %rax,%r12
+  b53396:	test   $0x1,%r14b
+  b5339a:	je     b53c25 <lp_lean1090_Lean1090_Impl_decodeFrame+0xa15>
+  b533a0:	mov    $0x1,%r15d
+  b533a6:	cmp    $0x30,%r14
+  b533aa:	jb     b533b0 <lp_lean1090_Lean1090_Impl_decodeFrame+0x1a0>
+  b533ac:	lea    -0x30(%r14),%r15
+  b533b0:	mov    $0x31,%edx
+  b533b5:	mov    %r14,%rdi
+  b533b8:	mov    %r15,%rsi
+  b533bb:	mov    %r12,%rcx
+  b533be:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b533c3:	mov    %rax,%rdi
+  b533c6:	test   $0x1,%r15b
+  b533ca:	mov    %rax,0x18(%rsp)
+  b533cf:	jne    b533e2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x1d2>
+  b533d1:	mov    (%r15),%eax
+  b533d4:	cmp    $0x2,%eax
+  b533d7:	jl     b53c79 <lp_lean1090_Lean1090_Impl_decodeFrame+0xa69>
+  b533dd:	dec    %eax
+  b533df:	mov    %eax,(%r15)
+  b533e2:	test   %rbp,%rbp
+  b533e5:	sete   %r15b
+  b533e9:	je     b5350b <lp_lean1090_Lean1090_Impl_decodeFrame+0x2fb>
+  b533ef:	add    $0xfffffffffffffff8,%rbp
+  b533f3:	cmp    $0x22,%rbp
+  b533f7:	ja     b53ac4 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8b4>
+  b533fd:	lea    -0x88f32c(%rip),%rax        # 2c40d8 <lp_lean1090_main___closed__0_value+0x98>
+  b53404:	movslq (%rax,%rbp,4),%rcx
+  b53408:	add    %rax,%rcx
+  b5340b:	jmp    *%rcx
+  b5340d:	mov    $0xb,%esi
+  b53412:	mov    $0x7,%edx
+  b53417:	mov    %r14,%rdi
+  b5341a:	mov    %r12,%rcx
+  b5341d:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53422:	mov    %rax,0x10(%rsp)
+  b53427:	mov    $0x11,%esi
+  b5342c:	mov    $0xb,%edx
+  b53431:	mov    %r14,%rdi
+  b53434:	mov    %r12,%rcx
+  b53437:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5343c:	mov    %rax,0x20(%rsp)
+  b53441:	mov    $0x1b,%esi
+  b53446:	mov    $0xd,%edx
+  b5344b:	mov    %r14,%rdi
+  b5344e:	mov    %r12,%rcx
+  b53451:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53456:	mov    %rax,%rbp
+  b53459:	mov    $0x27,%esi
+  b5345e:	mov    $0x1b,%edx
+  b53463:	mov    %r14,%rdi
+  b53466:	mov    %r12,%rcx
+  b53469:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5346e:	mov    %rax,%rbx
+  b53471:	mov    $0x28,%edi
+  b53476:	call   490a3a0 <lean_alloc_small_object_core>
+  b5347b:	mov    %rax,%r13
+  b5347e:	movl   $0x1,(%rax)
+  b53484:	movw   $0x4,0x6(%rax)
+  b5348a:	mov    0x10(%rsp),%rax
+  b5348f:	mov    %rax,0x8(%r13)
+  b53493:	mov    0x20(%rsp),%rax
+  b53498:	mov    %rax,0x10(%r13)
+  b5349c:	mov    %rbp,0x18(%r13)
+  b534a0:	mov    %rbx,0x20(%r13)
+  b534a4:	test   $0x1,%r12b
+  b534a8:	mov    0x4(%rsp),%ebp
+  b534ac:	jne    b534c1 <lp_lean1090_Lean1090_Impl_decodeFrame+0x2b1>
+  b534ae:	mov    (%r12),%eax
+  b534b2:	cmp    $0x2,%eax
+  b534b5:	jl     b53d11 <lp_lean1090_Lean1090_Impl_decodeFrame+0xb01>
+  b534bb:	dec    %eax
+  b534bd:	mov    %eax,(%r12)
+  b534c1:	test   $0x1,%r14b
+  b534c5:	mov    0x8(%rsp),%r12
+  b534ca:	jne    b534dd <lp_lean1090_Lean1090_Impl_decodeFrame+0x2cd>
+  b534cc:	mov    (%r14),%eax
+  b534cf:	cmp    $0x2,%eax
+  b534d2:	jl     b53d26 <lp_lean1090_Lean1090_Impl_decodeFrame+0xb16>
+  b534d8:	dec    %eax
+  b534da:	mov    %eax,(%r14)
+  b534dd:	mov    $0x18,%edi
+  b534e2:	call   490a3a0 <lean_alloc_small_object_core>
+  b534e7:	mov    %rax,%rbx
+  b534ea:	movq   $0x0,0x10(%rax)
+  b534f2:	movl   $0x1,(%rax)
+  b534f8:	movw   $0x101,0x6(%rax)
+  b534fe:	mov    %r13,0x8(%rax)
+  b53502:	mov    %r15b,0x10(%rax)
+  b53506:	jmp    b53a60 <lp_lean1090_Lean1090_Impl_decodeFrame+0x850>
+  b5350b:	mov    %r14,%rdi
+  b5350e:	mov    %r12,%rsi
+  b53511:	call   b53040 <lp_lean1090_Lean1090_Impl_readACAS>
+  b53516:	mov    %rax,%r13
+  b53519:	test   $0x1,%r12b
+  b5351d:	mov    0x4(%rsp),%ebp
+  b53521:	jne    b53536 <lp_lean1090_Lean1090_Impl_decodeFrame+0x326>
+  b53523:	mov    (%r12),%eax
+  b53527:	cmp    $0x2,%eax
+  b5352a:	jl     b53c93 <lp_lean1090_Lean1090_Impl_decodeFrame+0xa83>
+  b53530:	dec    %eax
+  b53532:	mov    %eax,(%r12)
+  b53536:	test   $0x1,%r14b
+  b5353a:	mov    0x8(%rsp),%r12
+  b5353f:	jne    b53552 <lp_lean1090_Lean1090_Impl_decodeFrame+0x342>
+  b53541:	mov    (%r14),%eax
+  b53544:	cmp    $0x2,%eax
+  b53547:	jl     b53ca8 <lp_lean1090_Lean1090_Impl_decodeFrame+0xa98>
+  b5354d:	dec    %eax
+  b5354f:	mov    %eax,(%r14)
+  b53552:	mov    $0x10,%edi
+  b53557:	call   490a3a0 <lean_alloc_small_object_core>
+  b5355c:	mov    %rax,%rbx
+  b5355f:	movl   $0x1,(%rax)
+  b53565:	movw   $0x1,0x6(%rax)
+  b5356b:	mov    %r13,0x8(%rax)
+  b5356f:	jmp    b53a60 <lp_lean1090_Lean1090_Impl_decodeFrame+0x850>
+  b53574:	mov    $0xb,%esi
+  b53579:	mov    $0x7,%edx
+  b5357e:	mov    %r14,%rdi
+  b53581:	mov    %r12,%rcx
+  b53584:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53589:	mov    %rax,%r13
+  b5358c:	mov    $0x11,%esi
+  b53591:	mov    $0x31,%edx
+  b53596:	mov    %r14,%rdi
+  b53599:	mov    %r12,%rcx
+  b5359c:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b535a1:	mov    %rax,%rbp
+  b535a4:	test   $0x1,%r12b
+  b535a8:	jne    b535bd <lp_lean1090_Lean1090_Impl_decodeFrame+0x3ad>
+  b535aa:	mov    (%r12),%eax
+  b535ae:	cmp    $0x2,%eax
+  b535b1:	jl     b53cbd <lp_lean1090_Lean1090_Impl_decodeFrame+0xaad>
+  b535b7:	dec    %eax
+  b535b9:	mov    %eax,(%r12)
+  b535bd:	test   $0x1,%r14b
+  b535c1:	mov    0x8(%rsp),%r12
+  b535c6:	jne    b535d9 <lp_lean1090_Lean1090_Impl_decodeFrame+0x3c9>
+  b535c8:	mov    (%r14),%eax
+  b535cb:	cmp    $0x2,%eax
+  b535ce:	jl     b53cd2 <lp_lean1090_Lean1090_Impl_decodeFrame+0xac2>
+  b535d4:	dec    %eax
+  b535d6:	mov    %eax,(%r14)
+  b535d9:	mov    $0x18,%edi
+  b535de:	call   490a3a0 <lean_alloc_small_object_core>
+  b535e3:	mov    %rax,%rbx
+  b535e6:	movl   $0x1,(%rax)
+  b535ec:	movw   $0x202,0x6(%rax)
+  b535f2:	jmp    b53a54 <lp_lean1090_Lean1090_Impl_decodeFrame+0x844>
+  b535f7:	mov    $0xb,%esi
+  b535fc:	mov    $0x7,%edx
+  b53601:	mov    %r14,%rdi
+  b53604:	mov    %r12,%rcx
+  b53607:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5360c:	mov    %rax,%r15
+  b5360f:	mov    $0x11,%esi
+  b53614:	mov    $0x31,%edx
+  b53619:	mov    %r14,%rdi
+  b5361c:	mov    %r12,%rcx
+  b5361f:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53624:	mov    %rax,%rbp
+  b53627:	mov    $0x41,%esi
+  b5362c:	mov    $0x71,%edx
+  b53631:	mov    %r14,%rdi
+  b53634:	mov    %r12,%rcx
+  b53637:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5363c:	mov    %rax,%r13
+  b5363f:	test   $0x1,%r12b
+  b53643:	jne    b53658 <lp_lean1090_Lean1090_Impl_decodeFrame+0x448>
+  b53645:	mov    (%r12),%eax
+  b53649:	cmp    $0x2,%eax
+  b5364c:	jl     b53ce7 <lp_lean1090_Lean1090_Impl_decodeFrame+0xad7>
+  b53652:	dec    %eax
+  b53654:	mov    %eax,(%r12)
+  b53658:	test   $0x1,%r14b
+  b5365c:	mov    0x8(%rsp),%r12
+  b53661:	jne    b53674 <lp_lean1090_Lean1090_Impl_decodeFrame+0x464>
+  b53663:	mov    (%r14),%eax
+  b53666:	cmp    $0x2,%eax
+  b53669:	jl     b53cfc <lp_lean1090_Lean1090_Impl_decodeFrame+0xaec>
+  b5366f:	dec    %eax
+  b53671:	mov    %eax,(%r14)
+  b53674:	mov    $0x28,%edi
+  b53679:	call   490a3a0 <lean_alloc_small_object_core>
+  b5367e:	mov    %rax,%rbx
+  b53681:	movq   $0x1,0x20(%rax)
+  b53689:	movl   $0x1,(%rax)
+  b5368f:	movw   $0x403,0x6(%rax)
+  b53695:	mov    %r15,0x8(%rax)
+  b53699:	mov    %rbp,0x10(%rax)
+  b5369d:	mov    %r13,0x18(%rax)
+  b536a1:	jmp    b53a5c <lp_lean1090_Lean1090_Impl_decodeFrame+0x84c>
+  b536a6:	mov    $0xb,%esi
+  b536ab:	mov    $0x7,%edx
+  b536b0:	mov    %r14,%rdi
+  b536b3:	mov    %r12,%rcx
+  b536b6:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b536bb:	mov    %rax,0x10(%rsp)
+  b536c0:	mov    $0x11,%esi
+  b536c5:	mov    $0xb,%edx
+  b536ca:	mov    %r14,%rdi
+  b536cd:	mov    %r12,%rcx
+  b536d0:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b536d5:	mov    %rax,%r15
+  b536d8:	mov    $0x1b,%esi
+  b536dd:	mov    $0xd,%edx
+  b536e2:	mov    %r14,%rdi
+  b536e5:	mov    %r12,%rcx
+  b536e8:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b536ed:	mov    %rax,%rbp
+  b536f0:	mov    $0x27,%esi
+  b536f5:	mov    $0x1b,%edx
+  b536fa:	mov    %r14,%rdi
+  b536fd:	mov    %r12,%rcx
+  b53700:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53705:	mov    %rax,%rbx
+  b53708:	mov    $0x28,%edi
+  b5370d:	call   490a3a0 <lean_alloc_small_object_core>
+  b53712:	mov    %rax,%r13
+  b53715:	movl   $0x1,(%rax)
+  b5371b:	movw   $0x4,0x6(%rax)
+  b53721:	mov    0x10(%rsp),%rax
+  b53726:	mov    %rax,0x8(%r13)
+  b5372a:	mov    %r15,0x10(%r13)
+  b5372e:	mov    %rbp,0x18(%r13)
+  b53732:	mov    %rbx,0x20(%r13)
+  b53736:	test   $0x1,%r12b
+  b5373a:	mov    0x4(%rsp),%ebp
+  b5373e:	jne    b53753 <lp_lean1090_Lean1090_Impl_decodeFrame+0x543>
+  b53740:	mov    (%r12),%eax
+  b53744:	cmp    $0x2,%eax
+  b53747:	jl     b53d3b <lp_lean1090_Lean1090_Impl_decodeFrame+0xb2b>
+  b5374d:	dec    %eax
+  b5374f:	mov    %eax,(%r12)
+  b53753:	test   $0x1,%r14b
+  b53757:	mov    0x8(%rsp),%r12
+  b5375c:	jne    b5376f <lp_lean1090_Lean1090_Impl_decodeFrame+0x55f>
+  b5375e:	mov    (%r14),%eax
+  b53761:	cmp    $0x2,%eax
+  b53764:	jl     b53d50 <lp_lean1090_Lean1090_Impl_decodeFrame+0xb40>
+  b5376a:	dec    %eax
+  b5376c:	mov    %eax,(%r14)
+  b5376f:	mov    $0x18,%edi
+  b53774:	call   490a3a0 <lean_alloc_small_object_core>
+  b53779:	mov    %rax,%rbx
+  b5377c:	movq   $0x1,0x10(%rax)
+  b53784:	movl   $0x1,(%rax)
+  b5378a:	movw   $0x101,0x6(%rax)
+  b53790:	jmp    b5356b <lp_lean1090_Lean1090_Impl_decodeFrame+0x35b>
+  b53795:	mov    $0xb,%esi
+  b5379a:	mov    $0x7,%edx
+  b5379f:	mov    %r14,%rdi
+  b537a2:	mov    %r12,%rcx
+  b537a5:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b537aa:	mov    %rax,%r13
+  b537ad:	mov    $0x11,%esi
+  b537b2:	mov    $0xa1,%edx
+  b537b7:	mov    %r14,%rdi
+  b537ba:	mov    %r12,%rcx
+  b537bd:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b537c2:	mov    %rax,%rbp
+  b537c5:	test   $0x1,%r12b
+  b537c9:	jne    b537de <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ce>
+  b537cb:	mov    (%r12),%eax
+  b537cf:	cmp    $0x2,%eax
+  b537d2:	jl     b53d65 <lp_lean1090_Lean1090_Impl_decodeFrame+0xb55>
+  b537d8:	dec    %eax
+  b537da:	mov    %eax,(%r12)
+  b537de:	test   $0x1,%r14b
+  b537e2:	mov    0x8(%rsp),%r12
+  b537e7:	jne    b537fa <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ea>
+  b537e9:	mov    (%r14),%eax
+  b537ec:	cmp    $0x2,%eax
+  b537ef:	jl     b53d7a <lp_lean1090_Lean1090_Impl_decodeFrame+0xb6a>
+  b537f5:	dec    %eax
+  b537f7:	mov    %eax,(%r14)
+  b537fa:	mov    $0x18,%edi
+  b537ff:	call   490a3a0 <lean_alloc_small_object_core>
+  b53804:	mov    %rax,%rbx
+  b53807:	movl   $0x1,(%rax)
+  b5380d:	movw   $0x502,0x6(%rax)
+  b53813:	jmp    b53a54 <lp_lean1090_Lean1090_Impl_decodeFrame+0x844>
+  b53818:	mov    %r14,%rdi
+  b5381b:	mov    %r12,%rsi
+  b5381e:	call   b53170 <lp_lean1090_Lean1090_Impl_readSurveillance>
+  b53823:	mov    %rax,%r13
+  b53826:	mov    $0x41,%esi
+  b5382b:	mov    $0x71,%edx
+  b53830:	mov    %r14,%rdi
+  b53833:	mov    %r12,%rcx
+  b53836:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5383b:	mov    %rax,%rbp
+  b5383e:	test   $0x1,%r12b
+  b53842:	jne    b53857 <lp_lean1090_Lean1090_Impl_decodeFrame+0x647>
+  b53844:	mov    (%r12),%eax
+  b53848:	cmp    $0x2,%eax
+  b5384b:	jl     b53d8f <lp_lean1090_Lean1090_Impl_decodeFrame+0xb7f>
+  b53851:	dec    %eax
+  b53853:	mov    %eax,(%r12)
+  b53857:	test   $0x1,%r14b
+  b5385b:	mov    0x8(%rsp),%r12
+  b53860:	jne    b53873 <lp_lean1090_Lean1090_Impl_decodeFrame+0x663>
+  b53862:	mov    (%r14),%eax
+  b53865:	cmp    $0x2,%eax
+  b53868:	jl     b53da4 <lp_lean1090_Lean1090_Impl_decodeFrame+0xb94>
+  b5386e:	dec    %eax
+  b53870:	mov    %eax,(%r14)
+  b53873:	mov    $0x20,%edi
+  b53878:	call   490a3a0 <lean_alloc_small_object_core>
+  b5387d:	mov    %rax,%rbx
+  b53880:	movq   $0x0,0x18(%rax)
+  b53888:	movl   $0x1,(%rax)
+  b5388e:	movw   $0x602,0x6(%rax)
+  b53894:	mov    %r13,0x8(%rax)
+  b53898:	mov    %rbp,0x10(%rax)
+  b5389c:	mov    %r15b,0x18(%rax)
+  b538a0:	jmp    b53a5c <lp_lean1090_Lean1090_Impl_decodeFrame+0x84c>
+  b538a5:	mov    %r14,%rdi
+  b538a8:	mov    %r12,%rsi
+  b538ab:	call   b53040 <lp_lean1090_Lean1090_Impl_readACAS>
+  b538b0:	mov    %rax,%r13
+  b538b3:	mov    $0x41,%esi
+  b538b8:	mov    $0x71,%edx
+  b538bd:	mov    %r14,%rdi
+  b538c0:	mov    %r12,%rcx
+  b538c3:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b538c8:	mov    %rax,%rbp
+  b538cb:	test   $0x1,%r12b
+  b538cf:	jne    b538e4 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6d4>
+  b538d1:	mov    (%r12),%eax
+  b538d5:	cmp    $0x2,%eax
+  b538d8:	jl     b53db9 <lp_lean1090_Lean1090_Impl_decodeFrame+0xba9>
+  b538de:	dec    %eax
+  b538e0:	mov    %eax,(%r12)
+  b538e4:	test   $0x1,%r14b
+  b538e8:	mov    0x8(%rsp),%r12
+  b538ed:	jne    b53900 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6f0>
+  b538ef:	mov    (%r14),%eax
+  b538f2:	cmp    $0x2,%eax
+  b538f5:	jl     b53dce <lp_lean1090_Lean1090_Impl_decodeFrame+0xbbe>
+  b538fb:	dec    %eax
+  b538fd:	mov    %eax,(%r14)
+  b53900:	mov    $0x18,%edi
+  b53905:	call   490a3a0 <lean_alloc_small_object_core>
+  b5390a:	mov    %rax,%rbx
+  b5390d:	movl   $0x1,(%rax)
+  b53913:	movw   $0x302,0x6(%rax)
+  b53919:	jmp    b53a54 <lp_lean1090_Lean1090_Impl_decodeFrame+0x844>
+  b5391e:	mov    $0xb,%esi
+  b53923:	mov    $0x7,%edx
+  b53928:	mov    %r14,%rdi
+  b5392b:	mov    %r12,%rcx
+  b5392e:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53933:	mov    %rax,0x10(%rsp)
+  b53938:	mov    $0x11,%esi
+  b5393d:	mov    $0x31,%edx
+  b53942:	mov    %r14,%rdi
+  b53945:	mov    %r12,%rcx
+  b53948:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b5394d:	mov    %rax,%rbp
+  b53950:	mov    $0x41,%esi
+  b53955:	mov    $0x71,%edx
+  b5395a:	mov    %r14,%rdi
+  b5395d:	mov    %r12,%rcx
+  b53960:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53965:	mov    %rax,%r13
+  b53968:	test   $0x1,%r12b
+  b5396c:	jne    b53981 <lp_lean1090_Lean1090_Impl_decodeFrame+0x771>
+  b5396e:	mov    (%r12),%eax
+  b53972:	cmp    $0x2,%eax
+  b53975:	jl     b53de3 <lp_lean1090_Lean1090_Impl_decodeFrame+0xbd3>
+  b5397b:	dec    %eax
+  b5397d:	mov    %eax,(%r12)
+  b53981:	test   $0x1,%r14b
+  b53985:	mov    0x8(%rsp),%r12
+  b5398a:	jne    b5399d <lp_lean1090_Lean1090_Impl_decodeFrame+0x78d>
+  b5398c:	mov    (%r14),%eax
+  b5398f:	cmp    $0x2,%eax
+  b53992:	jl     b53df8 <lp_lean1090_Lean1090_Impl_decodeFrame+0xbe8>
+  b53998:	dec    %eax
+  b5399a:	mov    %eax,(%r14)
+  b5399d:	mov    $0x28,%edi
+  b539a2:	call   490a3a0 <lean_alloc_small_object_core>
+  b539a7:	mov    %rax,%rbx
+  b539aa:	movq   $0x0,0x20(%rax)
+  b539b2:	movl   $0x1,(%rax)
+  b539b8:	movw   $0x403,0x6(%rax)
+  b539be:	mov    0x10(%rsp),%rax
+  b539c3:	mov    %rax,0x8(%rbx)
+  b539c7:	mov    %rbp,0x10(%rbx)
+  b539cb:	mov    %r13,0x18(%rbx)
+  b539cf:	mov    %r15b,0x20(%rbx)
+  b539d3:	jmp    b53a5c <lp_lean1090_Lean1090_Impl_decodeFrame+0x84c>
+  b539d8:	mov    %r14,%rdi
+  b539db:	mov    %r12,%rsi
+  b539de:	call   b53170 <lp_lean1090_Lean1090_Impl_readSurveillance>
+  b539e3:	mov    %rax,%r13
+  b539e6:	mov    $0x41,%esi
+  b539eb:	mov    $0x71,%edx
+  b539f0:	mov    %r14,%rdi
+  b539f3:	mov    %r12,%rcx
+  b539f6:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b539fb:	mov    %rax,%rbp
+  b539fe:	test   $0x1,%r12b
+  b53a02:	jne    b53a17 <lp_lean1090_Lean1090_Impl_decodeFrame+0x807>
+  b53a04:	mov    (%r12),%eax
+  b53a08:	cmp    $0x2,%eax
+  b53a0b:	jl     b53e0d <lp_lean1090_Lean1090_Impl_decodeFrame+0xbfd>
+  b53a11:	dec    %eax
+  b53a13:	mov    %eax,(%r12)
+  b53a17:	test   $0x1,%r14b
+  b53a1b:	mov    0x8(%rsp),%r12
+  b53a20:	jne    b53a33 <lp_lean1090_Lean1090_Impl_decodeFrame+0x823>
+  b53a22:	mov    (%r14),%eax
+  b53a25:	cmp    $0x2,%eax
+  b53a28:	jl     b53e22 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc12>
+  b53a2e:	dec    %eax
+  b53a30:	mov    %eax,(%r14)
+  b53a33:	mov    $0x20,%edi
+  b53a38:	call   490a3a0 <lean_alloc_small_object_core>
+  b53a3d:	mov    %rax,%rbx
+  b53a40:	movq   $0x1,0x18(%rax)
+  b53a48:	movl   $0x1,(%rax)
+  b53a4e:	movw   $0x602,0x6(%rax)
+  b53a54:	mov    %r13,0x8(%rax)
+  b53a58:	mov    %rbp,0x10(%rax)
+  b53a5c:	mov    0x4(%rsp),%ebp
+  b53a60:	mov    $0x18,%edi
+  b53a65:	call   490a3a0 <lean_alloc_small_object_core>
+  b53a6a:	mov    %rax,%r14
+  b53a6d:	movl   $0x1,(%rax)
+  b53a73:	movw   $0x2,0x6(%rax)
+  b53a79:	mov    %rbx,0x8(%rax)
+  b53a7d:	mov    0x18(%rsp),%rax
+  b53a82:	mov    %rax,0x10(%r14)
+  b53a86:	cmp    $0x1,%ebp
+  b53a89:	jne    b53a95 <lp_lean1090_Lean1090_Impl_decodeFrame+0x885>
+  b53a8b:	mov    %r14,0x8(%r12)
+  b53a90:	mov    %r12,%r13
+  b53a93:	jmp    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b53a95:	mov    $0x10,%edi
+  b53a9a:	call   490a3a0 <lean_alloc_small_object_core>
+  b53a9f:	mov    %rax,%r13
+  b53aa2:	movl   $0x1,(%rax)
+  b53aa8:	movw   $0x101,0x6(%rax)
+  b53aae:	mov    %r14,0x8(%rax)
+  b53ab2:	mov    %r13,%rax
+  b53ab5:	add    $0x28,%rsp
+  b53ab9:	pop    %rbx
+  b53aba:	pop    %r12
+  b53abc:	pop    %r13
+  b53abe:	pop    %r14
+  b53ac0:	pop    %r15
+  b53ac2:	pop    %rbp
+  b53ac3:	ret
+  b53ac4:	cmp    $0x30,%ebx
+  b53ac7:	ja     b53b20 <lp_lean1090_Lean1090_Impl_decodeFrame+0x910>
+  b53ac9:	test   $0x1,%dil
+  b53acd:	jne    b53ade <lp_lean1090_Lean1090_Impl_decodeFrame+0x8ce>
+  b53acf:	mov    (%rdi),%eax
+  b53ad1:	cmp    $0x2,%eax
+  b53ad4:	jl     b53e37 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc27>
+  b53ada:	dec    %eax
+  b53adc:	mov    %eax,(%rdi)
+  b53ade:	test   $0x1,%r12b
+  b53ae2:	jne    b53af7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8e7>
+  b53ae4:	mov    (%r12),%eax
+  b53ae8:	cmp    $0x2,%eax
+  b53aeb:	jl     b53e49 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc39>
+  b53af1:	dec    %eax
+  b53af3:	mov    %eax,(%r12)
+  b53af7:	test   $0x1,%r14b
+  b53afb:	mov    0x8(%rsp),%rdi
+  b53b00:	jne    b53b13 <lp_lean1090_Lean1090_Impl_decodeFrame+0x903>
+  b53b02:	mov    (%r14),%eax
+  b53b05:	cmp    $0x2,%eax
+  b53b08:	jl     b53e5e <lp_lean1090_Lean1090_Impl_decodeFrame+0xc4e>
+  b53b0e:	dec    %eax
+  b53b10:	mov    %eax,(%r14)
+  b53b13:	test   $0x1,%dil
+  b53b17:	jne    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b53b19:	call   48a0c50 <lean_free_object>
+  b53b1e:	jmp    b53ab2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8a2>
+  b53b20:	mov    $0x5,%esi
+  b53b25:	mov    $0x3,%edx
+  b53b2a:	mov    %r14,%rdi
+  b53b2d:	mov    %r12,%rcx
+  b53b30:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53b35:	mov    %rax,%r15
+  b53b38:	mov    $0x7,%esi
+  b53b3d:	mov    $0x3,%edx
+  b53b42:	mov    %r14,%rdi
+  b53b45:	mov    %r12,%rcx
+  b53b48:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53b4d:	mov    %rax,0x10(%rsp)
+  b53b52:	mov    $0x9,%esi
+  b53b57:	mov    $0x9,%edx
+  b53b5c:	mov    %r14,%rdi
+  b53b5f:	mov    %r12,%rcx
+  b53b62:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53b67:	mov    %rax,%r13
+  b53b6a:	mov    $0x11,%esi
+  b53b6f:	mov    $0xa1,%edx
+  b53b74:	mov    %r14,%rdi
+  b53b77:	mov    %r12,%rcx
+  b53b7a:	call   b528d0 <lp_lean1090_Lean1090_Impl_field>
+  b53b7f:	mov    %rax,%rbp
+  b53b82:	test   $0x1,%r12b
+  b53b86:	jne    b53b9b <lp_lean1090_Lean1090_Impl_decodeFrame+0x98b>
+  b53b88:	mov    (%r12),%eax
+  b53b8c:	cmp    $0x2,%eax
+  b53b8f:	jl     b53e79 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc69>
+  b53b95:	dec    %eax
+  b53b97:	mov    %eax,(%r12)
+  b53b9b:	test   $0x1,%r14b
+  b53b9f:	mov    0x8(%rsp),%r12
+  b53ba4:	jne    b53bb7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x9a7>
+  b53ba6:	mov    (%r14),%eax
+  b53ba9:	cmp    $0x2,%eax
+  b53bac:	jl     b53e8e <lp_lean1090_Lean1090_Impl_decodeFrame+0xc7e>
+  b53bb2:	dec    %eax
+  b53bb4:	mov    %eax,(%r14)
+  b53bb7:	mov    $0x28,%edi
+  b53bbc:	call   490a3a0 <lean_alloc_small_object_core>
+  b53bc1:	mov    %rax,%rbx
+  b53bc4:	movl   $0x1,(%rax)
+  b53bca:	movw   $0x704,0x6(%rax)
+  b53bd0:	mov    %r15,0x8(%rax)
+  b53bd4:	mov    0x10(%rsp),%rax
+  b53bd9:	mov    %rax,0x10(%rbx)
+  b53bdd:	mov    %r13,0x18(%rbx)
+  b53be1:	mov    %rbp,0x20(%rbx)
+  b53be5:	jmp    b53a5c <lp_lean1090_Lean1090_Impl_decodeFrame+0x84c>
+  b53bea:	test   %eax,%eax
+  b53bec:	je     b532ab <lp_lean1090_Lean1090_Impl_decodeFrame+0x9b>
+  b53bf2:	mov    %rbp,%rdi
+  b53bf5:	call   48a0d70 <lean_dec_ref_cold>
+  b53bfa:	jmp    b532ab <lp_lean1090_Lean1090_Impl_decodeFrame+0x9b>
+  b53bff:	mov    $0x11,%esi
+  b53c04:	mov    %r14,%rdi
+  b53c07:	call   48a3870 <lean_nat_big_mul>
+  b53c0c:	mov    (%r14),%ecx
+  b53c0f:	cmp    $0x2,%ecx
+  b53c12:	jl     b53ec8 <lp_lean1090_Lean1090_Impl_decodeFrame+0xcb8>
+  b53c18:	dec    %ecx
+  b53c1a:	mov    %ecx,(%r14)
+  b53c1d:	mov    %rax,%r14
+  b53c20:	jmp    b5338b <lp_lean1090_Lean1090_Impl_decodeFrame+0x17b>
+  b53c25:	mov    $0x31,%esi
+  b53c2a:	mov    %r14,%rdi
+  b53c2d:	call   48a3650 <lean_nat_big_sub>
+  b53c32:	mov    %rax,%r15
+  b53c35:	jmp    b533b0 <lp_lean1090_Lean1090_Impl_decodeFrame+0x1a0>
+  b53c3a:	test   %eax,%eax
+  b53c3c:	je     b532ee <lp_lean1090_Lean1090_Impl_decodeFrame+0xde>
+  b53c42:	mov    %r14,%rdi
+  b53c45:	call   48a0d70 <lean_dec_ref_cold>
+  b53c4a:	jmp    b532ee <lp_lean1090_Lean1090_Impl_decodeFrame+0xde>
+  b53c4f:	cmp    $0x90000001,%ecx
+  b53c55:	jb     b5327b <lp_lean1090_Lean1090_Impl_decodeFrame+0x6b>
+  b53c5b:	lock decl 0x0(%rbp)
+  b53c5f:	jmp    b5327b <lp_lean1090_Lean1090_Impl_decodeFrame+0x6b>
+  b53c64:	test   %ecx,%ecx
+  b53c66:	je     b53294 <lp_lean1090_Lean1090_Impl_decodeFrame+0x84>
+  b53c6c:	mov    %rax,%rdi
+  b53c6f:	call   48a0d70 <lean_dec_ref_cold>
+  b53c74:	jmp    b53294 <lp_lean1090_Lean1090_Impl_decodeFrame+0x84>
+  b53c79:	test   %eax,%eax
+  b53c7b:	je     b533e2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x1d2>
+  b53c81:	mov    %r15,%rdi
+  b53c84:	call   48a0d70 <lean_dec_ref_cold>
+  b53c89:	mov    0x18(%rsp),%rdi
+  b53c8e:	jmp    b533e2 <lp_lean1090_Lean1090_Impl_decodeFrame+0x1d2>
+  b53c93:	test   %eax,%eax
+  b53c95:	je     b53536 <lp_lean1090_Lean1090_Impl_decodeFrame+0x326>
+  b53c9b:	mov    %r12,%rdi
+  b53c9e:	call   48a0d70 <lean_dec_ref_cold>
+  b53ca3:	jmp    b53536 <lp_lean1090_Lean1090_Impl_decodeFrame+0x326>
+  b53ca8:	test   %eax,%eax
+  b53caa:	je     b53552 <lp_lean1090_Lean1090_Impl_decodeFrame+0x342>
+  b53cb0:	mov    %r14,%rdi
+  b53cb3:	call   48a0d70 <lean_dec_ref_cold>
+  b53cb8:	jmp    b53552 <lp_lean1090_Lean1090_Impl_decodeFrame+0x342>
+  b53cbd:	test   %eax,%eax
+  b53cbf:	je     b535bd <lp_lean1090_Lean1090_Impl_decodeFrame+0x3ad>
+  b53cc5:	mov    %r12,%rdi
+  b53cc8:	call   48a0d70 <lean_dec_ref_cold>
+  b53ccd:	jmp    b535bd <lp_lean1090_Lean1090_Impl_decodeFrame+0x3ad>
+  b53cd2:	test   %eax,%eax
+  b53cd4:	je     b535d9 <lp_lean1090_Lean1090_Impl_decodeFrame+0x3c9>
+  b53cda:	mov    %r14,%rdi
+  b53cdd:	call   48a0d70 <lean_dec_ref_cold>
+  b53ce2:	jmp    b535d9 <lp_lean1090_Lean1090_Impl_decodeFrame+0x3c9>
+  b53ce7:	test   %eax,%eax
+  b53ce9:	je     b53658 <lp_lean1090_Lean1090_Impl_decodeFrame+0x448>
+  b53cef:	mov    %r12,%rdi
+  b53cf2:	call   48a0d70 <lean_dec_ref_cold>
+  b53cf7:	jmp    b53658 <lp_lean1090_Lean1090_Impl_decodeFrame+0x448>
+  b53cfc:	test   %eax,%eax
+  b53cfe:	je     b53674 <lp_lean1090_Lean1090_Impl_decodeFrame+0x464>
+  b53d04:	mov    %r14,%rdi
+  b53d07:	call   48a0d70 <lean_dec_ref_cold>
+  b53d0c:	jmp    b53674 <lp_lean1090_Lean1090_Impl_decodeFrame+0x464>
+  b53d11:	test   %eax,%eax
+  b53d13:	je     b534c1 <lp_lean1090_Lean1090_Impl_decodeFrame+0x2b1>
+  b53d19:	mov    %r12,%rdi
+  b53d1c:	call   48a0d70 <lean_dec_ref_cold>
+  b53d21:	jmp    b534c1 <lp_lean1090_Lean1090_Impl_decodeFrame+0x2b1>
+  b53d26:	test   %eax,%eax
+  b53d28:	je     b534dd <lp_lean1090_Lean1090_Impl_decodeFrame+0x2cd>
+  b53d2e:	mov    %r14,%rdi
+  b53d31:	call   48a0d70 <lean_dec_ref_cold>
+  b53d36:	jmp    b534dd <lp_lean1090_Lean1090_Impl_decodeFrame+0x2cd>
+  b53d3b:	test   %eax,%eax
+  b53d3d:	je     b53753 <lp_lean1090_Lean1090_Impl_decodeFrame+0x543>
+  b53d43:	mov    %r12,%rdi
+  b53d46:	call   48a0d70 <lean_dec_ref_cold>
+  b53d4b:	jmp    b53753 <lp_lean1090_Lean1090_Impl_decodeFrame+0x543>
+  b53d50:	test   %eax,%eax
+  b53d52:	je     b5376f <lp_lean1090_Lean1090_Impl_decodeFrame+0x55f>
+  b53d58:	mov    %r14,%rdi
+  b53d5b:	call   48a0d70 <lean_dec_ref_cold>
+  b53d60:	jmp    b5376f <lp_lean1090_Lean1090_Impl_decodeFrame+0x55f>
+  b53d65:	test   %eax,%eax
+  b53d67:	je     b537de <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ce>
+  b53d6d:	mov    %r12,%rdi
+  b53d70:	call   48a0d70 <lean_dec_ref_cold>
+  b53d75:	jmp    b537de <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ce>
+  b53d7a:	test   %eax,%eax
+  b53d7c:	je     b537fa <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ea>
+  b53d82:	mov    %r14,%rdi
+  b53d85:	call   48a0d70 <lean_dec_ref_cold>
+  b53d8a:	jmp    b537fa <lp_lean1090_Lean1090_Impl_decodeFrame+0x5ea>
+  b53d8f:	test   %eax,%eax
+  b53d91:	je     b53857 <lp_lean1090_Lean1090_Impl_decodeFrame+0x647>
+  b53d97:	mov    %r12,%rdi
+  b53d9a:	call   48a0d70 <lean_dec_ref_cold>
+  b53d9f:	jmp    b53857 <lp_lean1090_Lean1090_Impl_decodeFrame+0x647>
+  b53da4:	test   %eax,%eax
+  b53da6:	je     b53873 <lp_lean1090_Lean1090_Impl_decodeFrame+0x663>
+  b53dac:	mov    %r14,%rdi
+  b53daf:	call   48a0d70 <lean_dec_ref_cold>
+  b53db4:	jmp    b53873 <lp_lean1090_Lean1090_Impl_decodeFrame+0x663>
+  b53db9:	test   %eax,%eax
+  b53dbb:	je     b538e4 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6d4>
+  b53dc1:	mov    %r12,%rdi
+  b53dc4:	call   48a0d70 <lean_dec_ref_cold>
+  b53dc9:	jmp    b538e4 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6d4>
+  b53dce:	test   %eax,%eax
+  b53dd0:	je     b53900 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6f0>
+  b53dd6:	mov    %r14,%rdi
+  b53dd9:	call   48a0d70 <lean_dec_ref_cold>
+  b53dde:	jmp    b53900 <lp_lean1090_Lean1090_Impl_decodeFrame+0x6f0>
+  b53de3:	test   %eax,%eax
+  b53de5:	je     b53981 <lp_lean1090_Lean1090_Impl_decodeFrame+0x771>
+  b53deb:	mov    %r12,%rdi
+  b53dee:	call   48a0d70 <lean_dec_ref_cold>
+  b53df3:	jmp    b53981 <lp_lean1090_Lean1090_Impl_decodeFrame+0x771>
+  b53df8:	test   %eax,%eax
+  b53dfa:	je     b5399d <lp_lean1090_Lean1090_Impl_decodeFrame+0x78d>
+  b53e00:	mov    %r14,%rdi
+  b53e03:	call   48a0d70 <lean_dec_ref_cold>
+  b53e08:	jmp    b5399d <lp_lean1090_Lean1090_Impl_decodeFrame+0x78d>
+  b53e0d:	test   %eax,%eax
+  b53e0f:	je     b53a17 <lp_lean1090_Lean1090_Impl_decodeFrame+0x807>
+  b53e15:	mov    %r12,%rdi
+  b53e18:	call   48a0d70 <lean_dec_ref_cold>
+  b53e1d:	jmp    b53a17 <lp_lean1090_Lean1090_Impl_decodeFrame+0x807>
+  b53e22:	test   %eax,%eax
+  b53e24:	je     b53a33 <lp_lean1090_Lean1090_Impl_decodeFrame+0x823>
+  b53e2a:	mov    %r14,%rdi
+  b53e2d:	call   48a0d70 <lean_dec_ref_cold>
+  b53e32:	jmp    b53a33 <lp_lean1090_Lean1090_Impl_decodeFrame+0x823>
+  b53e37:	test   %eax,%eax
+  b53e39:	je     b53ade <lp_lean1090_Lean1090_Impl_decodeFrame+0x8ce>
+  b53e3f:	call   48a0d70 <lean_dec_ref_cold>
+  b53e44:	jmp    b53ade <lp_lean1090_Lean1090_Impl_decodeFrame+0x8ce>
+  b53e49:	test   %eax,%eax
+  b53e4b:	je     b53af7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8e7>
+  b53e51:	mov    %r12,%rdi
+  b53e54:	call   48a0d70 <lean_dec_ref_cold>
+  b53e59:	jmp    b53af7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x8e7>
+  b53e5e:	test   %eax,%eax
+  b53e60:	je     b53b13 <lp_lean1090_Lean1090_Impl_decodeFrame+0x903>
+  b53e66:	mov    %rdi,%rbx
+  b53e69:	mov    %r14,%rdi
+  b53e6c:	call   48a0d70 <lean_dec_ref_cold>
+  b53e71:	mov    %rbx,%rdi
+  b53e74:	jmp    b53b13 <lp_lean1090_Lean1090_Impl_decodeFrame+0x903>
+  b53e79:	test   %eax,%eax
+  b53e7b:	je     b53b9b <lp_lean1090_Lean1090_Impl_decodeFrame+0x98b>
+  b53e81:	mov    %r12,%rdi
+  b53e84:	call   48a0d70 <lean_dec_ref_cold>
+  b53e89:	jmp    b53b9b <lp_lean1090_Lean1090_Impl_decodeFrame+0x98b>
+  b53e8e:	test   %eax,%eax
+  b53e90:	je     b53bb7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x9a7>
+  b53e96:	mov    %r14,%rdi
+  b53e99:	call   48a0d70 <lean_dec_ref_cold>
+  b53e9e:	jmp    b53bb7 <lp_lean1090_Lean1090_Impl_decodeFrame+0x9a7>
+  b53ea3:	mov    %al,0x18(%rsp)
+  b53ea7:	test   %ecx,%ecx
+  b53ea9:	je     b53eb3 <lp_lean1090_Lean1090_Impl_decodeFrame+0xca3>
+  b53eab:	mov    %r12,%rdi
+  b53eae:	call   48a0d70 <lean_dec_ref_cold>
+  b53eb3:	cmpb   $0x0,0x18(%rsp)
+  b53eb8:	mov    0x8(%rsp),%r12
+  b53ebd:	je     b532d7 <lp_lean1090_Lean1090_Impl_decodeFrame+0xc7>
+  b53ec3:	jmp    b53345 <lp_lean1090_Lean1090_Impl_decodeFrame+0x135>
+  b53ec8:	mov    %rax,%r12
+  b53ecb:	test   %ecx,%ecx
+  b53ecd:	je     b53ed7 <lp_lean1090_Lean1090_Impl_decodeFrame+0xcc7>
+  b53ecf:	mov    %r14,%rdi
+  b53ed2:	call   48a0d70 <lean_dec_ref_cold>
+  b53ed7:	mov    %r12,%r14
+  b53eda:	jmp    b5338b <lp_lean1090_Lean1090_Impl_decodeFrame+0x17b>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

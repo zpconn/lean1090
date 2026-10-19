@@ -1,0 +1,73 @@
+{
+_start:
+{
+if (lean_obj_tag(v_x_139_) == 0)
+{
+return v_x_138_;
+}
+else
+{
+lean_object* v_head_140_; lean_object* v_tail_141_; lean_object* v_num_142_; lean_object* v_den_143_; lean_object* v_fst_144_; lean_object* v_snd_145_; lean_object* v___x_147_; uint8_t v_isShared_148_; uint8_t v_isSharedCheck_160_; 
+v_head_140_ = lean_ctor_get(v_x_139_, 0);
+v_tail_141_ = lean_ctor_get(v_x_139_, 1);
+v_num_142_ = lean_ctor_get(v_head_140_, 0);
+v_den_143_ = lean_ctor_get(v_head_140_, 1);
+v_fst_144_ = lean_ctor_get(v_x_138_, 0);
+v_snd_145_ = lean_ctor_get(v_x_138_, 1);
+v_isSharedCheck_160_ = !lean_is_exclusive(v_x_138_);
+if (v_isSharedCheck_160_ == 0)
+{
+v___x_147_ = v_x_138_;
+v_isShared_148_ = v_isSharedCheck_160_;
+goto v_resetjp_146_;
+}
+else
+{
+lean_inc(v_snd_145_);
+lean_inc(v_fst_144_);
+lean_dec(v_x_138_);
+v___x_147_ = lean_box(0);
+v_isShared_148_ = v_isSharedCheck_160_;
+goto v_resetjp_146_;
+}
+v_resetjp_146_:
+{
+lean_object* v___x_149_; lean_object* v___x_150_; lean_object* v_numerator_151_; lean_object* v___x_152_; lean_object* v___x_153_; lean_object* v___x_154_; lean_object* v___x_155_; lean_object* v___x_157_; 
+v___x_149_ = lean_nat_div(v_denominator_137_, v_den_143_);
+v___x_150_ = lean_nat_to_int(v___x_149_);
+v_numerator_151_ = lean_int_mul(v_num_142_, v___x_150_);
+lean_dec(v___x_150_);
+v___x_152_ = lean_int_add(v_fst_144_, v_numerator_151_);
+lean_dec(v_fst_144_);
+v___x_153_ = lean_nat_abs(v_numerator_151_);
+lean_dec(v_numerator_151_);
+v___x_154_ = lean_nat_to_int(v___x_153_);
+v___x_155_ = lean_int_add(v_snd_145_, v___x_154_);
+lean_dec(v___x_154_);
+lean_dec(v_snd_145_);
+if (v_isShared_148_ == 0)
+{
+lean_ctor_set(v___x_147_, 1, v___x_155_);
+lean_ctor_set(v___x_147_, 0, v___x_152_);
+v___x_157_ = v___x_147_;
+goto v_reusejp_156_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_159_; 
+v_reuseFailAlloc_159_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v_reuseFailAlloc_159_, 0, v___x_152_);
+lean_ctor_set(v_reuseFailAlloc_159_, 1, v___x_155_);
+v___x_157_ = v_reuseFailAlloc_159_;
+goto v_reusejp_156_;
+}
+v_reusejp_156_:
+{
+v_x_138_ = v___x_157_;
+v_x_139_ = v_tail_141_;
+goto _start;
+}
+}
+}
+}
+}

@@ -1,0 +1,18 @@
+{
+  "generation": 11,
+  "prepared_utc": "2026-10-19T02:19:34.561722+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen11/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "994627f6b7fb25d5fbccb8065b13f24246c281381f3bb84dc9f678bfa061a4c3",
+  "prior_csv_rows": 22,
+  "fresh_verification": "tests/evidence/optimization/gen11/fresh-final-verification.json",
+  "fresh_verification_sha256": "4004d7f37e1889ce2e085b0e62234c3bfeb55f4d23d3d3e66eb33b5cb076fe5c",
+  "title": "CRC loop with a UInt32 remainder",
+  "change_description": "The live CRC uses a specialized natural-number fold with a UInt32 remainder instead of constructing a list of indices. The public step delegates to the same masked polynomial update; unconditional proofs retain every width and word, including the arbitrary-precision high-bit fallback. [Implementation and proof evidence](../docs/GEN11-CRC.md).",
+  "row_note": "UInt32 CRC loop without index list; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 3,
+    "denominator": 2
+  },
+  "decode_review_threshold": "3/2; exact integer comparison of the measured medians; stop for user review if reached",
+  "note": "Prepared before timing. Contains no speculative measurement. The reviewed target-aware helper only reads a completed run and writes its archive/report/results afterward."
+}

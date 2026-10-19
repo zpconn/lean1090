@@ -1,0 +1,78 @@
+--- review/diagnostics/archive_generation_benchmark.py
++++ review/diagnostics/archive_generation_benchmark_target.py
+@@ -3,6 +3,9 @@
+ 
+ Prepare a plan and exact prior-CSV snapshot before timing. After timing, invoke
+ with --plan and --source. --inspect only validates retained measurement data.
++Optional plan.decode_target_ratio is an exact positive numerator/denominator;
++omitting it retains the historical 11/10 reporting threshold. This reporting
++choice does not change timing, workloads, or recorded measurements.
+ All validation and report construction precede writes to bench/. Existing
+ destinations are rejected; partial failures are retained, never auto-retried.
+ """
+@@ -158,11 +161,41 @@
+             'power_plan_guid': plans[0], 'source_files': files}
+ 
+ 
++def target_ratio(plan):
++    """Validate the reporting target without floating-point conversion."""
++    ratio = plan.get('decode_target_ratio', {'numerator': 11, 'denominator': 10})
++    require(type(ratio) is dict and set(ratio) == {'numerator', 'denominator'},
++            'decode_target_ratio requires exactly numerator and denominator')
++    numerator, denominator = ratio['numerator'], ratio['denominator']
++    require(type(numerator) is int and type(denominator) is int and
++            numerator > 0 and denominator > 0,
++            'decode_target_ratio values must be positive integers (not bools)')
++    return numerator, denominator
++
++
++def target_label(plan):
++    numerator, denominator = target_ratio(plan)
++    # Use two decimal places only if exact; otherwise display the fraction.
++    hundredths, remainder = divmod(numerator * 100, denominator)
++    return (f'{hundredths // 100}.{hundredths % 100:02d}' if remainder == 0
++            else f'{numerator}/{denominator}')
++
++
++def decode_threshold_reached(plan, result):
++    numerator, denominator = target_ratio(plan)
++    medians = result['medians_nanoseconds']
++    rust, lean = medians['rs1090'], medians['lean1090']
++    require(type(rust) is int and type(lean) is int and rust > 0 and lean > 0,
++            'threshold comparison requires positive integer medians')
++    return rust * denominator >= lean * numerator
++
++
+ def report_text(plan, data, source, old_rows, fresh):
+     g = plan['generation']; s = data['summary']; results = data['results']; meta = data['metadata']['decode']
+-    reached = results[0]['medians_nanoseconds']['rs1090']*10 >= results[0]['medians_nanoseconds']['lean1090']*11
+-    action = ('The 1.10× decode threshold is reached. Stop for user review before further optimization or final deliverable work.'
+-              if reached else 'The 1.10× decode threshold remains unmet. A complete diagnostic and independent review precede the next optimization.')
++    reached = decode_threshold_reached(plan, results[0])
++    label = target_label(plan)
++    action = (f'The {label}× decode threshold is reached. Stop for user review before further optimization or final deliverable work.'
++              if reached else f'The {label}× decode threshold remains unmet. A complete diagnostic and independent review precede the next optimization.')
+     gains = []
+     for result in results:
+         prior = next(row for row in old_rows if int(row['generation']) == g-1 and row['mode'] == result['mode'])
+@@ -238,8 +271,9 @@
+     for r in data['results']:
+         writer.writerow([s['commit'],g,r['messages_per_second']['lean1090'],r['messages_per_second']['rs1090'],plan['row_note'],r['mode'],r['lean_over_rust']])
+     new_bytes = old_bytes + appended.getvalue().encode()
+-    reached = data['results'][0]['medians_nanoseconds']['rs1090']*10 >= data['results'][0]['medians_nanoseconds']['lean1090']*11
+-    verification = {'status':'passed','verified_utc':stamp(),'helper_sha256':sha(__file__),'plan_sha256':sha(args.plan),'commit':s['commit'],'results':data['results'],'clocks':data['clocks'],'wrapper_backsteps':data['wrapper_backsteps'],'fresh_verification_sha256':sha(fresh_path),'prior_csv_sha256':plan['prior_csv_sha256'],'prior_csv_bytes':len(old_bytes),'prior_rows_preserved':len(old_rows),'rows_appended':2,'csv_after_sha256':hashlib.sha256(new_bytes).hexdigest(),'report_sha256':hashlib.sha256(text.encode()).hexdigest(),'decode_threshold_reached':reached,'next':'Stop for user review.' if reached else 'Complete diagnostic and independent review before another optimization.'}
++    reached = decode_threshold_reached(plan, data['results'][0])
++    numerator, denominator = target_ratio(plan)
++    verification = {'status':'passed','verified_utc':stamp(),'helper_sha256':sha(__file__),'plan_sha256':sha(args.plan),'commit':s['commit'],'results':data['results'],'clocks':data['clocks'],'wrapper_backsteps':data['wrapper_backsteps'],'fresh_verification_sha256':sha(fresh_path),'prior_csv_sha256':plan['prior_csv_sha256'],'prior_csv_bytes':len(old_bytes),'prior_rows_preserved':len(old_rows),'rows_appended':2,'csv_after_sha256':hashlib.sha256(new_bytes).hexdigest(),'report_sha256':hashlib.sha256(text.encode()).hexdigest(),'decode_target_ratio':{'numerator':numerator,'denominator':denominator},'decode_threshold_reached':reached,'next':'Stop for user review.' if reached else 'Complete diagnostic and independent review before another optimization.'}
+     require(inventory(source) == data['source_files'], 'source evidence changed during validation')
+     shutil.copytree(source,destination)
+     require(inventory(destination) == data['source_files'], 'archive copy differs')
+@@ -253,7 +287,7 @@
+     archive = {'status':'passed','source':str(source.relative_to(ROOT)),'destination':str(destination.relative_to(ROOT)),'file_count':len(data['source_files']),'files':data['source_files'],'verified_utc':stamp(),'added_artifacts':{str((destination/'report-verification.json').relative_to(ROOT)):sha(destination/'report-verification.json'),str(report.relative_to(ROOT)):sha(report),'bench/results.csv':sha(csv_path)},'note':'Every original file copied byte-identically; verifier/report/results hashes are separate. Independent result review is separate.'}
+     require(inventory(source) == data['source_files'], 'source evidence changed during archival')
+     (destination/'archive-verification.json').write_text(json.dumps(archive,indent=2)+'\n')
+-    print(json.dumps({'status':'passed','archive':str(destination.relative_to(ROOT)),'archive_sha256':sha(destination/'archive-verification.json'),'report':str(report.relative_to(ROOT)),'report_sha256':sha(report),'decode_threshold_reached':reached,'next':verification['next']},indent=2))
++    print(json.dumps({'status':'passed','archive':str(destination.relative_to(ROOT)),'archive_sha256':sha(destination/'archive-verification.json'),'report':str(report.relative_to(ROOT)),'report_sha256':sha(report),'decode_target_ratio':{'numerator':numerator,'denominator':denominator},'decode_threshold_reached':reached,'next':verification['next']},indent=2))
+ 
+ 
+ if __name__ == '__main__':

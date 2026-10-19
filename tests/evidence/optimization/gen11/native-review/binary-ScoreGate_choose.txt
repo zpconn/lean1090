@@ -1,0 +1,1036 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b783c0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose>:
+  b783c0:	push   %rbp
+  b783c1:	push   %r15
+  b783c3:	push   %r14
+  b783c5:	push   %r13
+  b783c7:	push   %r12
+  b783c9:	push   %rbx
+  b783ca:	sub    $0x28,%rsp
+  b783ce:	mov    %rdi,%r15
+  b783d1:	mov    0x8(%rsi),%rbp
+  b783d5:	test   $0x1,%bpl
+  b783d9:	jne    b783eb <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2b>
+  b783db:	mov    0x0(%rbp),%eax
+  b783de:	test   %eax,%eax
+  b783e0:	jle    b78fc0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc00>
+  b783e6:	inc    %eax
+  b783e8:	mov    %eax,0x0(%rbp)
+  b783eb:	mov    0x10(%rsi),%rbx
+  b783ef:	test   $0x1,%bl
+  b783f2:	jne    b78402 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x42>
+  b783f4:	mov    (%rbx),%eax
+  b783f6:	test   %eax,%eax
+  b783f8:	jle    b78fd4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc14>
+  b783fe:	inc    %eax
+  b78400:	mov    %eax,(%rbx)
+  b78402:	mov    %rdx,0x18(%rsp)
+  b78407:	mov    %ebx,%r14d
+  b7840a:	and    $0x1,%r14d
+  b7840e:	test   $0x1,%r15b
+  b78412:	jne    b78424 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x64>
+  b78414:	mov    (%r15),%eax
+  b78417:	test   %eax,%eax
+  b78419:	jle    b78fe7 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc27>
+  b7841f:	inc    %eax
+  b78421:	mov    %eax,(%r15)
+  b78424:	mov    %r15,%rdi
+  b78427:	call   b77720 <lp_lean1090_Lean1090_Impl_ScoreGate_commonDenominator>
+  b7842c:	mov    %rax,%rdi
+  b7842f:	mov    0x3ff9cc3(%rip),%eax        # 4b720f8 <lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals___closed__1_once>
+  b78435:	cmp    $0x1,%eax
+  b78438:	mov    %rdi,0x8(%rsp)
+  b7843d:	jne    b78a54 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x694>
+  b78443:	mov    0x3ff9ca6(%rip),%rsi        # 4b720f0 <lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals___closed__1>
+  b7844a:	mov    %r15,%rdx
+  b7844d:	call   b77e40 <lp_lean1090_List_foldl___at___00Lean1090_Impl_ScoreGate_scaledTotals_spec__0>
+  b78452:	mov    0x8(%rsp),%rdi
+  b78457:	mov    %rax,%r13
+  b7845a:	test   %edi,%r14d
+  b7845d:	je     b78a0e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x64e>
+  b78463:	mov    %rbx,%rcx
+  b78466:	shr    $1,%rcx
+  b78469:	je     b7849a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xda>
+  b7846b:	mov    %rdi,%rax
+  b7846e:	shr    $1,%rax
+  b78471:	mov    %rax,%rdx
+  b78474:	or     %rcx,%rdx
+  b78477:	movabs $0x7fffffff00000000,%rsi
+  b78481:	test   %rsi,%rdx
+  b78484:	je     b784a6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe6>
+  b78486:	xor    %edx,%edx
+  b78488:	div    %rcx
+  b7848b:	lea    0x1(,%rax,2),%rax
+  b78493:	test   %r14,%r14
+  b78496:	je     b784b7 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf7>
+  b78498:	jmp    b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b7849a:	mov    $0x1,%eax
+  b7849f:	test   %r14,%r14
+  b784a2:	je     b784b7 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf7>
+  b784a4:	jmp    b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b784a6:	xor    %edx,%edx
+  b784a8:	div    %ecx
+  b784aa:	lea    0x1(,%rax,2),%rax
+  b784b2:	test   %r14,%r14
+  b784b5:	jne    b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b784b7:	mov    (%rbx),%ecx
+  b784b9:	cmp    $0x2,%ecx
+  b784bc:	jl     b78ffb <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc3b>
+  b784c2:	dec    %ecx
+  b784c4:	mov    %ecx,(%rbx)
+  b784c6:	test   $0x1,%al
+  b784c8:	sete   %cl
+  b784cb:	mov    %rax,%rdx
+  b784ce:	shr    $0x20,%rdx
+  b784d2:	sete   %dl
+  b784d5:	or     %cl,%dl
+  b784d7:	jne    b784e4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x124>
+  b784d9:	shr    $1,%rax
+  b784dc:	mov    %rax,%rdi
+  b784df:	call   4898490 <lean_big_size_t_to_int>
+  b784e4:	movabs $0x1fffffffe,%rdx
+  b784ee:	test   $0x1,%bpl
+  b784f2:	je     b78a7b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x6bb>
+  b784f8:	test   $0x1,%al
+  b784fa:	je     b78c57 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x897>
+  b78500:	shr    $1,%rbp
+  b78503:	movslq %ebp,%rcx
+  b78506:	shr    $1,%rax
+  b78509:	movslq %eax,%r12
+  b7850c:	imul   %rcx,%r12
+  b78510:	movslq %r12d,%rax
+  b78513:	cmp    %r12,%rax
+  b78516:	jne    b78dc4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa04>
+  b7851c:	add    %r12,%r12
+  b7851f:	and    %rdx,%r12
+  b78522:	inc    %r12
+  b78525:	mov    %r15,%rdi
+  b78528:	call   46e5a30 <l_List_lengthTR___redArg>
+  b7852d:	test   $0x1,%r15b
+  b78531:	jne    b78544 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x184>
+  b78533:	mov    (%r15),%ecx
+  b78536:	cmp    $0x2,%ecx
+  b78539:	jl     b79016 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc56>
+  b7853f:	dec    %ecx
+  b78541:	mov    %ecx,(%r15)
+  b78544:	test   $0x1,%al
+  b78546:	je     b78a9e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x6de>
+  b7854c:	cmp    $0x4,%rax
+  b78550:	mov    $0x3,%r15d
+  b78556:	cmovae %rax,%r15
+  b7855a:	mov    0x8(%r13),%rbx
+  b7855e:	test   $0x1,%bl
+  b78561:	jne    b78571 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1b1>
+  b78563:	mov    (%rbx),%eax
+  b78565:	test   %eax,%eax
+  b78567:	jle    b79031 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc71>
+  b7856d:	inc    %eax
+  b7856f:	mov    %eax,(%rbx)
+  b78571:	mov    0x10(%r13),%rbp
+  b78575:	test   $0x1,%bpl
+  b78579:	jne    b7858b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1cb>
+  b7857b:	mov    0x0(%rbp),%eax
+  b7857e:	test   %eax,%eax
+  b78580:	jle    b79044 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc84>
+  b78586:	inc    %eax
+  b78588:	mov    %eax,0x0(%rbp)
+  b7858b:	mov    0x0(%r13),%eax
+  b7858f:	cmp    $0x2,%eax
+  b78592:	jl     b78ad0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x710>
+  b78598:	dec    %eax
+  b7859a:	mov    %eax,0x0(%r13)
+  b7859e:	test   $0x1,%r15b
+  b785a2:	sete   %al
+  b785a5:	mov    %r15,%rcx
+  b785a8:	shr    $0x20,%rcx
+  b785ac:	sete   %cl
+  b785af:	or     %al,%cl
+  b785b1:	jne    b785c1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x201>
+  b785b3:	shr    $1,%r15
+  b785b6:	mov    %r15,%rdi
+  b785b9:	call   4898490 <lean_big_size_t_to_int>
+  b785be:	mov    %rax,%r15
+  b785c1:	movabs $0x1fffffffe,%rdx
+  b785cb:	mov    %r15,%rax
+  b785ce:	and    $0x1,%rax
+  b785d2:	mov    %rax,0x10(%rsp)
+  b785d7:	je     b78a34 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x674>
+  b785dd:	test   $0x1,%r12b
+  b785e1:	je     b78a34 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x674>
+  b785e7:	mov    %r15,%rax
+  b785ea:	shr    $1,%rax
+  b785ed:	cltq
+  b785ef:	mov    %r12,%rcx
+  b785f2:	shr    $1,%rcx
+  b785f5:	movslq %ecx,%r14
+  b785f8:	imul   %rax,%r14
+  b785fc:	movslq %r14d,%rax
+  b785ff:	cmp    %r14,%rax
+  b78602:	jne    b78dd4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa14>
+  b78608:	add    %r14,%r14
+  b7860b:	and    %rdx,%r14
+  b7860e:	inc    %r14
+  b78611:	test   $0x1,%bl
+  b78614:	je     b78df2 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa32>
+  b7861a:	test   $0x1,%r14b
+  b7861e:	je     b78c9a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8da>
+  b78624:	shr    $1,%rbx
+  b78627:	movslq %ebx,%rax
+  b7862a:	shr    $1,%r14
+  b7862d:	movslq %r14d,%r13
+  b78630:	add    %rax,%r13
+  b78633:	movslq %r13d,%rax
+  b78636:	cmp    %r13,%rax
+  b78639:	jne    b78e34 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa74>
+  b7863f:	add    %r13,%r13
+  b78642:	and    %rdx,%r13
+  b78645:	inc    %r13
+  b78648:	test   $0x1,%r12b
+  b7864c:	je     b78ae5 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x725>
+  b78652:	bt     $0x20,%r12
+  b78657:	jb     b7865e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x29e>
+  b78659:	mov    %r12,%rax
+  b7865c:	jmp    b786a1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2e1>
+  b7865e:	mov    %r12,%rax
+  b78661:	shr    $1,%rax
+  b78664:	cltq
+  b78666:	mov    %rax,%rdi
+  b78669:	neg    %rdi
+  b7866c:	neg    %eax
+  b7866e:	jo     b790e0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd20>
+  b78674:	lea    0x1(,%rdi,2),%rax
+  b7867c:	test   $0x1,%al
+  b7867e:	jne    b78688 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2c8>
+  b78680:	mov    %rax,%rdi
+  b78683:	call   48982a0 <lean_big_int_to_nat>
+  b78688:	test   $0x1,%r12b
+  b7868c:	jne    b786a1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2e1>
+  b7868e:	mov    (%r12),%ecx
+  b78692:	cmp    $0x2,%ecx
+  b78695:	jl     b7913d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd7d>
+  b7869b:	dec    %ecx
+  b7869d:	mov    %ecx,(%r12)
+  b786a1:	test   $0x1,%al
+  b786a3:	sete   %cl
+  b786a6:	mov    %rax,%rdx
+  b786a9:	shr    $0x20,%rdx
+  b786ad:	sete   %dl
+  b786b0:	or     %cl,%dl
+  b786b2:	jne    b786bf <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2ff>
+  b786b4:	shr    $1,%rax
+  b786b7:	mov    %rax,%rdi
+  b786ba:	call   4898490 <lean_big_size_t_to_int>
+  b786bf:	test   $0x1,%bpl
+  b786c3:	je     b78b07 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x747>
+  b786c9:	test   $0x1,%al
+  b786cb:	je     b78cad <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8ed>
+  b786d1:	shr    $1,%rbp
+  b786d4:	movslq %ebp,%rcx
+  b786d7:	shr    $1,%rax
+  b786da:	movslq %eax,%r12
+  b786dd:	add    %rcx,%r12
+  b786e0:	movslq %r12d,%rax
+  b786e3:	cmp    %r12,%rax
+  b786e6:	jne    b78e44 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa84>
+  b786ec:	add    %r12,%r12
+  b786ef:	movabs $0x1fffffffe,%rdx
+  b786f9:	and    %rdx,%r12
+  b786fc:	inc    %r12
+  b786ff:	mov    0x8(%rsp),%rsi
+  b78704:	test   $0x1,%sil
+  b78708:	sete   %al
+  b7870b:	mov    %rsi,%rcx
+  b7870e:	shr    $0x20,%rcx
+  b78712:	sete   %cl
+  b78715:	or     %al,%cl
+  b78717:	jne    b78731 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x371>
+  b78719:	shr    $1,%rsi
+  b7871c:	mov    %rsi,%rdi
+  b7871f:	call   4898490 <lean_big_size_t_to_int>
+  b78724:	movabs $0x1fffffffe,%rdx
+  b7872e:	mov    %rax,%rsi
+  b78731:	test   $0x1,%r12b
+  b78735:	mov    %rsi,0x8(%rsp)
+  b7873a:	je     b78b39 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x779>
+  b78740:	test   $0x1,%sil
+  b78744:	je     b78cff <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x93f>
+  b7874a:	shr    $1,%r12
+  b7874d:	movslq %r12d,%rax
+  b78750:	mov    %rsi,%rcx
+  b78753:	shr    $1,%rcx
+  b78756:	movslq %ecx,%rbx
+  b78759:	add    %rax,%rbx
+  b7875c:	movslq %ebx,%rax
+  b7875f:	cmp    %rbx,%rax
+  b78762:	jne    b78e5e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa9e>
+  b78768:	add    %rbx,%rbx
+  b7876b:	and    %rdx,%rbx
+  b7876e:	inc    %rbx
+  b78771:	mov    0x3ff9991(%rip),%eax        # 4b72108 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0_once>
+  b78777:	cmp    $0x1,%eax
+  b7877a:	jne    b78b5c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x79c>
+  b78780:	mov    0x3ff9979(%rip),%rbp        # 4b72100 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0>
+  b78787:	mov    %rbp,%rax
+  b7878a:	and    $0x1,%rax
+  b7878e:	mov    %rax,0x20(%rsp)
+  b78793:	je     b78b8b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x7cb>
+  b78799:	test   $0x1,%r13b
+  b7879d:	je     b78d0f <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x94f>
+  b787a3:	mov    %rbp,%rax
+  b787a6:	shr    $1,%rax
+  b787a9:	cltq
+  b787ab:	shr    $1,%r13
+  b787ae:	movslq %r13d,%r12
+  b787b1:	imul   %rax,%r12
+  b787b5:	movslq %r12d,%rax
+  b787b8:	cmp    %r12,%rax
+  b787bb:	jne    b78e6e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xaae>
+  b787c1:	add    %r12,%r12
+  b787c4:	movabs $0x1fffffffe,%rdx
+  b787ce:	and    %rdx,%r12
+  b787d1:	inc    %r12
+  b787d4:	cmpq   $0x0,0x10(%rsp)
+  b787da:	je     b78bb2 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x7f2>
+  b787e0:	test   $0x1,%bl
+  b787e3:	je     b78d3f <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x97f>
+  b787e9:	mov    %r15,%rax
+  b787ec:	shr    $1,%rax
+  b787ef:	cltq
+  b787f1:	shr    $1,%rbx
+  b787f4:	movslq %ebx,%r13
+  b787f7:	imul   %rax,%r13
+  b787fb:	movslq %r13d,%rax
+  b787fe:	cmp    %r13,%rax
+  b78801:	jne    b78e88 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xac8>
+  b78807:	add    %r13,%r13
+  b7880a:	and    %rdx,%r13
+  b7880d:	inc    %r13
+  b78810:	mov    0x3ff9902(%rip),%eax        # 4b72118 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2_once>
+  b78816:	cmp    $0x1,%eax
+  b78819:	jne    b78bd8 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x818>
+  b7881f:	mov    0x3ff98ea(%rip),%rdi        # 4b72110 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2>
+  b78826:	test   %edi,0x10(%rsp)
+  b7882a:	je     b78c09 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x849>
+  b78830:	shr    $1,%rdi
+  b78833:	movslq %edi,%rax
+  b78836:	mov    %r15,%rcx
+  b78839:	shr    $1,%rcx
+  b7883c:	movslq %ecx,%r14
+  b7883f:	imul   %rax,%r14
+  b78843:	movslq %r14d,%rax
+  b78846:	cmp    %r14,%rax
+  b78849:	jne    b78f7c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbbc>
+  b7884f:	add    %r14,%r14
+  b78852:	and    %rdx,%r14
+  b78855:	inc    %r14
+  b78858:	cmpq   $0x0,0x10(%rsp)
+  b7885e:	mov    0x8(%rsp),%rsi
+  b78863:	jne    b78876 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4b6>
+  b78865:	mov    (%r15),%eax
+  b78868:	cmp    $0x2,%eax
+  b7886b:	jl     b79058 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xc98>
+  b78871:	dec    %eax
+  b78873:	mov    %eax,(%r15)
+  b78876:	test   $0x1,%r14b
+  b7887a:	je     b78c16 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x856>
+  b78880:	test   $0x1,%sil
+  b78884:	je     b78d6b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9ab>
+  b7888a:	shr    $1,%r14
+  b7888d:	movslq %r14d,%rax
+  b78890:	shr    $1,%rsi
+  b78893:	movslq %esi,%rbx
+  b78896:	imul   %rax,%rbx
+  b7889a:	movslq %ebx,%rax
+  b7889d:	cmp    %rbx,%rax
+  b788a0:	jne    b78ea2 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xae2>
+  b788a6:	add    %rbx,%rbx
+  b788a9:	movabs $0x1fffffffe,%rcx
+  b788b3:	and    %rcx,%rbx
+  b788b6:	inc    %rbx
+  b788b9:	test   %ebx,0x20(%rsp)
+  b788bd:	je     b78a24 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x664>
+  b788c3:	mov    %rbx,%rax
+  b788c6:	shr    $1,%rax
+  b788c9:	cltq
+  b788cb:	shr    $1,%rbp
+  b788ce:	movslq %ebp,%r14
+  b788d1:	imul   %rax,%r14
+  b788d5:	movslq %r14d,%rax
+  b788d8:	cmp    %r14,%rax
+  b788db:	jne    b78f9d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbdd>
+  b788e1:	add    %r14,%r14
+  b788e4:	and    %rcx,%r14
+  b788e7:	inc    %r14
+  b788ea:	test   $0x1,%bl
+  b788ed:	jne    b788fe <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x53e>
+  b788ef:	mov    (%rbx),%eax
+  b788f1:	cmp    $0x2,%eax
+  b788f4:	jl     b79072 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xcb2>
+  b788fa:	dec    %eax
+  b788fc:	mov    %eax,(%rbx)
+  b788fe:	test   $0x1,%r12b
+  b78902:	je     b78a44 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x684>
+  b78908:	test   $0x1,%r13b
+  b7890c:	je     b78a44 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x684>
+  b78912:	mov    %r12,%rax
+  b78915:	shr    $1,%rax
+  b78918:	movslq %eax,%rbx
+  b7891b:	mov    %r13,%rax
+  b7891e:	shr    $1,%rax
+  b78921:	cltq
+  b78923:	sub    %rax,%rbx
+  b78926:	movslq %ebx,%rax
+  b78929:	cmp    %rbx,%rax
+  b7892c:	jne    b78ebc <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xafc>
+  b78932:	add    %rbx,%rbx
+  b78935:	and    %rcx,%rbx
+  b78938:	inc    %rbx
+  b7893b:	mov    %r14,%r15
+  b7893e:	and    $0x1,%r15
+  b78942:	je     b78ede <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb1e>
+  b78948:	test   $0x1,%bl
+  b7894b:	je     b78db4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9f4>
+  b78951:	mov    %r14,%rax
+  b78954:	shr    $1,%rax
+  b78957:	shr    $1,%rbx
+  b7895a:	cmp    %ebx,%eax
+  b7895c:	jle    b78f25 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb65>
+  b78962:	test   $0x1,%r12b
+  b78966:	je     b79091 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xcd1>
+  b7896c:	test   $0x1,%r13b
+  b78970:	je     b790ea <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd2a>
+  b78976:	shr    $1,%r12
+  b78979:	movslq %r12d,%rax
+  b7897c:	shr    $1,%r13
+  b7897f:	movslq %r13d,%rbx
+  b78982:	add    %rax,%rbx
+  b78985:	movslq %ebx,%rax
+  b78988:	cmp    %rbx,%rax
+  b7898b:	jne    b7912d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd6d>
+  b78991:	add    %rbx,%rbx
+  b78994:	and    %rcx,%rbx
+  b78997:	inc    %rbx
+  b7899a:	test   %ebx,%r15d
+  b7899d:	je     b78c3e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x87e>
+  b789a3:	mov    %rbx,%rax
+  b789a6:	shr    $1,%rax
+  b789a9:	mov    %r14,%rcx
+  b789ac:	shr    $1,%rcx
+  b789af:	cmp    %ecx,%eax
+  b789b1:	setl   %al
+  b789b4:	test   %r15,%r15
+  b789b7:	jne    b789ca <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x60a>
+  b789b9:	mov    (%r14),%ecx
+  b789bc:	cmp    $0x2,%ecx
+  b789bf:	jl     b79154 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd94>
+  b789c5:	dec    %ecx
+  b789c7:	mov    %ecx,(%r14)
+  b789ca:	test   $0x1,%bl
+  b789cd:	mov    0x18(%rsp),%rdi
+  b789d2:	jne    b789e3 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x623>
+  b789d4:	mov    (%rbx),%ecx
+  b789d6:	cmp    $0x2,%ecx
+  b789d9:	jl     b7916d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xdad>
+  b789df:	dec    %ecx
+  b789e1:	mov    %ecx,(%rbx)
+  b789e3:	test   %al,%al
+  b789e5:	je     b789fd <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x63d>
+  b789e7:	mov    (%rdi),%eax
+  b789e9:	cmp    $0x2,%eax
+  b789ec:	jl     b7918c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xdcc>
+  b789f2:	dec    %eax
+  b789f4:	mov    %eax,(%rdi)
+  b789f6:	xor    %eax,%eax
+  b789f8:	jmp    b78f6d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbad>
+  b789fd:	mov    $0x1,%esi
+  b78a02:	call   489fe10 <lean_apply_1>
+  b78a07:	shr    $1,%eax
+  b78a09:	jmp    b78f6d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbad>
+  b78a0e:	mov    %rbx,%rsi
+  b78a11:	call   4896ab0 <lean_nat_big_div>
+  b78a16:	test   %r14,%r14
+  b78a19:	je     b784b7 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf7>
+  b78a1f:	jmp    b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b78a24:	mov    %rbx,%rdi
+  b78a27:	mov    %rbp,%rsi
+  b78a2a:	call   4898be0 <lean_int_big_mul>
+  b78a2f:	jmp    b78fa5 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbe5>
+  b78a34:	mov    %r15,%rdi
+  b78a37:	mov    %r12,%rsi
+  b78a3a:	call   4898be0 <lean_int_big_mul>
+  b78a3f:	jmp    b78ddc <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa1c>
+  b78a44:	mov    %r12,%rdi
+  b78a47:	mov    %r13,%rsi
+  b78a4a:	call   4898900 <lean_int_big_sub>
+  b78a4f:	jmp    b78ec4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb04>
+  b78a54:	lea    0x3ff9695(%rip),%rdi        # 4b720f0 <lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals___closed__1>
+  b78a5b:	lea    0x3ff9696(%rip),%rsi        # 4b720f8 <lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals___closed__1_once>
+  b78a62:	lea    -0x709(%rip),%rdx        # b78360 <_init_lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals___closed__1>
+  b78a69:	call   489d140 <lean_obj_once_cold>
+  b78a6e:	mov    0x8(%rsp),%rdi
+  b78a73:	mov    %rax,%rsi
+  b78a76:	jmp    b7844a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8a>
+  b78a7b:	mov    %rbp,%rdi
+  b78a7e:	mov    %rax,%rsi
+  b78a81:	mov    %rax,%rbx
+  b78a84:	call   4898be0 <lean_int_big_mul>
+  b78a89:	mov    %rax,%r12
+  b78a8c:	mov    %rbx,%rdi
+  b78a8f:	test   $0x1,%dil
+  b78a93:	je     b78c6b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8ab>
+  b78a99:	jmp    b78c84 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8c4>
+  b78a9e:	mov    $0x3,%esi
+  b78aa3:	mov    %rax,%rbx
+  b78aa6:	mov    %rax,%rdi
+  b78aa9:	call   48970b0 <lean_nat_big_le>
+  b78aae:	test   %al,%al
+  b78ab0:	je     b790a7 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xce7>
+  b78ab6:	mov    (%rbx),%eax
+  b78ab8:	cmp    $0x2,%eax
+  b78abb:	jl     b79340 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf80>
+  b78ac1:	dec    %eax
+  b78ac3:	mov    %eax,(%rbx)
+  b78ac5:	mov    $0x3,%r15d
+  b78acb:	jmp    b7855a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x19a>
+  b78ad0:	test   %eax,%eax
+  b78ad2:	je     b7859e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1de>
+  b78ad8:	mov    %r13,%rdi
+  b78adb:	call   4893c30 <lean_dec_ref_cold>
+  b78ae0:	jmp    b7859e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1de>
+  b78ae5:	mov    $0x1,%esi
+  b78aea:	mov    %r12,%rdi
+  b78aed:	call   4899b90 <lean_int_big_lt>
+  b78af2:	test   %al,%al
+  b78af4:	je     b790af <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xcef>
+  b78afa:	mov    %r12,%rdi
+  b78afd:	call   4898560 <lean_int_big_neg>
+  b78b02:	jmp    b7867c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2bc>
+  b78b07:	mov    %rbp,%rdi
+  b78b0a:	mov    %rax,%rsi
+  b78b0d:	mov    %rax,%rbx
+  b78b10:	call   4898630 <lean_int_big_add>
+  b78b15:	mov    %rax,%r12
+  b78b18:	mov    %rbx,%rdi
+  b78b1b:	test   $0x1,%dil
+  b78b1f:	movabs $0x1fffffffe,%rdx
+  b78b29:	mov    0x8(%rsp),%rsi
+  b78b2e:	je     b78cd0 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x910>
+  b78b34:	jmp    b78ce9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x929>
+  b78b39:	mov    %r12,%rdi
+  b78b3c:	call   4898630 <lean_int_big_add>
+  b78b41:	mov    %rax,%rbx
+  b78b44:	mov    (%r12),%eax
+  b78b48:	cmp    $0x2,%eax
+  b78b4b:	jl     b792e8 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf28>
+  b78b51:	dec    %eax
+  b78b53:	mov    %eax,(%r12)
+  b78b57:	jmp    b78771 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3b1>
+  b78b5c:	lea    0x3ff959d(%rip),%rdi        # 4b72100 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0>
+  b78b63:	lea    0x3ff959e(%rip),%rsi        # 4b72108 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0_once>
+  b78b6a:	lea    0x81f(%rip),%rdx        # b79390 <_init_lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0>
+  b78b71:	call   489d140 <lean_obj_once_cold>
+  b78b76:	mov    %rax,%rbp
+  b78b79:	mov    %rbp,%rax
+  b78b7c:	and    $0x1,%rax
+  b78b80:	mov    %rax,0x20(%rsp)
+  b78b85:	jne    b78799 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3d9>
+  b78b8b:	mov    %rbp,%rdi
+  b78b8e:	mov    %r13,%rsi
+  b78b91:	call   4898be0 <lean_int_big_mul>
+  b78b96:	mov    %rax,%r12
+  b78b99:	test   $0x1,%r13b
+  b78b9d:	movabs $0x1fffffffe,%rdx
+  b78ba7:	jne    b787d4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x414>
+  b78bad:	jmp    b78d27 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x967>
+  b78bb2:	mov    %r15,%rdi
+  b78bb5:	mov    %rbx,%rsi
+  b78bb8:	call   4898be0 <lean_int_big_mul>
+  b78bbd:	movabs $0x1fffffffe,%rdx
+  b78bc7:	mov    %rax,%r13
+  b78bca:	test   $0x1,%bl
+  b78bcd:	jne    b78810 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x450>
+  b78bd3:	jmp    b78d57 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x997>
+  b78bd8:	lea    0x3ff9531(%rip),%rdi        # 4b72110 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2>
+  b78bdf:	lea    0x3ff9532(%rip),%rsi        # 4b72118 <lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2_once>
+  b78be6:	lea    0x7d3(%rip),%rdx        # b793c0 <_init_lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2>
+  b78bed:	call   489d140 <lean_obj_once_cold>
+  b78bf2:	movabs $0x1fffffffe,%rdx
+  b78bfc:	mov    %rax,%rdi
+  b78bff:	test   %edi,0x10(%rsp)
+  b78c03:	jne    b78830 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x470>
+  b78c09:	mov    %r15,%rsi
+  b78c0c:	call   4898be0 <lean_int_big_mul>
+  b78c11:	jmp    b78f84 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbc4>
+  b78c16:	mov    %r14,%rdi
+  b78c19:	call   4898be0 <lean_int_big_mul>
+  b78c1e:	mov    0x8(%rsp),%rdx
+  b78c23:	mov    %rax,%rbx
+  b78c26:	test   $0x1,%dl
+  b78c29:	movabs $0x1fffffffe,%rcx
+  b78c33:	je     b78d85 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9c5>
+  b78c39:	jmp    b78d9e <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9de>
+  b78c3e:	mov    %rbx,%rdi
+  b78c41:	mov    %r14,%rsi
+  b78c44:	call   4899b90 <lean_int_big_lt>
+  b78c49:	test   %r15,%r15
+  b78c4c:	je     b789b9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5f9>
+  b78c52:	jmp    b789ca <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x60a>
+  b78c57:	mov    %rbp,%rdi
+  b78c5a:	mov    %rax,%rsi
+  b78c5d:	mov    %rax,%rbx
+  b78c60:	call   4898be0 <lean_int_big_mul>
+  b78c65:	mov    %rax,%r12
+  b78c68:	mov    %rbx,%rdi
+  b78c6b:	mov    (%rdi),%eax
+  b78c6d:	cmp    $0x2,%eax
+  b78c70:	jl     b791cd <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe0d>
+  b78c76:	dec    %eax
+  b78c78:	mov    %eax,(%rdi)
+  b78c7a:	test   $0x1,%bpl
+  b78c7e:	jne    b78525 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x165>
+  b78c84:	mov    0x0(%rbp),%eax
+  b78c87:	cmp    $0x2,%eax
+  b78c8a:	jl     b79294 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xed4>
+  b78c90:	dec    %eax
+  b78c92:	mov    %eax,0x0(%rbp)
+  b78c95:	jmp    b78525 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x165>
+  b78c9a:	mov    %rbx,%rdi
+  b78c9d:	mov    %r14,%rsi
+  b78ca0:	call   4898630 <lean_int_big_add>
+  b78ca5:	mov    %rax,%r13
+  b78ca8:	jmp    b78e06 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa46>
+  b78cad:	mov    %rbp,%rdi
+  b78cb0:	mov    %rax,%rsi
+  b78cb3:	mov    %rax,%rbx
+  b78cb6:	call   4898630 <lean_int_big_add>
+  b78cbb:	mov    %rax,%r12
+  b78cbe:	mov    %rbx,%rdi
+  b78cc1:	movabs $0x1fffffffe,%rdx
+  b78ccb:	mov    0x8(%rsp),%rsi
+  b78cd0:	mov    (%rdi),%eax
+  b78cd2:	cmp    $0x2,%eax
+  b78cd5:	jl     b791df <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe1f>
+  b78cdb:	dec    %eax
+  b78cdd:	mov    %eax,(%rdi)
+  b78cdf:	test   $0x1,%bpl
+  b78ce3:	jne    b78704 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x344>
+  b78ce9:	mov    0x0(%rbp),%eax
+  b78cec:	cmp    $0x2,%eax
+  b78cef:	jl     b792a9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xee9>
+  b78cf5:	dec    %eax
+  b78cf7:	mov    %eax,0x0(%rbp)
+  b78cfa:	jmp    b78704 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x344>
+  b78cff:	mov    %r12,%rdi
+  b78d02:	call   4898630 <lean_int_big_add>
+  b78d07:	mov    %rax,%rbx
+  b78d0a:	jmp    b78771 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3b1>
+  b78d0f:	mov    %rbp,%rdi
+  b78d12:	mov    %r13,%rsi
+  b78d15:	call   4898be0 <lean_int_big_mul>
+  b78d1a:	mov    %rax,%r12
+  b78d1d:	movabs $0x1fffffffe,%rdx
+  b78d27:	mov    0x0(%r13),%eax
+  b78d2b:	cmp    $0x2,%eax
+  b78d2e:	jl     b79200 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe40>
+  b78d34:	dec    %eax
+  b78d36:	mov    %eax,0x0(%r13)
+  b78d3a:	jmp    b787d4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x414>
+  b78d3f:	mov    %r15,%rdi
+  b78d42:	mov    %rbx,%rsi
+  b78d45:	call   4898be0 <lean_int_big_mul>
+  b78d4a:	movabs $0x1fffffffe,%rdx
+  b78d54:	mov    %rax,%r13
+  b78d57:	mov    (%rbx),%eax
+  b78d59:	cmp    $0x2,%eax
+  b78d5c:	jl     b79215 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe55>
+  b78d62:	dec    %eax
+  b78d64:	mov    %eax,(%rbx)
+  b78d66:	jmp    b78810 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x450>
+  b78d6b:	mov    %r14,%rdi
+  b78d6e:	call   4898be0 <lean_int_big_mul>
+  b78d73:	mov    0x8(%rsp),%rdx
+  b78d78:	mov    %rax,%rbx
+  b78d7b:	movabs $0x1fffffffe,%rcx
+  b78d85:	mov    (%rdx),%eax
+  b78d87:	cmp    $0x2,%eax
+  b78d8a:	jl     b79234 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe74>
+  b78d90:	dec    %eax
+  b78d92:	mov    %eax,(%rdx)
+  b78d94:	test   $0x1,%r14b
+  b78d98:	jne    b788b9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4f9>
+  b78d9e:	mov    (%r14),%eax
+  b78da1:	cmp    $0x2,%eax
+  b78da4:	jl     b792be <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xefe>
+  b78daa:	dec    %eax
+  b78dac:	mov    %eax,(%r14)
+  b78daf:	jmp    b788b9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4f9>
+  b78db4:	mov    %r14,%rdi
+  b78db7:	mov    %rbx,%rsi
+  b78dba:	call   4899b40 <lean_int_big_le>
+  b78dbf:	jmp    b78eee <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb2e>
+  b78dc4:	mov    %r12,%rdi
+  b78dc7:	call   4898500 <lean_big_int64_to_int>
+  b78dcc:	mov    %rax,%r12
+  b78dcf:	jmp    b78525 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x165>
+  b78dd4:	mov    %r14,%rdi
+  b78dd7:	call   4898500 <lean_big_int64_to_int>
+  b78ddc:	movabs $0x1fffffffe,%rdx
+  b78de6:	mov    %rax,%r14
+  b78de9:	test   $0x1,%bl
+  b78dec:	jne    b7861a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x25a>
+  b78df2:	mov    %rbx,%rdi
+  b78df5:	mov    %r14,%rsi
+  b78df8:	call   4898630 <lean_int_big_add>
+  b78dfd:	mov    %rax,%r13
+  b78e00:	test   $0x1,%r14b
+  b78e04:	jne    b78e20 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa60>
+  b78e06:	mov    (%r14),%eax
+  b78e09:	cmp    $0x2,%eax
+  b78e0c:	jl     b79255 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe95>
+  b78e12:	dec    %eax
+  b78e14:	mov    %eax,(%r14)
+  b78e17:	test   $0x1,%bl
+  b78e1a:	jne    b78648 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x288>
+  b78e20:	mov    (%rbx),%eax
+  b78e22:	cmp    $0x2,%eax
+  b78e25:	jl     b792d3 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf13>
+  b78e2b:	dec    %eax
+  b78e2d:	mov    %eax,(%rbx)
+  b78e2f:	jmp    b78648 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x288>
+  b78e34:	mov    %r13,%rdi
+  b78e37:	call   4898500 <lean_big_int64_to_int>
+  b78e3c:	mov    %rax,%r13
+  b78e3f:	jmp    b78648 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x288>
+  b78e44:	mov    %r12,%rdi
+  b78e47:	call   4898500 <lean_big_int64_to_int>
+  b78e4c:	mov    %rax,%r12
+  b78e4f:	movabs $0x1fffffffe,%rdx
+  b78e59:	jmp    b786ff <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x33f>
+  b78e5e:	mov    %rbx,%rdi
+  b78e61:	call   4898500 <lean_big_int64_to_int>
+  b78e66:	mov    %rax,%rbx
+  b78e69:	jmp    b78771 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3b1>
+  b78e6e:	mov    %r12,%rdi
+  b78e71:	call   4898500 <lean_big_int64_to_int>
+  b78e76:	mov    %rax,%r12
+  b78e79:	movabs $0x1fffffffe,%rdx
+  b78e83:	jmp    b787d4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x414>
+  b78e88:	mov    %r13,%rdi
+  b78e8b:	call   4898500 <lean_big_int64_to_int>
+  b78e90:	movabs $0x1fffffffe,%rdx
+  b78e9a:	mov    %rax,%r13
+  b78e9d:	jmp    b78810 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x450>
+  b78ea2:	mov    %rbx,%rdi
+  b78ea5:	call   4898500 <lean_big_int64_to_int>
+  b78eaa:	mov    %rax,%rbx
+  b78ead:	movabs $0x1fffffffe,%rcx
+  b78eb7:	jmp    b788b9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4f9>
+  b78ebc:	mov    %rbx,%rdi
+  b78ebf:	call   4898500 <lean_big_int64_to_int>
+  b78ec4:	movabs $0x1fffffffe,%rcx
+  b78ece:	mov    %rax,%rbx
+  b78ed1:	mov    %r14,%r15
+  b78ed4:	and    $0x1,%r15
+  b78ed8:	jne    b78948 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x588>
+  b78ede:	mov    %r14,%rdi
+  b78ee1:	mov    %rbx,%rsi
+  b78ee4:	call   4899b40 <lean_int_big_le>
+  b78ee9:	test   $0x1,%bl
+  b78eec:	jne    b78efd <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb3d>
+  b78eee:	mov    (%rbx),%ecx
+  b78ef0:	cmp    $0x2,%ecx
+  b78ef3:	jl     b7926a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xeaa>
+  b78ef9:	dec    %ecx
+  b78efb:	mov    %ecx,(%rbx)
+  b78efd:	test   %al,%al
+  b78eff:	movabs $0x1fffffffe,%rcx
+  b78f09:	je     b78962 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5a2>
+  b78f0f:	test   %r15,%r15
+  b78f12:	jne    b78f25 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb65>
+  b78f14:	mov    (%r14),%eax
+  b78f17:	cmp    $0x2,%eax
+  b78f1a:	jl     b79374 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xfb4>
+  b78f20:	dec    %eax
+  b78f22:	mov    %eax,(%r14)
+  b78f25:	test   $0x1,%r13b
+  b78f29:	mov    0x18(%rsp),%rbx
+  b78f2e:	jne    b78f43 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb83>
+  b78f30:	mov    0x0(%r13),%eax
+  b78f34:	cmp    $0x2,%eax
+  b78f37:	jl     b7919c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xddc>
+  b78f3d:	dec    %eax
+  b78f3f:	mov    %eax,0x0(%r13)
+  b78f43:	test   $0x1,%r12b
+  b78f47:	jne    b78f5c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb9c>
+  b78f49:	mov    (%r12),%eax
+  b78f4d:	cmp    $0x2,%eax
+  b78f50:	jl     b791b1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xdf1>
+  b78f56:	dec    %eax
+  b78f58:	mov    %eax,(%r12)
+  b78f5c:	mov    (%rbx),%ecx
+  b78f5e:	cmp    $0x2,%ecx
+  b78f61:	jl     b790c9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd09>
+  b78f67:	dec    %ecx
+  b78f69:	mov    %ecx,(%rbx)
+  b78f6b:	mov    $0x1,%al
+  b78f6d:	add    $0x28,%rsp
+  b78f71:	pop    %rbx
+  b78f72:	pop    %r12
+  b78f74:	pop    %r13
+  b78f76:	pop    %r14
+  b78f78:	pop    %r15
+  b78f7a:	pop    %rbp
+  b78f7b:	ret
+  b78f7c:	mov    %r14,%rdi
+  b78f7f:	call   4898500 <lean_big_int64_to_int>
+  b78f84:	mov    %rax,%r14
+  b78f87:	cmpq   $0x0,0x10(%rsp)
+  b78f8d:	mov    0x8(%rsp),%rsi
+  b78f92:	je     b78865 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4a5>
+  b78f98:	jmp    b78876 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4b6>
+  b78f9d:	mov    %r14,%rdi
+  b78fa0:	call   4898500 <lean_big_int64_to_int>
+  b78fa5:	movabs $0x1fffffffe,%rcx
+  b78faf:	mov    %rax,%r14
+  b78fb2:	test   $0x1,%bl
+  b78fb5:	je     b788ef <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x52f>
+  b78fbb:	jmp    b788fe <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x53e>
+  b78fc0:	cmp    $0x90000001,%eax
+  b78fc5:	jb     b783eb <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2b>
+  b78fcb:	lock decl 0x0(%rbp)
+  b78fcf:	jmp    b783eb <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2b>
+  b78fd4:	cmp    $0x90000001,%eax
+  b78fd9:	jb     b78402 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x42>
+  b78fdf:	lock decl (%rbx)
+  b78fe2:	jmp    b78402 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x42>
+  b78fe7:	cmp    $0x90000001,%eax
+  b78fec:	jb     b78424 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x64>
+  b78ff2:	lock decl (%r15)
+  b78ff6:	jmp    b78424 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x64>
+  b78ffb:	test   %ecx,%ecx
+  b78ffd:	je     b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b79003:	mov    %rbx,%rdi
+  b79006:	mov    %rax,%rbx
+  b79009:	call   4893c30 <lean_dec_ref_cold>
+  b7900e:	mov    %rbx,%rax
+  b79011:	jmp    b784c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x106>
+  b79016:	test   %ecx,%ecx
+  b79018:	je     b78544 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x184>
+  b7901e:	mov    %r15,%rdi
+  b79021:	mov    %rax,%rbx
+  b79024:	call   4893c30 <lean_dec_ref_cold>
+  b79029:	mov    %rbx,%rax
+  b7902c:	jmp    b78544 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x184>
+  b79031:	cmp    $0x90000001,%eax
+  b79036:	jb     b78571 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1b1>
+  b7903c:	lock decl (%rbx)
+  b7903f:	jmp    b78571 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1b1>
+  b79044:	cmp    $0x90000001,%eax
+  b79049:	jb     b7858b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1cb>
+  b7904f:	lock decl 0x0(%rbp)
+  b79053:	jmp    b7858b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x1cb>
+  b79058:	test   %eax,%eax
+  b7905a:	je     b78876 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4b6>
+  b79060:	mov    %r15,%rdi
+  b79063:	call   4893c30 <lean_dec_ref_cold>
+  b79068:	mov    0x8(%rsp),%rsi
+  b7906d:	jmp    b78876 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4b6>
+  b79072:	test   %eax,%eax
+  b79074:	je     b788fe <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x53e>
+  b7907a:	mov    %rbx,%rdi
+  b7907d:	call   4893c30 <lean_dec_ref_cold>
+  b79082:	movabs $0x1fffffffe,%rcx
+  b7908c:	jmp    b788fe <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x53e>
+  b79091:	mov    %r12,%rdi
+  b79094:	mov    %r13,%rsi
+  b79097:	call   4898630 <lean_int_big_add>
+  b7909c:	mov    %rax,%rbx
+  b7909f:	test   $0x1,%r13b
+  b790a3:	je     b790f8 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd38>
+  b790a5:	jmp    b79115 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd55>
+  b790a7:	mov    %rbx,%r15
+  b790aa:	jmp    b7855a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x19a>
+  b790af:	mov    (%r12),%ecx
+  b790b3:	test   %ecx,%ecx
+  b790b5:	jle    b7935b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf9b>
+  b790bb:	inc    %ecx
+  b790bd:	mov    %ecx,(%r12)
+  b790c1:	mov    %r12,%rax
+  b790c4:	jmp    b78680 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2c0>
+  b790c9:	mov    $0x1,%al
+  b790cb:	test   %ecx,%ecx
+  b790cd:	je     b78f6d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbad>
+  b790d3:	mov    %rbx,%rdi
+  b790d6:	call   4893c30 <lean_dec_ref_cold>
+  b790db:	jmp    b78f6b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbab>
+  b790e0:	call   4898500 <lean_big_int64_to_int>
+  b790e5:	jmp    b7867c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2bc>
+  b790ea:	mov    %r12,%rdi
+  b790ed:	mov    %r13,%rsi
+  b790f0:	call   4898630 <lean_int_big_add>
+  b790f5:	mov    %rax,%rbx
+  b790f8:	mov    0x0(%r13),%eax
+  b790fc:	cmp    $0x2,%eax
+  b790ff:	jl     b792fd <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf3d>
+  b79105:	dec    %eax
+  b79107:	mov    %eax,0x0(%r13)
+  b7910b:	test   $0x1,%r12b
+  b7910f:	jne    b7899a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5da>
+  b79115:	mov    (%r12),%eax
+  b79119:	cmp    $0x2,%eax
+  b7911c:	jl     b79312 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf52>
+  b79122:	dec    %eax
+  b79124:	mov    %eax,(%r12)
+  b79128:	jmp    b7899a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5da>
+  b7912d:	mov    %rbx,%rdi
+  b79130:	call   4898500 <lean_big_int64_to_int>
+  b79135:	mov    %rax,%rbx
+  b79138:	jmp    b7899a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5da>
+  b7913d:	mov    %rax,%rbx
+  b79140:	test   %ecx,%ecx
+  b79142:	je     b7914c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd8c>
+  b79144:	mov    %r12,%rdi
+  b79147:	call   4893c30 <lean_dec_ref_cold>
+  b7914c:	mov    %rbx,%rax
+  b7914f:	jmp    b786a1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2e1>
+  b79154:	test   %ecx,%ecx
+  b79156:	je     b789ca <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x60a>
+  b7915c:	mov    %r14,%rdi
+  b7915f:	mov    %eax,%ebp
+  b79161:	call   4893c30 <lean_dec_ref_cold>
+  b79166:	mov    %ebp,%eax
+  b79168:	jmp    b789ca <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x60a>
+  b7916d:	test   %ecx,%ecx
+  b7916f:	je     b789e3 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x623>
+  b79175:	mov    %rdi,%r14
+  b79178:	mov    %rbx,%rdi
+  b7917b:	mov    %eax,%ebx
+  b7917d:	call   4893c30 <lean_dec_ref_cold>
+  b79182:	mov    %r14,%rdi
+  b79185:	mov    %ebx,%eax
+  b79187:	jmp    b789e3 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x623>
+  b7918c:	test   %eax,%eax
+  b7918e:	je     b791c6 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xe06>
+  b79190:	call   4893c30 <lean_dec_ref_cold>
+  b79195:	xor    %eax,%eax
+  b79197:	jmp    b78f6d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbad>
+  b7919c:	test   %eax,%eax
+  b7919e:	je     b78f43 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb83>
+  b791a4:	mov    %r13,%rdi
+  b791a7:	call   4893c30 <lean_dec_ref_cold>
+  b791ac:	jmp    b78f43 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb83>
+  b791b1:	test   %eax,%eax
+  b791b3:	je     b78f5c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb9c>
+  b791b9:	mov    %r12,%rdi
+  b791bc:	call   4893c30 <lean_dec_ref_cold>
+  b791c1:	jmp    b78f5c <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb9c>
+  b791c6:	xor    %eax,%eax
+  b791c8:	jmp    b78f6d <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xbad>
+  b791cd:	test   %eax,%eax
+  b791cf:	je     b78c7a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8ba>
+  b791d5:	call   4893c30 <lean_dec_ref_cold>
+  b791da:	jmp    b78c7a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x8ba>
+  b791df:	test   %eax,%eax
+  b791e1:	je     b78cdf <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x91f>
+  b791e7:	call   4893c30 <lean_dec_ref_cold>
+  b791ec:	mov    0x8(%rsp),%rsi
+  b791f1:	movabs $0x1fffffffe,%rdx
+  b791fb:	jmp    b78cdf <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x91f>
+  b79200:	test   %eax,%eax
+  b79202:	je     b787d4 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x414>
+  b79208:	mov    %r13,%rdi
+  b7920b:	call   4893c30 <lean_dec_ref_cold>
+  b79210:	jmp    b78e79 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xab9>
+  b79215:	test   %eax,%eax
+  b79217:	je     b78810 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x450>
+  b7921d:	mov    %rbx,%rdi
+  b79220:	call   4893c30 <lean_dec_ref_cold>
+  b79225:	movabs $0x1fffffffe,%rdx
+  b7922f:	jmp    b78810 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x450>
+  b79234:	test   %eax,%eax
+  b79236:	je     b78d94 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9d4>
+  b7923c:	mov    0x8(%rsp),%rdi
+  b79241:	call   4893c30 <lean_dec_ref_cold>
+  b79246:	movabs $0x1fffffffe,%rcx
+  b79250:	jmp    b78d94 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x9d4>
+  b79255:	test   %eax,%eax
+  b79257:	je     b78e17 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa57>
+  b7925d:	mov    %r14,%rdi
+  b79260:	call   4893c30 <lean_dec_ref_cold>
+  b79265:	jmp    b78e17 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa57>
+  b7926a:	mov    %eax,%ebp
+  b7926c:	test   %ecx,%ecx
+  b7926e:	je     b79327 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xf67>
+  b79274:	mov    %rbx,%rdi
+  b79277:	call   4893c30 <lean_dec_ref_cold>
+  b7927c:	test   %bpl,%bpl
+  b7927f:	movabs $0x1fffffffe,%rcx
+  b79289:	je     b78962 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5a2>
+  b7928f:	jmp    b78f0f <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb4f>
+  b79294:	test   %eax,%eax
+  b79296:	je     b78525 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x165>
+  b7929c:	mov    %rbp,%rdi
+  b7929f:	call   4893c30 <lean_dec_ref_cold>
+  b792a4:	jmp    b78525 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x165>
+  b792a9:	test   %eax,%eax
+  b792ab:	je     b786ff <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x33f>
+  b792b1:	mov    %rbp,%rdi
+  b792b4:	call   4893c30 <lean_dec_ref_cold>
+  b792b9:	jmp    b78e4f <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xa8f>
+  b792be:	test   %eax,%eax
+  b792c0:	je     b788b9 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x4f9>
+  b792c6:	mov    %r14,%rdi
+  b792c9:	call   4893c30 <lean_dec_ref_cold>
+  b792ce:	jmp    b78ead <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xaed>
+  b792d3:	test   %eax,%eax
+  b792d5:	je     b78648 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x288>
+  b792db:	mov    %rbx,%rdi
+  b792de:	call   4893c30 <lean_dec_ref_cold>
+  b792e3:	jmp    b78648 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x288>
+  b792e8:	test   %eax,%eax
+  b792ea:	je     b78771 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3b1>
+  b792f0:	mov    %r12,%rdi
+  b792f3:	call   4893c30 <lean_dec_ref_cold>
+  b792f8:	jmp    b78771 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x3b1>
+  b792fd:	test   %eax,%eax
+  b792ff:	je     b7910b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd4b>
+  b79305:	mov    %r13,%rdi
+  b79308:	call   4893c30 <lean_dec_ref_cold>
+  b7930d:	jmp    b7910b <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd4b>
+  b79312:	test   %eax,%eax
+  b79314:	je     b7899a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5da>
+  b7931a:	mov    %r12,%rdi
+  b7931d:	call   4893c30 <lean_dec_ref_cold>
+  b79322:	jmp    b7899a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5da>
+  b79327:	mov    %ebp,%eax
+  b79329:	test   %al,%al
+  b7932b:	movabs $0x1fffffffe,%rcx
+  b79335:	je     b78962 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x5a2>
+  b7933b:	jmp    b78f0f <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb4f>
+  b79340:	mov    $0x3,%r15d
+  b79346:	test   %eax,%eax
+  b79348:	je     b7855a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x19a>
+  b7934e:	mov    %rbx,%rdi
+  b79351:	call   4893c30 <lean_dec_ref_cold>
+  b79356:	jmp    b7855a <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x19a>
+  b7935b:	mov    %r12,%rax
+  b7935e:	cmp    $0x90000001,%ecx
+  b79364:	jb     b78680 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0x2c0>
+  b7936a:	lock decl (%r12)
+  b7936f:	jmp    b790c1 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xd01>
+  b79374:	test   %eax,%eax
+  b79376:	je     b78f25 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb65>
+  b7937c:	mov    %r14,%rdi
+  b7937f:	call   4893c30 <lean_dec_ref_cold>
+  b79384:	jmp    b78f25 <lp_lean1090_Lean1090_Impl_ScoreGate_choose+0xb65>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

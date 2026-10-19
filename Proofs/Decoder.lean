@@ -3,6 +3,7 @@ import Capstones
 import Proofs.CommBTables
 import Proofs.ScoreGate
 import Proofs.ParityBits
+import Proofs.ParityWord
 import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.SyndromeReuse
@@ -97,13 +98,11 @@ private theorem decoder_FrameBody_parts_eq : @Impl.frameParts = @Spec.FrameBody.
 private theorem decoder_Parity_generator_eq : @Impl.Parity.generator = @Spec.Parity.generator := by
   rfl
 private theorem decoder_Parity_step_eq : @Impl.Parity.step = @Spec.Parity.step := by
-  unfold Impl.Parity.step Spec.Parity.step
-  simp only [decoder_Parity_generator_eq]
-  rfl
+  funext remainder bit
+  exact ParityWord.step_eq remainder bit
 private theorem decoder_Parity_syndrome_eq : @Impl.Parity.syndrome = @Spec.Parity.syndrome := by
   funext width word
-  unfold Impl.Parity.syndrome Spec.Parity.syndrome
-  simp only [ParityBits.cachedBit_eq, decoder_Parity_step_eq]
+  exact ParityWord.syndrome_eq width word
 private theorem decoder_Parity_checksum_eq : @Impl.Parity.checksum = @Spec.Parity.checksum := by
   unfold Impl.Parity.checksum Spec.Parity.checksum
   simp only [decoder_Parity_syndrome_eq]

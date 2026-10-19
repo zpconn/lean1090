@@ -1,0 +1,15 @@
+--- archived/write_cost_report.py
++++ corrected/write_cost_report.py
+@@ -89,7 +89,11 @@
+         if args.benchmark_source_binding:
+             from bind_benchmark_history import inspect
+             binding = read(args.benchmark_source_binding)
+-            assert binding == inspect(args.build, args.benchmark, binding['history'], binding['correctness_inputs'])
++            assert binding['build_manifest'] == campaign['build_manifest']
++            checked_binding = inspect(args.build, args.benchmark, binding['history'], binding['correctness_inputs'])
++            assert binding['build_manifest_sha256'] == checked_binding['build_manifest_sha256']
++            checked_binding['build_manifest'] = binding['build_manifest']
++            assert binding == checked_binding
+         else:
+             assert campaign["commit"] == benchmark["commit"]
+         assert len(campaign["profiles"]) == 13

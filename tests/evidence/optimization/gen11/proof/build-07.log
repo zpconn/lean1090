@@ -1,0 +1,430 @@
+⚠ [1420/1427] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2036/2045] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [2042/2045] Replayed Proofs.ParityBits
+info: Proofs/ParityBits.lean:59:0: 'Lean1090.Proofs.ParityBits.wordBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:60:0: 'Lean1090.Proofs.ParityBits.cachedBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:61:0: 'Lean1090.Proofs.ParityBits.high_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:62:0: 'Lean1090.Proofs.ParityBits.fallback_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2043/2045] Replayed Proofs.ParityLinear
+info: Proofs/ParityLinear.lean:70:0: 'Lean1090.Proofs.CRCLinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2045/2045] Building Proofs.ParityWord (2.6s)
+warning: Proofs/ParityWord.lean: imports `Mathlib.Tactic.IntervalCases` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/ParityWord.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.setup.json --json
+error: Proofs/ParityWord.lean:16:2: unsolved goals
+case mpr.«23»
+value : BitVec 32
+bit : (!value.getLsbD 23) = true
+i : ℕ
+small : 23 < 32
+⊢ value[23] = false
+warning: Proofs/ParityWord.lean:11:25: This simp argument is unused:
+  Bool.not_eq_true
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [beq_iff_eq]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Proofs/ParityWord.lean:19:31: This simp argument is unused:
+  bit
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: Proofs/ParityWord.lean:26:64: unsolved goals
+case «0».false.false
+value : BitVec 32
+i : ℕ
+small : 0 < 24
+h : value.getLsbD 23 = false
+⊢ (if value[23] = true then 16774153#24 else 0#24)[0] = false
+
+case «0».true.false
+value : BitVec 32
+i : ℕ
+small : 0 < 24
+h : value.getLsbD 23 = false
+⊢ (if value[23] = true then 16774153#24 else 0#24)[0] = false
+
+case «1».false.false
+value : BitVec 32
+i : ℕ
+small : 1 < 24
+h : value.getLsbD 23 = false
+⊢ value[0] = (value[0] ^^ (if value[23] = true then 16774153#24 else 0#24)[1])
+
+case «1».true.false
+value : BitVec 32
+i : ℕ
+small : 1 < 24
+h : value.getLsbD 23 = false
+⊢ value[0] = (value[0] ^^ (if value[23] = true then 16774153#24 else 0#24)[1])
+
+case «2».false.false
+value : BitVec 32
+i : ℕ
+small : 2 < 24
+h : value.getLsbD 23 = false
+⊢ value[1] = (value[1] ^^ (if value[23] = true then 16774153#24 else 0#24)[2])
+
+case «2».true.false
+value : BitVec 32
+i : ℕ
+small : 2 < 24
+h : value.getLsbD 23 = false
+⊢ value[1] = (value[1] ^^ (if value[23] = true then 16774153#24 else 0#24)[2])
+
+case «3».false.false
+value : BitVec 32
+i : ℕ
+small : 3 < 24
+h : value.getLsbD 23 = false
+⊢ value[2] = (value[2] ^^ (if value[23] = true then 16774153#24 else 0#24)[3])
+
+case «3».true.false
+value : BitVec 32
+i : ℕ
+small : 3 < 24
+h : value.getLsbD 23 = false
+⊢ value[2] = (value[2] ^^ (if value[23] = true then 16774153#24 else 0#24)[3])
+
+case «4».false.false
+value : BitVec 32
+i : ℕ
+small : 4 < 24
+h : value.getLsbD 23 = false
+⊢ value[3] = (value[3] ^^ (if value[23] = true then 16774153#24 else 0#24)[4])
+
+case «4».true.false
+value : BitVec 32
+i : ℕ
+small : 4 < 24
+h : value.getLsbD 23 = false
+⊢ value[3] = (value[3] ^^ (if value[23] = true then 16774153#24 else 0#24)[4])
+
+case «5».false.false
+value : BitVec 32
+i : ℕ
+small : 5 < 24
+h : value.getLsbD 23 = false
+⊢ value[4] = (value[4] ^^ (if value[23] = true then 16774153#24 else 0#24)[5])
+
+case «5».true.false
+value : BitVec 32
+i : ℕ
+small : 5 < 24
+h : value.getLsbD 23 = false
+⊢ value[4] = (value[4] ^^ (if value[23] = true then 16774153#24 else 0#24)[5])
+
+case «6».false.false
+value : BitVec 32
+i : ℕ
+small : 6 < 24
+h : value.getLsbD 23 = false
+⊢ value[5] = (value[5] ^^ (if value[23] = true then 16774153#24 else 0#24)[6])
+
+case «6».true.false
+value : BitVec 32
+i : ℕ
+small : 6 < 24
+h : value.getLsbD 23 = false
+⊢ value[5] = (value[5] ^^ (if value[23] = true then 16774153#24 else 0#24)[6])
+
+case «7».false.false
+value : BitVec 32
+i : ℕ
+small : 7 < 24
+h : value.getLsbD 23 = false
+⊢ value[6] = (value[6] ^^ (if value[23] = true then 16774153#24 else 0#24)[7])
+
+case «7».true.false
+value : BitVec 32
+i : ℕ
+small : 7 < 24
+h : value.getLsbD 23 = false
+⊢ value[6] = (value[6] ^^ (if value[23] = true then 16774153#24 else 0#24)[7])
+
+case «8».false.false
+value : BitVec 32
+i : ℕ
+small : 8 < 24
+h : value.getLsbD 23 = false
+⊢ value[7] = (value[7] ^^ (if value[23] = true then 16774153#24 else 0#24)[8])
+
+case «8».true.false
+value : BitVec 32
+i : ℕ
+small : 8 < 24
+h : value.getLsbD 23 = false
+⊢ value[7] = (value[7] ^^ (if value[23] = true then 16774153#24 else 0#24)[8])
+
+case «9».false.false
+value : BitVec 32
+i : ℕ
+small : 9 < 24
+h : value.getLsbD 23 = false
+⊢ value[8] = (value[8] ^^ (if value[23] = true then 16774153#24 else 0#24)[9])
+
+case «9».true.false
+value : BitVec 32
+i : ℕ
+small : 9 < 24
+h : value.getLsbD 23 = false
+⊢ value[8] = (value[8] ^^ (if value[23] = true then 16774153#24 else 0#24)[9])
+
+case «10».false.false
+value : BitVec 32
+i : ℕ
+small : 10 < 24
+h : value.getLsbD 23 = false
+⊢ value[9] = (value[9] ^^ (if value[23] = true then 16774153#24 else 0#24)[10])
+
+case «10».true.false
+value : BitVec 32
+i : ℕ
+small : 10 < 24
+h : value.getLsbD 23 = false
+⊢ value[9] = (value[9] ^^ (if value[23] = true then 16774153#24 else 0#24)[10])
+
+case «11».false.false
+value : BitVec 32
+i : ℕ
+small : 11 < 24
+h : value.getLsbD 23 = false
+⊢ value[10] = (value[10] ^^ (if value[23] = true then 16774153#24 else 0#24)[11])
+
+case «11».true.false
+value : BitVec 32
+i : ℕ
+small : 11 < 24
+h : value.getLsbD 23 = false
+⊢ value[10] = (value[10] ^^ (if value[23] = true then 16774153#24 else 0#24)[11])
+
+case «12».false.false
+value : BitVec 32
+i : ℕ
+small : 12 < 24
+h : value.getLsbD 23 = false
+⊢ value[11] = (value[11] ^^ (if value[23] = true then 16774153#24 else 0#24)[12])
+
+case «12».true.false
+value : BitVec 32
+i : ℕ
+small : 12 < 24
+h : value.getLsbD 23 = false
+⊢ value[11] = (value[11] ^^ (if value[23] = true then 16774153#24 else 0#24)[12])
+
+case «13».false.false
+value : BitVec 32
+i : ℕ
+small : 13 < 24
+h : value.getLsbD 23 = false
+⊢ value[12] = (value[12] ^^ (if value[23] = true then 16774153#24 else 0#24)[13])
+
+case «13».true.false
+value : BitVec 32
+i : ℕ
+small : 13 < 24
+h : value.getLsbD 23 = false
+⊢ value[12] = (value[12] ^^ (if value[23] = true then 16774153#24 else 0#24)[13])
+
+case «14».false.false
+value : BitVec 32
+i : ℕ
+small : 14 < 24
+h : value.getLsbD 23 = false
+⊢ value[13] = (value[13] ^^ (if value[23] = true then 16774153#24 else 0#24)[14])
+
+case «14».true.false
+value : BitVec 32
+i : ℕ
+small : 14 < 24
+h : value.getLsbD 23 = false
+⊢ value[13] = (value[13] ^^ (if value[23] = true then 16774153#24 else 0#24)[14])
+
+case «15».false.false
+value : BitVec 32
+i : ℕ
+small : 15 < 24
+h : value.getLsbD 23 = false
+⊢ value[14] = (value[14] ^^ (if value[23] = true then 16774153#24 else 0#24)[15])
+
+case «15».true.false
+value : BitVec 32
+i : ℕ
+small : 15 < 24
+h : value.getLsbD 23 = false
+⊢ value[14] = (value[14] ^^ (if value[23] = true then 16774153#24 else 0#24)[15])
+
+case «16».false.false
+value : BitVec 32
+i : ℕ
+small : 16 < 24
+h : value.getLsbD 23 = false
+⊢ value[15] = (value[15] ^^ (if value[23] = true then 16774153#24 else 0#24)[16])
+
+case «16».true.false
+value : BitVec 32
+i : ℕ
+small : 16 < 24
+h : value.getLsbD 23 = false
+⊢ value[15] = (value[15] ^^ (if value[23] = true then 16774153#24 else 0#24)[16])
+
+case «17».false.false
+value : BitVec 32
+i : ℕ
+small : 17 < 24
+h : value.getLsbD 23 = false
+⊢ value[16] = (value[16] ^^ (if value[23] = true then 16774153#24 else 0#24)[17])
+
+case «17».true.false
+value : BitVec 32
+i : ℕ
+small : 17 < 24
+h : value.getLsbD 23 = false
+⊢ value[16] = (value[16] ^^ (if value[23] = true then 16774153#24 else 0#24)[17])
+
+case «18».false.false
+value : BitVec 32
+i : ℕ
+small : 18 < 24
+h : value.getLsbD 23 = false
+⊢ value[17] = (value[17] ^^ (if value[23] = true then 16774153#24 else 0#24)[18])
+
+case «18».true.false
+value : BitVec 32
+i : ℕ
+small : 18 < 24
+h : value.getLsbD 23 = false
+⊢ value[17] = (value[17] ^^ (if value[23] = true then 16774153#24 else 0#24)[18])
+
+case «19».false.false
+value : BitVec 32
+i : ℕ
+small : 19 < 24
+h : value.getLsbD 23 = false
+⊢ value[18] = (value[18] ^^ (if value[23] = true then 16774153#24 else 0#24)[19])
+
+case «19».true.false
+value : BitVec 32
+i : ℕ
+small : 19 < 24
+h : value.getLsbD 23 = false
+⊢ value[18] = (value[18] ^^ (if value[23] = true then 16774153#24 else 0#24)[19])
+
+case «20».false.false
+value : BitVec 32
+i : ℕ
+small : 20 < 24
+h : value.getLsbD 23 = false
+⊢ value[19] = (value[19] ^^ (if value[23] = true then 16774153#24 else 0#24)[20])
+
+case «20».true.false
+value : BitVec 32
+i : ℕ
+small : 20 < 24
+h : value.getLsbD 23 = false
+⊢ value[19] = (value[19] ^^ (if value[23] = true then 16774153#24 else 0#24)[20])
+
+case «21».false.false
+value : BitVec 32
+i : ℕ
+small : 21 < 24
+h : value.getLsbD 23 = false
+⊢ value[20] = (value[20] ^^ (if value[23] = true then 16774153#24 else 0#24)[21])
+
+case «21».true.false
+value : BitVec 32
+i : ℕ
+small : 21 < 24
+h : value.getLsbD 23 = false
+⊢ value[20] = (value[20] ^^ (if value[23] = true then 16774153#24 else 0#24)[21])
+
+case «22».false.false
+value : BitVec 32
+i : ℕ
+small : 22 < 24
+h : value.getLsbD 23 = false
+⊢ value[21] = (value[21] ^^ (if value[23] = true then 16774153#24 else 0#24)[22])
+
+case «22».true.false
+value : BitVec 32
+i : ℕ
+small : 22 < 24
+h : value.getLsbD 23 = false
+⊢ value[21] = (value[21] ^^ (if value[23] = true then 16774153#24 else 0#24)[22])
+
+case «23».false.false
+value : BitVec 32
+i : ℕ
+small : 23 < 24
+h : value.getLsbD 23 = false
+⊢ value[22] = (value[22] ^^ (if value[23] = true then 16774153#24 else 0#24)[23])
+
+case «23».true.false
+value : BitVec 32
+i : ℕ
+small : 23 < 24
+h : value.getLsbD 23 = false
+⊢ value[22] = (value[22] ^^ (if value[23] = true then 16774153#24 else 0#24)[23])
+error: Proofs/ParityWord.lean:46:2: Type mismatch: After simplification, term
+  wordStep_bits remainder.toBitVec bit
+ has type
+  @ite Prop ((BitVec.setWidth 24 remainder.toBitVec).msb = true)
+    (instDecidableEqBool (BitVec.setWidth 24 remainder.toBitVec).msb true)
+    (BitVec.setWidth 24
+        ((if remainder.toBitVec &&& 8388608#32 = 0#32 then
+            (if bit = true then remainder.toBitVec <<< 1 ||| 1#32 else remainder.toBitVec <<< 1 ||| 0#32) ^^^ 0#32
+          else
+            (if bit = true then remainder.toBitVec <<< 1 ||| 1#32 else remainder.toBitVec <<< 1 ||| 0#32) ^^^
+              33551369#32) &&&
+          16777215#32) =
+      (if bit = true then BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 0) ^^^
+        16774153#24)
+    (BitVec.setWidth 24
+        ((if remainder.toBitVec &&& 8388608#32 = 0#32 then
+            (if bit = true then remainder.toBitVec <<< 1 ||| 1#32 else remainder.toBitVec <<< 1 ||| 0#32) ^^^ 0#32
+          else
+            (if bit = true then remainder.toBitVec <<< 1 ||| 1#32 else remainder.toBitVec <<< 1 ||| 0#32) ^^^
+              33551369#32) &&&
+          16777215#32) =
+      (if bit = true then BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 0) ^^^
+        0)
+but is expected to have type
+  @ite Prop ((BitVec.setWidth 24 remainder.toBitVec).msb = true)
+    (instDecidableEqBool (BitVec.setWidth 24 remainder.toBitVec).msb true)
+    (BitVec.setWidth 24
+        ((if remainder.toBitVec &&& 8388608#32 = 0#32 then
+            (if bit = true then remainder.toBitVec <<< (1#32 % 32) ||| 1#32
+              else remainder.toBitVec <<< (1#32 % 32) ||| 0#32) ^^^
+              0#32
+          else
+            (if bit = true then remainder.toBitVec <<< (1#32 % 32) ||| 1#32
+              else remainder.toBitVec <<< (1#32 % 32) ||| 0#32) ^^^
+              33551369#32) &&&
+          16777215#32) =
+      (if bit = true then BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 0) ^^^
+        33551369#24)
+    (BitVec.setWidth 24
+        ((if remainder.toBitVec &&& 8388608#32 = 0#32 then
+            (if bit = true then remainder.toBitVec <<< (1#32 % 32) ||| 1#32
+              else remainder.toBitVec <<< (1#32 % 32) ||| 0#32) ^^^
+              0#32
+          else
+            (if bit = true then remainder.toBitVec <<< (1#32 % 32) ||| 1#32
+              else remainder.toBitVec <<< (1#32 % 32) ||| 0#32) ^^^
+              33551369#32) &&&
+          16777215#32) =
+      (if bit = true then BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 remainder.toBitVec <<< 1 ^^^ 0) ^^^
+        0)
+info: Proofs/ParityWord.lean:49:0: 'Lean1090.Proofs.ParityWord.wordStep_eq' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Proofs.ParityWord
+error: build failed

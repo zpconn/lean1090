@@ -2,6 +2,66 @@
 
 ## Status and current authorization
 
+**Optimization resumed (2026-10-19 UTC):** the user requested continued work
+toward **1.50× rs1090 headline decode throughput**. This supersedes the earlier
+1.10× review stop and publication pause. Start from
+`95bc97d75d83190371768950e56ef7cc0825308d`, with generation 10's measured code
+(decode 1.168948811789×, CPR 0.790786943138×). Continue verified generations
+and pushes to the private repository under `zpconn <zpconn@gmail.com>`;
+stop for review at the new target. All frozen-file, proof, differential,
+fresh-build and isolated ABAB measurement requirements remain in force.
+Zero new trusted primitives are authorized.
+
+The fresh untimed generation-10 diagnostic and independent review passed:
+all 13 profiles, 172,432 complete outputs, 22 native artifact sets, 117 audited
+Lean sources and 7,318 historical files checked. Frame/CRC is the largest
+stage at 7,401,732,346 of 16,479,393,245 collected instructions (44.92%).
+These are diagnostic counts, not timing claims. Details:
+[docs/GEN10-COST-BREAKDOWN.md](docs/GEN10-COST-BREAKDOWN.md); final review
+SHA-256 `985af7555768bece4c978357744954de736ffab8a6f371e616f2a9ff6352ffe1`.
+The diagnostic source hold is released; every retained profile remains intact.
+
+**Generation 11 in progress:** replace CRC's temporary list of bit indices
+and natural-number remainder with a specialized `Nat.fold` over `UInt32`.
+The public step API delegates to the same low-24-bit update. Widths, words
+and the arbitrary-precision fallback for bit indices beyond 127 remain
+unrestricted. The final symbolic helper build passed 2,045 jobs, with all
+eleven printed facts using only permitted axioms and seven kernel witnesses.
+The first integrated build passed 3,518 jobs, preserving the whole-decoder
+refinement theorem. Independent source/proof/native review passed all 42
+checks with 140 inputs unchanged: the linked loop uses a 32-bit remainder,
+no range list, and one final result projection; the high-index fallback
+remains live. The full gate passed from 02:05:35 to 02:20:48 UTC with all
+182 audited inputs unchanged: all 23 exact capstone contracts, 152 witnesses,
+module/dependency guards, 1,011 unit assertions and seven differential
+components. The fixed campaign checked 10,476,164 messages = 9,542,689 exact
+matches + 933,475 documented D001 cases, and 101,244 exact direct registers.
+The separate fresh 10M campaign passed:
+10,476,164 messages = 9,542,726 exact matches + 933,438 documented D001 cases;
+all 101,244 direct Comm-B cases match. All 32 DF attempts, 70 ADS-B branches
+and 14 registers are covered, with zero gaps or unclassified mismatches.
+Fresh message seed: 2823995389; Comm-B seed: 3756304815, both recorded before
+generation. All 107 sources, three binaries and 33 retained artifacts passed
+independent review. The 2,038,888 standard-view differences are recorded
+separately. All seven component trees and their passing log/source bindings
+are archived without changing their originals: 62 files totaling
+1,198,313,543 bytes. The independent gate/archive review passed on its first
+execution, checking all 182 inputs, seven archives, fresh provenance, native
+and proof bindings, 643 gen10 artifacts, 7,318 older files and all 22 prior
+results rows. Review SHA-256:
+`9e927300f0a56f218b0d7c1e308798466f88803ed33fe7c7f3e102ed70d6f641`.
+All validation/review jobs are stopped. Next: commit and measure both modes
+from the clean commit. No new throughput result is claimed yet. The publication
+records below describe completed prior work.
+
+The first compiled finite-step proof was rejected: its `bv_decide` axiom
+printout included native reflection axioms, outside the permitted set. It is
+replaced by symbolic bit-vector reasoning. The rejected attempt and
+all preceding elaboration failures are retained under
+`tests/evidence/optimization/gen11/proof/`; no rejected proof is accepted as
+validation. The independent generic `Nat.fold`/range-fold lemma compiles with
+only `propext` and `Quot.sound`.
+
 **Attribution correction (2026-10-19 UTC):** the user requested that all pushed
 commits be authored by their GitHub account. All 15 original commits now use
 `zpconn <zpconn@gmail.com>` for author and committer; file trees, messages and
@@ -57,8 +117,8 @@ claim of rebuilding the Lean toolchain or all of Mathlib from scratch. Network
 dependency preparation is recorded separately. Benchmark results remain the
 accepted generation-10 measurements; no new timing run is claimed.
 
-No implementation work or open question remains for this publication request.
-Further optimization or any frozen-file change requires a new instruction.
+The publication request is complete. The later optimization authorization is
+recorded above; frozen-file changes still require separate approval.
 
 ## Historical development log (newest first)
 

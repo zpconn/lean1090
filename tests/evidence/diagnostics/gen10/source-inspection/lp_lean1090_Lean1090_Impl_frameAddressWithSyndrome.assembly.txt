@@ -1,0 +1,79 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b92f50 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome>:
+  b92f50:	push   %rbx
+  b92f51:	mov    0x8(%rdi),%rbx
+  b92f55:	test   $0x1,%bl
+  b92f58:	jne    b92f98 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x48>
+  b92f5a:	movzbl 0x7(%rbx),%eax
+  b92f5e:	cmp    $0x5,%eax
+  b92f61:	je     b92fa3 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x53>
+  b92f63:	cmp    $0x4,%eax
+  b92f66:	je     b92f6d <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x1d>
+  b92f68:	cmp    $0x2,%eax
+  b92f6b:	jne    b92fbb <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x6b>
+  b92f6d:	test   $0x1,%sil
+  b92f71:	jne    b92f7e <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x2e>
+  b92f73:	mov    (%rsi),%eax
+  b92f75:	cmp    $0x2,%eax
+  b92f78:	jl     b92fda <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x8a>
+  b92f7a:	dec    %eax
+  b92f7c:	mov    %eax,(%rsi)
+  b92f7e:	mov    0x10(%rbx),%rbx
+  b92f82:	test   $0x1,%bl
+  b92f85:	jne    b92f91 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x41>
+  b92f87:	mov    (%rbx),%eax
+  b92f89:	test   %eax,%eax
+  b92f8b:	jle    b92fe8 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x98>
+  b92f8d:	inc    %eax
+  b92f8f:	mov    %eax,(%rbx)
+  b92f91:	mov    $0x10,%edi
+  b92f96:	jmp    b92fc3 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x73>
+  b92f98:	mov    %rbx,%rax
+  b92f9b:	shr    $1,%rax
+  b92f9e:	cmp    $0x5,%eax
+  b92fa1:	jne    b92f63 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x13>
+  b92fa3:	mov    $0x1,%eax
+  b92fa8:	test   $0x1,%sil
+  b92fac:	jne    b92fd8 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x88>
+  b92fae:	mov    (%rsi),%ecx
+  b92fb0:	cmp    $0x2,%ecx
+  b92fb3:	jl     b92ff4 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0xa4>
+  b92fb5:	dec    %ecx
+  b92fb7:	mov    %ecx,(%rsi)
+  b92fb9:	pop    %rbx
+  b92fba:	ret
+  b92fbb:	mov    $0x10,%edi
+  b92fc0:	mov    %rsi,%rbx
+  b92fc3:	call   490a3a0 <lean_alloc_small_object_core>
+  b92fc8:	movl   $0x1,(%rax)
+  b92fce:	movw   $0x101,0x6(%rax)
+  b92fd4:	mov    %rbx,0x8(%rax)
+  b92fd8:	pop    %rbx
+  b92fd9:	ret
+  b92fda:	test   %eax,%eax
+  b92fdc:	je     b92f7e <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x2e>
+  b92fde:	mov    %rsi,%rdi
+  b92fe1:	call   48a0d70 <lean_dec_ref_cold>
+  b92fe6:	jmp    b92f7e <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x2e>
+  b92fe8:	cmp    $0x90000001,%eax
+  b92fed:	jb     b92f91 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x41>
+  b92fef:	lock decl (%rbx)
+  b92ff2:	jmp    b92f91 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x41>
+  b92ff4:	test   %ecx,%ecx
+  b92ff6:	je     b92fd8 <lp_lean1090_Lean1090_Impl_frameAddressWithSyndrome+0x88>
+  b92ff8:	mov    %rsi,%rdi
+  b92ffb:	call   48a0d70 <lean_dec_ref_cold>
+  b93000:	mov    $0x1,%eax
+  b93005:	pop    %rbx
+  b93006:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

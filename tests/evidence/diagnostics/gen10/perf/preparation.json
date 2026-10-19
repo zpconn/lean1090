@@ -1,0 +1,32 @@
+{
+  "status": "prepared",
+  "recorded_utc": "2026-10-19T01:46:00.440139+00:00",
+  "helpers": {
+    "analyze_perf_gen10.py": "57464f484e4e513df39be3765e3190d3aaa1b6cc5587f13e407f82736eebc5aa",
+    "finalize_perf_gen10.py": "684c17a3aaf0d799c4aedb1a0eee09fbe2e28b6369aad516dd42027779cbea5d",
+    "run_perf_gen10.py": "c4a939e72dc93266368c797ba3d027c326e9b5a3a9807819c0221b19b75df784"
+  },
+  "adapted_from": {
+    "analyze_perf_gen9.py": "80a84eb078795e0a9db98866ecf339f0bfc068c69a954375fc86ef6f71512582",
+    "finalize_perf_gen9.py": "4c3c0f7cc22eaacc6d7aeddd26bc78dc90488cbe381b91dfa286f11e808e7724",
+    "run_perf_gen9.py": "37f184e2f82f273e17b3e8b49d6bcde460dfc3dd8fab0c1df92d17a56853e971"
+  },
+  "changes": [
+    "Paths/generation labels",
+    "Verify original/mapped raw commit object IDs and identical trees, then current linked source blobs against all three commits",
+    "Include attribution history in before/after snapshot; preserve original provenance records",
+    "Record QNH table startup alongside existing density/Mach tables"
+  ],
+  "generated_c_read": {
+    ".lake/build/ir/Impl/CommB.c": "546f7fc1d8bfef009972fdf40789fe8882b21a82d6782da3433def75d8afcf04",
+    ".lake/build/ir/Impl/Bits.c": "007bd4e0cce630abeac5d791e95c8a374d7a6fea9f6b171b43eba60560e061f5",
+    ".lake/build/ir/Impl/Message.c": "b577e69ece46582f2aea911b7ce0338807a39384bef1ac014ebba7149121e34b"
+  },
+  "source_observations": [
+    "CommB.c cbQNHValueTable initializes all 4096 software literal/mul/add values and cbQNH64 uses checked payloadBits(28,12) array lookup.",
+    "Bits.c field shifts Nat before UInt64 conversion and masks the fast path; arbitrary wide fallback remains.",
+    "Message.c decode computes shared frameSyndrome and calls reportWithSyndrome."
+  ],
+  "empty_cache_before_capture": true,
+  "no_production_edit_or_build": true
+}

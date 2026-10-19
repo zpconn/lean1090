@@ -1,0 +1,13 @@
+{
+  "recorded_utc": "2026-10-19T02:19:34.551208+00:00",
+  "status": "failed_before_plan_write",
+  "operation": "importlib spec_from_file_location / module_from_spec / exec_module on review/diagnostics/archive_generation_benchmark_target.py",
+  "error": "ModuleNotFoundError: No module named 'run_generation_benchmark'",
+  "cause": "The diagnostic helper directory was absent from sys.path in an inline preparation script.",
+  "side_effects": [
+    "Created benchmark-preparation directory",
+    "Wrote results-before.csv"
+  ],
+  "measurement_started": false,
+  "correction": "Explicitly add review/diagnostics to sys.path and verify the existing CSV snapshot unchanged before writing the plan."
+}

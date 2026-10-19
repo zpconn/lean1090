@@ -1,9 +1,10 @@
 # Verified score optimization order
 
 Generation 10 reached 1.16895× rs1090 decode throughput with the software model
-and zero trusted primitives. The optimization target was reached; further
-optimization is paused. [bench/GEN10.md](../bench/GEN10.md) records the measured result.
-The policy below governs any future optimization.
+and zero trusted primitives. The user subsequently authorized continued
+optimization toward **1.50× headline decode throughput**. Stop for review when
+that target is reached. [bench/GEN10.md](../bench/GEN10.md) records the latest
+measured result. The policy below governs the resumed work.
 
 The user specified this order after reviewing the BDS50 baseline of about
 0.24× rs1090 throughput. The baseline is evidence of a performance gap, not
@@ -45,7 +46,7 @@ CPR, CPR.Policy numerical adapters, Numeric/Presentation and JSON helpers.
 A legacy implementation kept only to satisfy frozen tests is forbidden. If a
 refactor cannot preserve this binding, stop and propose a frozen-file change.
 
-At every milestone and for the final10M campaign, retain the normal fixed-seed
+At every milestone and for the final 10M campaign, retain the normal fixed-seed
 results and also run check_message_differential.py directly with a newly
 sampled, recorded seed and a newly seeded FuzzCommB corpus. Record seeds
 before generation, retain both results and investigate every finding.

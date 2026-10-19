@@ -1,0 +1,36 @@
+⚠ [1420/1463] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2036/2045] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [2042/2045] Replayed Proofs.ParityBits
+info: Proofs/ParityBits.lean:59:0: 'Lean1090.Proofs.ParityBits.wordBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:60:0: 'Lean1090.Proofs.ParityBits.cachedBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:61:0: 'Lean1090.Proofs.ParityBits.high_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:62:0: 'Lean1090.Proofs.ParityBits.fallback_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2043/2045] Replayed Proofs.ParityLinear
+info: Proofs/ParityLinear.lean:70:0: 'Lean1090.Proofs.CRCLinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2045/2045] Building Proofs.ParityWord (2.6s)
+warning: Proofs/ParityWord.lean: imports `Mathlib.Tactic.IntervalCases` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/ParityWord.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.setup.json --json
+error: Proofs/ParityWord.lean:83:16: Type mismatch
+  Eq.symm (wordStep_eq r (word.testBit (width - 1 - i)))
+has type
+  Spec.Parity.step (BitVec.ofNat 24 r.toNat) (word.testBit (width - 1 - i)) =
+    BitVec.ofNat 24 (Impl.Parity.wordStep r (word.testBit (width - 1 - i))).toNat
+but is expected to have type
+  ?m.16 (BitVec.ofNat 24 r.toNat) i = BitVec.ofNat 24 (UInt32.toNat (?m.15 r i))
+info: Proofs/ParityWord.lean:124:0: 'Lean1090.Proofs.ParityWord.wordStep_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:125:0: 'Lean1090.Proofs.ParityWord.step_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:126:0: 'Lean1090.Proofs.ParityWord.fold_range' depends on axioms: [propext, Quot.sound]
+info: Proofs/ParityWord.lean:127:0: 'Lean1090.Proofs.ParityWord.syndrome_eq' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:128:0: 'Lean1090.Proofs.ParityWord.high_state_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:129:0: 'Lean1090.Proofs.ParityWord.feedback_state_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:130:0: 'Lean1090.Proofs.ParityWord.zero_width_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:131:0: 'Lean1090.Proofs.ParityWord.short_frame_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:132:0: 'Lean1090.Proofs.ParityWord.long_frame_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:133:0: 'Lean1090.Proofs.ParityWord.beyond_cache_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityWord.lean:134:0: 'Lean1090.Proofs.ParityWord.overwide_word_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Proofs.ParityWord
+error: build failed

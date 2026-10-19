@@ -1,0 +1,54 @@
+⚠ [1420/1964] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [2036/2044] Replayed Spec.CPRFormula
+warning: Spec/CPRFormula.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [2042/2044] Replayed Proofs.ParityBits
+info: Proofs/ParityBits.lean:59:0: 'Lean1090.Proofs.ParityBits.wordBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:60:0: 'Lean1090.Proofs.ParityBits.cachedBit_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:61:0: 'Lean1090.Proofs.ParityBits.high_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/ParityBits.lean:62:0: 'Lean1090.Proofs.ParityBits.fallback_boundary_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [2043/2044] Replayed Proofs.ParityLinear
+info: Proofs/ParityLinear.lean:70:0: 'Lean1090.Proofs.CRCLinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+✖ [2044/2044] Building Proofs.ParityWord (1.0s)
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/ParityWord.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/ParityWord.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/ParityWord.setup.json --json
+error: Proofs/ParityWord.lean:23:4: 'change' tactic failed, pattern
+  BitVec.setWidth 24
+      (((value <<< 1#32 ||| if bit = true then 1#32 else 0#32) ^^^
+          if (value &&& 8388608#32 == 0#32) = true then 0#32 else 33551369#32) &&&
+        16777215#32) =
+    (BitVec.setWidth 24 value <<< 1 ^^^ if bit = true then 1 else 0) ^^^
+      if (BitVec.setWidth 24 value).msb = true then BitVec.ofNat 24 Spec.Parity.generator else 0
+is not definitionally equal to target
+  if (BitVec.setWidth 24 { toBitVec := value }.toBitVec).msb = true then
+    BitVec.setWidth 24
+        ((if { toBitVec := value }.toBitVec &&& UInt32.toBitVec 8388608 = UInt32.toBitVec 0 then
+            (if bit = true then { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 1
+              else { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 0) ^^^
+              UInt32.toBitVec 0
+          else
+            (if bit = true then { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 1
+              else { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 0) ^^^
+              UInt32.toBitVec 33551369) &&&
+          UInt32.toBitVec 16777215) =
+      (if bit = true then BitVec.setWidth 24 { toBitVec := value }.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 { toBitVec := value }.toBitVec <<< 1 ^^^ 0) ^^^
+        BitVec.ofNat 24 Spec.Parity.generator
+  else
+    BitVec.setWidth 24
+        ((if { toBitVec := value }.toBitVec &&& UInt32.toBitVec 8388608 = UInt32.toBitVec 0 then
+            (if bit = true then { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 1
+              else { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 0) ^^^
+              UInt32.toBitVec 0
+          else
+            (if bit = true then { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 1
+              else { toBitVec := value }.toBitVec <<< (UInt32.toBitVec 1 % 32) ||| UInt32.toBitVec 0) ^^^
+              UInt32.toBitVec 33551369) &&&
+          UInt32.toBitVec 16777215) =
+      (if bit = true then BitVec.setWidth 24 { toBitVec := value }.toBitVec <<< 1 ^^^ 1
+        else BitVec.setWidth 24 { toBitVec := value }.toBitVec <<< 1 ^^^ 0) ^^^
+        0
+info: Proofs/ParityWord.lean:32:0: 'Lean1090.Proofs.ParityWord.wordStep_eq' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Proofs.ParityWord
+error: build failed

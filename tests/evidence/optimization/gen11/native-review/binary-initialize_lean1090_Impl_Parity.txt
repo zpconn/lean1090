@@ -1,0 +1,83 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b4f660 <initialize_lean1090_Impl_Parity>:
+  b4f660:	push   %rbx
+  b4f661:	cmpb   $0x0,0x401fa3b(%rip)        # 4b6f0a3 <_G_initialized>
+  b4f668:	je     b4f68a <initialize_lean1090_Impl_Parity+0x2a>
+  b4f66a:	mov    $0x10,%edi
+  b4f66f:	call   48fd260 <lean_alloc_small_object_core>
+  b4f674:	movl   $0x1,(%rax)
+  b4f67a:	movw   $0x1,0x6(%rax)
+  b4f680:	movq   $0x1,0x8(%rax)
+  b4f688:	pop    %rbx
+  b4f689:	ret
+  b4f68a:	mov    %edi,%ebx
+  b4f68c:	movb   $0x1,0x401fa10(%rip)        # 4b6f0a3 <_G_initialized>
+  b4f693:	xor    %eax,%eax
+  b4f695:	call   48b47f0 <lean_initialize_runtime_module>
+  b4f69a:	movzbl %bl,%ebx
+  b4f69d:	mov    %ebx,%edi
+  b4f69f:	call   4827b80 <initialize_Init>
+  b4f6a4:	movzbl 0x7(%rax),%ecx
+  b4f6a8:	shl    $0x18,%ecx
+  b4f6ab:	cmp    $0x1000000,%ecx
+  b4f6b1:	je     b4f6f5 <initialize_lean1090_Impl_Parity+0x95>
+  b4f6b3:	mov    (%rax),%ecx
+  b4f6b5:	cmp    $0x2,%ecx
+  b4f6b8:	jl     b4f71f <initialize_lean1090_Impl_Parity+0xbf>
+  b4f6ba:	dec    %ecx
+  b4f6bc:	mov    %ecx,(%rax)
+  b4f6be:	mov    %ebx,%edi
+  b4f6c0:	call   4827b80 <initialize_Init>
+  b4f6c5:	movzbl 0x7(%rax),%ecx
+  b4f6c9:	shl    $0x18,%ecx
+  b4f6cc:	cmp    $0x1000000,%ecx
+  b4f6d2:	je     b4f6f5 <initialize_lean1090_Impl_Parity+0x95>
+  b4f6d4:	mov    (%rax),%ecx
+  b4f6d6:	cmp    $0x2,%ecx
+  b4f6d9:	jl     b4f72d <initialize_lean1090_Impl_Parity+0xcd>
+  b4f6db:	dec    %ecx
+  b4f6dd:	mov    %ecx,(%rax)
+  b4f6df:	mov    %ebx,%edi
+  b4f6e1:	call   b4ba80 <initialize_lean1090_Impl_Bits>
+  b4f6e6:	movzbl 0x7(%rax),%ecx
+  b4f6ea:	shl    $0x18,%ecx
+  b4f6ed:	cmp    $0x1000000,%ecx
+  b4f6f3:	jne    b4f6f7 <initialize_lean1090_Impl_Parity+0x97>
+  b4f6f5:	pop    %rbx
+  b4f6f6:	ret
+  b4f6f7:	mov    (%rax),%ecx
+  b4f6f9:	cmp    $0x2,%ecx
+  b4f6fc:	jl     b4f73b <initialize_lean1090_Impl_Parity+0xdb>
+  b4f6fe:	dec    %ecx
+  b4f700:	mov    %ecx,(%rax)
+  b4f702:	lea    0x401f99f(%rip),%rax        # 4b6f0a8 <lp_lean1090_Lean1090_Impl_Parity_generator>
+  b4f709:	movq   $0x3ffe813,(%rax)
+  b4f710:	mov    $0x3ffe813,%edi
+  b4f715:	call   4893f70 <lean_mark_persistent>
+  b4f71a:	jmp    b4f66a <initialize_lean1090_Impl_Parity+0xa>
+  b4f71f:	test   %ecx,%ecx
+  b4f721:	je     b4f6be <initialize_lean1090_Impl_Parity+0x5e>
+  b4f723:	mov    %rax,%rdi
+  b4f726:	call   4893c30 <lean_dec_ref_cold>
+  b4f72b:	jmp    b4f6be <initialize_lean1090_Impl_Parity+0x5e>
+  b4f72d:	test   %ecx,%ecx
+  b4f72f:	je     b4f6df <initialize_lean1090_Impl_Parity+0x7f>
+  b4f731:	mov    %rax,%rdi
+  b4f734:	call   4893c30 <lean_dec_ref_cold>
+  b4f739:	jmp    b4f6df <initialize_lean1090_Impl_Parity+0x7f>
+  b4f73b:	test   %ecx,%ecx
+  b4f73d:	je     b4f702 <initialize_lean1090_Impl_Parity+0xa2>
+  b4f73f:	mov    %rax,%rdi
+  b4f742:	call   4893c30 <lean_dec_ref_cold>
+  b4f747:	jmp    b4f702 <initialize_lean1090_Impl_Parity+0xa2>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

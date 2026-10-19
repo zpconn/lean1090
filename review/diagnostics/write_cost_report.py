@@ -60,6 +60,8 @@ def main():
                         help="optional reviewed Markdown with run-specific source/collection observations")
     parser.add_argument("--source-review", type=Path,
                         help="reviewed native-source binding with exact fallback symbol for interval census")
+    parser.add_argument("--benchmark-source-binding", type=Path,
+                        help="verified same-source binding when the diagnostic checkout follows a history attribution correction")
     args = parser.parse_args()
     if args.generation < 0:
         parser.error("generation must be nonnegative")
@@ -83,7 +85,17 @@ def main():
         assert benchmark["generation"] == args.generation, "benchmark generation differs"
         assert campaign["status"] == "passed" and campaign["protected_inputs_unchanged"]
         assert campaign["full_output_digest_and_census_match_gen0"]
-        assert campaign["commit"] == benchmark["commit"] == build["commit"]
+        assert campaign["commit"] == build["commit"]
+        if args.benchmark_source_binding:
+            from bind_benchmark_history import inspect
+            binding = read(args.benchmark_source_binding)
+            assert binding['build_manifest'] == campaign['build_manifest']
+            checked_binding = inspect(args.build, args.benchmark, binding['history'], binding['correctness_inputs'])
+            assert binding['build_manifest_sha256'] == checked_binding['build_manifest_sha256']
+            checked_binding['build_manifest'] = binding['build_manifest']
+            assert binding == checked_binding
+        else:
+            assert campaign["commit"] == benchmark["commit"]
         assert len(campaign["profiles"]) == 13
         assert all(row["status"] == "passed" and row["native_output_matches"] for row in campaign["profiles"])
         assert campaign["protected_inputs"][".lake/build/bin/lean1090-bench"] == benchmark["binary_sha256"]
@@ -111,7 +123,11 @@ def main():
         assert len(interval_rows) == 1 and args.source_review
         assert interval["live_score_results_checked"] and not interval["native_call_counts"]
         source_review = read(args.source_review)
-        assert source_review["commit"] == build["commit"] == benchmark["commit"]
+        assert source_review["commit"] == build["commit"]
+        if args.benchmark_source_binding:
+            assert source_review["benchmark_source_binding_sha256"] == sha(args.benchmark_source_binding)
+        else:
+            assert source_review["commit"] == benchmark["commit"]
         assert source_review["binary_sha256"] == benchmark["binary_sha256"]
         assert source_review["fresh_native_inputs_sha256"] == build["fresh_benchmark_native_binding"]["sha256"]
         for name, binding in source_review["source_C_object_trace_bindings"].items():
@@ -397,7 +413,9 @@ def main():
               f"Start with the measured **{STAGES[largest]}** cost and inspect its actual source/generated-C path. A proposed improvement must follow the current user authorization and preserve the refinement theorem, then be evaluated with the frozen benchmark protocol. These counters do not establish which optimization will improve throughput.", "",
               "These are single-pass diagnostic executions. Lazy constants and allocator state can differ from the accepted benchmark after its three warmup pairs. This diagnostic does not measure the size of that difference or correct instruction counts into an estimated warm throughput. Any performance conclusion requires the unchanged frozen ABAB benchmark.", "",
               "## Reproduction and evidence", "",
-              f"The diagnostic driver reused the unchanged native production objects from commit `{build['commit']}`; its build and campaign provenance record object/source/generated-C SHA-256 hashes and compiler/link commands. The benchmark binary was not replaced by the driver. Source/configuration and raw collection commands are retained with the evidence. The current frozen lock hash is `{build['lock_sha256']}`.", "",
+              ((f"The diagnostic driver reused unchanged native production objects originally built from timed commit `{benchmark['commit']}`; their audited source blobs also match diagnostic checkout `{build['commit']}`; " if args.benchmark_source_binding else
+                f"The diagnostic driver reused the unchanged native production objects from commit `{build['commit']}`; ") +
+               f"its build and campaign provenance record object/source/generated-C SHA-256 hashes and compiler/link commands. The benchmark binary was not replaced by the driver. Source/configuration and raw collection commands are retained with the evidence. The current frozen lock hash is `{build['lock_sha256']}`."), "",
               f"- Exclusive cost analysis: {link(args.analysis)}.",
               f"- Independently checked control-flow census: {link(args.census)}.",
               f"- Per-DF native commands, digests, allocation counts and binary/object checks: {link(args.native_df)}.",
@@ -407,7 +425,7 @@ def main():
               "- Analyzer/parser fixtures cover compressed names/positions, exact self accounting, inclusive-cost double counting, full caller context names, explicit ambiguity, corrupted totals and collection leakage.", "",
               "Input hashes used to render this document:", "",
               "| Input | SHA-256 |", "|---|---|"]
-    for path in (args.analysis, args.census, args.native_df, args.perf, args.build, args.previous_analysis, args.campaign, args.benchmark, args.context_notes, args.source_review):
+    for path in (args.analysis, args.census, args.native_df, args.perf, args.build, args.previous_analysis, args.campaign, args.benchmark, args.context_notes, args.source_review, args.benchmark_source_binding):
         if path is None:
             continue
         lines.append(f"| `{path}` | `{sha(path)}` |")

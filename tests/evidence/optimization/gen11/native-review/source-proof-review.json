@@ -1,0 +1,131 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewer": "/root/cost_analysis; did not author runtime or proof",
+  "sources": {
+    "Impl/Parity.lean": "ddb067734dfd7839af900c91bd72a7a50f31c11b03ef85463cd0e2f18ecbf9a9",
+    "Proofs/ParityWord.lean": "020c169fb026d89b9d6c51cd893da122417656041751962bfec11d49d9616429",
+    "Proofs/Decoder.lean": "3daf79aa09a2d0bc1a85c8ed7e819fe9c53fa0c1a90846059b4e428570f9484e"
+  },
+  "helper_facts": [
+    {
+      "name": "Lean1090.Proofs.ParityWord.wordStep_eq",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.step_eq",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.fold_range",
+      "axioms": [
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.syndrome_eq",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.high_state_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.feedback_state_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.zero_width_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.short_frame_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.long_frame_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.beyond_cache_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ParityWord.overwide_word_witness",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    }
+  ],
+  "integrated_allowed_axiom_facts": 112,
+  "supplementary_inputs": {
+    "tests/evidence/optimization/gen11/proof/summary.json": {
+      "sha256": "c65a615e3164946d14e3a0c01bb3824777d38fcf49ca3b8c804660954e4ddf1e",
+      "bytes": 3116
+    },
+    "tests/evidence/optimization/gen11/proof/build-11.json": {
+      "sha256": "172ee8667780421437017bd24233998a866c5d4e344375a97acb187a76fba73c",
+      "bytes": 320
+    },
+    "tests/evidence/optimization/gen11/proof/build-11.log": {
+      "sha256": "9888d02c1bdce416458f06f133d3e41b557c89fc52ec76ca41c6e4e4000fa03b",
+      "bytes": 3273
+    },
+    "tests/evidence/optimization/gen11/proof/build-06.json": {
+      "sha256": "8914c3454d8bf6962d363c3cc03d32f8698bd633850055f8b6aa5c7d1c6ff25b",
+      "bytes": 320
+    },
+    "tests/evidence/optimization/gen11/proof/build-06.log": {
+      "sha256": "ddef9865233cd73edcfdba030cb2154a3827c78950160cd786e21c32f37621b9",
+      "bytes": 2000
+    }
+  },
+  "assessment": [
+    "wordStep_bits proves each of the 24 output bit positions symbolically for arbitrary 32-bit input and Bool, reducing mask feedback to original bit 23. High incoming bits cannot affect projected output.",
+    "wordStep_eq converts the UInt32 operations to BitVec semantics and the frozen polynomial-step characterization. step_eq supplies the public BitVec24 conversion bound; neither adds a state-validity hypothesis.",
+    "fold_range inducts on arbitrary Nat length and equates ascending Nat.fold with range.foldl. syndrome_eq applies the existing unconditional cachedBit equality and List.foldl_hom; zero widths, huge words and indices beyond 127 remain covered.",
+    "Seven additional kernel-evaluated witnesses cover high input state, feedback, zero width, 56/112-bit frames, the >=128 fallback and overwide words. These supplement the universal proof rather than replace it.",
+    "The final proof imports no native-reflection tactic and all eleven printed facts have only permitted axioms. The exploratory build-06 proof had forbidden native axioms, is explicitly rejected, and is not used as evidence of correctness.",
+    "Decoder integration changes only proof bodies/import to use the new equalities. Whole-decoder and prefix refinement statements are unchanged and compile with permitted axioms."
+  ],
+  "limits": "Independent source assessment and validation of executed build evidence, not a second build. The kernel and existing trusted compiler/runtime remain the same trust boundary."
+}
