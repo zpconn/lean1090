@@ -4,6 +4,7 @@ import Proofs.CommBTables
 import Proofs.ScoreGate
 import Proofs.ParityBits
 import Proofs.ParityWord
+import Proofs.ByteWords
 import Proofs.PayloadBits
 import Proofs.CommBMach
 import Proofs.SyndromeReuse
@@ -456,7 +457,8 @@ private theorem decoder_bdsWireValid_eq : @Impl.bdsWireValid = @Spec.bdsWireVali
     decoder_cbValid50_eq, decoder_cbValid60_eq, decoder_payloadBits_eq]
   rfl
 private theorem decoder_bytesValue_eq : @Impl.bytesValue = @Spec.bytesValue := by
-  rfl
+  funext bytes
+  exact ByteWords.bytesValue_eq bytes
 private theorem decoder_cbGaussian_eq : @Impl.cbGaussian = @Spec.cbGaussian := by
   unfold Impl.cbGaussian Spec.cbGaussian
   simp only [decoder_Binary64_div_eq, decoder_Binary64_literal_eq, decoder_Binary64_mul_eq,

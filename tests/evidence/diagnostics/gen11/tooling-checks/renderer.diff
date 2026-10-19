@@ -1,0 +1,51 @@
+diff --git a/review/diagnostics/write_cost_report.py b/review/diagnostics/write_cost_report.py
+index e94b080..2423378 100644
+--- a/review/diagnostics/write_cost_report.py
++++ b/review/diagnostics/write_cost_report.py
+@@ -149,6 +149,9 @@ def main():
+             assert row["parsed_frames"] == row["crc_call_predictions"] == per_df[df]["count"]
+             assert row["crc_step_predictions"] == row["parsed_frames"] * (56 if df < 16 else 112)
+     native_df = {row["df"]: row for row in native["per_df"]}
++    word_crc = bool(source_review and source_review.get("word_crc_live_path_verified"))
++    if word_crc:
++        assert live_crc and source_review["parity_fold_anchor"]
+     assert set(per_df) == set(native_df) == set(range(32))
+     assert sum(row["count"] for row in per_df.values()) == 172432
+     profiles = {name: analysis["families"][name] for name in FAMILIES}
+@@ -163,7 +166,12 @@ def main():
+         assert anchors[P + "frameSyndrome"]["native_entries"] == crc, (name, "frame syndrome entry count")
+         assert anchors[P + "Parity_checksum"]["native_entries"] == crc, (name, "CRC entry count")
+         assert anchors[P + "Parity_syndrome"]["native_entries"] == crc, (name, "CRC syndrome entry count")
+-        assert anchors[P + "Parity_step"]["native_entries"] == steps, (name, "CRC step count")
++        if word_crc:
++            # The verified UInt32 update is inlined into the one native loop.
++            # Its predicted iterations remain mathematical census data, not entries.
++            assert anchors.get(P + "Parity_step", {}).get("native_entries", 0) == 0, (name, "obsolete CRC step boundary")
++        else:
++            assert anchors[P + "Parity_step"]["native_entries"] == steps, (name, "CRC step count")
+         if source_review and source_review.get("parity_fold_anchor"):
+             assert anchors[source_review["parity_fold_anchor"]]["native_entries"] == crc, (name, "CRC fold entry count")
+     totals = {name: result["total_events"]["Ir"] for name, result in profiles.items()}
+@@ -288,7 +296,8 @@ def main():
+         lines += ["## Shared-syndrome census and native entries", "",
+                   "The original shadow census is retained exactly for historical comparison; its repeated-CRC prediction is not the current expectation. A separate post-decode census reparses every corpus row, checks its frame and syndrome against the retained decoder result, and predicts one syndrome after successful parsing. This work occurs after collection and does not enter the decoder-root counters.", "",
+                   "All 172,432 corpus rows are accepted, as required by the complete retained-output check. This census covers that accepted corpus only. It does not measure malformed frames or frames rejected after parsing; the latter now compute a syndrome before rejection, as documented by the source/native review.", "",
+-                  "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed CRC step entries |",
++                  ("| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed UInt32 loop entries |" if word_crc else
++                   "| Family | Historical repeated-call prediction | Live one-per-frame prediction | Observed frameSyndrome / checksum entries | Observed CRC step entries |"),
+                   "|---|---:|---:|---:|---:|"]
+         for family, dfs in FAMILIES.items():
+             anchors = profiles[family]["native_anchor_counts_and_non_additive_inclusive_events"]
+@@ -296,8 +305,11 @@ def main():
+             predicted = sum(crc_per_df[df]["crc_call_predictions"] for df in dfs)
+             actual = anchors[P + "frameSyndrome"]["native_entries"]
+             checksum = anchors[P + "Parity_checksum"]["native_entries"]
+-            steps = anchors[P + "Parity_step"]["native_entries"]
++            steps = anchors[source_review["parity_fold_anchor"] if word_crc else P + "Parity_step"]["native_entries"]
+             lines.append(f"| {family} | {historical:,} | {predicted:,} | {actual:,} / {checksum:,} | {steps:,} |")
++        if word_crc:
++            predicted_iterations = sum(row["crc_step_predictions"] for row in crc_per_df.values())
++            lines += ["", f"The checked corpus implies {predicted_iterations:,} bit updates, but this is a mathematical iteration prediction, not an observed function-entry count. The UInt32 step is inlined into the live loop; no standalone `Parity.step` entries are observed. Source and actual native inspection establish the live update, one loop per syndrome, the retained arbitrary-width fallback and one final result projection. Absence of the old step boundary is not zero CRC computation."]
+         lines += ["", "The new acceptance/address helpers keep their predecessor stages when they retain a native boundary. Acceptance control inlined into `decode` remains in that function's residual-control category; its called hard-validity helper retains the ADS-B category. No cost is reassigned by source-level intention. The renamed report helper retains the same report/semantic boundaries. These compiler-boundary changes must be considered when comparing stage deltas.", ""]
+     if args.previous_analysis:
+         previous = read(args.previous_analysis)

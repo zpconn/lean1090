@@ -21,7 +21,7 @@ These are diagnostic counts, not timing claims. Details:
 SHA-256 `985af7555768bece4c978357744954de736ffab8a6f371e616f2a9ff6352ffe1`.
 The diagnostic source hold is released; every retained profile remains intact.
 
-**Generation 11 in progress:** replace CRC's temporary list of bit indices
+**Generation 11 complete:** replaced CRC's temporary list of bit indices
 and natural-number remainder with a specialized `Nat.fold` over `UInt32`.
 The public step API delegates to the same low-24-bit update. Widths, words
 and the arbitrary-precision fallback for bit indices beyond 127 remain
@@ -50,9 +50,79 @@ execution, checking all 182 inputs, seven archives, fresh provenance, native
 and proof bindings, 643 gen10 artifacts, 7,318 older files and all 22 prior
 results rows. Review SHA-256:
 `9e927300f0a56f218b0d7c1e308798466f88803ed33fe7c7f3e102ed70d6f641`.
-All validation/review jobs are stopped. Next: commit and measure both modes
-from the clean commit. No new throughput result is claimed yet. The publication
-records below describe completed prior work.
+The verified change was committed as
+`fd20b1c3553415b1b727f1dca347d4d43dd0d142`. After all other jobs stopped,
+a fresh build from that clean commit regenerated 22 native sets; the timed
+worker SHA-256 is
+`8abd618f802719109ef3da7d36c9280740551596635b99953ef172bd1ca1b5ae`.
+Both frozen 3+21 ABAB modes completed on CPU 0, with 48 samples each, six
+clean-tree/lock checks and four Ultimate Performance captures. Decode:
+Lean 657.029319 ms / 262,441.865247 msg/s, rs1090 833.334725 ms /
+206,918.054447 msg/s, ratio **1.268337197293×**. CPR: Lean 993.549075 ms /
+173,551.568150 msg/s, rs1090 841.713800 ms / 204,858.230909 msg/s, ratio
+**0.847178887465×**. All original samples are archived under
+[bench/runs/gen11/](bench/runs/gen11/), with a
+[complete report](bench/GEN11.md); two CSV rows were appended preserving
+all 22 previous rows. There were no UTC-label backsteps; recorded outer
+UTC-minus-monotonic differences remain unadjusted. Independent result review
+passed all 1,972 checks, including every sample, clean source/native binding,
+24-row CSV and historical records. Review SHA-256:
+`1e1362fbe371ff1c2f29f2d5d592d41e53939a7b37429b61fa8c7b0b5b6bbe4e`.
+The 1.50× decode target is unmet.
+
+The complete fresh generation-11 diagnostic and independent review passed:
+13 profiles, 238 held inputs, 22 native sets, 565 non-review evidence members
+and 8,294 historical files. Frame/CRC remains the largest stage at
+5,609,294,040 of 14,737,399,882 collected instructions (38.06%); its largest
+concrete helper is `bytesValue`, with 2,100,152,579 inclusive instructions
+across 172,432 calls. These nested costs overlap; they are diagnostic counts,
+not benchmark predictions. Report: [docs/GEN11-COST-BREAKDOWN.md](docs/GEN11-COST-BREAKDOWN.md).
+Final review SHA-256:
+`5e3fcc6356d27443f272141f562db8d708ad6f8d482ef1baed2c49087e92bafa`.
+The diagnostic hold is released.
+
+**Generation 12 in progress:** convert bytes in UInt64 chunks for lengths up
+to 16, avoiding repeated arbitrary-precision multiply/add operations. A
+tail-recursive prefix reader returns the existing suffix without copying the
+prefix; longer lists retain the general natural-number fold. The helper and unconditional all-list equivalence proof passed their targeted
+build (2,042 jobs), with eleven permitted-axiom facts and seven boundary
+witnesses. The initial failed case-selection tactic and source are retained;
+the successful proof uses explicit length cases. The first integrated build passed 3,520 jobs, retaining the whole-decoder
+refinement. [Implementation and proof](docs/GEN12-BYTE-WORDS.md).
+The full gate passed from 02:41:03 to 02:57:11 UTC with all 183 audited inputs
+unchanged: 23 exact capstone contracts, 152 witness axiom audits, module and
+dependency guards, 1,011 upstream unit assertions and all seven differential
+components. Fixed whole messages: 10,476,164 = 9,542,689 exact + 933,475 D001;
+all 101,244 direct registers match. The seven component archives and their
+passing log/source bindings are retained. Fresh message seed
+3912489638 and Comm-B seed 2788617979 were recorded before generation;
+the separate 10M campaign passed on its first execution: 10,476,164 messages
+= 9,543,025 exact matches + 933,139 documented D001 cases, and all 101,244
+direct registers exact. Coverage includes all 32 DF attempts, 70 ADS-B branches
+and 14 registers, with zero gaps or unclassified differences. Its 2,039,033
+standard-view differences are retained separately. All 108 source hashes,
+three binaries and 33 retained artifacts passed producer verification and
+an independent retention replay, including decompressed transcripts and
+separately counted difference streams. Fresh review SHA-256:
+`069ccb2be918152a1d6a4f454b22e29978557d0097018c40e94d4c66535bd803`. Runtime, proof and generator
+sources remained fixed throughout the full gate. The final independent
+archive review passed: all 183 inputs, seven component archives (62 files,
+1,198,313,686 bytes), native/proof/fresh bindings, 633 prior gen11 artifacts,
+8,294 older files and all 24 prior CSV rows. Review SHA-256:
+`9c76fb0536a16b2ebaf3556014f33ac0f23093a496a56be5b5462e2b74cd368c`.
+Validation and review jobs are stopped before the clean commit and fresh-build
+benchmark; the plan retains the exact 3/2 target.
+Independent source/proof/native review passed 41 checks with 141 held inputs
+and 221 retained files. The compiled short and medium paths use machine-word
+loops; the prefix allocates only its endpoint box and pair. The arbitrary-
+length fallback remains the original natural-number fold. Compiler borrowing
+changes in Frame/Message were checked against unchanged Lean sources; the
+other 17 production native sets are identical. Two reviewer assumption fixes
+are retained, with no runtime or proof change. Native review SHA-256:
+`9df8ef966e4474e91391d85c49a299d158dc43c04cb6eee1ffb63b2d1ab265f7`. No generation-12
+throughput result is claimed yet. The frozen specification and statements
+remain unchanged, with zero trusted primitives.
+The publication records below describe completed prior work.
 
 The first compiled finite-step proof was rejected: its `bv_decide` axiom
 printout included native reflection axioms, outside the permitted set. It is

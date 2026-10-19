@@ -1,0 +1,193 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b93d40 <lp_lean1090_Lean1090_Impl_decode>:
+  b93d40:	push   %rbp
+  b93d41:	push   %r15
+  b93d43:	push   %r14
+  b93d45:	push   %r13
+  b93d47:	push   %r12
+  b93d49:	push   %rbx
+  b93d4a:	push   %rax
+  b93d4b:	call   b53190 <lp_lean1090_Lean1090_Impl_decodeFrame>
+  b93d50:	test   $0x1,%al
+  b93d52:	jne    b93d67 <lp_lean1090_Lean1090_Impl_decode+0x27>
+  b93d54:	movzbl 0x7(%rax),%ecx
+  b93d58:	mov    $0x1,%r14d
+  b93d5e:	test   %ecx,%ecx
+  b93d60:	jne    b93d7b <lp_lean1090_Lean1090_Impl_decode+0x3b>
+  b93d62:	jmp    b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93d67:	mov    %rax,%rcx
+  b93d6a:	shr    $1,%rcx
+  b93d6d:	mov    $0x1,%r14d
+  b93d73:	test   %ecx,%ecx
+  b93d75:	je     b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93d7b:	mov    0x8(%rax),%rbx
+  b93d7f:	mov    (%rax),%ebp
+  b93d81:	cmp    $0x1,%ebp
+  b93d84:	jne    b93d8b <lp_lean1090_Lean1090_Impl_decode+0x4b>
+  b93d86:	mov    %rax,%r15
+  b93d89:	jmp    b93db7 <lp_lean1090_Lean1090_Impl_decode+0x77>
+  b93d8b:	test   $0x1,%bl
+  b93d8e:	jne    b93d9e <lp_lean1090_Lean1090_Impl_decode+0x5e>
+  b93d90:	mov    (%rbx),%ecx
+  b93d92:	test   %ecx,%ecx
+  b93d94:	jle    b93f22 <lp_lean1090_Lean1090_Impl_decode+0x1e2>
+  b93d9a:	inc    %ecx
+  b93d9c:	mov    %ecx,(%rbx)
+  b93d9e:	mov    $0x1,%r15d
+  b93da4:	test   $0x1,%al
+  b93da6:	jne    b93db7 <lp_lean1090_Lean1090_Impl_decode+0x77>
+  b93da8:	mov    (%rax),%ecx
+  b93daa:	cmp    $0x2,%ecx
+  b93dad:	jl     b93f36 <lp_lean1090_Lean1090_Impl_decode+0x1f6>
+  b93db3:	dec    %ecx
+  b93db5:	mov    %ecx,(%rax)
+  b93db7:	test   $0x1,%bl
+  b93dba:	jne    b93dca <lp_lean1090_Lean1090_Impl_decode+0x8a>
+  b93dbc:	mov    (%rbx),%eax
+  b93dbe:	test   %eax,%eax
+  b93dc0:	jle    b93efc <lp_lean1090_Lean1090_Impl_decode+0x1bc>
+  b93dc6:	inc    %eax
+  b93dc8:	mov    %eax,(%rbx)
+  b93dca:	mov    %rbx,%rdi
+  b93dcd:	call   b92d20 <lp_lean1090_Lean1090_Impl_frameSyndrome>
+  b93dd2:	mov    %rax,%r12
+  b93dd5:	mov    0x8(%rbx),%rax
+  b93dd9:	test   $0x1,%al
+  b93ddb:	jne    b93de8 <lp_lean1090_Lean1090_Impl_decode+0xa8>
+  b93ddd:	movzbl 0x7(%rax),%ecx
+  b93de1:	cmp    $0x4,%ecx
+  b93de4:	je     b93df3 <lp_lean1090_Lean1090_Impl_decode+0xb3>
+  b93de6:	jmp    b93e0e <lp_lean1090_Lean1090_Impl_decode+0xce>
+  b93de8:	mov    %rax,%rcx
+  b93deb:	shr    $1,%rcx
+  b93dee:	cmp    $0x4,%ecx
+  b93df1:	jne    b93e0e <lp_lean1090_Lean1090_Impl_decode+0xce>
+  b93df3:	movzbl 0x20(%rax),%r13d
+  b93df8:	mov    0x18(%rax),%rdi
+  b93dfc:	call   b74840 <lp_lean1090_Lean1090_Impl_adsbHardValid>
+  b93e01:	test   %al,%al
+  b93e03:	je     b93eb3 <lp_lean1090_Lean1090_Impl_decode+0x173>
+  b93e09:	test   %r13b,%r13b
+  b93e0c:	je     b93e80 <lp_lean1090_Lean1090_Impl_decode+0x140>
+  b93e0e:	test   $0x1,%bl
+  b93e11:	jne    b93e21 <lp_lean1090_Lean1090_Impl_decode+0xe1>
+  b93e13:	mov    (%rbx),%eax
+  b93e15:	test   %eax,%eax
+  b93e17:	jle    b93f0f <lp_lean1090_Lean1090_Impl_decode+0x1cf>
+  b93e1d:	inc    %eax
+  b93e1f:	mov    %eax,(%rbx)
+  b93e21:	mov    %rbx,%rdi
+  b93e24:	mov    %r12,%rsi
+  b93e27:	call   b93a80 <lp_lean1090_Lean1090_Impl_reportWithSyndrome>
+  b93e2c:	mov    %rax,%r14
+  b93e2f:	mov    $0x18,%edi
+  b93e34:	call   490a360 <lean_alloc_small_object_core>
+  b93e39:	mov    %rax,%r12
+  b93e3c:	movl   $0x1,(%rax)
+  b93e42:	movw   $0x2,0x6(%rax)
+  b93e48:	mov    %rbx,0x8(%rax)
+  b93e4c:	mov    %r14,0x10(%rax)
+  b93e50:	cmp    $0x1,%ebp
+  b93e53:	jne    b93e61 <lp_lean1090_Lean1090_Impl_decode+0x121>
+  b93e55:	mov    %r12,0x8(%r15)
+  b93e59:	mov    %r15,%r14
+  b93e5c:	jmp    b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93e61:	mov    $0x10,%edi
+  b93e66:	call   490a360 <lean_alloc_small_object_core>
+  b93e6b:	mov    %rax,%r14
+  b93e6e:	movl   $0x1,(%rax)
+  b93e74:	movw   $0x101,0x6(%rax)
+  b93e7a:	mov    %r12,0x8(%rax)
+  b93e7e:	jmp    b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93e80:	mov    0x3feb6b2(%rip),%eax        # 4b7f538 <lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome___closed__0_once>
+  b93e86:	cmp    $0x1,%eax
+  b93e89:	jne    b93f71 <lp_lean1090_Lean1090_Impl_decode+0x231>
+  b93e8f:	mov    0x3feb69a(%rip),%rsi        # 4b7f530 <lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome___closed__0>
+  b93e96:	mov    %esi,%eax
+  b93e98:	test   $0x1,%r12b
+  b93e9c:	je     b93f9a <lp_lean1090_Lean1090_Impl_decode+0x25a>
+  b93ea2:	test   $0x1,%al
+  b93ea4:	je     b93fa4 <lp_lean1090_Lean1090_Impl_decode+0x264>
+  b93eaa:	cmp    %rsi,%r12
+  b93ead:	je     b93e0e <lp_lean1090_Lean1090_Impl_decode+0xce>
+  b93eb3:	test   $0x1,%r12b
+  b93eb7:	jne    b93ecc <lp_lean1090_Lean1090_Impl_decode+0x18c>
+  b93eb9:	mov    (%r12),%eax
+  b93ebd:	cmp    $0x2,%eax
+  b93ec0:	jl     b93f4b <lp_lean1090_Lean1090_Impl_decode+0x20b>
+  b93ec6:	dec    %eax
+  b93ec8:	mov    %eax,(%r12)
+  b93ecc:	test   $0x1,%r15b
+  b93ed0:	jne    b93eda <lp_lean1090_Lean1090_Impl_decode+0x19a>
+  b93ed2:	mov    %r15,%rdi
+  b93ed5:	call   48a0c10 <lean_free_object>
+  b93eda:	test   $0x1,%bl
+  b93edd:	jne    b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93edf:	mov    (%rbx),%eax
+  b93ee1:	cmp    $0x2,%eax
+  b93ee4:	jl     b93f60 <lp_lean1090_Lean1090_Impl_decode+0x220>
+  b93ee6:	dec    %eax
+  b93ee8:	mov    %eax,(%rbx)
+  b93eea:	mov    %r14,%rax
+  b93eed:	add    $0x8,%rsp
+  b93ef1:	pop    %rbx
+  b93ef2:	pop    %r12
+  b93ef4:	pop    %r13
+  b93ef6:	pop    %r14
+  b93ef8:	pop    %r15
+  b93efa:	pop    %rbp
+  b93efb:	ret
+  b93efc:	cmp    $0x90000001,%eax
+  b93f01:	jb     b93dca <lp_lean1090_Lean1090_Impl_decode+0x8a>
+  b93f07:	lock decl (%rbx)
+  b93f0a:	jmp    b93dca <lp_lean1090_Lean1090_Impl_decode+0x8a>
+  b93f0f:	cmp    $0x90000001,%eax
+  b93f14:	jb     b93e21 <lp_lean1090_Lean1090_Impl_decode+0xe1>
+  b93f1a:	lock decl (%rbx)
+  b93f1d:	jmp    b93e21 <lp_lean1090_Lean1090_Impl_decode+0xe1>
+  b93f22:	cmp    $0x90000001,%ecx
+  b93f28:	jb     b93d9e <lp_lean1090_Lean1090_Impl_decode+0x5e>
+  b93f2e:	lock decl (%rbx)
+  b93f31:	jmp    b93d9e <lp_lean1090_Lean1090_Impl_decode+0x5e>
+  b93f36:	test   %ecx,%ecx
+  b93f38:	je     b93db7 <lp_lean1090_Lean1090_Impl_decode+0x77>
+  b93f3e:	mov    %rax,%rdi
+  b93f41:	call   48a0d30 <lean_dec_ref_cold>
+  b93f46:	jmp    b93db7 <lp_lean1090_Lean1090_Impl_decode+0x77>
+  b93f4b:	test   %eax,%eax
+  b93f4d:	je     b93ecc <lp_lean1090_Lean1090_Impl_decode+0x18c>
+  b93f53:	mov    %r12,%rdi
+  b93f56:	call   48a0d30 <lean_dec_ref_cold>
+  b93f5b:	jmp    b93ecc <lp_lean1090_Lean1090_Impl_decode+0x18c>
+  b93f60:	test   %eax,%eax
+  b93f62:	je     b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93f64:	mov    %rbx,%rdi
+  b93f67:	call   48a0d30 <lean_dec_ref_cold>
+  b93f6c:	jmp    b93eea <lp_lean1090_Lean1090_Impl_decode+0x1aa>
+  b93f71:	lea    0x3feb5b8(%rip),%rdi        # 4b7f530 <lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome___closed__0>
+  b93f78:	lea    0x3feb5b9(%rip),%rsi        # 4b7f538 <lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome___closed__0_once>
+  b93f7f:	lea    -0x1096(%rip),%rdx        # b92ef0 <_init_lp_lean1090_Lean1090_Impl_frameAcceptedWithSyndrome___closed__0>
+  b93f86:	call   48aa240 <lean_obj_once_cold>
+  b93f8b:	mov    %rax,%rsi
+  b93f8e:	mov    %esi,%eax
+  b93f90:	test   $0x1,%r12b
+  b93f94:	jne    b93ea2 <lp_lean1090_Lean1090_Impl_decode+0x162>
+  b93f9a:	xor    %eax,%eax
+  b93f9c:	test   $0x1,%al
+  b93f9e:	jne    b93eaa <lp_lean1090_Lean1090_Impl_decode+0x16a>
+  b93fa4:	mov    %r12,%rdi
+  b93fa7:	call   48a4180 <lean_nat_big_eq>
+  b93fac:	test   %al,%al
+  b93fae:	jne    b93e0e <lp_lean1090_Lean1090_Impl_decode+0xce>
+  b93fb4:	jmp    b93eb3 <lp_lean1090_Lean1090_Impl_decode+0x173>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

@@ -1,0 +1,39 @@
+diff --git a/Impl/Bits.lean b/Impl/Bits.lean
+index e747057..317e48e 100644
+--- a/Impl/Bits.lean
++++ b/Impl/Bits.lean
+@@ -11,10 +11,32 @@ all-input refinement theorem and include every exact semantic projection.
+ namespace Lean1090.Impl
+ open Lean1090.Spec
+ 
++/-- Fold one word in transmission order. At most eight bytes fit exactly;
++longer lists retain the usual UInt64 reduction modulo 2^64. -/
++@[inline] def bytesWord (bytes : List UInt8) : UInt64 :=
++  bytes.foldl (fun word byte => 256 * word + byte.toUInt64) 0
++
++/-- Consume a prefix without copying its list nodes. The recursive call returns
++directly; only the endpoint constructs the accumulated word/suffix pair. -/
++def bytesWordPrefix : Nat → List UInt8 → UInt64 → UInt64 × List UInt8
++  | 0, bytes, word => (word, bytes)
++  | _ + 1, [], word => (word, [])
++  | count + 1, byte :: rest, word =>
++      bytesWordPrefix count rest (256 * word + byte.toUInt64)
++
+ -- Initial algorithm: Spec/Bits.lean:13.
+-/-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: fold bytes in transmission order. -/
++/-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: fold bytes in transmission order.
++Up to sixteen bytes use exact UInt64 chunks followed by one Nat combination.
++Arbitrary longer lists use the original unbounded fold. -/
+ def bytesValue (bytes : List UInt8) : Nat :=
+-  bytes.foldl (fun n b => 256 * n + b.toNat) 0
++  let count := bytes.length
++  if count ≤ 8 then
++    (bytesWord bytes).toNat
++  else if count ≤ 16 then
++    let (high, rest) := bytesWordPrefix 8 bytes 0
++    (high.toNat <<< (8 * (count - 8))) + (bytesWord rest).toNat
++  else
++    bytes.foldl (fun n b => 256 * n + b.toNat) 0
+ 
+ -- Initial algorithm: Spec/Bits.lean:17.
+ /-- Annex 10 IV (4th ed.), §3.1.2.3.1.3: extract a zero-based MSB-first field.

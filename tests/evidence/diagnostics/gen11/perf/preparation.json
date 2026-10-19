@@ -1,0 +1,30 @@
+{
+  "status": "prepared",
+  "recorded_utc": "2026-10-19T02:29:53.554864+00:00",
+  "helpers": {
+    "tests/evidence/diagnostics/gen11/perf/analyze_perf_gen11.py": "ce980af6cc24d5d2a580a9f2116a3eb81ac0f76668d444d71d5f1e6497ab17c8",
+    "tests/evidence/diagnostics/gen11/perf/finalize_perf_gen11.py": "78952e99c0fb4ddb900e177a91a082b167522d5415d820586a1eff80c9a23a6f",
+    "tests/evidence/diagnostics/gen11/perf/run_perf_gen11.py": "d7841b9dbae40a1ed25a52ca2d0b2d0ec5807444297bdf76f8a80a54b217fa70"
+  },
+  "adapted_from": {
+    "tests/evidence/diagnostics/gen9/perf/run_perf_gen9.py": "37f184e2f82f273e17b3e8b49d6bcde460dfc3dd8fab0c1df92d17a56853e971",
+    "tests/evidence/diagnostics/gen10/perf/analyze_perf_gen10.py": "57464f484e4e513df39be3765e3190d3aaa1b6cc5587f13e407f82736eebc5aa",
+    "tests/evidence/diagnostics/gen9/perf/finalize_perf_gen9.py": "4c3c0f7cc22eaacc6d7aeddd26bc78dc90488cbe381b91dfa286f11e808e7724"
+  },
+  "changes": [
+    "Generation paths, exact timed commit and binary hash",
+    "Retain exact current HEAD/source commit equality; attribution mapping is unnecessary because this new generation uses the current commit directly",
+    "Retain QNH initialization note and document current UInt32/Nat.fold inlining limitations"
+  ],
+  "generated_c_read": {
+    ".lake/build/ir/Impl/Parity.c": "81bb65d9afdb0df325f055c3697fccd866cb68c8b72dba786adf3aa0708c9616",
+    ".lake/build/ir/Impl/CommB.c": "546f7fc1d8bfef009972fdf40789fe8882b21a82d6782da3433def75d8afcf04"
+  },
+  "source_observations": [
+    "Parity.c wordStep uses UInt32 shifts/xor/mask; syndrome calls Nat.foldTR specialized loop with UInt32 accumulator and converts only at return.",
+    "Cached UInt64 input halves and arbitrary-high-bit fallback remain in the live loop.",
+    "CommB.c initializes cbQNHValueTable with 4096 entries and marks it persistent during module startup."
+  ],
+  "empty_cache_before_capture": true,
+  "no_production_edit_or_build": true
+}

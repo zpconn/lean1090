@@ -1,0 +1,56 @@
+{
+_start:
+{
+lean_object* v___x_29_; uint32_t v___y_31_; uint32_t v___y_32_; uint32_t v___x_38_; uint32_t v___x_39_; uint32_t v___x_40_; uint32_t v___y_42_; 
+v___x_29_ = lean_unsigned_to_nat(24u);
+v___x_38_ = lean_uint32_of_nat(v_remainder_27_);
+v___x_39_ = 1;
+v___x_40_ = lean_uint32_shift_left(v___x_38_, v___x_39_);
+if (v_bit_28_ == 0)
+{
+uint32_t v___x_49_; 
+v___x_49_ = 0;
+v___y_42_ = v___x_49_;
+goto v___jp_41_;
+}
+else
+{
+v___y_42_ = v___x_39_;
+goto v___jp_41_;
+}
+v___jp_30_:
+{
+uint32_t v___x_33_; uint32_t v___x_34_; uint32_t v___x_35_; lean_object* v___x_36_; lean_object* v___x_37_; 
+v___x_33_ = lean_uint32_xor(v___y_31_, v___y_32_);
+v___x_34_ = 16777215;
+v___x_35_ = lean_uint32_land(v___x_33_, v___x_34_);
+v___x_36_ = lean_uint32_to_nat(v___x_35_);
+v___x_37_ = l_BitVec_ofNat(v___x_29_, v___x_36_);
+lean_dec(v___x_36_);
+return v___x_37_;
+}
+v___jp_41_:
+{
+uint32_t v_shifted_43_; uint32_t v___x_44_; uint32_t v___x_45_; uint32_t v___x_46_; uint8_t v___x_47_; 
+v_shifted_43_ = lean_uint32_lor(v___x_40_, v___y_42_);
+v___x_44_ = 8388608;
+v___x_45_ = lean_uint32_land(v___x_38_, v___x_44_);
+v___x_46_ = 0;
+v___x_47_ = lean_uint32_dec_eq(v___x_45_, v___x_46_);
+if (v___x_47_ == 0)
+{
+uint32_t v___x_48_; 
+v___x_48_ = 33551369;
+v___y_31_ = v_shifted_43_;
+v___y_32_ = v___x_48_;
+goto v___jp_30_;
+}
+else
+{
+v___y_31_ = v_shifted_43_;
+v___y_32_ = v___x_46_;
+goto v___jp_30_;
+}
+}
+}
+}

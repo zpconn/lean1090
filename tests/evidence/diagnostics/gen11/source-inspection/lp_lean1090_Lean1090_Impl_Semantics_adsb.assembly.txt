@@ -1,0 +1,122 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b91740 <lp_lean1090_Lean1090_Impl_Semantics_adsb>:
+  b91740:	push   %rbp
+  b91741:	push   %r15
+  b91743:	push   %r14
+  b91745:	push   %r13
+  b91747:	push   %r12
+  b91749:	push   %rbx
+  b9174a:	push   %rax
+  b9174b:	mov    %rdi,%rbx
+  b9174e:	call   b73ee0 <lp_lean1090_Lean1090_Impl_adsbLayout>
+  b91753:	test   $0x1,%al
+  b91755:	jne    b917a7 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x67>
+  b91757:	movzbl 0x7(%rax),%ecx
+  b9175b:	test   %ecx,%ecx
+  b9175d:	je     b917b1 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x71>
+  b9175f:	mov    0x8(%rax),%rsi
+  b91763:	test   $0x1,%sil
+  b91767:	jne    b91777 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x37>
+  b91769:	mov    (%rsi),%ecx
+  b9176b:	test   %ecx,%ecx
+  b9176d:	jle    b91871 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x131>
+  b91773:	inc    %ecx
+  b91775:	mov    %ecx,(%rsi)
+  b91777:	mov    (%rax),%ecx
+  b91779:	cmp    $0x1,%ecx
+  b9177c:	jne    b917b8 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x78>
+  b9177e:	mov    %rsi,%r14
+  b91781:	mov    0x8(%rax),%rdi
+  b91785:	test   $0x1,%dil
+  b91789:	jne    b9179a <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x5a>
+  b9178b:	mov    (%rdi),%ecx
+  b9178d:	cmp    $0x2,%ecx
+  b91790:	jl     b9189d <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x15d>
+  b91796:	dec    %ecx
+  b91798:	mov    %ecx,(%rdi)
+  b9179a:	mov    %rax,%rdi
+  b9179d:	call   48a0c10 <lean_free_object>
+  b917a2:	mov    %r14,%rsi
+  b917a5:	jmp    b917c2 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x82>
+  b917a7:	mov    %rax,%rcx
+  b917aa:	shr    $1,%rcx
+  b917ad:	test   %ecx,%ecx
+  b917af:	jne    b9175f <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x1f>
+  b917b1:	mov    $0x1,%esi
+  b917b6:	jmp    b917c2 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x82>
+  b917b8:	jle    b91885 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x145>
+  b917be:	dec    %ecx
+  b917c0:	mov    %ecx,(%rax)
+  b917c2:	mov    $0x1,%edx
+  b917c7:	mov    %rbx,%rdi
+  b917ca:	call   b8ec70 <lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_Semantics_tableValues_spec__0>
+  b917cf:	mov    %rax,(%rsp)
+  b917d3:	mov    %rbx,%rdi
+  b917d6:	call   b8f020 <lp_lean1090_Lean1090_Impl_Semantics_adsbStandardValues>
+  b917db:	mov    %rax,%r15
+  b917de:	mov    %rbx,%rdi
+  b917e1:	call   b90180 <lp_lean1090_Lean1090_Impl_Semantics_adsbOracleValues>
+  b917e6:	mov    %rax,%r12
+  b917e9:	xor    %edi,%edi
+  b917eb:	mov    %rbx,%rsi
+  b917ee:	call   b90c00 <lp_lean1090_Lean1090_Impl_Semantics_adsbLabels>
+  b917f3:	mov    %rax,%r13
+  b917f6:	mov    $0x1,%edi
+  b917fb:	mov    %rbx,%rsi
+  b917fe:	call   b90c00 <lp_lean1090_Lean1090_Impl_Semantics_adsbLabels>
+  b91803:	mov    %rax,%rbp
+  b91806:	mov    %rbx,%rdi
+  b91809:	call   b91310 <lp_lean1090_Lean1090_Impl_Semantics_adsbStandardFloats>
+  b9180e:	mov    %rax,%r14
+  b91811:	mov    %rbx,%rdi
+  b91814:	call   b8c180 <lp_lean1090_Lean1090_Impl_Presentation_oracleADSBFloats>
+  b91819:	mov    %rax,%rbx
+  b9181c:	mov    $0x50,%edi
+  b91821:	call   490a360 <lean_alloc_small_object_core>
+  b91826:	movl   $0x1,(%rax)
+  b9182c:	movw   $0x9,0x6(%rax)
+  b91832:	mov    (%rsp),%rcx
+  b91836:	mov    %rcx,0x8(%rax)
+  b9183a:	mov    %r15,0x10(%rax)
+  b9183e:	mov    %r12,0x18(%rax)
+  b91842:	mov    %r13,0x20(%rax)
+  b91846:	mov    %rbp,0x28(%rax)
+  b9184a:	mov    %r14,0x30(%rax)
+  b9184e:	mov    %rbx,0x38(%rax)
+  b91852:	movq   $0x1,0x40(%rax)
+  b9185a:	movq   $0x1,0x48(%rax)
+  b91862:	add    $0x8,%rsp
+  b91866:	pop    %rbx
+  b91867:	pop    %r12
+  b91869:	pop    %r13
+  b9186b:	pop    %r14
+  b9186d:	pop    %r15
+  b9186f:	pop    %rbp
+  b91870:	ret
+  b91871:	cmp    $0x90000001,%ecx
+  b91877:	jb     b91777 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x37>
+  b9187d:	lock decl (%rsi)
+  b91880:	jmp    b91777 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x37>
+  b91885:	mov    %rsi,%r14
+  b91888:	test   %ecx,%ecx
+  b9188a:	je     b917a2 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x62>
+  b91890:	mov    %rax,%rdi
+  b91893:	call   48a0d30 <lean_dec_ref_cold>
+  b91898:	jmp    b917a2 <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x62>
+  b9189d:	test   %ecx,%ecx
+  b9189f:	je     b9179a <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x5a>
+  b918a5:	mov    %rax,%r15
+  b918a8:	call   48a0d30 <lean_dec_ref_cold>
+  b918ad:	mov    %r15,%rax
+  b918b0:	jmp    b9179a <lp_lean1090_Lean1090_Impl_Semantics_adsb+0x5a>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

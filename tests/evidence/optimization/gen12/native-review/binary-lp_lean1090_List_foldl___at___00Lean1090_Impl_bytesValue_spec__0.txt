@@ -1,0 +1,105 @@
+
+.lake/build/bin/lean1090:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b4b5a0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0>:
+  b4b5a0:	push   %r15
+  b4b5a2:	push   %r14
+  b4b5a4:	push   %r13
+  b4b5a6:	push   %r12
+  b4b5a8:	push   %rbx
+  b4b5a9:	mov    %rsi,%rbx
+  b4b5ac:	mov    %rdi,%rax
+  b4b5af:	movabs $0x100000000000000,%r15
+  b4b5b9:	nopl   0x0(%rax)
+  b4b5c0:	test   $0x1,%bl
+  b4b5c3:	jne    b4b5e0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x40>
+  b4b5c5:	movzbl 0x7(%rbx),%ecx
+  b4b5c9:	test   %ecx,%ecx
+  b4b5cb:	jne    b4b5ee <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x4e>
+  b4b5cd:	jmp    b4b6de <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x13e>
+  b4b5d2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+  b4b5e0:	mov    %rbx,%rcx
+  b4b5e3:	shr    $1,%rcx
+  b4b5e6:	test   %ecx,%ecx
+  b4b5e8:	je     b4b6de <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x13e>
+  b4b5ee:	mov    0x8(%rbx),%r12
+  b4b5f2:	mov    0x10(%rbx),%rbx
+  b4b5f6:	test   $0x1,%al
+  b4b5f8:	je     b4b658 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xb8>
+  b4b5fa:	mov    %rax,%rcx
+  b4b5fd:	shr    $1,%rcx
+  b4b600:	mov    %rax,%rdx
+  b4b603:	and    %r15,%rdx
+  b4b606:	shr    $0x39,%rax
+  b4b60a:	or     %rdx,%rax
+  b4b60d:	je     b4b630 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x90>
+  b4b60f:	mov    $0x100,%edi
+  b4b614:	mov    %rcx,%rsi
+  b4b617:	call   48971e0 <lean_nat_overflow_mul>
+  b4b61c:	mov    %rax,%rcx
+  b4b61f:	jmp    b4b637 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b4b621:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+  b4b630:	shl    $0x9,%rcx
+  b4b634:	inc    %rcx
+  b4b637:	shr    $1,%r12d
+  b4b63a:	movzbl %r12b,%eax
+  b4b63e:	test   $0x1,%cl
+  b4b641:	je     b4b67a <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xda>
+  b4b643:	shr    $1,%rcx
+  b4b646:	add    %rax,%rcx
+  b4b649:	js     b4b69f <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0xff>
+  b4b64b:	lea    0x1(,%rcx,2),%rax
+  b4b653:	jmp    b4b5c0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b4b658:	mov    $0x201,%edi
+  b4b65d:	mov    %rax,%rsi
+  b4b660:	mov    %rax,%r14
+  b4b663:	call   4896f70 <lean_nat_big_mul>
+  b4b668:	mov    %rax,%rcx
+  b4b66b:	mov    (%r14),%eax
+  b4b66e:	cmp    $0x2,%eax
+  b4b671:	jl     b4b6ac <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x10c>
+  b4b673:	dec    %eax
+  b4b675:	mov    %eax,(%r14)
+  b4b678:	jmp    b4b637 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b4b67a:	lea    0x1(,%rax,2),%rsi
+  b4b682:	mov    %rcx,%rdi
+  b4b685:	mov    %rcx,%r14
+  b4b688:	call   4896b30 <lean_nat_big_add>
+  b4b68d:	mov    (%r14),%ecx
+  b4b690:	cmp    $0x2,%ecx
+  b4b693:	jl     b4b6c3 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x123>
+  b4b695:	dec    %ecx
+  b4b697:	mov    %ecx,(%r14)
+  b4b69a:	jmp    b4b5c0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b4b69f:	mov    %rcx,%rdi
+  b4b6a2:	call   4896990 <lean_big_usize_to_nat>
+  b4b6a7:	jmp    b4b5c0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b4b6ac:	mov    %rcx,%r13
+  b4b6af:	test   %eax,%eax
+  b4b6b1:	je     b4b6bb <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x11b>
+  b4b6b3:	mov    %r14,%rdi
+  b4b6b6:	call   4894470 <lean_dec_ref_cold>
+  b4b6bb:	mov    %r13,%rcx
+  b4b6be:	jmp    b4b637 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x97>
+  b4b6c3:	test   %ecx,%ecx
+  b4b6c5:	je     b4b5c0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b4b6cb:	mov    %r14,%rdi
+  b4b6ce:	mov    %rax,%r14
+  b4b6d1:	call   4894470 <lean_dec_ref_cold>
+  b4b6d6:	mov    %r14,%rax
+  b4b6d9:	jmp    b4b5c0 <lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0+0x20>
+  b4b6de:	pop    %rbx
+  b4b6df:	pop    %r12
+  b4b6e1:	pop    %r13
+  b4b6e3:	pop    %r14
+  b4b6e5:	pop    %r15
+  b4b6e7:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

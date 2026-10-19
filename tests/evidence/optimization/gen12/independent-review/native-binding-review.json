@@ -1,0 +1,122 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-19T02:49:24.954394+00:00",
+  "findings": [],
+  "native_review_sha256": "9df8ef966e4474e91391d85c49a299d158dc43c04cb6eee1ffb63b2d1ab265f7",
+  "native_inspection_sha256": "d416425f1ee349cdd4328320a1761fbd75c03c5e2812932c7ee8c2fc3097522b",
+  "integration_review_sha256": "3f50b26ff2822e0537bbafd763640cdda917e5758f9a2eba6b20c378ec32ced8",
+  "independent_source_proof_review_sha256": "5eb800233333a17e5de6db7fee32ab94aeee93fe1d23bb2f2835a2b369c2a77b",
+  "native_checks": 41,
+  "native_inputs": 141,
+  "native_files": 221,
+  "exact_native_evidence_membership": 228,
+  "byte_words_live_path_verified": true,
+  "independent_cfg": {
+    "prefix": {
+      "start": "0xb4b320",
+      "reachable_instruction_count": 181,
+      "tracked": [
+        "lean_alloc_small_object_core"
+      ],
+      "normal_exits": [
+        {
+          "counts": [
+            2
+          ],
+          "target": "ret"
+        }
+      ]
+    },
+    "public_branches": {
+      "short": {
+        "start": "0xb4b763",
+        "reachable_instruction_count": 53,
+        "tracked": [
+          "lp_lean1090_Lean1090_Impl_bytesWordPrefix",
+          "lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0",
+          "lean_nat_shiftl"
+        ],
+        "normal_exits": [
+          {
+            "counts": [
+              0,
+              0,
+              0
+            ],
+            "target": "lean_big_uint64_to_nat"
+          },
+          {
+            "counts": [
+              0,
+              0,
+              0
+            ],
+            "target": "ret"
+          }
+        ]
+      },
+      "medium": {
+        "start": "0xb4b7ea",
+        "reachable_instruction_count": 261,
+        "tracked": [
+          "lp_lean1090_Lean1090_Impl_bytesWordPrefix",
+          "lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0",
+          "lean_nat_shiftl"
+        ],
+        "normal_exits": [
+          {
+            "counts": [
+              1,
+              0,
+              1
+            ],
+            "target": "lean_big_usize_to_nat"
+          },
+          {
+            "counts": [
+              1,
+              0,
+              1
+            ],
+            "target": "ret"
+          }
+        ]
+      },
+      "long": {
+        "start": "0xb4b714",
+        "reachable_instruction_count": 24,
+        "tracked": [
+          "lp_lean1090_Lean1090_Impl_bytesWordPrefix",
+          "lp_lean1090_List_foldl___at___00Lean1090_Impl_bytesValue_spec__0",
+          "lean_nat_shiftl"
+        ],
+        "normal_exits": [
+          {
+            "counts": [
+              0,
+              1,
+              0
+            ],
+            "target": "ret"
+          }
+        ]
+      }
+    }
+  },
+  "dependent_native_ownership_sha256": "060479d60e11979219dfd0c4a0447fec4f345e865ad32583a3c0aec96af8df35",
+  "other_unchanged_native_sets": 17,
+  "execution_log_bindings": {
+    "tests/evidence/optimization/gen12/native-review/validate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen12/native-review/attempt-02/validate.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen12/native-review/attempt-01/validate.stderr": "40ebaae799c9339e957ec93d80900913c032d7b56fb752cb58ba80f5f9ecad01",
+    "tests/evidence/optimization/gen12/native-review/attempt-02/validate.stderr": "3f14a53cc2b79726b9422de5dfd9151253e8632907646df79c93963a66633c60",
+    "tests/evidence/optimization/gen12/native-review/validate.stdout": "9853638b415626199d035c4b204f9843729812f6aa3f675ba70a414ca1fb84e7",
+    "tests/evidence/optimization/gen12/native-review/attempt-01/validate.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "review_script_sha256": "c251852496f7c3e51df6adf52508f50c2eefd599f32c39118fd36057663c1ea9",
+  "limits": [
+    "Read-only replay of retained source/proof/native evidence. No compiler or decoder execution.",
+    "The prefix endpoint allocates its UInt64 box and pair; conservative CFG finds no repeated endpoint allocation per consumed byte. Callee allocations and actual runtime branch populations are not inferred.",
+    "Frame/Message Lean sources are unchanged; explicit retained C ownership changes are preserved rather than incorrectly claiming identical native objects."
+  ]
+}

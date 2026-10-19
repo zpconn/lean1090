@@ -1,0 +1,18 @@
+{
+  "generation": 12,
+  "prepared_utc": "2026-10-19T02:51:39.021866+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen12/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "dc35efdb4318bb92d7d5a0a2a047e7d3fc159d2af982cb69887ec68a768d5bf4",
+  "prior_csv_rows": 24,
+  "fresh_verification": "tests/evidence/optimization/gen12/fresh-final-verification.json",
+  "fresh_verification_sha256": "c39e9efb5c5508a1e7d36ce0388930cbbce06e85e56b7641459c6f9f4a5615ec",
+  "title": "exact byte conversion in UInt64 chunks",
+  "change_description": "The live byte converter folds up to sixteen bytes in UInt64 chunks, using a tail-recursive prefix reader that returns the existing suffix without copying its list nodes. Exact natural-number arithmetic combines the final chunks; longer lists retain the original unbounded fold. An unconditional theorem covers every byte list. [Implementation and proof evidence](../docs/GEN12-BYTE-WORDS.md).",
+  "row_note": "UInt64 byte chunks with exact unbounded fallback; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 3,
+    "denominator": 2
+  },
+  "decode_review_threshold": "3/2; exact integer comparison of the measured medians; stop for user review if reached",
+  "note": "Prepared before timing. Contains no speculative measurement. The reviewed reporting helper only archives a completed run."
+}

@@ -1,0 +1,67 @@
+# Bind the actual freshly timed UInt32 CRC loop, rather than the prior CLI.
+parity_path=Path('.lake/build/ir/Impl/Parity.c');parity=parity_path.read_text()
+loop=anchors[1]
+loop_c=body(parity,loop);syndrome_c=body(parity,P+'Parity_syndrome')
+for local in ['Parity_wordStep','Parity_step']:
+ piece=body(parity,P+local)
+ assert all(token in piece for token in ['lean_uint32_shift_left(', 'lean_uint32_lor(', 'lean_uint32_xor(', 'lean_uint32_land(', '8388608', '33551369', '16777215'])
+ assert P+local not in names
+ assert '<'+P+local+'>:' in (D/('object-'+local+'.assembly.txt')).read_text()
+assert all(token in loop_c for token in ['lean_uint32_shift_left(', 'lean_uint32_lor(', 'lean_uint32_xor(', 'lean_uint32_land(', '8388608', '33551369', '16777215','goto _start;'])
+assert not any(token in loop_c for token in ['List_', 'lean_alloc_', 'lean_box_', 'BitVec_', 'lean_uint32_to_nat', 'lean_nat_mod', 'lean_nat_pow'])
+assert all(token in loop_c for token in ['lean_unsigned_to_nat(64u)','lean_unsigned_to_nat(128u)','lean_uint64_shift_right(v_low_', 'lean_uint64_shift_right(v_high_', 'l_Nat_testBit('])
+assert syndrome_c.count('lean_uint64_of_nat(')==2 and syndrome_c.count('lean_nat_shiftr(')==1
+assert syndrome_c.index('v_high_162_ =')<syndrome_c.index(loop+'(')
+assert syndrome_c.count(loop+'(')==syndrome_c.count('lean_uint32_to_nat(')==syndrome_c.count('l_BitVec_ofNat(')==1
+assert syndrome_c.index(loop+'(')<syndrome_c.index('lean_uint32_to_nat(')<syndrome_c.index('l_BitVec_ofNat(')
+loop_asm=(D/(loop+'.assembly.txt')).read_text()
+assert all(x in loop_asm for x in ['lea    (%rdx,%rbx,2),%eax','xor    $0xfff409,%edx','test   $0x800000,%ebx','cmove  %eax,%edx','and    $0xffffff,%edx','mov    %edx,%ebx'])
+assert loop_asm.count('\tbt ')==2
+assert 'l_Nat_testBit' in calls(loop_asm) and 'lean_nat_big_sub' in calls(loop_asm)
+assert not any(re.search(r'List_|BitVec_|lean_alloc|lean_box|uint32_to_nat|lean_nat_(?:pow|mod|div)',n) for n in calls(loop_asm))
+assert not calls((D/'object-Parity_wordStep.assembly.txt').read_text())
+assembly=(D/(P+'Parity_syndrome.assembly.txt')).read_text();rows=[]
+for line in assembly.splitlines():
+ m=re.match(r'\s*([0-9a-f]+):\s+(\w+)\s*(.*)',line)
+ if m:rows.append((int(m[1],16),m[2],m[3]))
+byaddr={r[0]:i for i,r in enumerate(rows)};seen=set();pending=[(0,0)];exits=[]
+while pending:
+ i,n=pending.pop()
+ if (i,n) in seen:continue
+ seen.add((i,n));address,op,arg=rows[i]
+ n+=int(op=='call' and '<'+loop+'>' in arg);assert n<=1
+ if op.startswith('j'):
+  m=re.fullmatch(r'([0-9a-f]+) <([^>]+)>',arg);assert m,arg
+  destination=int(m[1],16)
+  if destination in byaddr:pending.append((byaddr[destination],n))
+  else:
+   assert op=='jmp' and m[2]=='l_BitVec_ofNat';exits.append({'address':hex(address),'loop_calls':n,'target':m[2]})
+  if op=='jmp':continue
+ assert op!='ret' and i+1<len(rows);pending.append((i+1,n))
+assert len(rows)==len(seen)==87 and exits and all(x['loop_calls']==1 for x in exits)
+assert sum(op=='call' and '<'+loop+'>' in arg for _,op,arg in rows)==2
+cfgpath=D/'word-crc-syndrome-native-cfg.json';assert not cfgpath.exists()
+cfgpath.write_text(json.dumps({'instruction_count':len(rows),'reachable_states':len(seen),'static_loop_sites':2,'exits':exits,'assembly':str(D/(P+'Parity_syndrome.assembly.txt')),'assembly_sha256':sha(D/(P+'Parity_syndrome.assembly.txt')),'limits':'Conservative intraprocedural traversal assuming ordinary calls return. Two static ownership call sites are exclusive; no iteration frequency is inferred.'},indent=2)+'\n')
+crc_excerpts={}
+for symbol in [P+'Parity_wordStep',P+'Parity_step',loop,P+'Parity_syndrome',P+'Parity_checksum']:
+ piece=body(parity,symbol);path=D/(symbol+'.generated-C.txt');assert not path.exists();path.write_text(piece+'\n')
+ start=parity.index(piece);first=parity[:start].count('\n')+1
+ crc_excerpts[symbol]={'path':str(path),'sha256':sha(path),'source':str(parity_path),'source_sha256':sha(parity_path),'first_body_line':first,'last_body_line':first+piece.count('\n')}
+assert P+'Parity_checksum' in calls((D/(P+'frameSyndrome.assembly.txt')).read_text())
+assert P+'Parity_syndrome' in calls((D/(P+'Parity_checksum.assembly.txt')).read_text())
+assert 'Impl.Parity.syndrome (bs.length*8) (word bs)' in Path('Tests/Upstream.lean').read_text()
+assert 'BitVec.ofNat 24 (wordStep remainder.toNat.toUInt32 bit).toNat' in Path('Impl/Parity.lean').read_text()
+out['word_crc_live_path_verified']=True
+out['crc_native_context']={
+ 'loop_anchor':loop,'state_width_bits':32,'output_width_bits':24,'standalone_step_present':False,
+ 'standalone_wordStep_present':False,'object_step_and_wordStep_present':True,
+ 'cached_native_bt_sites':2,'high_index_Nat_testBit_fallback_present':True,
+ 'syndrome_cfg':str(cfgpath),'syndrome_cfg_sha256':sha(cfgpath),'generated_C_excerpts':crc_excerpts,
+ 'observations':[
+ 'The freshly timed worker carries an unboxed UInt32 remainder through a specialized tail loop. Generated C has no range list, per-iteration constructor or BitVec projection; machine arithmetic implements shift/input bit, feedback selected by bit23, and low24 mask.',
+ 'Both cached UInt64 halves are prepared before loop entry. The live loop retains two machine bit-test sites and arbitrary-precision Nat.testBit for indices beyond127, including big index bookkeeping. Only remainder-update allocation removal is established; unrestricted indices can still allocate.',
+ 'Public step and wordStep object bodies remain delegates to the same update, but their standalone worker symbols are absent due to inlining. Absence means no observable function boundary, not zero bit-update work.',
+ 'The syndrome assembly has two exclusive ownership call sites. Independent conservative CFG traversal verifies one loop invocation on every normal path and one final BitVec projection.',
+ 'The accepted-corpus post-collection census may predict loop iterations from width. Only actual loop entries, syndrome and checksum counts are measured at retained native boundaries; arbitrary widths and rejection populations are not inferred from that census.',
+ 'All21 reused production objects match the fresh benchmark inventory. Only Parity differs from gen10; shared syndrome, semantic fields, immutable density/Mach/QNH tables and exact integer score fallback remain live.'
+ ]}

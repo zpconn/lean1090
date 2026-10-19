@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewer": "/root/cost_analysis; did not author runtime or proof",
+  "sources": {
+    "Impl/Bits.lean": "7135f27b137db55e23e643a52667911eb2c68458da363cfd7d32934eebd5a21f",
+    "Proofs/ByteWords.lean": "869d2956f81abe7d67f8fbcc690706128e3d5b93823066ff162290337aaa2ba6",
+    "Proofs/Decoder.lean": "8174d7df9c5788ba483ba90e1c4bcef8411459078c376a294e254f8d6a01bcdd"
+  },
+  "helper_facts": [
+    {
+      "name": "Lean1090.Proofs.ByteWords.bytesWord_eq",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.bytesWord_toNat",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.bytesWordPrefix_eq",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.bytesValue_eq",
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.empty_witness",
+      "axioms": []
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.seven_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.eight_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.nine_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.fourteen_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.sixteen_witness",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "Lean1090.Proofs.ByteWords.fallback_witness",
+      "axioms": [
+        "propext"
+      ]
+    }
+  ],
+  "integrated_allowed_axiom_facts": 125,
+  "supplementary_inputs": {
+    "tests/evidence/optimization/gen12/proof/summary.json": {
+      "sha256": "27e2faac80716057a2c4b435bff2f2e17d39652769a3a5768f8573a654385492",
+      "bytes": 5037
+    },
+    "tests/evidence/optimization/gen12/proof/build-02.json": {
+      "sha256": "18735042ef8339becc5c9261c2fab8fdfce6dc8d4dd2954666f7aeed74281dc6",
+      "bytes": 1024
+    },
+    "tests/evidence/optimization/gen12/proof/build-02.log": {
+      "sha256": "97bd6c8b4b81dda578ed874bffb62ef0cbbc4f84eb6027132681a815148f1634",
+      "bytes": 3266
+    },
+    "tests/evidence/optimization/gen12/proof/build-01.json": {
+      "sha256": "fb59545e9ab5c1a2c0dee687ce0a952418fbd8275a2e1a6d7e29cb2dee99786f",
+      "bytes": 1024
+    },
+    "tests/evidence/optimization/gen12/proof/build-01.log": {
+      "sha256": "5d79fea7e500bf043fac920a77c3a83f06866e8f52a3f6d29746c76a013d345f",
+      "bytes": 4892
+    }
+  },
+  "assessment": [
+    "fold_word proves the UInt64 cast is a fold homomorphism for arbitrary lists and initial naturals; it does not assume that intermediate values fit.",
+    "bytesWord_toNat discharges the modulus only under length <=8, using the independently proved Spec byte bound and 256^8=2^64. Both bounded chunks meet this condition.",
+    "bytesWordPrefix_eq quantifies arbitrary count, byte list and UInt64 accumulator. Structural induction returns the exact take-fold and drop suffix, including exhausted lists and count zero.",
+    "bytesValue_append proves exact radix concatenation for arbitrary lists. The public proof splits actual <=8 and <=16 guards, uses the prefix theorem and shift/radix identity, and retains the original all-Nat fallback definitionally for longer lists. No validity, corpus or length premise is added to the public equality.",
+    "Seven kernel witnesses include empty, maximum 7/8-byte words, the ninth-byte crossing, 14/16-byte maxima and a 17-byte fallback. They supplement the universal proof.",
+    "The helper build and integrated whole-decoder refinement have only permitted axioms. Failed attempt 1 and its recovery output are retained separately and not counted as a proof. Final proof source has no placeholder or native-reflection tactic."
+  ],
+  "limits": "Independent mathematical source assessment and replay of existing build/log/source bindings; no independent Lean build or native decoder execution."
+}

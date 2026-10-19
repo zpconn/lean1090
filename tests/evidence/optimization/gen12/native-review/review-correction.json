@@ -1,0 +1,8 @@
+{
+  "reason": "First checker incorrectly expected all non-Bits native artifacts to remain byte-identical. The unchanged Frame and Message Lean sources are recompiled with consuming-list rather than borrowed-list conventions; inspect exact ownership-only C changes instead.",
+  "original_checker_sha256": "6d5434b4c5b008a9cae112c93ab3b86d4cc3e7f3d158837c5451b8dc1d936775",
+  "original_stderr_sha256": "40ebaae799c9339e957ec93d80900913c032d7b56fb752cb58ba80f5f9ecad01",
+  "production_changes": false,
+  "native_workload_rerun": false,
+  "second_checker_correction": "The recursive-C check matched unsigned_to_nat(1), the retained loop count decrement constant. Narrow its forbidden conversion check to uint64_to_nat: no word-to-Nat conversion occurs inside the prefix byte loop; count arithmetic remains."
+}
