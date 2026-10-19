@@ -5,8 +5,32 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-Start from pushed commit `7163b2506f3b4045caa98721aa90b7042733b0fe` and
-preserve the completed generation 15 measurement below. Fresh untimed live
+**Latest measurement: generation 16 reached 1.668888276454× decode and
+1.029132958936× with CPR.** Neither 2.00× target is reached. The measured source
+is `1593898c4425fb174ba4085ab68691feba28124e`, authored and committed by
+`zpconn <zpconn@gmail.com>`. Decode medians are 483.018968 ms for Lean and
+806.104693 ms for rs1090; CPR medians are 785.609215 ms and 808.496336 ms.
+All 96 samples are retained, with six clean-tree/lock checks, 22 freshly built
+native sets, CPU 0 affinity and four Ultimate Performance captures. The
+actual worker SHA-256 is
+`26e79af2c955a0dc8a0fdb1107d77b8c2b93ad31025fdd9e32112a37ee5c416f`.
+No UTC backsteps occurred; outer UTC-minus-monotonic differences of
++570,713,706 ns (decode) and +583,531,483 ns (CPR) remain unadjusted. Worker
+monotonic durations determine the results. Independent result review passed
+all 664 top-level checks on its first execution; review SHA-256:
+`1bbf383f6c999730cc307b9b463b38e07eb8d414584b50bb216a675752b358ac`.
+The environment remains WSL2 on an Intel Core Ultra 9 285K, with host workload
+limitations documented. [Report and raw samples](bench/GEN16.md).
+The artifact-commit binding confirms all 187 inputs still match the passed
+full gate, current tree and timed commit; record SHA-256:
+`7f16e0febb363bbe3e4e2929c04a20f55dc55e7962aab33164922a760690b61a`.
+The reviewed artifacts accompany the result commit for the existing private
+repository. Next: obtain fresh untimed decode and CPR diagnostics before
+choosing generation 17. Production source
+and native artifacts remain held during this assessment.
+
+Generation 16 started from pushed commit
+`7163b2506f3b4045caa98721aa90b7042733b0fe`. The preceding untimed live
 cost breakdowns for decode and CPR passed independent review. Both isolated actual-worker perf captures completed with
 197 protected inputs unchanged; completion record:
 `tests/evidence/diagnostics/gen15-cpr/isolated-perf-completion.json`.
@@ -20,9 +44,9 @@ Frame/CRC is the largest decode stage (3,961,737,590 of 11,213,423,773
 collected instructions). Numeric geography is the largest detailed CPR stage
 (5,562,621,468 of 18,463,254,211). These are diagnostic counts, not speedup
 predictions. See [decode](docs/GEN15-COST-BREAKDOWN.md) and
-[CPR](docs/GEN15-CPR-COST-BREAKDOWN.md) reports. The source hold is released.
+[CPR](docs/GEN15-CPR-COST-BREAKDOWN.md) reports. That review released the source hold for generation 16.
 
-**Generation 16 in progress:** replace repeated powers and multiplication in
+**Generation 16 implementation and validation:** replaced repeated powers and multiplication in
 the general field-packing fold with natural-number shifts and a UInt64 mask
 for widths below 64, retaining the unrestricted wider-field fallback. The
 packing fold accounts for 1,280,682,876 inclusive decode instructions;
@@ -64,10 +88,10 @@ source/log retained; no production change was needed.
 The fixed archive and verified scratch cleanup completed, reclaiming another
 5,733,335,040 allocated bytes. Combined fixed/fresh cleanup reclaimed
 11,093,217,280 bytes while retaining compressed evidence, the earlier proposal
-and the interrupted generation 15 attempt. No generation 16 commit or timing
-has completed yet. All validation and review jobs are stopped. Next: commit
-the verified source, then measure both modes from a clean
-fresh build. [Implementation and proof](docs/GEN16-PACK-FIELDS.md).
+and the interrupted generation 15 attempt. The verified source was committed
+and both frozen benchmark modes completed from its clean fresh build, with
+all other work stopped. The independent result review passed as recorded
+above. [Implementation and proof](docs/GEN16-PACK-FIELDS.md).
 
 Read-only planning identified a possible later CPR change: an immutable table
 of exact `Binary64.powerTwo` values for format exponents −1074 through 1023,

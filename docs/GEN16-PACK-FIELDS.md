@@ -61,6 +61,8 @@ Executed commands, logs and exact source bindings are retained under
 [`tests/evidence/optimization/gen16`](../tests/evidence/optimization/gen16/).
 Verified duplicate-scratch cleanup reclaimed 11,093,217,280 allocated bytes
 across the fixed and fresh campaigns; compressed evidence and unique earlier
-failures remain. Benchmark results will be recorded after a clean committed
-fresh build and both frozen interleaved runs. No frozen file or trusted
-primitive changes in this generation.
+failures remain. The clean committed fresh build and both frozen interleaved
+runs measured **1.668888276454× rs1090 decode** and **1.029132958936× with CPR**.
+All 96 samples and provenance passed independent result review. See the
+[benchmark report](../bench/GEN16.md). No frozen file or trusted primitive
+changed in this generation.

@@ -36,15 +36,14 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 15 reached the previous 1.50× headline target: decode
-1.607053275134× rs1090; CPR 0.990643654222×. The measured source is
-`e659220307538f2aee5398efdb0a9182bff1d778`; its reviewed results are committed
-and pushed as `7163b2506f3b4045caa98721aa90b7042733b0fe`. All samples and
-provenance are in `bench/runs/gen15/`, with the report in `bench/GEN15.md`.
-The user's new 2.00× target in both modes resumes optimization from this state.
-Obtain fresh decode and CPR diagnostics before choosing generation 16. Keep
-all existing frozen-file, proof, full-gate, isolated benchmark and disk-retention
-requirements. `PROGRESS.md` records current work and review results.
+Generation 16 measured decode 1.668888276454× rs1090 and CPR
+1.029132958936×. The measured source is
+`1593898c4425fb174ba4085ab68691feba28124e`; independent result review passed.
+All samples and provenance are in `bench/runs/gen16/`, with the report in
+`bench/GEN16.md`. Both 2.00× targets remain unmet. Obtain fresh decode and CPR diagnostics
+before choosing generation 17. Keep all existing frozen-file, proof, full-gate,
+isolated benchmark and disk-retention requirements. `PROGRESS.md` records
+current work and review results.
 
 ## Ground rules
 
