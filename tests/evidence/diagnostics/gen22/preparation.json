@@ -1,0 +1,73 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T21:55:56.414964+00:00",
+  "files": {
+    "tests/evidence/diagnostics/gen22/run_prepared.py": {
+      "sha256": "758cdba679abdf8a7b267c78863a9bf50c6a51c669f621e50fe7a044a821d28e",
+      "adapted_from": "tests/evidence/diagnostics/gen21/run_prepared.py",
+      "prior_sha256": "4c11eec1c15bf3671a4ced42cd80a656cbd202ca852c139435a265b7d5c7a85d"
+    },
+    "tests/evidence/diagnostics/gen22/snapshot_history.py": {
+      "sha256": "dd2c1d19a134a33de2ec428847da65bd0f9f11f360d29269f10fea14f2cae242",
+      "adapted_from": "tests/evidence/diagnostics/gen21/snapshot_history.py",
+      "prior_sha256": "038b3ae95126e32a7efa83ab48f9bcc1cbddac307b746f8f274ebf0697c2ecbf"
+    }
+  },
+  "diff_sha256": "c5741dfe160a8ebb9ca8012d35d2f929f26b1aac2ad34ddd65cbaa975d60673f",
+  "artifact_commit": null,
+  "timed_commit": "74db41344a9d721c600c554b7e2e0f37b65de938",
+  "worker_sha256": "08b905a7f7990dca51f343fea7d8c75107398ce250cf4c453ebb1943d7ccea5f",
+  "benchmark_summary_sha256": "bc68cf89d05f3f4a812dce8950195076b7e26f309a115296039dbb05f54733a8",
+  "benchmark_result_review_sha256": "df04710a84913478479978bd21d4a55c0338e3bdcbe8ff73fd6a1a48119ba0d4",
+  "benchmark_relocation_review_sha256": "d8027952253234d6a0102515f4a235e31f8219dc131c37dc8042e86124572184",
+  "expected_correctness_input_count": 197,
+  "expected_prior_csv_rows": 46,
+  "generic_helpers": {
+    "review/diagnostics/build_decode_costs.py": "107b85cba1ed3483b04dfcffb5b0826d16b33d100b1abbb0236c06ec5c66a42e",
+    "review/diagnostics/bind_benchmark_history.py": "fc72612cb7a12245265a722f331e88bfcdaf46df4c8dffd9616f2749c6394cf3",
+    "review/diagnostics/run_cost_campaign.py": "307818a1bd54d1083a8f8717950fc004787cab2e98b079f16b1743514d79e6e2",
+    "review/diagnostics/run_native_df.py": "311172bfe88d3ab8ee567c429d290cc91e9120e41496b3a2129b8acf0a15d8f7",
+    "review/diagnostics/profile_decode_costs.py": "19494d6c90c2733f50debeee4ad075e10adbb721f9b455c76d611e8ba1705bbe",
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/archive_cost_campaign.py": "513212241fd3997a8b4f1eec4f390b94f8bfb40e9f70880f342b7366cc56d93a",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "updated_committed_helpers": {
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "diagnostic_tooling_validation": {
+    "path": "tests/evidence/optimization/gen22/diagnostic-tooling/validation.json",
+    "sha256": "3e8fbe78c716c1a9c6bfd3dac399a23ada1822491e788f725facc4d8d22821f2"
+  },
+  "adaptations": [
+    "Generation/path changes from gen21; 197 correctness inputs require the new FrameWord and RawSyndromeSpec proof modules as well as existing byte CRC proofs.",
+    "Controller additionally pins reviewed timed source/worker and all nine prepared generic helpers; three updated diagnostic helpers must match committed measured-source blobs.",
+    "Compact history binder retains exactly the previous algorithm with gen22 directory/report exclusions; no historical artifact copies."
+  ],
+  "paths": {
+    "decode_cache": ".cache/gen22-costs",
+    "decode_evidence": "tests/evidence/diagnostics/gen22",
+    "cpr_evidence": "tests/evidence/diagnostics/gen22-cpr",
+    "isolated_completion": "tests/evidence/diagnostics/gen22-cpr/isolated-perf-completion.json",
+    "source_review": "tests/evidence/diagnostics/gen22/independent-review/source-review.json"
+  },
+  "commands_executed": "ast.parse and source/metadata hashing only; controllers not imported or executed; no build, history snapshot, native census, profiler, capture or cleanup.",
+  "release_conditions": [
+    "Exact root-supplied pushed artifact commit must equal HEAD, differ from and descend from the measured source, with all 197 current correctness inputs and current native artifacts equal to the measured inputs.",
+    "Independent preparation review and root release before build. Both diagnostic drivers finish before root sequential isolated actual-worker decode/CPR perf.",
+    "Compact history snapshot after root status-doc readiness; full census and 13 profiles only after both isolated captures complete and root releases collection.",
+    "Both complete diagnostic reports/archive reviews pass before exact duplicate cleanup; retain all unique perf, failures, unmatched scratch and compressed history."
+  ],
+  "native_obligations": [
+    "Fresh measured-worker source review must set raw_word_syndrome_live_path_verified and decode_frame_with_word_anchor; preserve byte/bit wrappers and fold/fallback anchors, prior integer normalization/power/conversion/bit-extraction checks.",
+    "Actual main path uses returned raw word: do not require standalone decodeFrame/frameSyndrome/checksum/packFields entries. Preserve absent/inlined distinctions using fresh generated C and linked symbols, not absence alone.",
+    "Postcollection census must independently check parsed fields, returned wire word and direct syndrome against full retained output and standalone frameSyndrome; all such validation remains outside collection.",
+    "Compare all per-DF families, exclusive stages, scored register probes and full output digests. Retain observed parser/syndrome/byte-loop entries separately from predicted iterations and nested inclusive costs.",
+    "Next finalizer/extractors must use the corrected gen21 comparison sources and actual current anchors; preparation intentionally does not copy the failed gen21 finalizer or speculate about gen22 populations."
+  ],
+  "finalization_status": "Evidence-local finalizer/extractor adaptation follows current native/source bindings; driver/build/campaign preparation is ready. No finalizer has run.",
+  "inspection_note": "Initial rg included the not-yet-created gen22 diagnostic directory; it was created only for these preparation files."
+}

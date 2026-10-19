@@ -1,0 +1,221 @@
+--- tests/evidence/optimization/gen21/presentation/check_independent.py
++++ tests/evidence/optimization/gen22/presentation/check_independent.py
+@@ -51,8 +51,8 @@
+ readme_check = load(E / 'readme-verification.json')
+ visual = load(E / 'visual-review.json')
+ manifest = load('docs/images/throughput-data.json')
+-summary = load('bench/runs/gen21/summary.json')
+-review = load('bench/runs/gen21/results-review.json')
++summary = load('bench/runs/gen22/summary.json')
++review = load('bench/runs/gen22/results-review.json')
+ checks = []
+ 
+ def require(name, condition):
+@@ -61,14 +61,14 @@
+ 
+ require('passed completed producer and independent benchmark review',
+         completion['status'] == execution['status'] == review['status'] == 'passed'
+-        and not review['findings'] and review['generation'] == 21
++        and not review['findings'] and review['generation'] == 22
+         and review['commit'] == summary['commit'] == completion['timed_commit']
+         and review['binary_sha256'] == summary['binary_sha256']
+-        and completion['benchmark_review_sha256'] == sha('bench/runs/gen21/results-review.json'))
++        and completion['benchmark_review_sha256'] == sha('bench/runs/gen22/results-review.json'))
+ held = {**completion['outputs'], **readme_check['inputs'], **execution['before_hashes']}
+ held[str((E / 'completion.json').relative_to(ROOT))] = sha(E / 'completion.json')
+-held['bench/runs/gen21/summary.json'] = sha('bench/runs/gen21/summary.json')
+-held['bench/runs/gen21/results-review.json'] = sha('bench/runs/gen21/results-review.json')
++held['bench/runs/gen22/summary.json'] = sha('bench/runs/gen22/summary.json')
++held['bench/runs/gen22/results-review.json'] = sha('bench/runs/gen22/results-review.json')
+ # Prior-presentation hashes are intentionally old; all three current maps must
+ # agree whenever they bind the same live file.
+ for mapping in [completion['outputs'], readme_check['inputs'], execution['before_hashes']]:
+@@ -87,23 +87,30 @@
+     git_blob(summary['commit'], name) == Path(name).read_bytes() for name in
+     ['review/presentation/render_throughput.py', 'review/presentation/verify_throughput.py',
+      'review/packaging/check_presentation.py']))
+-original_checker = Path('tests/evidence/optimization/gen20/presentation/check_presentation.py').read_text()
++original_checker = Path('tests/evidence/optimization/gen21/presentation/check_presentation.py').read_text()
+ adapted = (E / 'check_presentation.py').read_text()
+ preparation = load(E / 'preparation.json')
+ import difflib
+ actual_diff = ''.join(difflib.unified_diff(original_checker.splitlines(True), adapted.splitlines(True),
+-    fromfile='tests/evidence/optimization/gen20/presentation/check_presentation.py',
+-    tofile='tests/evidence/optimization/gen21/presentation/check_presentation.py'))
+-require('exact retained checker adaptation and two signed-overhead checks',
++    fromfile='tests/evidence/optimization/gen21/presentation/check_presentation.py',
++    tofile='tests/evidence/optimization/gen22/presentation/check_presentation.py'))
++require('exact unchanged checker and its two signed-overhead checks',
+     actual_diff == (E / 'check_presentation.py.diff').read_text()
+     and 'README_signed_CPR_overheads_match_exact_medians' in adapted
+     and 'README_CPR_overhead_scope_and_noise_disclosed' in adapted)
++for name in ('run_refresh.py', 'check_presentation.py', 'seal_presentation.py'):
++    previous = Path('tests/evidence/optimization/gen21/presentation') / name
++    current = E / name
++    exact_diff = ''.join(difflib.unified_diff(previous.read_text().splitlines(True), current.read_text().splitlines(True),
++        fromfile=str(previous), tofile=str(current.relative_to(ROOT))))
++    require('exact retained producer source diff: ' + name,
++            exact_diff == (E / (name + '.diff')).read_text())
+ for name, digest in preparation['inputs'].items():
+     require('prior or generic preparation input: ' + name, sha(name) == digest)
+ for name, digest in preparation['files'].items():
+     require('producer preparation binds ' + name, sha(name) == digest)
+ # Independently calculate status from integer medians, without either producer
+-# checker or its Decimal display strings. The actual current data is below both.
++# checker or its Decimal display strings. Decode alone reaches its target.
+ reached = {}
+ for mode in ('decode', 'cpr'):
+     medians = next(row for row in summary['results'] if row['mode'] == mode)['medians_nanoseconds']
+@@ -114,17 +121,17 @@
+             review[mode + '_target_ratio'] == {'numerator': 2, 'denominator': 1}
+             and review[mode + '_threshold_reached'] is reached[mode]
+             and execution['exact_target_status']['mode_reached'][mode] is reached[mode])
+-require('both exact 2/1 targets remain unmet', not any(reached.values())
++require('decode alone reaches its exact 2/1 target', reached == {'decode': True, 'cpr': False}
+         and review['all_mode_thresholds_reached'] is False
+         and execution['exact_target_status']['all_modes_reached'] is False
+-        and execution['exact_target_status']['README_status_text'] == 'neither target is reached.')
++        and execution['exact_target_status']['README_status_text'] == 'decode has reached its target; CPR remains below target.')
+ 
+ csv_bytes = Path('bench/results.csv').read_bytes()
+ rows = list(csv.DictReader(io.StringIO(csv_bytes.decode())))
+-require('all 42 prior CSV rows preserved byte-identically', csv_bytes.startswith(git_blob(summary['commit'], 'bench/results.csv')))
+-require('44 unique rows over 22 generations and both modes', len(rows) == 44
++require('all 44 prior CSV rows preserved byte-identically', csv_bytes.startswith(git_blob(summary['commit'], 'bench/results.csv')))
++require('46 unique rows over 23 generations and both modes', len(rows) == 46
+         and {(int(row['generation']), row['mode']) for row in rows}
+-        == {(g, m) for g in range(22) for m in ('decode', 'cpr')})
++        == {(g, m) for g in range(23) for m in ('decode', 'cpr')})
+ require('chart manifest binds every CSV field and source hash',
+         [{k: v for k, v in row.items() if k != 'ratio_recomputed'} for row in manifest['rows']] == rows
+         and manifest['source_sha256'] == sha('bench/results.csv') == completion['csv_sha256']
+@@ -135,13 +142,13 @@
+             Decimal(row['lean1090_msg_s']) > 0 and Decimal(row['rs1090_msg_s']) > 0
+             and ratio == Decimal(rendered['ratio_recomputed'])
+             and abs(ratio - Decimal(row['lean_over_rs1090'])) < Decimal('1e-14'))
+-require('both targets 2.00 and all 22 frames accounted',
++require('both targets 2.00 and all 23 frames accounted',
+         Decimal(manifest['target_ratio']) == Decimal('2.00')
+-        and manifest['generations'] == list(range(22))
+-        and manifest['frame_count'] == len(manifest['frames']) == 22
+-        and verification['plotted_values_checked'] == sum(4 * (g + 1) for g in range(22)) == 1012
++        and manifest['generations'] == list(range(23))
++        and manifest['frame_count'] == len(manifest['frames']) == 23
++        and verification['plotted_values_checked'] == sum(4 * (g + 1) for g in range(23)) == 1104
+         and verification['target_visible_in_all_frames']
+-        and verification['source_rows'] == 44 and verification['frames'] == 22)
++        and verification['source_rows'] == 46 and verification['frames'] == 23)
+ require('retained artist/frame verification binds exact current sources',
+         verification['status'] == 'passed'
+         and verification['manifest_sha256'] == sha('docs/images/throughput-data.json')
+@@ -152,23 +159,23 @@
+     require('chart saved output: ' + name, sha(Path('docs/images') / name) == metadata['sha256']
+             and (Path('docs/images') / name).stat().st_size == metadata['bytes'])
+ with Image.open('docs/images/throughput.gif') as gif:
+-    require('decoded GIF exactly 22 full-size looping frames', gif.n_frames == 22
++    require('decoded GIF exactly 23 full-size looping frames', gif.n_frames == 23
+             and gif.size == (1080, 750) and gif.info['loop'] == 0)
+     decoded_frames = []
+-    for g in range(22):
++    for g in range(23):
+         gif.seek(g)
+         decoded_frames.append(hashlib.sha256(gif.convert('RGB').tobytes()).hexdigest())
+         require('frame duration and visible data span: ' + str(g),
+                 gif.info['duration'] == manifest['gif_frame_durations_ms'][g]
+                 and manifest['frames'][g]['plotted_generations'] == list(range(g + 1)))
+-    require('all decoded GIF frames distinct', len(set(decoded_frames)) == 22)
++    require('all decoded GIF frames distinct', len(set(decoded_frames)) == 23)
+ with Image.open('docs/images/throughput.png') as png:
+     require('static image binds final exact frame pixels',
+             hashlib.sha256(png.convert('RGB').tobytes()).hexdigest() == manifest['frames'][-1]['pixel_sha256'])
+ svg = Path('docs/images/throughput.svg').read_text()
+ require('SVG labels include current generation and both-mode target',
+-        'GENERATION 21' in svg and 'Target 2.00× · both modes' in svg
+-        and 'Decode  1.96×' in svg and 'Decode + CPR  1.54×' in svg)
++        'GENERATION 22' in svg and 'Target 2.00× · both modes' in svg
++        and 'Decode  2.20×' in svg and 'Decode + CPR  1.72×' in svg)
+ 
+ readme = Path('README.md').read_text()
+ old_readme = git_blob(summary['commit'], 'README.md').decode()
+@@ -181,7 +188,7 @@
+ require('manifest has exactly the same 23 final contract names',
+         [re.match(r'def (\w+)', d)[1] for d in source_defs]
+         == re.findall(r'(?m)^theorem (\w+) :', Path('scripts/Final.lean').read_text()))
+-latest = {r['mode']: r for r in rows if r['generation'] == '21'}
++latest = {r['mode']: r for r in rows if r['generation'] == '22'}
+ measurements = {}
+ for mode, row in latest.items():
+     ratio = Decimal(row['lean1090_msg_s']) / Decimal(row['rs1090_msg_s'])
+@@ -189,13 +196,13 @@
+     require('README/report actual numbers: ' + mode,
+             all(token in readme for token in [f"{Decimal(row['lean1090_msg_s']):,.0f} msg/s",
+                 f"{Decimal(row['rs1090_msg_s']):,.0f} msg/s", f'{ratio:.5f}×'])
+-            and f'{ratio:.12f}×' in Path('bench/GEN21.md').read_text()
++            and f'{ratio:.12f}×' in Path('bench/GEN22.md').read_text()
+             and abs(ratio - Decimal(str(native['lean_over_rust']))) < Decimal('1e-14'))
+     measurements[mode] = str(ratio)
+-require('README explicitly keeps both targets unmet and measurement limits',
+-        'generation 21' in readme and summary['commit'] in readme
+-        and '2.00× in both modes' in readme and 'neither target is reached' in readme
+-        and all(Decimal(r) < 2 for r in measurements.values())
++require('README explicitly states decode-only success and measurement limits',
++        'generation 22' in readme and summary['commit'] in readme
++        and '2.00× in both modes' in readme and 'decode has reached its target; CPR remains below target' in readme
++        and Decimal(measurements['decode']) >= 2 and Decimal(measurements['cpr']) < 2
+         and 'they do not establish performance on other hosts or inputs' in readme
+         and 'tested, not proved equal to real arithmetic' in readme)
+ require('all 32 retained README checks pass', readme_check['status'] == 'passed'
+@@ -223,7 +230,7 @@
+ 
+ # Independently derive the new README paragraph from integer durations.
+ mode_medians={row['mode']:row['medians_nanoseconds'] for row in summary['results']}
+-reporting=load('bench/runs/gen21/report-verification.json')
++reporting=load('bench/runs/gen22/report-verification.json')
+ for implementation,label in [('lean1090','Lean'),('rs1090','rs1090')]:
+     delta=mode_medians['cpr'][implementation]-mode_medians['decode'][implementation]
+     display=format(Decimal(delta)/Decimal(172432000), '+.12f')
+@@ -235,7 +242,7 @@
+         and f'**{display} µs/message for {label}**' in readme)
+ require('signed overhead source, formula and measurement-noise scope retained',
+     completion['signed_cpr_overhead']==execution['signed_cpr_overhead']
+-    and execution['signed_cpr_overhead']['source_sha256']==sha('bench/runs/gen21/report-verification.json')
++    and execution['signed_cpr_overhead']['source_sha256']==sha('bench/runs/gen22/report-verification.json')
+     and execution['signed_cpr_overhead']['exact_inputs']==reporting['cpr_overhead']
+     and all(t in readme for t in ['difference between independently measured mode medians','includes measurement noise','not an isolated timing of CPR work']))
+ 
+@@ -248,27 +255,27 @@
+     require('final reviewed input unchanged: ' + name, sha(name) == digest)
+ 
+ result = {
+-    'status': 'passed', 'generation': 21,
++    'status': 'passed', 'generation': 22,
+     'recorded_utc': datetime.now(timezone.utc).isoformat(),
+     'producer_completion_sha256': sha(E / 'completion.json'),
+     'checker_sha256': sha(__file__), 'findings': [],
+     'checks_count': len(checks), 'checks': checks,
+-    'input_bindings': held, 'csv_rows': 44, 'gif_frames': 22,
+-    'retained_artist_values_verified': 1012, 'capstones_verbatim': 23,
++    'input_bindings': held, 'csv_rows': 46, 'gif_frames': 23,
++    'retained_artist_values_verified': 1104, 'capstones_verbatim': 23,
+     'local_links_rechecked': link_count, 'latest_ratios': measurements,
+-    'target': '2.00 in both modes; neither reached',
++    'target': '2.00 in both modes; decode reached, CPR unmet',
+     'exact_target_decisions': reached,
+     'visual_inspection': {
+         'method': 'view_image of all four retained 800 px previews before running this checker',
+         'previews': visual['previews'],
+         'observations': [
+-            'Static and final GIF show 1.96× decode / 1.54× CPR, both below the visible 2.00× line.',
+-            'Units, titles, legends, both series and the final 422.2k/215.1k endpoints are readable.',
+-            'GIF previews at generations 0, 11 and 21 keep identical scales and no future points.',
++            'Static and final GIF show 2.20× decode / 1.72× CPR; decode is above and CPR below the visible 2.00× target.',
++            'Units, titles, legends, both series and the final 473.9k/215.0k endpoints are readable.',
++            'GIF previews at generations 0, 11 and 22 keep identical scales and no future points.',
+             'The generation-0 rs1090 endpoint is close to the left y-axis tick labels; this existing cosmetic limitation remains readable and does not obscure the plotted value.',
+             'No fabricated uncertainty, pyModeS series or cross-host performance claim appears.'
+         ]},
+-    'execution_limits': 'No producer renderer/checker, benchmark, build, proof, native decoder or profiler was rerun. The independently read unchanged artist/frame checker and its source-bound successful log establish all 1012 plotted values; this review independently rehashed receipts, recomputed ratios, decoded GIF structure, verified static pixel binding, capstones and links.',
++    'execution_limits': 'No producer renderer/checker, benchmark, build, proof, native decoder or profiler was rerun. The independently read unchanged artist/frame checker and its source-bound successful log establish all 1104 plotted values; this review independently rehashed receipts, recomputed ratios, decoded GIF structure, verified static pixel binding, capstones and links.',
+     'all_jobs_stopped': True,
+ }
+ (E / 'independent-review.json').write_text(json.dumps(result, indent=2, ensure_ascii=False) + '\n')

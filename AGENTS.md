@@ -36,42 +36,31 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 21 measured decode 1.963308902434× rs1090 and CPR
-1.539889738438×. Both 2.00× targets remain unmet. The measured source is
-`11fbf4e0c8c196d70cd838dd2a14516f586fc4c5`, under the user's identity.
-All 96 samples and provenance are in `bench/runs/gen21/`, with the report in
-`bench/GEN21.md`. CPR overhead is 0.670280858541 µs/message for Lean and
-0.029311055952 for rs1090, as a difference between mode medians including noise.
+Generation 22 measured **2.203718886895× decode** and **1.715366461888×
+decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both
+mode targets are reached. Measured source:
+`74db41344a9d721c600c554b7e2e0f37b65de938`, under the user's identity.
+All 96 samples and provenance are in `bench/runs/gen22/`; report:
+`bench/GEN22.md`. Signed CPR overhead is 0.620529339102 µs/message for Lean
+and 0.033958650367 for rs1090, including noise between mode medians.
 
-Generation 21 normalizes integer-times-rational field scaling directly,
-with an unconditional equality preserving all affine and decoder contracts.
-The full gate passed with 195 unchanged inputs and all 23 capstones. The
-separate fresh 10M campaign, independent replay and archive/plan review also
-passed. Verified scratch cleanup reclaimed 11,092,697,088 allocated bytes.
-The clean-commit fresh-build benchmark and archival checks passed.
-Independent measured-result review passed 717 checks; artifact-source binding
-and presentation reviews also passed. Artifacts were committed and pushed as
-`acdfde75c5c3776ad98286f87ddac07470a0a185`, under the user's identity.
-Fresh diagnostic builds, isolated profiles and both complete instruction
-collections and both independent reviews passed against that source-equivalent
-commit. Verified cleanup reclaimed 488,624,128 bytes, retaining compressed
-evidence and raw perf; source/history hold is released. Generation 22 selects
-reuse of the parsed word for CRC. Parser, reference-syndrome and integrated
-decoder proofs and the combined production/proof build passed. Independent
-source and native reviews passed. The fresh 10M campaign, independent replay
-and verified cleanup passed. The fixed full gate and verified cleanup also
-passed. Final archive/plan review passed after a preserved metadata-only
-fact-count correction; the source commit and isolated timing are next.
-Preserve all existing public types and theorem statements. No gen22
-throughput result exists yet. See docs/GEN22-PARSED-WORD-CRC.md. No frozen, Float callback,
-software binary64 or trusted-primitive change is authorized.
-See docs/GEN21-AFFINE-NORMALIZATION.md and PROGRESS.md for evidence.
+Generation 22 reuses the parser's raw word for CRC, with unrestricted parser
+and full-decoder refinement proofs. The full fixed and separate fresh 10M
+campaigns, independent replay and final archive review passed; all 197
+correctness inputs remained unchanged. All 23 capstone contracts are proved.
+Verified cleanup reclaimed 11,092,504,576 allocated bytes of duplicate scratch.
+The initial build summary undercounted four line-wrapped axiom facts; the
+corrected count is 287, with all original evidence retained. The benchmark
+archive initially rejected the output directory name. An atomic rename kept
+all 48 original files byte-identical; no measurement was repeated.
 
-The independently reviewed reporting helper now adds CPR overhead to every
-new report, with historical values through generation 19 in
-`bench/CPR-OVERHEAD.md`. Keep all existing frozen-file, proof, full-gate,
-isolated benchmark and disk-retention rules. `PROGRESS.md` records detailed
-current work, evidence and the formatting-only precommit wrapper error.
+Measured-result review, artifact-source binding and presentation review passed.
+The documentation-status update has a retained supplemental check; no render
+or measurement repeated. Artifact commit and private push follow, then a diagnostic of
+the measured code before choosing generation 23. No frozen file, Float callback
+or trusted primitive change is authorized. Software arithmetic optimizations
+must retain exact proved refinement. See PROGRESS.md and
+`docs/GEN22-PARSED-WORD-CRC.md` for the executed evidence and next steps.
 
 ## CPR optimization and reporting constraints
 

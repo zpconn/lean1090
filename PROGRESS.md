@@ -5,8 +5,53 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 21 reached 1.963308902434× decode and
-1.539889738438× with CPR.** Both 2.00× targets remain unmet. The measured
+**Latest measurement: generation 22 reached 2.203718886895× decode and
+1.715366461888× with CPR.** Decode has reached 2.00×; CPR has not. Continue
+until both targets are met. Timed source:
+`74db41344a9d721c600c554b7e2e0f37b65de938`, authored and committed by
+`zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 363.850216/801.823593 ms
+for decode and 470.849331/807.679151 ms for CPR. Lean throughput increased
+12.24% and 11.28% versus generation 21. Signed CPR overhead is
+0.620529339102 µs/message for Lean and 0.033958650367 for rs1090, a difference
+between separate mode medians including noise. All 96 samples, six clean-tree
+and lock checks, 22 fresh native sets and four Ultimate Performance power-plan
+captures are retained. Actual timed worker SHA-256:
+`08b905a7f7990dca51f343fea7d8c75107398ce250cf4c453ebb1943d7ccea5f`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +550,917,048 ns
+(decode) and +549,587,542 ns (CPR) remain unadjusted. Worker monotonic durations
+determine the results. Environment: Intel Core Ultra 9 285K / WSL2, CPU 0;
+host workload limits remain documented. [Report and raw samples](bench/GEN22.md).
+The frozen benchmark and archival checks passed. The archive helper first
+rejected the output-directory name before writing any artifacts. An atomic
+rename to its expected directory preserved all 48 original files byte-for-byte;
+no sample, build or timing run was repeated. The failure and relocation record
+are in `tests/evidence/optimization/gen22/benchmark-archival/`.
+Independent result review passed all 721 checks on its first execution:
+`df04710a84913478479978bd21d4a55c0338e3bdcbe8ff73fd6a1a48119ba0d4`.
+The separate relocation check passed 219 checks, confirming unchanged bytes
+and one interleaver invocation per mode. Artifact-source binding also passed:
+all 197 inputs match the full gate, timed commit and current tree. Receipt:
+`ab10ceef755703464bd7e1fbbd2a08f3b15bc25cc8686d6335cc5ee24ebd3963`.
+Presentation refresh passed: 46 CSV rows, 23 GIF frames, 1,104 plotted values,
+95 links and all 23 capstones verbatim. Producer and root visual inspection
+passed. Producer completion:
+`552a5054ee5bce5e078eb306da7c1593df9f5f6fecc46693d163b031445d241d`.
+Root then updated the optimization-status page; the first independent review
+correctly detected its changed input hash. A narrow documentation-check
+supplement preserves all original receipts, README and image bytes, with no
+render or measurement repeated. Independent presentation review passed all
+1,166 checks; completion:
+`d30f359765497795c9cea802ac1b783c55a9b51ad2ffb70c832e0c4e60a17632`.
+Artifact commit/private push is next. Fresh decode and CPR diagnostic
+preparations passed independent review (29 and 68 checks), without executing
+a build or profile. Profiling the measured code precedes selection of the next
+optimization. Preparation-review hashes:
+`0133d271b3ecb96037358f6865a69c98e460504e03fe8135ff09757ab95064de`
+and `add20c1aa816dbd20f2b44d8e7eb438721e807a441caffb4e0dcb057c911332d`. The repository was verified private with
+`gh repo view zpconn/lean1090 --json nameWithOwner,visibility,defaultBranchRef`.
+
+**Previous measurement: generation 21 reached 1.963308902434× decode and
+1.539889738438× with CPR.** Neither target had been reached at that generation. The measured
 source is `11fbf4e0c8c196d70cd838dd2a14516f586fc4c5`, authored and committed
 by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 408.396750/801.808975 ms
 for decode and 523.974619/806.863139 ms for CPR. Lean throughput increased
@@ -62,7 +107,7 @@ compressed evidence and unique raw perf. Receipts:
 `f5092c80b2d07d3ba96f52687bc27013b210a5e56a389af423a637b4ac621a21`.
 The source/history hold is released.
 
-**Generation 22 in progress:** reuse the already parsed word for CRC instead
+**Generation 22 implementation and validation:** reuse the already parsed word for CRC instead
 of reconstructing the frame's information bits. The public parser delegates
 to the same production helper and preserves its result. Independent parser
 and reference-syndrome proofs now connect this path to the existing complete
@@ -105,12 +150,12 @@ Its initial, unexecuted preparation had a stale report-name guard; review
 caught it, and both versions are retained. Final archive/plan review passed
 after the derived fact-count correction above. Review:
 `24e7346dc3b448a80f1d1210a5523d65c843d522511e09df31a6c129adefe231`.
-The source commit and isolated benchmark are next.
+The source was committed and measured as recorded above.
 Fresh seeds were recorded
 before generation: messages 1,582,934,336 and Comm-B 3,653,937,729.
 The preflight binds 122 sources, three binaries and all 197 inputs:
 `a73e6a26b7927018183f31d71a78e95b7ab65eb849767ce0f7b981beb3225d0d`.
-Measurement remains pending.
+Measurement, archival checks and independent result review passed as above.
 Three unfrozen diagnostic helpers now recognize the paired parser and retain
 the standalone syndrome cross-check outside collected work. Small parser and
 boundary fixtures passed; all 197 correctness inputs remain unchanged. The

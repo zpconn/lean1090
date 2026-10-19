@@ -1,9 +1,10 @@
 # Generation 22: reuse the parsed word for CRC
 
-Status: proofs, full fixed and fresh campaigns, and final archive review passed;
-the clean source commit and timing are next. No gen22 throughput measurement
-exists. The measured predecessor is gen21: 1.963308902434× decode and
-1.539889738438× decode plus CPR; both 2.00× targets remain unmet.
+Status: proofs and full fixed/fresh validation passed. Generation 22 measured
+**2.203718886895× decode** and **1.715366461888× with CPR**; the combined target
+remains unmet. See [the measured report](../bench/GEN22.md). Independent result
+review passed. The measured predecessor was gen21: 1.963308902434×
+decode and 1.539889738438× with CPR.
 
 The completed [decode diagnostic](GEN21-COST-BREAKDOWN.md) counted
 8,429,813,030 instructions. Comm-B inference and frame/CRC are nearly tied,

@@ -1,8 +1,8 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 21 reached
-1.96331× decode and 1.53989× with CPR; [its report](../bench/GEN21.md) retains
+Stop for review only when both measured ratios reach it. Generation 22 reached
+2.20372× decode and 1.71537× with CPR; [its report](../bench/GEN22.md) retains
 all samples and conditions. No project-specific trusted primitive is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
@@ -68,9 +68,9 @@ frozen, and the whole-decoder baseline was taken with the prescribed ABAB
 protocol before generation 1. Historical approvals and hashes remain in
 [FROZEN-CHANGES.md](FROZEN-CHANGES.md).
 
-## Unselected candidates after generation 20
+## Unselected candidates after generation 22
 
-Generation 21 measured exact integer/rational field normalization. Later choices
+Generation 22 measured reuse of the parsed word for CRC. Later choices
 must follow fresh diagnostics of the resulting measured code; the following
 are possibilities, not implemented changes or predicted speedups.
 
