@@ -1,0 +1,39 @@
+--- tests/evidence/optimization/gen22/fresh-run-campaign.py
++++ tests/evidence/optimization/gen23/fresh-run-campaign.py
+@@ -3,15 +3,15 @@
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ from pathlib import Path
+ import json,hashlib,datetime,subprocess,gzip,sys,time
+-P=Path('tests/evidence/optimization/gen22'); ROOT=Path.cwd()
++P=Path('tests/evidence/optimization/gen23'); ROOT=Path.cwd()
+ now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ S=json.loads((P/'fresh-seeds.json').read_text())
+-names=set(json.loads(Path('tests/evidence/optimization/gen21/fresh-message-run.json').read_text())['source_sha256_before'])
++names=set(json.loads(Path('tests/evidence/optimization/gen22/fresh-message-run.json').read_text())['source_sha256_before'])
+ for directory in ['Impl','Model','Spec','Proofs','CLI','Tests']:
+  names.update(str(p) for p in Path(directory).rglob('*.lean'))
+ names.update(['lakefile.toml','lake-manifest.json','lean-toolchain','Capstones.lean'])
+-assert len(names)==122, ('Unexpected correctness-source inventory',len(names))
++assert len(names)==125, ('Unexpected correctness-source inventory',len(names))
+ source_hashes=lambda:{p:sha(p) for p in sorted(names)}
+ preflight=json.loads((P/'fresh-preflight.json').read_text())
+ assert source_hashes()==preflight['source_sha256']
+@@ -31,7 +31,7 @@
+   record.update(status='failed',finished_utc=now());write('fresh-commb-run.json',record);sys.exit(item['exit_code'])
+ record['artifacts']={}
+ for name in ['fresh-commb.csv','fresh-commb.csv.coverage.csv']:
+- src=Path('.cache/gen22-gate')/name;dst=P/(name+'.gz');data=src.read_bytes()
++ src=Path('.cache/gen23-gate')/name;dst=P/(name+'.gz');data=src.read_bytes()
+  with dst.open('wb') as stream:
+   with gzip.GzipFile(fileobj=stream,mode='wb',filename='',mtime=0) as out:out.write(data)
+  record['artifacts'][str(src)]={'sha256':sha(src),'bytes':len(data),'retained':str(dst),'compressed_sha256':sha(dst)}
+@@ -40,7 +40,7 @@
+ record['status']='passed';write('fresh-commb-run.json',record)
+ print(json.dumps({'stage':'fresh_commb','status':'passed','coverage':str(P/'fresh-commb-coverage.json')}),flush=True)
+ argv=S['commands'][2]
+-run={'stage':'gen22_fresh_direct_10m_milestone','status':'running','started_utc':now(),'started_monotonic_ns':time.monotonic_ns(),'argv':argv,'seed_record_sha256':sha(P/'fresh-seeds.json'),'fresh_commb_csv_sha256':sha('.cache/gen22-gate/fresh-commb.csv'),'build_authorization':'Parent explicitly signaled integrated targeted build passed and sources stable, authorizing native campaign without extra builds.','source_sha256_before':source_hashes(),'binary_sha256_before':binary_hashes()}
++run={'stage':'gen23_fresh_direct_10m_milestone','status':'running','started_utc':now(),'started_monotonic_ns':time.monotonic_ns(),'argv':argv,'seed_record_sha256':sha(P/'fresh-seeds.json'),'fresh_commb_csv_sha256':sha('.cache/gen23-gate/fresh-commb.csv'),'build_authorization':'Parent explicitly signaled integrated targeted build passed and sources stable, authorizing native campaign without extra builds.','source_sha256_before':source_hashes(),'binary_sha256_before':binary_hashes()}
+ write('fresh-message-run.json',run)
+ item=command(argv,'fresh-message.log');run.update(finished_utc=now(),finished_monotonic_ns=time.monotonic_ns(),exit_code=item['exit_code'],source_sha256_after=source_hashes(),binary_sha256_after=binary_hashes())
+ run['source_hashes_unchanged']=run['source_sha256_before']==run['source_sha256_after'];run['binary_hashes_unchanged']=run['binary_sha256_before']==run['binary_sha256_after']

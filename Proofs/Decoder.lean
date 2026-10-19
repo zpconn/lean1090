@@ -18,6 +18,9 @@ import Proofs.FrameBits
 import Proofs.CommBQNH
 import Proofs.BitExtraction
 import Proofs.PayloadIntegerShift
+import Proofs.CommBValidity40
+import Proofs.CommBValidity50
+import Proofs.CommBValidity60
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -433,7 +436,9 @@ private theorem decoder_cbStatus_eq : @Impl.cbStatus = @Spec.cbStatus := by
   unfold Impl.cbStatus Spec.cbStatus
   simp only [decoder_payloadBits_eq]
 private theorem decoder_cbValid40_eq : @Impl.cbValid40 = @Spec.cbValid40 := by
-  unfold Impl.cbValid40 Spec.cbValid40
+  funext word
+  rw [CommBValidity40.cbValid40_eq_old]
+  unfold Spec.cbValid40
   simp only [decoder_cbQNH64_eq, decoder_cbSelected_eq, decoder_cbStatus_eq, decoder_payloadBits_eq]
 private theorem decoder_cbValid44_eq : @Impl.cbValid44 = @Spec.cbValid44 := by
   unfold Impl.cbValid44 Spec.cbValid44
@@ -442,14 +447,16 @@ private theorem decoder_cbValid45_eq : @Impl.cbValid45 = @Spec.cbValid45 := by
   unfold Impl.cbValid45 Spec.cbValid45
   simp only [decoder_cbSigned_eq, decoder_cbStatus_eq, decoder_payloadBits_eq]
 private theorem decoder_cbValid50_eq : @Impl.cbValid50 = @Spec.cbValid50 := by
-  unfold Impl.cbValid50 Spec.cbValid50
+  funext word
+  rw [CommBValidity50.cbValid50_eq_old]
+  unfold Spec.cbValid50
   simp only [decoder_cbSigned_eq, decoder_cbStatus_eq, decoder_payloadBits_eq]
 private theorem decoder_cbMach64_eq : @Impl.cbMach64 = @Spec.cbMach64 := by
   funext word
   exact CommBMach.cbMach64_eq word
 private theorem decoder_cbValid60_eq : @Impl.cbValid60 = @Spec.cbValid60 := by
-  unfold Impl.cbValid60 Spec.cbValid60
-  simp only [decoder_cbMach64_eq, decoder_cbStatus_eq, decoder_cbVertical60_eq, decoder_payloadBits_eq]
+  funext word
+  exact CommBValidity60.cbValid60_eq word
 private theorem decoder_bdsWireValid_eq : @Impl.bdsWireValid = @Spec.bdsWireValid := by
   unfold Impl.bdsWireValid Spec.bdsWireValid
   simp only [decoder_adsbHardValid_eq, decoder_cbValid17_eq, decoder_cbValid18_eq, decoder_cbValid19_eq,

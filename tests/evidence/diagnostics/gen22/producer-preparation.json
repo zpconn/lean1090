@@ -1,0 +1,75 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T22:09:58.550088+00:00",
+  "files": {
+    "tests/evidence/diagnostics/gen22/finalize.py": {
+      "sha256": "3e1b01cd851a5a69363c17f3dd39dce08f93f4a8041370411cb0bcc169796720",
+      "from": "tests/evidence/diagnostics/gen21/finalize.py",
+      "prior_sha256": "ab9f014c0d8cf916a958e5e50eba3277474d31bb3e1b6a005dec196e89588bb2"
+    },
+    "tests/evidence/diagnostics/gen22/extract_constant_contexts.py": {
+      "sha256": "80c374b69425aef6d38451cd24d4788a7524cc083efaec163d15e16b41fa475f",
+      "from": "tests/evidence/diagnostics/gen21/extract_constant_contexts.py",
+      "prior_sha256": "65a8c1aceebf3d727dbd36d33b06bf8ea9765c46a051df5452e2ed6e08f029a5"
+    },
+    "tests/evidence/diagnostics/gen22/extract_pack_fields.py": {
+      "sha256": "3c1aac1a6408b775cdedd862e14786250fedf4c8d2a1d095e3a38550e1d6632e",
+      "from": "tests/evidence/diagnostics/gen21/extract_pack_fields.py",
+      "prior_sha256": "463af8075c6d261c0943011aadf1f947ff3336ba4d7c406eda133e8f0d6d46b8"
+    },
+    "tests/evidence/diagnostics/gen22/extract_power_contexts.py": {
+      "sha256": "d52ba99a5df09786a56dfb36ab5f4b80dfecedd77a0064a5492b0ed7512bb7c3",
+      "from": "tests/evidence/diagnostics/gen21/extract_power_contexts.py",
+      "prior_sha256": "4321e799b15d7997e2615d9813cc36b0bb7ecfc6cc81b2faede0a727d843c51e"
+    },
+    "tests/evidence/diagnostics/gen22/extract_priority_contexts.py": {
+      "sha256": "ea451f2b1bf35a2870b3d67a55ef6ccf656275d1f5688cfd820d2e6e04a3ddb6",
+      "from": "tests/evidence/diagnostics/gen21/extract_priority_contexts.py",
+      "prior_sha256": "71dda1b802f6d0d6f60952c3beca62f768906403b0df77f36bd3e9fda2416bf5"
+    },
+    "tests/evidence/diagnostics/gen22/extract_bit_contexts.py": {
+      "sha256": "3ba8eda0a3afd4973498f5b3f6af567b11c1ed4934cd1ed280d8831091a9f0d6",
+      "from": "tests/evidence/diagnostics/gen21/extract_bit_contexts.py",
+      "prior_sha256": "c245e5a7a5abfe32d6f82872664a7f932e29ef18d9af06baae1a82e9c35eb15f"
+    },
+    "tests/evidence/diagnostics/gen22/extract_crc_contexts.py": {
+      "sha256": "af8502198ca454a934ded490ea6a9d6c5c61c8f933fd80d9885bcf9b7fea52c1",
+      "from": "tests/evidence/diagnostics/gen21/extract_crc_contexts.py",
+      "prior_sha256": "0a6160148174db2bf465102831c8384c7bbd2f813b152a2b6e468169792cc2a8"
+    },
+    "tests/evidence/diagnostics/gen22/extract_affine_contexts.py": {
+      "sha256": "12277cd222cfc31f052764976c901ef3120ccc099501357ab8a3b97398bb62a7",
+      "from": "tests/evidence/diagnostics/gen21/extract_affine_contexts.py",
+      "prior_sha256": "87fb19851b9b4a0adf8b35c148591f99ccd5fb10400ae8f4f7196696be647076"
+    },
+    "tests/evidence/diagnostics/gen22/cleanup_cache.py": {
+      "sha256": "cee4407d2dc5ef023f4f13f375e363465cf747a36dfc8091dbdccb0738863d9c",
+      "from": "tests/evidence/diagnostics/gen21/cleanup_cache.py",
+      "prior_sha256": "92410a4c837799f76cdb271dc7104c81dd0e4382fce24cdabe8e09e9b2fdea36"
+    },
+    "tests/evidence/diagnostics/gen22/seal_perf.py": {
+      "sha256": "0cd76152977e1e92319d5b2c42fc90d3f2ca38b97c47ed34b412a8cb7c625355",
+      "from": "tests/evidence/diagnostics/gen21/seal_perf.py",
+      "prior_sha256": "e5f3acedd012e0bc334dd571b433093f3face68ec45debacf627f0adb37b56dc"
+    },
+    "tests/evidence/diagnostics/gen22/extract_ratio_contexts.py": {
+      "sha256": "f6def518f514fc8ab10d8065a01182c5f7ebf9052c335684ca6981766fbd60c5",
+      "from": "tests/evidence/diagnostics/gen21/extract_ratio_contexts_corrected.py",
+      "prior_sha256": "f450680c5c6c016fa5d6b4998f32b3d41c02bd387ba30fcc62f51f7bfcabf9f2"
+    },
+    "tests/evidence/diagnostics/gen22/perf/analyze_perf_gen22.py": {
+      "sha256": "76839910efd44945bb3e2f4f8eaf0e6b1f0ce61017e79c3fb4d05a9a87db2516",
+      "from": "tests/evidence/diagnostics/gen21/perf/analyze_perf_gen21.py",
+      "prior_sha256": "b728fb312d234dfe0c9cc21be4702b8bcd1ba29556bccffe70d137162a22c4ba"
+    }
+  },
+  "diff_sha256": "147227efec3cc3a1f5c05c3b46b4486287c294712b32c18cfecb320cd9901873",
+  "changes": [
+    "Use finalized/corrected gen21 ratio extractor and intact original full finalizer; all generation pairs updated together; no resume-only missing locals copied.",
+    "New verified raw-word path tolerates null unlinked pack anchor, checks current zero packing/reconstruction entries and actual parser/syndrome entries. Historical standalone source/C and counts retained.",
+    "Priority/CRC groups include new parser; all stage/direct-edge reconciliation and accepted-census/13-profile/overlap limits retained.",
+    "Perf parser uses original visible decodeFrame prefix matching (already matches decodeFrameWithWord); no sampling algorithm change.",
+    "Archive binds actual current history/build/preparation logs, all exact source helpers, and current source inspection."
+  ],
+  "syntax_validation": "ast.parse only; none of these new sources executed yet."
+}

@@ -1,0 +1,74 @@
+4463: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_decodeBDS(lean_object* v_register_1279_, lean_object* v_word_1280_){
+4464: _start:
+4465: {
+4466: lean_object* v___x_1281_; 
+4467: v___x_1281_ = lp_lean1090_Lean1090_Impl_bdsLayout(v_register_1279_, v_word_1280_);
+4468: if (lean_obj_tag(v___x_1281_) == 0)
+4469: {
+4470: lean_object* v___x_1282_; 
+4471: lean_dec(v_register_1279_);
+4472: v___x_1282_ = lean_box(0);
+4473: return v___x_1282_;
+4474: }
+4475: else
+4476: {
+4477: lean_object* v_val_1283_; lean_object* v___x_1285_; uint8_t v_isShared_1286_; uint8_t v_isSharedCheck_1294_; 
+4478: v_val_1283_ = lean_ctor_get(v___x_1281_, 0);
+4479: v_isSharedCheck_1294_ = !lean_is_exclusive(v___x_1281_);
+4480: if (v_isSharedCheck_1294_ == 0)
+4481: {
+4482: v___x_1285_ = v___x_1281_;
+4483: v_isShared_1286_ = v_isSharedCheck_1294_;
+4484: goto v_resetjp_1284_;
+4485: }
+4486: else
+4487: {
+4488: lean_inc(v_val_1283_);
+4489: lean_dec(v___x_1281_);
+4490: v___x_1285_ = lean_box(0);
+4491: v_isShared_1286_ = v_isSharedCheck_1294_;
+4492: goto v_resetjp_1284_;
+4493: }
+4494: v_resetjp_1284_:
+4495: {
+4496: uint8_t v___x_1287_; 
+4497: v___x_1287_ = lp_lean1090_Lean1090_Impl_bdsWireValid(v_register_1279_, v_word_1280_);
+4498: if (v___x_1287_ == 0)
+4499: {
+4500: lean_object* v___x_1288_; 
+4501: lean_del_object(v___x_1285_);
+4502: lean_dec(v_val_1283_);
+4503: lean_dec(v_register_1279_);
+4504: v___x_1288_ = lean_box(0);
+4505: return v___x_1288_;
+4506: }
+4507: else
+4508: {
+4509: lean_object* v___x_1289_; lean_object* v___x_1290_; lean_object* v___x_1292_; 
+4510: v___x_1289_ = lp_lean1090_Lean1090_Impl_decodePayloadFields(v_val_1283_, v_word_1280_);
+4511: v___x_1290_ = lean_alloc_ctor(0, 2, 0);
+4512: lean_ctor_set(v___x_1290_, 0, v_register_1279_);
+4513: lean_ctor_set(v___x_1290_, 1, v___x_1289_);
+4514: if (v_isShared_1286_ == 0)
+4515: {
+4516: lean_ctor_set(v___x_1285_, 0, v___x_1290_);
+4517: v___x_1292_ = v___x_1285_;
+4518: goto v_reusejp_1291_;
+4519: }
+4520: else
+4521: {
+4522: lean_object* v_reuseFailAlloc_1293_; 
+4523: v_reuseFailAlloc_1293_ = lean_alloc_ctor(1, 1, 0);
+4524: lean_ctor_set(v_reuseFailAlloc_1293_, 0, v___x_1290_);
+4525: v___x_1292_ = v_reuseFailAlloc_1293_;
+4526: goto v_reusejp_1291_;
+4527: }
+4528: v_reusejp_1291_:
+4529: {
+4530: return v___x_1292_;
+4531: }
+4532: }
+4533: }
+4534: }
+4535: }
+4536: }

@@ -1,0 +1,135 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b81840 <lp_lean1090_Lean1090_Impl_cbSelected>:
+  b81840:	push   %r14
+  b81842:	push   %rbx
+  b81843:	push   %rax
+  b81844:	test   $0x1,%dil
+  b81848:	je     b81920 <lp_lean1090_Lean1090_Impl_cbSelected+0xe0>
+  b8184e:	mov    %rdi,%rax
+  b81851:	shr    $1,%rax
+  b81854:	je     b81885 <lp_lean1090_Lean1090_Impl_cbSelected+0x45>
+  b81856:	movabs $0x1000000000000000,%rcx
+  b81860:	and    %rdi,%rcx
+  b81863:	shr    $0x3d,%rdi
+  b81867:	or     %rcx,%rdi
+  b8186a:	je     b8187b <lp_lean1090_Lean1090_Impl_cbSelected+0x3b>
+  b8186c:	mov    $0x10,%esi
+  b81871:	mov    %rax,%rdi
+  b81874:	call   48a68e0 <lean_nat_overflow_mul>
+  b81879:	jmp    b81882 <lp_lean1090_Lean1090_Impl_cbSelected+0x42>
+  b8187b:	shl    $0x5,%rax
+  b8187f:	inc    %rax
+  b81882:	mov    %rax,%rdi
+  b81885:	test   $0x1,%dil
+  b81889:	je     b8192f <lp_lean1090_Lean1090_Impl_cbSelected+0xef>
+  b8188f:	shr    $1,%rdi
+  b81892:	add    $0x8,%rdi
+  b81896:	js     b81996 <lp_lean1090_Lean1090_Impl_cbSelected+0x156>
+  b8189c:	lea    0x1(,%rdi,2),%rax
+  b818a4:	test   $0x1,%al
+  b818a6:	je     b8194c <lp_lean1090_Lean1090_Impl_cbSelected+0x10c>
+  b818ac:	shr    $0x3,%rax
+  b818b0:	movabs $0x28f5c28f5c28f5c3,%rcx
+  b818ba:	mul    %rcx
+  b818bd:	mov    %rdx,%rdi
+  b818c0:	shr    $1,%rdi
+  b818c3:	or     $0x1,%rdi
+  b818c7:	test   $0x1,%dil
+  b818cb:	je     b8196f <lp_lean1090_Lean1090_Impl_cbSelected+0x12f>
+  b818d1:	mov    %rdi,%rcx
+  b818d4:	shr    $1,%rcx
+  b818d7:	je     b81900 <lp_lean1090_Lean1090_Impl_cbSelected+0xc0>
+  b818d9:	mov    $0x64,%edx
+  b818de:	mov    %rcx,%rax
+  b818e1:	mul    %rdx
+  b818e4:	seto   %dl
+  b818e7:	test   %rax,%rax
+  b818ea:	js     b818f0 <lp_lean1090_Lean1090_Impl_cbSelected+0xb0>
+  b818ec:	test   %dl,%dl
+  b818ee:	je     b8190c <lp_lean1090_Lean1090_Impl_cbSelected+0xcc>
+  b818f0:	mov    $0x64,%esi
+  b818f5:	mov    %rcx,%rdi
+  b818f8:	call   48a68e0 <lean_nat_overflow_mul>
+  b818fd:	mov    %rax,%rdi
+  b81900:	add    $0x8,%rsp
+  b81904:	pop    %rbx
+  b81905:	pop    %r14
+  b81907:	jmp    46eb890 <l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0>
+  b8190c:	lea    0x1(,%rax,2),%rdi
+  b81914:	add    $0x8,%rsp
+  b81918:	pop    %rbx
+  b81919:	pop    %r14
+  b8191b:	jmp    46eb890 <l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0>
+  b81920:	mov    $0x21,%esi
+  b81925:	call   48a6670 <lean_nat_big_mul>
+  b8192a:	jmp    b81882 <lp_lean1090_Lean1090_Impl_cbSelected+0x42>
+  b8192f:	mov    $0x11,%esi
+  b81934:	mov    %rdi,%rbx
+  b81937:	call   48a6230 <lean_nat_big_add>
+  b8193c:	mov    (%rbx),%edx
+  b8193e:	cmp    $0x2,%edx
+  b81941:	jl     b819a0 <lp_lean1090_Lean1090_Impl_cbSelected+0x160>
+  b81943:	dec    %edx
+  b81945:	mov    %edx,(%rbx)
+  b81947:	jmp    b818a4 <lp_lean1090_Lean1090_Impl_cbSelected+0x64>
+  b8194c:	mov    $0xc9,%esi
+  b81951:	mov    %rax,%rdi
+  b81954:	mov    %rax,%rbx
+  b81957:	call   48a69f0 <lean_nat_big_div>
+  b8195c:	mov    %rax,%rdi
+  b8195f:	mov    (%rbx),%eax
+  b81961:	cmp    $0x2,%eax
+  b81964:	jl     b819b7 <lp_lean1090_Lean1090_Impl_cbSelected+0x177>
+  b81966:	dec    %eax
+  b81968:	mov    %eax,(%rbx)
+  b8196a:	jmp    b818c7 <lp_lean1090_Lean1090_Impl_cbSelected+0x87>
+  b8196f:	mov    $0xc9,%esi
+  b81974:	mov    %rdi,%rbx
+  b81977:	call   48a6670 <lean_nat_big_mul>
+  b8197c:	mov    (%rbx),%edx
+  b8197e:	cmp    $0x2,%edx
+  b81981:	jl     b819ce <lp_lean1090_Lean1090_Impl_cbSelected+0x18e>
+  b81983:	dec    %edx
+  b81985:	mov    %edx,(%rbx)
+  b81987:	mov    %rax,%rdi
+  b8198a:	add    $0x8,%rsp
+  b8198e:	pop    %rbx
+  b8198f:	pop    %r14
+  b81991:	jmp    46eb890 <l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0>
+  b81996:	call   48a6090 <lean_big_usize_to_nat>
+  b8199b:	jmp    b818a4 <lp_lean1090_Lean1090_Impl_cbSelected+0x64>
+  b819a0:	mov    %rax,%r14
+  b819a3:	test   %edx,%edx
+  b819a5:	je     b819af <lp_lean1090_Lean1090_Impl_cbSelected+0x16f>
+  b819a7:	mov    %rbx,%rdi
+  b819aa:	call   48a3b70 <lean_dec_ref_cold>
+  b819af:	mov    %r14,%rax
+  b819b2:	jmp    b818a4 <lp_lean1090_Lean1090_Impl_cbSelected+0x64>
+  b819b7:	mov    %rdi,%r14
+  b819ba:	test   %eax,%eax
+  b819bc:	je     b819c6 <lp_lean1090_Lean1090_Impl_cbSelected+0x186>
+  b819be:	mov    %rbx,%rdi
+  b819c1:	call   48a3b70 <lean_dec_ref_cold>
+  b819c6:	mov    %r14,%rdi
+  b819c9:	jmp    b818c7 <lp_lean1090_Lean1090_Impl_cbSelected+0x87>
+  b819ce:	mov    %rax,%r14
+  b819d1:	test   %edx,%edx
+  b819d3:	je     b819dd <lp_lean1090_Lean1090_Impl_cbSelected+0x19d>
+  b819d5:	mov    %rbx,%rdi
+  b819d8:	call   48a3b70 <lean_dec_ref_cold>
+  b819dd:	mov    %r14,%rdi
+  b819e0:	add    $0x8,%rsp
+  b819e4:	pop    %rbx
+  b819e5:	pop    %r14
+  b819e7:	jmp    46eb890 <l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

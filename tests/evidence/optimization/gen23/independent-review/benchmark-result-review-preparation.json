@@ -1,0 +1,29 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T22:40:14.575173+00:00",
+  "source": "tests/evidence/optimization/gen22/independent-review/check_benchmark_result.py",
+  "source_sha256": "68dd64d4168d326e2a55bcab71ad08d5c948b1a5f2cb5dbd79b5be154e1c7475",
+  "reviewer": "tests/evidence/optimization/gen23/independent-review/check_benchmark_result.py",
+  "reviewer_sha256": "35c256b2789f077bf09230e51d904aa9b7316eca12b99e39e9d91374a2125c27",
+  "diff_sha256": "44978b6abae30d3d1ea4c5dd48dbe63e21f45accd310206e89b80d7024d13062",
+  "bindings": {
+    "tests/evidence/optimization/gen23/benchmark-preparation/plan-pending.json": "07ef4d93ce00a5a265adfbe38ab483675fd3d3d989601ff854ace85e5f96e49c",
+    "tests/evidence/optimization/gen23/benchmark-preparation/results-before.csv": "e919c3189b4019f330ca98b3f0f5cf025eed1f4eae4f9a8da638e16b36205fac",
+    "tests/evidence/optimization/gen23/preparation.json": "d0f9b0a56c9fbc269ae904bb2745fcd0de3f6b7c62656b064a82c74846a1fb18",
+    "review/diagnostics/archive_generation_benchmark_target.py": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312",
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac"
+  },
+  "adaptations": [
+    "Only generation/path changes22\u219223; current correctness cardinality197\u2192200, fresh sources122\u2192125, prior CSV rows44\u219246 (48 total after exactly two new rows).",
+    "All96 raw rows, independently sorted integer medians, exact signed overhead for both implementations, both2/1 decisions, clean source identity, fresh native provenance, clock/power/environment, archive and report reconstruction checks retained.",
+    "Flat fresh evidence and committed final gate-review schema retained. Future timed source commit and worker identities resolve from actual measurement records; none guessed."
+  ],
+  "syntax_validation": "ast.parse only; reviewer and imported helpers were not executed.",
+  "future_source_commit": null,
+  "future_worker_sha256": null,
+  "future_command_template": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen23/independent-review/check_benchmark_result.py --source .cache/bench-runs/gen23-<actual-timed-commit-prefix> --plan tests/evidence/optimization/gen23/benchmark-preparation/plan.json",
+  "execution_guard": "Root must release only after both measured modes, canonical archive, final plan and clean timed source commit are available. Preserve exact reviewer source/command/log/completion for every numbered attempt; do not overwrite failures.",
+  "target_stop_condition": "If both exact median-ratio targets pass, finish reviewed generation23 artifacts and stop for user review; do not start next-generation diagnostics.",
+  "no_measurement_or_producer_execution": true,
+  "no_speculative_results": true
+}

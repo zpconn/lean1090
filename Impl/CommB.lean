@@ -213,15 +213,34 @@ def cbValid21 (word : Nat) : Bool :=
   cbDashPlaceholder (payloadBits word 45 6) && cbDashPlaceholder (payloadBits word 51 6)
 
 -- Initial algorithm: Spec/CommB.lean:193.
+/-- The original selected-altitude plausibility decision for every twelve-bit
+field code. The table contains format constants, independent of messages. -/
+def cbSelectedValid40Table : Array Bool := Array.ofFn fun code : Fin 4096 =>
+  decide (cbSelected code.val ≤ 50000)
+
+/-- Exact selected-altitude plausibility at a twelve-bit field position. -/
+def cbSelectedValid40 (word start : Nat) : Bool :=
+  cbSelectedValid40Table[payloadBits word start 12]'(by
+    simpa only [cbSelectedValid40Table, Array.size_ofFn] using payloadBits_lt word start 12)
+
+/-- Both QNH bounds applied to the already rounded value for every field code.
+The original literal, multiplication and addition order remains in the value table. -/
+def cbQNHValid40Table : Array Bool := cbQNHValueTable.map fun value =>
+  decide (value ≥ 800) && decide (value ≤ 1200)
+
+/-- Exact QNH plausibility, indexed only by the twelve-bit pressure code. -/
+def cbQNHValid40 (word : Nat) : Bool :=
+  cbQNHValid40Table[payloadBits word 28 12]'(by
+    simpa only [cbQNHValid40Table, cbQNHValueTable, Array.size_map, Array.size_ofFn]
+      using payloadBits_lt word 28 12)
+
 /-- rs1090-derived bds40.rs: status consistency, both spare regions zero,
 rounded selected altitude ≤50000ft, binary64 pressure in [800,1200]hPa.
 Mode/status and target-source/status consistency are not enforced by rs1090. -/
 def cbValid40 (word : Nat) : Bool :=
   cbStatus word 1 2 12 && cbStatus word 14 15 12 && cbStatus word 27 28 12 &&
   payloadBits word 40 8 == 0 && payloadBits word 52 2 == 0 &&
-  cbSelected (payloadBits word 2 12) ≤ 50000 &&
-  cbSelected (payloadBits word 15 12) ≤ 50000 &&
-  cbQNH64 word ≥ 800 && cbQNH64 word ≤ 1200
+  cbSelectedValid40 word 2 && cbSelectedValid40 word 15 && cbQNHValid40 word
 
 -- Initial algorithm: Spec/CommB.lean:203.
 /-- rs1090-derived bds44.rs: FOM1/2 only, wind≤250kt, temperature fallback
@@ -243,26 +262,55 @@ def cbValid45 (word : Nat) : Bool :=
   cbStatus word 27 28 11 && cbStatus word 39 40 12
 
 -- Initial algorithm: Spec/CommB.lean:220.
+/-- The original roll plausibility formula for all ten-bit signed field codes,
+including both endpoints and every rejected code. -/
+def cbRollValid50Table : Array Bool := Array.ofFn fun code : Fin 1024 =>
+  decide (((payloadInteger .twosComplement 10 code.val : Rat) * 45 / 256).abs ≤ 45)
+
+/-- Exact roll plausibility, indexed by the complete signed roll code. -/
+def cbRollValid50 (word : Nat) : Bool :=
+  cbRollValid50Table[payloadBits word 2 10]'(by
+    simpa only [cbRollValid50Table, Array.size_ofFn] using payloadBits_lt word 2 10)
+
 /-- rs1090-derived bds50.rs: per-field status consistency, |roll|≤45°,
 groundspeed≤700kt and present TAS in [80,600]kt. A track-rate magnitude511
 is unavailable, not a malformed payload. -/
 def cbValid50 (word : Nat) : Bool :=
   cbStatus word 1 2 10 && cbStatus word 12 13 11 && cbStatus word 24 25 10 &&
   cbStatus word 35 36 10 && cbStatus word 46 47 10 &&
-  (cbSigned word 2 10 * 45 / 256).abs ≤ 45 &&
+  cbRollValid50 word &&
   payloadBits word 25 10 * 2 ≤ 700 &&
   (payloadBits word 46 1 == 0 ||
     (payloadBits word 47 10 * 2 ≥ 80 && payloadBits word 47 10 * 2 ≤ 600))
 
 -- Initial algorithm: Spec/CommB.lean:231.
+/-- The original Mach bound for every already rounded ten-bit field value. -/
+def cbMachValid60Table : Array Bool := cbMachValueTable.map fun value =>
+  decide (value ≤ 1)
+
+/-- Exact Mach plausibility, preserving the software-binary64 value table. -/
+def cbMachValid60 (word : Nat) : Bool :=
+  cbMachValid60Table[payloadBits word 25 10]'(by
+    simpa only [cbMachValid60Table, cbMachValueTable, Array.size_map, Array.size_ofFn]
+      using payloadBits_lt word 25 10)
+
+/-- The original inertial vertical-rate bound for every ten-bit code. A code
+occupies the payload's low ten bits at position 47, preserving both sentinels. -/
+def cbVerticalValid60Table : Array Bool := Array.ofFn fun code : Fin 1024 =>
+  decide ((cbVertical60 code.val 47).abs ≤ 6000)
+
+/-- Exact inertial vertical-rate plausibility at the fixed live field position. -/
+def cbVerticalValid60 (word : Nat) : Bool :=
+  cbVerticalValid60Table[payloadBits word 47 10]'(by
+    simpa only [cbVerticalValid60Table, Array.size_ofFn] using payloadBits_lt word 47 10)
+
 /-- rs1090-derived bds60.rs: per-field status consistency, IAS≤500kt,
 binary64 Mach≤1, inertial vertical-rate magnitude≤6000ft/min after sentinel
 handling. Barometric vertical rate has no plausibility bound. -/
 def cbValid60 (word : Nat) : Bool :=
   cbStatus word 1 2 11 && cbStatus word 13 14 10 && cbStatus word 24 25 10 &&
   cbStatus word 35 36 10 && cbStatus word 46 47 10 &&
-  payloadBits word 14 10 ≤ 500 && cbMach64 word ≤ 1 &&
-  (cbVertical60 word 47).abs ≤ 6000
+  payloadBits word 14 10 ≤ 500 && cbMachValid60 word && cbVerticalValid60 word
 
 /-- The exclusive upper bound for a 56-bit Comm-B payload. Keeping this exact
 format constant outside the call body avoids reparsing its large Nat literal

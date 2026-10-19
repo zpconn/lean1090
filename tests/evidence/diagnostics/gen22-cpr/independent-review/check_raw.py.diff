@@ -1,0 +1,44 @@
+--- tests/evidence/diagnostics/gen21-cpr/independent-review/check_raw.py
++++ tests/evidence/diagnostics/gen22-cpr/independent-review/check_raw.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from collections import Counter,defaultdict,deque
+ import gzip,hashlib,json,re
+-B=Path('tests/evidence/diagnostics/gen21-cpr');R=B/'independent-review'
++B=Path('tests/evidence/diagnostics/gen22-cpr');R=B/'independent-review'
+ ROOT='l_Lean1090_Diagnostics_CPRCosts_runCPR';P='lp_lean1090_Lean1090_Impl_';POL=P+'CPR_Policy_'
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def read(p):
+@@ -106,7 +106,7 @@
+   elif local in ['frameCommB','inferCommB','commBEligible','commBCoreEligible']:stage='commb_inference'
+   elif local in ['frameADSB','decodeADSB','adsbHardValid']:stage='adsb_fields'
+   elif local in ['frameAltitude','frameOracleAltitude','frameIdentity']:stage='semantic_oracle_values'
+-  elif local in ['decodeFrame','frameSyndrome','frameAddress','frameAccepted','frameAddressWithSyndrome','frameAcceptedWithSyndrome'] or symbol.startswith(P+'Parity_'):stage='frame_crc'
++  elif local in ['decodeFrame','decodeFrameWithWord','frameSyndrome','frameAddress','frameAccepted','frameAddressWithSyndrome','frameAcceptedWithSyndrome'] or symbol.startswith(P+'Parity_'):stage='frame_crc'
+  return stage
+ dec=Counter();deccontexts={}
+ for n,r in selfcontexts.items():
+@@ -158,17 +158,17 @@
+ assert by_stage==table['by_stage'] and dict(totals)==table['total']
+ assert sum(calls[k] for k in tagged if base(full(k))==table['anchors']['table_entry'])==table['table_constructor_entries_inside_root']==0
+ # Actual callable CRC entries are separate from source/census iteration predictions.
+-source=read(R/'source-review.json');assert source['byte_crc_live_path_verified']
++source=read(R/'source-review.json');assert source['byte_crc_live_path_verified'] and source['raw_word_syndrome_live_path_verified']
+ crc_symbols={k:source[k] for k in ['parity_byte_fold_anchor','parity_bit_fold_anchor']}
+-crc_symbols.update(byte_wrapper=P+'Parity_syndromeBytes',bit_wrapper=P+'Parity_syndromeBits',syndrome=P+'Parity_syndrome',checksum=P+'Parity_checksum',frame=P+'frameSyndrome')
++crc_symbols.update(byte_wrapper=P+'Parity_syndromeBytes',bit_wrapper=P+'Parity_syndromeBits',syndrome=P+'Parity_syndrome',checksum=P+'Parity_checksum',frame=P+'frameSyndrome',parser=P+'decodeFrameWithWord',public_parser=P+'decodeFrame',packing=P+'packFields')
+ crc_observed={k:sum(calls[x] for x in tagged if base(full(x))==symbol) for k,symbol in crc_symbols.items()}
+-for k in ['parity_byte_fold_anchor','byte_wrapper','syndrome','checksum','frame']:assert crc_observed[k]==172432,(k,crc_observed)
+-for k in ['parity_bit_fold_anchor','bit_wrapper']:assert crc_observed[k]==0
++for k in ['parity_byte_fold_anchor','byte_wrapper','syndrome','parser']:assert crc_observed[k]==172432,(k,crc_observed)
++for k in ['parity_bit_fold_anchor','bit_wrapper','checksum','frame','public_parser','packing']:assert crc_observed[k]==0
+ assert sum(calls[x] for x in tagged if base(full(x)) in {P+'Parity_byteStep',P+'Parity_wordStep',P+'Parity_step'})==0
+-census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen21/native/all.jsonl').read_text().splitlines() if x]
++census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen22/native/all.jsonl').read_text().splitlines() if x]
+ crc_census=next(x for x in census_rows if x.get('kind')=='post_decode_crc_census')
+ assert sum(x['crc_call_predictions'] for x in crc_census['per_df'])==172432
+ predicted_bits=sum(x['crc_step_predictions'] for x in crc_census['per_df']);assert predicted_bits%8==0
+-result={'status':'passed','profile_raw_sha256':a['raw_sha256'],'profile_container_sha256':sha(raw),'analysis_raw_sha256':hashlib.sha256(gzip.decompress((B/'analysis/analysis.json.gz').read_bytes())).hexdigest(),'analysis_container_sha256':sha(B/'analysis/analysis.json.gz'),'total_ir':sum(own.values()),'observed_crc_paths':crc_observed,'predicted_byte_iterations':predicted_bits//8,'equivalent_bit_update_predictions':predicted_bits,'exclusive_stages':dict(buckets),'exclusive_decoder_stages':dict(dec),'positive_self_contexts':len(selfcontexts),'helper_groups':len(groups),'native_anchors':dict(anchors),'explicit_chain_recoveries':recovered,'recovery_total_ir':sum(v[0] for v in recovered.values()),'table_container_sha256':sha(B/'table-contexts.json.gz'),'table_counts':dict(totals),'table_stage_counts':by_stage,'table_direct_edge_groups':len(tg),'numeric_direct_edge_contexts':len(nrows),'numeric_direct_edge_groups':len(ngroups),'numeric_container_sha256':sha(B/'numeric-contexts.json.gz'),'direct_power_edge_contexts':len(prows),'direct_power_groups':len(pgroups),'power_group_rows':powers['grouped_direct_edges'],'script_sha256':sha(__file__),'limitations':['Independent parser and raw full caller strings; no production parser/analyzer imported.','Raw inclusive edge observations overlap and are not additive.','Root-unreachable positive-self nodes require the exact recorded root chain; their costs remain included, no cost dropped.']}
++result={'status':'passed','profile_raw_sha256':a['raw_sha256'],'profile_container_sha256':sha(raw),'analysis_raw_sha256':hashlib.sha256(gzip.decompress((B/'analysis/analysis.json.gz').read_bytes())).hexdigest(),'analysis_container_sha256':sha(B/'analysis/analysis.json.gz'),'total_ir':sum(own.values()),'raw_word_syndrome_live_path_verified':True,'observed_crc_paths':crc_observed,'predicted_byte_iterations':predicted_bits//8,'equivalent_bit_update_predictions':predicted_bits,'exclusive_stages':dict(buckets),'exclusive_decoder_stages':dict(dec),'positive_self_contexts':len(selfcontexts),'helper_groups':len(groups),'native_anchors':dict(anchors),'explicit_chain_recoveries':recovered,'recovery_total_ir':sum(v[0] for v in recovered.values()),'table_container_sha256':sha(B/'table-contexts.json.gz'),'table_counts':dict(totals),'table_stage_counts':by_stage,'table_direct_edge_groups':len(tg),'numeric_direct_edge_contexts':len(nrows),'numeric_direct_edge_groups':len(ngroups),'numeric_container_sha256':sha(B/'numeric-contexts.json.gz'),'direct_power_edge_contexts':len(prows),'direct_power_groups':len(pgroups),'power_group_rows':powers['grouped_direct_edges'],'script_sha256':sha(__file__),'limitations':['Independent parser and raw full caller strings; no production parser/analyzer imported.','Raw inclusive edge observations overlap and are not additive.','Root-unreachable positive-self nodes require the exact recorded root chain; their costs remain included, no cost dropped.']}
+ assert not (R/'raw-recount.json').exists()
+ (R/'raw-recount.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items() if k not in ['native_anchors','power_group_rows','explicit_chain_recoveries']},indent=2))

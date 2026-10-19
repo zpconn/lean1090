@@ -1,0 +1,232 @@
+--- tests/evidence/diagnostics/gen21/independent-review/check_source.py
++++ tests/evidence/diagnostics/gen22/independent-review/check_source.py
+@@ -6,7 +6,7 @@
+ from collections import deque
+ import hashlib, importlib.util, json, re, subprocess
+ 
+-E = Path('tests/evidence/diagnostics/gen21')
++E = Path('tests/evidence/diagnostics/gen22')
+ D = E / 'independent-review/source-inspection'
+ D.mkdir(parents=True,exist_ok=True)
+ P = 'lp_lean1090_Lean1090_Impl_'
+@@ -28,10 +28,10 @@
+         if depth==0: return text[start:end+1], text[:start].count('\n')+1
+     raise AssertionError(name)
+ 
+-build_path=Path('.cache/gen21-costs/driver/driver-build.json')
+-build=read(build_path); bench=read('bench/runs/gen21/summary.json')
+-native_path=Path('bench/runs/gen21/fresh-native-inputs.json'); native=read(native_path)
+-oldpath=Path('tests/evidence/diagnostics/gen20/independent-review/source-review.json'); old=read(oldpath)
++build_path=Path('.cache/gen22-costs/driver/driver-build.json')
++build=read(build_path); bench=read('bench/runs/gen22/summary.json')
++native_path=Path('bench/runs/gen22/fresh-native-inputs.json'); native=read(native_path)
++oldpath=Path('tests/evidence/diagnostics/gen21/independent-review/source-review.json'); old=read(oldpath)
+ assert build['status']=='passed' and len(native)==22
+ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==build['commit']
+ assert sha(WORKER)==bench['binary_sha256']
+@@ -56,20 +56,20 @@
+ sys.path.insert(0,str(Path('review/diagnostics').resolve()))
+ import bind_benchmark_history
+ binding_path=E/'benchmark-source-binding.json'
+-assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen21/summary.json'),None,
+-    Path('bench/runs/gen21/correctness-inputs.json'))==read(binding_path)
+-
+-old_native={r['source']:r for r in read('bench/runs/gen20/fresh-native-inputs.json')}
++assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen22/summary.json'),None,
++    Path('bench/runs/gen22/correctness-inputs.json'))==read(binding_path)
++
++old_native={r['source']:r for r in read('bench/runs/gen21/fresh-native-inputs.json')}
+ unchanged=[]
+ for row in native:
+-    if row['source']=='Impl/PayloadBits.lean':continue
++    if row['source'] in {'Impl/Frame.lean','Impl/Message.lean'}:continue
+     before=old_native[row['source']]
+     assert row['source_sha256']==before['source_sha256'],row['source']
+     assert {p:r['sha256'] for p,r in row['artifacts'].items()}=={p:r['sha256'] for p,r in before['artifacts'].items()},row['source']
+     unchanged.append(row['source'])
+-assert len(unchanged)==21
++assert len(unchanged)==20
+ # CPRFloat source and native artifacts are unchanged since generation18.
+-oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen20/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
++oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen21/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
+ assert oldfloat==Path('Impl/CPRFloat.lean').read_text()
+ floatpath=Path('.lake/build/ir/Impl/CPRFloat.c');floatc=floatpath.read_text()
+ T=P+'CPR_Policy_toFloat';F=T+'Fallback';Z='_init_'+T+'___closed__1';FI='initialize_lean1090_Impl_CPRFloat'
+@@ -111,12 +111,26 @@
+ assert fold+'(' in body(c,P+'packFields')[0]
+ message_path=Path('.lake/build/ir/Impl/Message.c'); message=message_path.read_text()
+ assert P+'packFields(' in body(message,P+'frameSyndrome')[0]
+-assert P+'frameSyndrome(' in body(message,P+'decode')[0]
++decodebody=body(message,P+'decode')[0]
++assert decodebody.count(P+'decodeFrameWithWord(')==decodebody.count(P+'Parity_syndrome(')==decodebody.count(P+'reportWithSyndrome(')==1
++assert not any(P+n+'(' in decodebody for n in ['frameSyndrome','Parity_checksum','frameParts','packFields','bytesValue','decodeFrame'])
+ 
+ # Earlier shift/mask definitions remain live and byte-identical to generation 19.
+ altpath=Path('.lake/build/ir/Impl/Altitude.c');alt=altpath.read_text()
+ framepath=Path('.lake/build/ir/Impl/Frame.c');frame=framepath.read_text()
+ payloadpath=Path('.lake/build/ir/Impl/PayloadBits.c');payload=payloadpath.read_text()
++parser=body(frame,P+'decodeFrameWithWord')[0];projection=body(frame,P+'decodeFrame')[0]
++info=body(frame,P+'informationBits')[0]
++assert parser.count(P+'bytesValue(')==1
++assert parser.index('l_List_head_x3f___redArg')<parser.index('l_List_lengthTR___redArg')<parser.index(P+'bytesValue(')
++assert 'v___x_60_ = '+P+'bytesValue(v_bytes_43_);' in parser and 'lean_ctor_set(v___x_67_, 1, v___x_60_);' in parser
++assert 'v_snd_271_ = lean_ctor_get(v_val_266_, 1);' in decodebody and P+'Parity_syndrome(v___x_278_, v_snd_271_)' in decodebody
++assert P+'informationBits(v_body_275_)' in decodebody and 'lean_unsigned_to_nat(24u)' in decodebody and 'lean_nat_add(v___x_276_, v___x_277_)' in decodebody
++assert info.count('lean_unsigned_to_nat(32u)')==3 and info.count('lean_unsigned_to_nat(88u)')==1
++assert decodebody.index(P+'Parity_syndrome(')<decodebody.index(P+'frameAcceptedWithSyndrome(')<decodebody.index(P+'reportWithSyndrome(')
++assert projection.count(P+'decodeFrameWithWord(')==1 and 'lean_ctor_get(v_val_145_, 0)' in projection
++raw_targets=[(P+'decodeFrameWithWord',framepath,frame),(P+'decodeFrame',framepath,frame),(P+'informationBits',framepath,frame),(P+'reportWithSyndrome',message_path,message)]
++
+ bit=P+'Altitude_bit';gray=P+'Altitude_grayDecode'
+ grayfold='lp_lean1090_List_foldl___at___00Lean1090_Impl_Altitude_grayDecode_spec__0'
+ identity=P+'identityCode';identitylambda=identity+'___lam__0';integer=P+'payloadInteger'
+@@ -165,6 +179,8 @@
+ anchors={old[k] for k in old if k.endswith('_anchor') and k!='parity_fold_anchor' and old[k] is not None}
+ anchors.update(old['integer_score_gate_anchors'].values())
+ anchors.update([bytefold,bitfold,P+'Parity_syndromeBytes',P+'Parity_syndromeBits'])
++anchors.update([P+'CPR_Policy_haversineFloat',P+'CPR_Policy_decodeLocalFloat',P+'CPR_Policy_decodeGlobalFloat'])
++anchors.update([P+'decodeFrameWithWord',P+'decodeFrame',P+'Parity_syndrome',P+'informationBits',P+'reportWithSyndrome',P+'Parity_checksum',P+'frameParts'])
+ anchors.update([bit,gray,grayfold,identity,integer,T,F,Z,FI,fold,P+'packFields',P+'decode',P+'frameSyndrome',S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init])
+ symbol_rows=[]
+ proc=subprocess.Popen(['nm','--defined-only',WORKER],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+@@ -172,15 +188,18 @@
+     if line.split() and line.split()[-1] in anchors:symbol_rows.append(line)
+ assert proc.wait()==0 and not proc.stderr.read()
+ present={line.split()[-1] for line in symbol_rows}
+-assert anchors-{old['byte_word_fallback_anchor']}<=present,anchors-present
+-symbols=D/'selected-symbols.txt';retain(symbols,''.join(symbol_rows).encode())
++removed_main_boundaries={fold,P+'packFields',P+'frameSyndrome',P+'Parity_checksum',P+'frameParts',P+'decodeFrame'}
++assert anchors-removed_main_boundaries-{old['byte_word_fallback_anchor']}<=present,anchors-present
++assert not (removed_main_boundaries & present),removed_main_boundaries & present
++symbols=D/'selected-symbols-complete.txt';retain(symbols,''.join(symbol_rows).encode())
+ commands=[];excerpts={};assemblies={}
+-for name,path,text in [*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
++for name,path,text in [*raw_targets,*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
+                        (P+'frameSyndrome',message_path,message),(P+'decode',message_path,message),
+                        *[(name,binarycpath,binaryc) for name in [S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init]],
+                        *[(name,floatpath,floatc) for name in [T,F,Z,FI,P+'CPR_Policy_haversineFloat',P+'CPR_Policy_decodeLocalFloat',P+'CPR_Policy_decodeGlobalFloat']]]:
+     value,line=body(text,name);p=D/(name+'.generated-C.txt');retain(p,(value+'\n').encode())
+     excerpts[name]={'source':str(path),'source_sha256':sha(path),'first_body_line':line,'path':str(p),'sha256':sha(p)}
++    if name in removed_main_boundaries:continue  # Only explicitly verified absent boundaries omit disassembly.
+     target=D/(name+'.assembly.txt');argv=['objdump','-d','--no-show-raw-insn','--disassemble='+name,WORKER]
+     r=subprocess.run(argv,capture_output=True);assert r.returncode==0 and not r.stderr
+     retain(target,r.stdout);assemblies[name]=r.stdout.decode()
+@@ -196,20 +215,66 @@
+ for target in ['lean_nat_gcd','lean_int_big_mul','lean_int_big_div_exact','lean_nat_big_div_exact','l_Rat_ofInt','l_Rat_add']:
+     assert '<'+target+'>' in assemblies[P+'payloadValue']
+ assert '<'+identitylambda+'>' not in assemblies[identity]
+-fa=assemblies[fold]
+-assert '<lean_nat_shiftl>' in fa and '<lean_nat_pow>' in fa and '<lean_nat_mul>' not in fa
+-assert re.search(r'\bshl\b',fa) and re.search(r'\band\b',fa)
+-assert '<'+P+'packFields>' in assemblies[P+'frameSyndrome']
+-assert '<'+P+'frameSyndrome>' in assemblies[P+'decode']
++# Current linked main directly consumes the parser pair; old reconstruction
++# definitions remain in C/object but are absent as timed callable boundaries.
++def asm_rows(text):
++    rows=[]
++    for line in text.splitlines():
++        m=re.match(r'\s*([0-9a-f]+):\s+(\S+)\s*(.*)',line)
++        if m:rows.append(dict(address=int(m[1],16),op=m[2],arg=m[3]))
++    assert rows
++    return rows
++
++def call_targets(rows):
++    return [m[1] for r in rows if r['op'] in ('call','jmp') and (m:=re.search(r'<([^>]+)>',r['arg']))]
++
++def cfg_counts(rows,symbols):
++    by={r['address']:i for i,r in enumerate(rows)};todo=[(0,(0,)*len(symbols))];seen=set();term=set()
++    while todo:
++        i,counts=todo.pop()
++        if (i,counts) in seen:continue
++        seen.add((i,counts));r=rows[i]
++        counts=tuple(n+int(r['op']=='call' and '<'+symbol+'>' in r['arg']) for n,symbol in zip(counts,symbols))
++        assert max(counts,default=0)<=1
++        m=re.match(r'([0-9a-f]+) ',r['arg']) if r['op'].startswith('j') else None;target=int(m[1],16) if m else None
++        if r['op'].startswith('ret') or (r['op']=='jmp' and target not in by):term.add(counts);continue
++        if r['op'].startswith('j'):
++            assert target in by
++            todo.append((by[target],counts))
++            if r['op']=='jmp':continue
++        if i+1<len(rows):todo.append((i+1,counts))
++    return sorted(term),len(seen)
++
++main_rows=asm_rows(assemblies[P+'decode']);parser_rows=asm_rows(assemblies[P+'decodeFrameWithWord'])
++main_calls=call_targets(main_rows);parser_calls=call_targets(parser_rows)
++assert all(main_calls.count(P+n)==1 for n in ['decodeFrameWithWord','Parity_syndrome','reportWithSyndrome'])
++assert parser_calls.count(P+'bytesValue')==1
++assert not any(P+n in main_calls for n in ['frameSyndrome','Parity_checksum','frameParts','packFields','bytesValue','decodeFrame'])
++assert P+'adsbHardValid' in main_calls
++ma='\n'.join(r['op']+' '+r['arg'] for r in main_rows);pa='\n'.join(r['op']+' '+r['arg'] for r in parser_rows)
++assert 'mov 0x10(%r13),%r12' in ma and 'mov %r12,%rsi' in ma
++assert 'mov %rax,%r14' in pa and 'mov %r14,0x10(%rax)' in pa
++main_counts,main_states=cfg_counts(main_rows,[P+'decodeFrameWithWord',P+'Parity_syndrome',P+'reportWithSyndrome'])
++parser_counts,parser_states=cfg_counts(parser_rows,[P+'bytesValue'])
++assert main_counts==[(1,0,0),(1,1,0),(1,1,1)] and parser_counts==[(0,),(1,)]
++obj=Path('.lake/build/ir/Impl/Frame.c.o.export');argv=['objdump','-dr','--no-show-raw-insn','--disassemble='+P+'decodeFrame',str(obj)]
++r=subprocess.run(argv,capture_output=True);assert r.returncode==0 and not r.stderr
++objout=D/'public-parser-object.assembly.txt';retain(objout,r.stdout)
++assert 'R_X86_64_PLT32\t'+P+'decodeFrameWithWord-0x4' in r.stdout.decode()
++commands.append({'argv':argv,'output':str(objout),'sha256':sha(objout),'exit_code':0})
++raw_context={'status':'passed','decode_frame_with_word_anchor':P+'decodeFrameWithWord','raw_syndrome_anchor':P+'Parity_syndrome','possible_main_call_counts':main_counts,'possible_parser_byte_fold_counts':parser_counts,'main_cfg_states':main_states,'parser_cfg_states':parser_states,'old_timed_boundaries_absent':sorted(removed_main_boundaries),'public_parser_object_sha256':sha(obj),'public_parser_object_assembly_sha256':sha(objout),'limits':'Actual static call sites/data flow, not observed corpus entry populations. Pair/frame/message allocation and ownership reuse remain.'}
++raw_context_path=E/'independent-review/raw-word-control-flow.json'
++if raw_context_path.exists():assert read(raw_context_path)==raw_context  # Preserve exact successful partial capture from retained reviewer attempt.
++else:save(raw_context_path,raw_context)
+ assert '<'+S+'powerTwoFormula>' in assemblies[S+'powerTwo'] and '<'+S+'powerTwoTable>' in assemblies[S+'powerTwo']
+ assert re.search(r'mov\s+0x18\(%r14,%rcx,4\)',assemblies[S+'powerTwo'])
+ assert '<'+S+'powerTwoFormula>' in assemblies[S+'powerTwoTable___lam__0']
+ assert '<l_Array_ofFn___redArg>' in assemblies[ctor]
+ assert assemblies[init].index('<'+S+'powerTwoTable>')<assemblies[init].index('<lean_mark_persistent>')<assemblies[init].index('<'+S+'maxFinite___closed__3_once>')
+ assert '<'+ctor+'>' in assemblies[init] and '<lean_obj_once_cold>' in assemblies[init]
+-implementation=Path('tests/evidence/optimization/gen21/native-review/review.json')
+-ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['integer_affine_normalization_live_path_verified']
+-ni=read('tests/evidence/optimization/gen21/native-review/native-inputs.json')
++implementation=Path('tests/evidence/optimization/gen22/native-review/review.json')
++ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['raw_word_syndrome_live_path_verified']
++ni=read('tests/evidence/optimization/gen22/native-review/native-inputs.json')
+ assert ni['worker_sha256']==sha(WORKER)==bench['binary_sha256']
+ for name,digest in ni['held_inputs'].items():assert sha(name)==digest,name
+ for name,digest in ir['bindings'].items():assert sha(name)==digest,name
+@@ -261,11 +326,11 @@
+     benchmark_source_binding_sha256=sha(binding_path),fresh_native_inputs=str(native_path),
+     fresh_native_inputs_sha256=sha(native_path),fresh_project_modules_verified=22,
+     source_C_object_trace_bindings=bindings,driver_build_manifest=str(build_path),
+-    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen21-costs/driver/decode-costs'),
++    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen22-costs/driver/decode-costs'),
+     reused_production_objects_verified=21,unchanged_driver_input_hashes_verified=len(held),
+     eager_table_initializers=old['eager_table_initializers'],
+     live_generated_C={path:sha(path) for path in old['live_generated_C']},
+-    pack_fields_shift_mask_verified=True,pack_fields_fold_anchor=fold,
++    pack_fields_shift_mask_verified=True,pack_fields_fold_anchor=None,
+     power_two_table_live_path_verified=True,power_two_lookup_anchor=S+'powerTwo',
+     power_two_formula_anchor=S+'powerTwoFormula',power_two_table_entry_anchor=S+'powerTwoTable___lam__0',
+     power_two_table_initializer_anchor=ctor,power_two_module_initializer_anchor=init,
+@@ -273,7 +338,7 @@
+     symbol_inventory={'path':str(symbols),'sha256':sha(symbols),'filtered':True},
+     unchanged_native_modules=unchanged,
+     previous_source_review={'path':str(oldpath),'sha256':sha(oldpath),
+-        'basis':'All 21 sibling source/C/object/trace sets match generation 20 byte-for-byte. Only PayloadBits changes; current inlined affine normalization plus unchanged CRC/conversion/power paths are independently rebound.'},
++        'basis':'All 20 sibling source/C/object/trace sets match generation 21 byte-for-byte. Only Frame and Message change; the paired parser/raw-word CRC path is inspected from current C and linked worker, while all unchanged arithmetic/CRC/conversion paths are rebound.'},
+     implementation_native_review={'path':str(implementation),'sha256':sha(implementation)},
+     byte_crc_live_path_verified=True,parity_fold_anchor=bytefold,parity_byte_fold_anchor=bytefold,parity_bit_fold_anchor=bitfold,
+     parity_byte_wrapper_anchor=P+'Parity_syndromeBytes',parity_bit_wrapper_anchor=P+'Parity_syndromeBits',
+@@ -284,6 +349,9 @@
+     dyadic_to_float_control_flow={'path':str(E/'independent-review/tofloat-control-flow.json'),'sha256':sha(E/'independent-review/tofloat-control-flow.json')},
+     review_script=str(Path(__file__)),review_script_sha256=sha(__file__),findings=[],
+     reviewer_attempts=[],
++    raw_word_syndrome_live_path_verified=True,decode_frame_with_word_anchor=P+'decodeFrameWithWord',
++    raw_syndrome_anchor=P+'Parity_syndrome',raw_word_control_flow={'path':str(E/'independent-review/raw-word-control-flow.json'),'sha256':sha(E/'independent-review/raw-word-control-flow.json')},
++    absent_old_timed_boundaries=sorted(removed_main_boundaries),
+     integer_affine_normalization_live_path_verified=True,payload_value_anchor=P+'payloadValue',
+     integer_affine_normalization_anchors={'payloadValue':P+'payloadValue','integerScale':None,'affineValue':None,'gcd':'lean_nat_gcd','big_product':'lean_int_big_mul'},
+     integer_affine_normalization_limit='integerScale and affineValue inline into payloadValue. Actual payloadValue entries and direct children are separately observable; absent wrappers do not imply zero cost. Status/unit/offset branches remain. Generic big-integer and ownership paths remain.',
+@@ -291,8 +359,8 @@
+         'The table entry constructor calls only powerTwoFormula, and the complete 2098-entry array is forced/persisted during module initialization before worker execution.',
+         'The prior complete initialization-chain disassembly is rebound to the same actual worker hash; no timing, exponent distribution or table hit rate is inferred.',
+         'The current bit/Gray/identity/signed-field bodies have no direct power/division calls; arbitrary-size Nat fallbacks and unchanged caller routing remain. Inlined identity-lambda work is not treated as zero work.',
+-        'All prior decoder paths are still linked; packFields retains its exact Nat-shift and bounded machine-mask/fallback branches.',
+-        'Only PayloadBits changed among the 22 linked sets; all 21 sibling sets, including Parity and CPRFloat, remain byte-identical to generation 20.',
++        'The current main calls the paired parser once and uses its returned full Nat word for CRC, with no reread or reconstruction. Public decodeFrame remains a projection in its object; standalone reconstruction definitions remain available but are absent from the timed linked symbols. Absence alone is not an inlining claim.',
++        'Only Frame and Message changed among the 22 linked sets; all 20 siblings, including PayloadBits, Parity and CPRFloat, remain byte-identical to generation 21.',
+         'toFloat packs exact bits on accepted dyadics, delegates at most once to the unchanged fallback on rejection, and returns cached or lazily initialized positive zero on zero input.',
+         'payloadValue retains one exact numerator-product/gcd normalization site in the nonunit branch, with no Rat.mul call; unit scale and zero offset still bypass their identity operations.',
+         'smallDyadicBits is inlined. The wrapper retains decimal parsing and generic Nat/Int allocation; no allocation-free or measured fast-path-frequency claim is made.'],

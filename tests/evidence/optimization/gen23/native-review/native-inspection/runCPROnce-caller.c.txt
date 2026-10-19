@@ -1,0 +1,136 @@
+3342: LEAN_EXPORT lean_object* lp_lean1090___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_runCPROnce_spec__0(lean_object* v_geo_887_, lean_object* v_as_888_, size_t v_sz_889_, size_t v_i_890_, lean_object* v_b_891_){
+3343: _start:
+3344: {
+3345: uint8_t v___x_893_; 
+3346: v___x_893_ = lean_usize_dec_lt(v_i_890_, v_sz_889_);
+3347: if (v___x_893_ == 0)
+3348: {
+3349: lean_object* v___x_894_; 
+3350: lean_dec_ref(v_geo_887_);
+3351: v___x_894_ = lean_alloc_ctor(0, 1, 0);
+3352: lean_ctor_set(v___x_894_, 0, v_b_891_);
+3353: return v___x_894_;
+3354: }
+3355: else
+3356: {
+3357: lean_object* v_a_895_; lean_object* v_timestamp_896_; lean_object* v_bytes_897_; lean_object* v___x_898_; 
+3358: v_a_895_ = lean_array_uget_borrowed(v_as_888_, v_i_890_);
+3359: v_timestamp_896_ = lean_ctor_get(v_a_895_, 0);
+3360: v_bytes_897_ = lean_ctor_get(v_a_895_, 1);
+3361: lean_inc(v_bytes_897_);
+3362: v___x_898_ = lp_lean1090_Lean1090_Impl_decode(v_bytes_897_);
+3363: if (lean_obj_tag(v___x_898_) == 1)
+3364: {
+3365: lean_object* v_val_899_; lean_object* v_fst_900_; lean_object* v_snd_901_; lean_object* v___x_903_; uint8_t v_isShared_904_; uint8_t v_isSharedCheck_922_; 
+3366: v_val_899_ = lean_ctor_get(v___x_898_, 0);
+3367: lean_inc(v_val_899_);
+3368: lean_dec_ref_known(v___x_898_, 1);
+3369: v_fst_900_ = lean_ctor_get(v_b_891_, 0);
+3370: v_snd_901_ = lean_ctor_get(v_b_891_, 1);
+3371: v_isSharedCheck_922_ = !lean_is_exclusive(v_b_891_);
+3372: if (v_isSharedCheck_922_ == 0)
+3373: {
+3374: v___x_903_ = v_b_891_;
+3375: v_isShared_904_ = v_isSharedCheck_922_;
+3376: goto v_resetjp_902_;
+3377: }
+3378: else
+3379: {
+3380: lean_inc(v_snd_901_);
+3381: lean_inc(v_fst_900_);
+3382: lean_dec(v_b_891_);
+3383: v___x_903_ = lean_box(0);
+3384: v_isShared_904_ = v_isSharedCheck_922_;
+3385: goto v_resetjp_902_;
+3386: }
+3387: v_resetjp_902_:
+3388: {
+3389: lean_object* v___x_905_; lean_object* v_fst_906_; lean_object* v_snd_907_; lean_object* v___x_909_; uint8_t v_isShared_910_; uint8_t v_isSharedCheck_921_; 
+3390: lean_inc(v_val_899_);
+3391: lean_inc_ref(v_timestamp_896_);
+3392: lean_inc_ref(v_geo_887_);
+3393: v___x_905_ = lp_lean1090___private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_advance(v_geo_887_, v_snd_901_, v_timestamp_896_, v_val_899_);
+3394: v_fst_906_ = lean_ctor_get(v___x_905_, 0);
+3395: v_snd_907_ = lean_ctor_get(v___x_905_, 1);
+3396: v_isSharedCheck_921_ = !lean_is_exclusive(v___x_905_);
+3397: if (v_isSharedCheck_921_ == 0)
+3398: {
+3399: v___x_909_ = v___x_905_;
+3400: v_isShared_910_ = v_isSharedCheck_921_;
+3401: goto v_resetjp_908_;
+3402: }
+3403: else
+3404: {
+3405: lean_inc(v_snd_907_);
+3406: lean_inc(v_fst_906_);
+3407: lean_dec(v___x_905_);
+3408: v___x_909_ = lean_box(0);
+3409: v_isShared_910_ = v_isSharedCheck_921_;
+3410: goto v_resetjp_908_;
+3411: }
+3412: v_resetjp_908_:
+3413: {
+3414: lean_object* v___x_912_; 
+3415: if (v_isShared_904_ == 0)
+3416: {
+3417: lean_ctor_set(v___x_903_, 1, v_snd_907_);
+3418: lean_ctor_set(v___x_903_, 0, v_val_899_);
+3419: v___x_912_ = v___x_903_;
+3420: goto v_reusejp_911_;
+3421: }
+3422: else
+3423: {
+3424: lean_object* v_reuseFailAlloc_920_; 
+3425: v_reuseFailAlloc_920_ = lean_alloc_ctor(0, 2, 0);
+3426: lean_ctor_set(v_reuseFailAlloc_920_, 0, v_val_899_);
+3427: lean_ctor_set(v_reuseFailAlloc_920_, 1, v_snd_907_);
+3428: v___x_912_ = v_reuseFailAlloc_920_;
+3429: goto v_reusejp_911_;
+3430: }
+3431: v_reusejp_911_:
+3432: {
+3433: lean_object* v___x_913_; lean_object* v___x_915_; 
+3434: v___x_913_ = lean_array_push(v_fst_900_, v___x_912_);
+3435: if (v_isShared_910_ == 0)
+3436: {
+3437: lean_ctor_set(v___x_909_, 1, v_fst_906_);
+3438: lean_ctor_set(v___x_909_, 0, v___x_913_);
+3439: v___x_915_ = v___x_909_;
+3440: goto v_reusejp_914_;
+3441: }
+3442: else
+3443: {
+3444: lean_object* v_reuseFailAlloc_919_; 
+3445: v_reuseFailAlloc_919_ = lean_alloc_ctor(0, 2, 0);
+3446: lean_ctor_set(v_reuseFailAlloc_919_, 0, v___x_913_);
+3447: lean_ctor_set(v_reuseFailAlloc_919_, 1, v_fst_906_);
+3448: v___x_915_ = v_reuseFailAlloc_919_;
+3449: goto v_reusejp_914_;
+3450: }
+3451: v_reusejp_914_:
+3452: {
+3453: size_t v___x_916_; size_t v___x_917_; 
+3454: v___x_916_ = ((size_t)1ULL);
+3455: v___x_917_ = lean_usize_add(v_i_890_, v___x_916_);
+3456: v_i_890_ = v___x_917_;
+3457: v_b_891_ = v___x_915_;
+3458: goto _start;
+3459: }
+3460: }
+3461: }
+3462: }
+3463: }
+3464: else
+3465: {
+3466: lean_object* v___x_923_; lean_object* v___x_924_; 
+3467: lean_dec(v___x_898_);
+3468: lean_dec_ref(v_b_891_);
+3469: lean_dec_ref(v_geo_887_);
+3470: v___x_923_ = ((lean_object*)(lp_lean1090___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_runDecodeOnce_spec__0___closed__1));
+3471: v___x_924_ = lean_alloc_ctor(1, 1, 0);
+3472: lean_ctor_set(v___x_924_, 0, v___x_923_);
+3473: return v___x_924_;
+3474: }
+3475: }
+3476: }
+3477: }

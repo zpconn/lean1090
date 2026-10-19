@@ -1,0 +1,61 @@
+{
+  "status": "prepared_not_executed",
+  "prepared_utc": "2026-10-19T22:26:07.214463+00:00",
+  "generation": 23,
+  "previous_gate_wrapper": "tests/evidence/optimization/gen22/run_full_gate.py",
+  "previous_gate_wrapper_sha256": "29c87c0d5d07dd313ff2a6b3f4fcf0bcf391e2103cf3f2d12c65586efdf13ecb",
+  "gate_wrapper": "tests/evidence/optimization/gen23/run_full_gate.py",
+  "gate_wrapper_sha256": "8c5fd859d771018e57b3dab33fcffdb2fa91c814f5e0bd77e6023b3bcaa73eb5",
+  "adaptation": "Exact gen22 to gen23 path replacement only. Frozen full gate command and source-before/after binding are unchanged.",
+  "diff_sha256": "f5bc134f8779138f74e322b0a27539ce17007bd508f309ae5caf48d0f8db412b",
+  "helpers": {
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac",
+    "review/diagnostics/archive_generation_gate.py": "cbdee009df5943250ab24a4cd9f712c27b3c76e08ced20046714e5733f00577e",
+    "review/diagnostics/finish_generation_gate.py": "b92cf9198a28167d171909a7b4b4137be2e9084fee56c9b61e7f4b1c45d32963",
+    "review/diagnostics/cleanup_verified_scratch.py": "cb115045f0743cce197d1d9af1d66678dd76a9a96b1babb5eca4d3d519dc31ce"
+  },
+  "validator": "tests/evidence/optimization/gen23/integration/validate_build.py",
+  "validator_sha256": "ae58b8b2d2c7e55605d8f8b3d8faeecff39a8da0c334afa6da30af9d4d165d39",
+  "validator_parser_controls": {
+    "multiline_empty_axiom_free": "passed",
+    "rejects_unknown_truncated_duplicate": true
+  },
+  "expected_correctness_input_count": 200,
+  "expected_audited_source_count": 125,
+  "actual_inventory_validation": "Derived by completed-build validator; counts are checked at execution.",
+  "gate_command": [
+    "python3",
+    "-B",
+    "tests/evidence/optimization/gen23/run_full_gate.py"
+  ],
+  "archive_command_prefix": [
+    "python3",
+    "-B",
+    "review/diagnostics/finish_generation_gate.py",
+    "--generation",
+    "23",
+    "--gate-evidence",
+    "tests/evidence/optimization/gen23/gate-evidence.json",
+    "--gate-log",
+    "tests/evidence/optimization/gen23/gate-full.log",
+    "--receipt",
+    "tests/evidence/optimization/gen23/post-gate-archive-cleanup",
+    "--apply",
+    "--quiescent"
+  ],
+  "archive_arguments_deferred": [
+    "--scratch EXACT_FINISHED_GATE_ROOT (repeat per executed component)",
+    "--archive-root EXACT_CURRENT_GENERATION_ARCHIVE_ROOT (repeat per component)",
+    "--protect EXACT_OTHER_ACTIVE_OR_UNIQUE_ROOT (repeat), or --no-protected-scratch only if root confirms none"
+  ],
+  "archive_requirements": [
+    "Run only after passed fixed gate and all selected scratch producers stopped.",
+    "Root supplies exact scratch and protection paths from executed commands; no opportunistic scratch scan.",
+    "Use reviewed generic archive/flush/cleanup unchanged; retain every attempt and failure.",
+    "All retained compressed archives, historical failures and active fresh scratch stay protected."
+  ],
+  "python_bytecode": "PYTHONDONTWRITEBYTECODE=1 plus -B",
+  "syntax_parsed": true,
+  "gate_archive_cleanup_executed": false,
+  "runtime_proof_frozen_changes": false
+}

@@ -56,11 +56,27 @@ all 48 original files byte-identical; no measurement was repeated.
 
 Measured-result review, artifact-source binding and presentation review passed.
 The documentation-status update has a retained supplemental check; no render
-or measurement repeated. Artifact commit and private push follow, then a diagnostic of
-the measured code before choosing generation 23. No frozen file, Float callback
+or measurement repeated. Artifacts were committed and pushed to private main as
+`59685cd27e65fa8250934daf165a0a74a1dc2ace`, under the user’s identity. Both
+diagnostic builds are released against that source-equivalent commit, before
+choosing generation 23. Both diagnostics and independent reviews passed; verified
+cleanup reclaimed 485,339,136 bytes. Generation 23 is now implementing exact
+field-code Boolean tables for the five BDS40/50/60 plausibility checks. Runtime
+and full-decoder refinement proofs pass. The combined production build passed
+with 200 unchanged correctness inputs. Independent source/proof review passed;
+full fixed and separate fresh 10M campaigns passed. Fresh seeds are
+1,958,132,729 (messages) and 972,156,822 (Comm-B). Native review passed: five
+live tables, only CommB changed among 22 sets. Fresh producer passed all
+10,476,164 messages with only documented D001 cases and full 32/70/14 coverage;
+independent retention and replay passed. Verified fresh cleanup reclaimed
+5,359,271,936 bytes of duplicate scratch. Fixed-gate archival and cleanup
+reclaimed another 5,733,335,040 bytes. All 200 correctness inputs remain
+unchanged. Independent archive/plan review passed, with three checker-only
+adaptation failures retained. Commit and timing remain. No speedup is claimed.
+No frozen file, Float callback
 or trusted primitive change is authorized. Software arithmetic optimizations
 must retain exact proved refinement. See PROGRESS.md and
-`docs/GEN22-PARSED-WORD-CRC.md` for the executed evidence and next steps.
+`docs/GEN23-COMMB-VALIDITY.md` for the executed evidence and next steps.
 
 ## CPR optimization and reporting constraints
 

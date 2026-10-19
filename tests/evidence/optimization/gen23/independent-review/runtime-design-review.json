@@ -1,0 +1,54 @@
+{
+  "status": "passed_read_only_runtime_design_review",
+  "reviewed_utc": "2026-10-19T22:22:40.576772+00:00",
+  "checks": [
+    "Exact reverse edit reproduces committed Impl.CommB byte-for-byte outside ten added definitions and three predicate replacements.",
+    "Five complete Bool tables cover 4096/4096/1024/1024/1024 field codes, including rejected codes.",
+    "QNH and Mach map existing exact software-binary64 values; original literal/operation order remains unchanged.",
+    "Selected-altitude and roll use original exact rational expressions; no threshold algebra substitutes for the formula.",
+    "Vertical-rate table applies original cbVertical60 at fixed live position 47, preserving both sign/sentinel bits.",
+    "Every helper uses payloadBits_lt for its checked array index; arbitrary natural words remain accepted as inputs.",
+    "Definitions are acyclic and depend only on format codes/unchanged production formulas.",
+    "All status/spare/IAS/groundspeed/TAS predicates and their order outside replaced predicates remain unchanged.",
+    "Semantic reporting, score arithmetic, penalties, projection helpers and existing tables are byte-identical.",
+    "Frozen direct-register, complete decode, tracking and benchmark adapters retain live production entrypoints.",
+    "Runtime module build passed once with the exact reviewed source; proof and linked native acceptance remain pending."
+  ],
+  "check_count": 11,
+  "bindings": {
+    "Impl/CommB.lean": "56510dc21951a14351bec8077213f1ace91717751d71dfbbd2bef10764ef3594",
+    "tests/evidence/optimization/gen23/runtime-build-01.json": "1f58ef32943ca5218cbf3e0b7422c7ed70ffdb65cd8589b6e4a65941f2add7bd",
+    "tests/evidence/optimization/gen23/runtime-build-01.log": "67f7f628f1b51a6dd565a0ece06bafd6953ce41f99570ef7d4c8aec3045e7f04",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "Bench/WholeDecoder.lean": "ea0b8f3a94dfc801bbf0a8ce9091617f2a3eae4e122752e56de3caa5de40592b",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Tests/Tracking.lean": "196f549f758b2e4c78f263c12af1151482465a3670e96b714b5fe8885ffde6cd",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032"
+  },
+  "baseline_commit": "59685cd27e65fa8250934daf165a0a74a1dc2ace",
+  "baseline_source_sha256": "846504260aedfd8ab165f7ad9a346463728f705bd81fa93a54eebd3c8f66a384",
+  "table_entries": [
+    4096,
+    4096,
+    1024,
+    1024,
+    1024
+  ],
+  "findings": [],
+  "proof_obligations": [
+    "Unconditional cbValid40/50/60 equality for all Nat words; no validity, corpus or word-size premise.",
+    "Table size/get and exact helper equations; old Decoder theorem statements preserved.",
+    "Kernel witnesses at threshold neighbors, high words and sentinel/sign boundaries, using existing Binary64 bridges before reduction."
+  ],
+  "native_review_plan": [
+    "Bind current source/generated C/object/trace/flags and actual four built binaries after root release; compare all 22 linked sets to gen22.",
+    "Inspect actual cbValid40/50/60 calls or inlined lookups, all status/field guards and proven indices; no allocation-free claim from absent helper symbols.",
+    "Inspect all five table constructors and module initialization, complete cardinalities and persistence before timed worker loops.",
+    "Rebind old semantic/score uses and frozen live adapters; no corpus caching or new Float/trusted primitive."
+  ],
+  "limits": [
+    "Source-only assessment; no proof theorem or compiled native implementation is accepted by this receipt.",
+    "No build, test, decoder, benchmark or profile executed by reviewer."
+  ],
+  "reviewer_script_sha256": "edecdbfa1792e2f4dfa60c4fc41f7dde86a658e1ccafb37d3df76470d4302913"
+}

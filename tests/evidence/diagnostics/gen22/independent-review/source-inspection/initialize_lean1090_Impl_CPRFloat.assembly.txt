@@ -1,0 +1,79 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b9f560 <initialize_lean1090_Impl_CPRFloat>:
+  b9f560:	push   %rbx
+  b9f561:	cmpb   $0x0,0x3fe2cb8(%rip)        # 4b82220 <_G_initialized>
+  b9f568:	je     b9f58a <initialize_lean1090_Impl_CPRFloat+0x2a>
+  b9f56a:	mov    $0x10,%edi
+  b9f56f:	call   490c960 <lean_alloc_small_object_core>
+  b9f574:	movl   $0x1,(%rax)
+  b9f57a:	movw   $0x1,0x6(%rax)
+  b9f580:	movq   $0x1,0x8(%rax)
+  b9f588:	pop    %rbx
+  b9f589:	ret
+  b9f58a:	mov    %edi,%ebx
+  b9f58c:	movb   $0x1,0x3fe2c8d(%rip)        # 4b82220 <_G_initialized>
+  b9f593:	xor    %eax,%eax
+  b9f595:	call   48c3ef0 <lean_initialize_runtime_module>
+  b9f59a:	movzbl %bl,%ebx
+  b9f59d:	mov    %ebx,%edi
+  b9f59f:	call   48372a0 <initialize_Init>
+  b9f5a4:	movzbl 0x7(%rax),%ecx
+  b9f5a8:	shl    $0x18,%ecx
+  b9f5ab:	cmp    $0x1000000,%ecx
+  b9f5b1:	je     b9f5f5 <initialize_lean1090_Impl_CPRFloat+0x95>
+  b9f5b3:	mov    (%rax),%ecx
+  b9f5b5:	cmp    $0x2,%ecx
+  b9f5b8:	jl     b9f607 <initialize_lean1090_Impl_CPRFloat+0xa7>
+  b9f5ba:	dec    %ecx
+  b9f5bc:	mov    %ecx,(%rax)
+  b9f5be:	mov    %ebx,%edi
+  b9f5c0:	call   48372a0 <initialize_Init>
+  b9f5c5:	movzbl 0x7(%rax),%ecx
+  b9f5c9:	shl    $0x18,%ecx
+  b9f5cc:	cmp    $0x1000000,%ecx
+  b9f5d2:	je     b9f5f5 <initialize_lean1090_Impl_CPRFloat+0x95>
+  b9f5d4:	mov    (%rax),%ecx
+  b9f5d6:	cmp    $0x2,%ecx
+  b9f5d9:	jl     b9f615 <initialize_lean1090_Impl_CPRFloat+0xb5>
+  b9f5db:	dec    %ecx
+  b9f5dd:	mov    %ecx,(%rax)
+  b9f5df:	mov    %ebx,%edi
+  b9f5e1:	call   b9ba10 <initialize_lean1090_Impl_CPRPolicy>
+  b9f5e6:	movzbl 0x7(%rax),%ecx
+  b9f5ea:	shl    $0x18,%ecx
+  b9f5ed:	cmp    $0x1000000,%ecx
+  b9f5f3:	jne    b9f5f7 <initialize_lean1090_Impl_CPRFloat+0x97>
+  b9f5f5:	pop    %rbx
+  b9f5f6:	ret
+  b9f5f7:	mov    (%rax),%ecx
+  b9f5f9:	cmp    $0x2,%ecx
+  b9f5fc:	jl     b9f623 <initialize_lean1090_Impl_CPRFloat+0xc3>
+  b9f5fe:	dec    %ecx
+  b9f600:	mov    %ecx,(%rax)
+  b9f602:	jmp    b9f56a <initialize_lean1090_Impl_CPRFloat+0xa>
+  b9f607:	test   %ecx,%ecx
+  b9f609:	je     b9f5be <initialize_lean1090_Impl_CPRFloat+0x5e>
+  b9f60b:	mov    %rax,%rdi
+  b9f60e:	call   48a3330 <lean_dec_ref_cold>
+  b9f613:	jmp    b9f5be <initialize_lean1090_Impl_CPRFloat+0x5e>
+  b9f615:	test   %ecx,%ecx
+  b9f617:	je     b9f5df <initialize_lean1090_Impl_CPRFloat+0x7f>
+  b9f619:	mov    %rax,%rdi
+  b9f61c:	call   48a3330 <lean_dec_ref_cold>
+  b9f621:	jmp    b9f5df <initialize_lean1090_Impl_CPRFloat+0x7f>
+  b9f623:	test   %ecx,%ecx
+  b9f625:	je     b9f56a <initialize_lean1090_Impl_CPRFloat+0xa>
+  b9f62b:	mov    %rax,%rdi
+  b9f62e:	call   48a3330 <lean_dec_ref_cold>
+  b9f633:	jmp    b9f56a <initialize_lean1090_Impl_CPRFloat+0xa>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

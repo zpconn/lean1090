@@ -42,13 +42,104 @@ supplement preserves all original receipts, README and image bytes, with no
 render or measurement repeated. Independent presentation review passed all
 1,166 checks; completion:
 `d30f359765497795c9cea802ac1b783c55a9b51ad2ffb70c832e0c4e60a17632`.
-Artifact commit/private push is next. Fresh decode and CPR diagnostic
+The reviewed artifacts were committed and pushed to private `main` as
+`59685cd27e65fa8250934daf165a0a74a1dc2ace`, under the user’s identity, with a
+clean tree at publication. All 197 staged correctness inputs matched the passed
+full gate and measured source. Fresh decode and CPR diagnostic
 preparations passed independent review (29 and 68 checks), without executing
-a build or profile. Profiling the measured code precedes selection of the next
-optimization. Preparation-review hashes:
+a build or profile. Both diagnostic builds are now released against that exact
+source-equivalent artifact commit. Profiling the measured code precedes selection
+of the next optimization. Preparation-review hashes:
 `0133d271b3ecb96037358f6865a69c98e460504e03fe8135ff09757ab95064de`
 and `add20c1aa816dbd20f2b44d8e7eb438721e807a441caffb4e0dcb057c911332d`. The repository was verified private with
 `gh repo view zpconn/lean1090 --json nameWithOwner,visibility,defaultBranchRef`.
+
+**Generation 22 diagnosis completed; generation 23 validation has passed.**
+Both fresh drivers, sequential isolated actual-worker captures, full instruction
+collections and independent reviews passed. Decode executed 7,260,483,187
+instructions; CPR executed 9,589,424,082. All 172,432 tracking rows, 11,347
+positions and the complete final state match. These are untimed diagnostics,
+not additional throughput measurements. Comm-B inference is the largest decode
+stage (3,003,800,578 instructions). Its BDS50, BDS60 and BDS40 validity checks
+cost 284,172,699, 260,847,884 and 245,938,829 inclusive instructions; nested
+rational arithmetic/comparisons account for much of that work. See
+[decode diagnostic](docs/GEN22-COST-BREAKDOWN.md) and
+[CPR diagnostic](docs/GEN22-CPR-COST-BREAKDOWN.md).
+Final independent review hashes:
+`a116fe24fbba278296ca44544fe9a0ca8f70c9c86bb0047c02d610d22653a20e`
+and `29afee38ab767bdeb55ba3a76c03a6cbe3ea2288c17ba7efc4bd5186bb10d3cd`.
+Reviewer-only adaptation failures remain retained, with no producer rerun or
+changed evidence. Verified cleanup reclaimed 485,339,136 allocated bytes,
+preserving archives, failures and unique raw perf. Receipts:
+`07865b5330db05a32e695235b15dcc62e2871f60de5d8ccafc44da417bb8cd9e`
+and `9e3ed0c2d7ffeb636bebadc677024352e5150d47a8f9bff3053e0c21d1850716`.
+The source/history hold is released. Generation 23 replaces five expensive
+field-level plausibility calculations with immutable Boolean tables covering
+all field codes: BDS40 selected altitude and QNH, BDS50 roll, BDS60 Mach and
+inertial vertical rate. Each table uses the original expression. The runtime build passed, all three unconditional predicate/lookup proof
+modules passed, and the complete decoder refinement passed on its first
+integration build. Each helper module retained an initial unfinished simplification
+attempt before its successful second build. The combined production/proof build passed on its first actual execution with
+200 unchanged correctness inputs and all four production binaries. Receipt:
+`0b2fabf466d89c58c71a01bb3893ccc699025cc3d73e10f8855d5f5faf49379b`.
+Its initial pre-build inventory guard
+required staging the three new proof files, which is recorded separately. No
+source was changed to resolve that guard, and no speedup is claimed yet. Score arithmetic, thresholds, Float callbacks, frozen adapters and
+all frozen files retain their existing semantics.
+
+Generation 23 source/proof review passed on its first execution: 38 new facts,
+16 kernel witnesses, and every existing Decoder statement unchanged. Receipt:
+`c3f3f5c487e4ec84d0fc842e7f2da48c3f475f226d54e42c1d71197c1dc989d1`.
+The combined-build validator passed with 325 permitted-axiom facts, correctly
+parsing multiline lists, 125 audited sources, 200 unchanged correctness inputs
+and four binaries. Receipt:
+`45dfcbf6ebe990f9b1a1a3520f09a5766123ceeb78838c62721d59ce15b36096`.
+The full fixed gate and separate fresh 10M campaign passed. Fresh seeds,
+recorded before generation, are messages 1,958,132,729 and Comm-B 972,156,822.
+Fresh preflight: `2a8699a9272fd8c2c2748afce3a3f668333455f42714f1786ff08c9e32634d23`.
+Native review passed: 161 checks, 272 unchanged bindings and 22 native sets.
+Only CommB changed; the other 21 sets are byte-identical. All five tables
+initialize before the worker loop, and the live validity predicates use indexed
+Boolean loads with no direct rational calls. Receipt:
+`adc52e4ea95570bad49c05f04e13ade05bb57d3ed433e4ff2ecbdf87a7c64747`.
+A reviewer-only main-symbol spelling correction is retained. The fresh producer
+passed on its first execution: 10,476,164 messages comprise 9,542,964 exact
+matches and 933,200 documented D001 cases, with 2,038,902 standard-view
+contrasts recorded separately. All 101,244 direct Comm-B cases match; coverage
+is complete across 32 DFs, 70 ADS-B branches and 14 Comm-B registers. All 125
+sources and three campaign binaries remain unchanged. The 33-file retention
+seal is `d777ab37378cccbb0f753efa488c66c217e956fc6fbd1502f976d9a238044843`.
+Independent retained-byte review and frozen comparison-only replay passed on
+their first executions, reproducing every count and diagnostic stream. Receipts:
+`5b322d46d515b02799c8f9476ee6375a184fb774d97669a222c54223827e0ba8`
+and `4a5681e6ce2abecb3a11be8fb78f5fdc15ff6d526626a29718ed45eca4f02674`.
+Fresh-only bounded cleanup passed, removing exactly eight duplicate raw files
+and reclaiming 5,359,271,936 allocated bytes. The active fixed gate, historical
+failures, all 33 retained members and 272 native bindings were preserved.
+Completion: `11e1132b761cf21706ce002d20d1faf3d0fabbe244e445e89c9d718ec1ac6e4c`.
+Cleanup: `36444ea9dac498d8553ae2ef16d001e325e1e92cfd916f0f7f8d512ac476d1e1`.
+The full fixed gate passed all seven differential components from 22:26:59 to
+22:43:46 UTC, with all 200 correctness inputs unchanged, 23 exact capstones,
+152 audited witnesses and 1,011 unit assertions. Its whole-message campaign
+contains 9,542,689 exact matches and 933,475 documented D001 cases, with
+complete coverage and no unclassified differences. Gate evidence:
+`948fe7447498e103b54a7374c5f720d45e4390461a6caba299511a9406af236f`.
+All seven component archives are retained. Bounded, byte-verified fixed-gate
+cleanup reclaimed 5,733,335,040 allocated bytes, bringing generation 23's
+duplicate scratch reclamation to 11,092,606,976 bytes. Historical failures and
+unique evidence were preserved. Archive seal:
+`dd45dac5b8e7ec94d4761765e199c67e4cf61cf9ff6dd4d4f5713ad741703549`.
+Independent archive/plan review passed with all 200 inputs, seven components,
+62 retained files and both campaigns verified. Receipt:
+`08417f4cd0187b5e250fd900b95db1711658c72b9f57e10dc95a6c84a6f655a1`.
+Three failed checker adaptations are retained: an old generation literal, an
+accidentally substituted altitude count, and an assumption that the cleanup
+inventory excluded rejected historical candidates. The corrected reviewer
+checks the exact five selected roots and all retained bytes; no producer data
+or test requirement changed. The benchmark plan is sealed as
+`465d521f878c6608e284d97b356c8016ea0018a31839b8c5edc7659533039bd9`.
+Clean source commit and isolated two-mode timing remain; no throughput gain
+is claimed yet.
 
 **Previous measurement: generation 21 reached 1.963308902434× decode and
 1.539889738438× with CPR.** Neither target had been reached at that generation. The measured
