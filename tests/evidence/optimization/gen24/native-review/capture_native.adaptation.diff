@@ -1,0 +1,43 @@
+--- tests/evidence/optimization/gen23/native-review/capture_native.py
++++ tests/evidence/optimization/gen24/native-review/capture_native.py
+@@ -1,15 +1,15 @@
+ #!/usr/bin/env python3
+-"""Bounded static capture of linked gen23 Comm-B validity table paths; never runs a decoder."""
++"""Bounded static capture of linked gen24 shared Comm-B semantic paths; never runs a decoder."""
+ import sys
+ sys.dont_write_bytecode=True
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import hashlib,json,re,shlex,subprocess
+-ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen23/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
++ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen24/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ read=lambda p:json.loads(Path(p).read_text())
+ b=read(R.parent/'integration/targeted-build.json');assert b['status']=='passed' and b['exit_code']==0
+-assert len(b['all_inputs_after'])==200 and b['all_inputs_before']==b['all_inputs_after']
++assert len(b['all_inputs_after'])==202 and b['all_inputs_before']==b['all_inputs_after']
+ worker=Path('.lake/build/bin/lean1090-bench');held=dict(b['all_inputs_after']);inventory=[]
+ for token in shlex.split(Path(str(worker)+'.rsp').read_text()):
+  p=Path(token)
+@@ -34,13 +34,14 @@
+  if filtered:text='\n'.join(x for x in text.splitlines() if filtered(x))+'\n'
+  path=O/(label+'.txt');assert not path.exists();path.write_text(text);commands.append({'argv':argv,'exit_code':run.returncode,'output':str(path),'sha256':sha(path),'stderr':run.stderr});return text
+ P='lp_lean1090_Lean1090_Impl_'
+-requested=[P+name for name in ['cbValid40','cbValid50','cbValid60','cbSelectedValid40','cbQNHValid40','cbRollValid50','cbMachValid60','cbVerticalValid60','cbSelected','cbQNH64','cbSigned','cbMach64','cbVertical60','bdsWireValid','decodeBDS','commBCoreEligible','commBEligible','inferCommB','commBValue','cbPenalty','decode']]
+-requested += ['main','initialize_lean1090_Bench_WholeDecoder','initialize_lean1090_Impl_CommB']
+-# Actual generated definitions only; retain table initializer/map/entry boundaries,
+-# including once-cell scalar constants needed to see exact cardinality and formula.
+-commb=Path('.lake/build/ir/Impl/CommB.c').read_text()
+-definitions=re.findall(r'^(?:LEAN_EXPORT |static )[^;\n]+?\b([A-Za-z_][A-Za-z_0-9]*)\([^;\n]*\)\s*\{',commb,re.M)
+-requested += [n for n in definitions if any(t in n for t in ['cbSelectedValid40Table','cbQNHValid40Table','cbRollValid50Table','cbMachValid60Table','cbVerticalValid60Table']) and not n.endswith('___boxed')]
++requested=[P+name for name in ['commBAdjustValue','commBValue','Semantics_commB','Semantics_commBOracleValues','Semantics_tableValues','Semantics_commBStandardFloats','Semantics_commBStandardFloatsFromOracle','Presentation_oracleCommBFloats','payloadValue','Semantics_adsb','Semantics_commBLabels','reportWithSyndrome','decode']]
++requested += ['main','initialize_lean1090_Bench_WholeDecoder']
++# Bound only actual semantic list-map/helper definitions, plus the public value
++# correction path. Inlined boundaries stay explicitly absent in the worker.
++for filename in ['Impl/Semantics.c','Impl/CommB.c','Impl/Presentation.c']:
++ text=Path('.lake/build/ir',filename).read_text()
++ definitions=re.findall(r'^(?:LEAN_EXPORT |static )[^;\n]+?\b([A-Za-z_][A-Za-z_0-9]*)\([^;\n]*\)\s*\{',text,re.M)
++ requested += [n for n in definitions if any(t in n for t in ['Semantics_commB','Semantics_tableValues','Impl_commBAdjustValue','Impl_commBValue','Presentation_oracleCommBFloats']) and not n.endswith('___boxed') and not n.startswith('_init_')]
+ requested=list(dict.fromkeys(requested))
+ selected=set(requested)
+ syms=cmd(['nm','--defined-only',str(worker)],'selected-symbols',lambda line:line.split() and (line.split()[-1] in selected ))

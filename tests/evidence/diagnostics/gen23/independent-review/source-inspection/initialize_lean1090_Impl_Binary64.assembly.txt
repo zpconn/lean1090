@@ -1,0 +1,105 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b7f2d0 <initialize_lean1090_Impl_Binary64>:
+  b7f2d0:	push   %rbx
+  b7f2d1:	cmpb   $0x0,0x4002778(%rip)        # 4b81a50 <_G_initialized>
+  b7f2d8:	je     b7f2fa <initialize_lean1090_Impl_Binary64+0x2a>
+  b7f2da:	mov    $0x10,%edi
+  b7f2df:	call   490d1a0 <lean_alloc_small_object_core>
+  b7f2e4:	movl   $0x1,(%rax)
+  b7f2ea:	movw   $0x1,0x6(%rax)
+  b7f2f0:	movq   $0x1,0x8(%rax)
+  b7f2f8:	pop    %rbx
+  b7f2f9:	ret
+  b7f2fa:	mov    %edi,%ebx
+  b7f2fc:	movb   $0x1,0x400274d(%rip)        # 4b81a50 <_G_initialized>
+  b7f303:	xor    %eax,%eax
+  b7f305:	call   48c4730 <lean_initialize_runtime_module>
+  b7f30a:	movzbl %bl,%ebx
+  b7f30d:	mov    %ebx,%edi
+  b7f30f:	call   4837ae0 <initialize_Init>
+  b7f314:	movzbl 0x7(%rax),%ecx
+  b7f318:	shl    $0x18,%ecx
+  b7f31b:	cmp    $0x1000000,%ecx
+  b7f321:	je     b7f36d <initialize_lean1090_Impl_Binary64+0x9d>
+  b7f323:	mov    (%rax),%ecx
+  b7f325:	cmp    $0x2,%ecx
+  b7f328:	jl     b7f3c1 <initialize_lean1090_Impl_Binary64+0xf1>
+  b7f32e:	dec    %ecx
+  b7f330:	mov    %ecx,(%rax)
+  b7f332:	mov    %ebx,%edi
+  b7f334:	call   4837ae0 <initialize_Init>
+  b7f339:	movzbl 0x7(%rax),%ecx
+  b7f33d:	shl    $0x18,%ecx
+  b7f340:	cmp    $0x1000000,%ecx
+  b7f346:	je     b7f36d <initialize_lean1090_Impl_Binary64+0x9d>
+  b7f348:	mov    (%rax),%ecx
+  b7f34a:	cmp    $0x2,%ecx
+  b7f34d:	jl     b7f3d6 <initialize_lean1090_Impl_Binary64+0x106>
+  b7f353:	dec    %ecx
+  b7f355:	mov    %ecx,(%rax)
+  b7f357:	mov    %ebx,%edi
+  b7f359:	call   46f1b50 <initialize_Std>
+  b7f35e:	movzbl 0x7(%rax),%ecx
+  b7f362:	shl    $0x18,%ecx
+  b7f365:	cmp    $0x1000000,%ecx
+  b7f36b:	jne    b7f36f <initialize_lean1090_Impl_Binary64+0x9f>
+  b7f36d:	pop    %rbx
+  b7f36e:	ret
+  b7f36f:	mov    (%rax),%ecx
+  b7f371:	cmp    $0x2,%ecx
+  b7f374:	jl     b7f3eb <initialize_lean1090_Impl_Binary64+0x11b>
+  b7f376:	dec    %ecx
+  b7f378:	mov    %ecx,(%rax)
+  b7f37a:	mov    0x40026e8(%rip),%eax        # 4b81a68 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___closed__1_once>
+  b7f380:	cmp    $0x1,%eax
+  b7f383:	jne    b7f3f9 <initialize_lean1090_Impl_Binary64+0x129>
+  b7f385:	mov    0x40026d4(%rip),%rdi        # 4b81a60 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___closed__1>
+  b7f38c:	lea    0x4002665(%rip),%rax        # 4b819f8 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable>
+  b7f393:	mov    %rdi,(%rax)
+  b7f396:	call   48a3eb0 <lean_mark_persistent>
+  b7f39b:	mov    0x40026d7(%rip),%eax        # 4b81a78 <lp_lean1090_Lean1090_Impl_Binary64_maxFinite___closed__3_once>
+  b7f3a1:	cmp    $0x1,%eax
+  b7f3a4:	jne    b7f41b <initialize_lean1090_Impl_Binary64+0x14b>
+  b7f3a6:	mov    0x40026c3(%rip),%rdi        # 4b81a70 <lp_lean1090_Lean1090_Impl_Binary64_maxFinite___closed__3>
+  b7f3ad:	lea    0x40026a4(%rip),%rax        # 4b81a58 <lp_lean1090_Lean1090_Impl_Binary64_maxFinite>
+  b7f3b4:	mov    %rdi,(%rax)
+  b7f3b7:	call   48a3eb0 <lean_mark_persistent>
+  b7f3bc:	jmp    b7f2da <initialize_lean1090_Impl_Binary64+0xa>
+  b7f3c1:	test   %ecx,%ecx
+  b7f3c3:	je     b7f332 <initialize_lean1090_Impl_Binary64+0x62>
+  b7f3c9:	mov    %rax,%rdi
+  b7f3cc:	call   48a3b70 <lean_dec_ref_cold>
+  b7f3d1:	jmp    b7f332 <initialize_lean1090_Impl_Binary64+0x62>
+  b7f3d6:	test   %ecx,%ecx
+  b7f3d8:	je     b7f357 <initialize_lean1090_Impl_Binary64+0x87>
+  b7f3de:	mov    %rax,%rdi
+  b7f3e1:	call   48a3b70 <lean_dec_ref_cold>
+  b7f3e6:	jmp    b7f357 <initialize_lean1090_Impl_Binary64+0x87>
+  b7f3eb:	test   %ecx,%ecx
+  b7f3ed:	je     b7f37a <initialize_lean1090_Impl_Binary64+0xaa>
+  b7f3ef:	mov    %rax,%rdi
+  b7f3f2:	call   48a3b70 <lean_dec_ref_cold>
+  b7f3f7:	jmp    b7f37a <initialize_lean1090_Impl_Binary64+0xaa>
+  b7f3f9:	lea    0x4002660(%rip),%rdi        # 4b81a60 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___closed__1>
+  b7f400:	lea    0x4002661(%rip),%rsi        # 4b81a68 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___closed__1_once>
+  b7f407:	lea    0x32(%rip),%rdx        # b7f440 <_init_lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___closed__1>
+  b7f40e:	call   48ad080 <lean_obj_once_cold>
+  b7f413:	mov    %rax,%rdi
+  b7f416:	jmp    b7f38c <initialize_lean1090_Impl_Binary64+0xbc>
+  b7f41b:	lea    0x400264e(%rip),%rdi        # 4b81a70 <lp_lean1090_Lean1090_Impl_Binary64_maxFinite___closed__3>
+  b7f422:	lea    0x400264f(%rip),%rsi        # 4b81a78 <lp_lean1090_Lean1090_Impl_Binary64_maxFinite___closed__3_once>
+  b7f429:	lea    0x30(%rip),%rdx        # b7f460 <_init_lp_lean1090_Lean1090_Impl_Binary64_maxFinite___closed__3>
+  b7f430:	call   48ad080 <lean_obj_once_cold>
+  b7f435:	mov    %rax,%rdi
+  b7f438:	jmp    b7f3ad <initialize_lean1090_Impl_Binary64+0xdd>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

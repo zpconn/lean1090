@@ -1,0 +1,394 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b863e0 <lp_lean1090_Lean1090_Impl_bdsWireValid>:
+  b863e0:	push   %rbp
+  b863e1:	push   %r14
+  b863e3:	push   %rbx
+  b863e4:	lea    0x3ffb8c5(%rip),%rax        # 4b81cb0 <lp_lean1090_Lean1090_Impl_commBPayloadLimit>
+  b863eb:	mov    (%rax),%rax
+  b863ee:	mov    %eax,%ecx
+  b863f0:	test   $0x1,%sil
+  b863f4:	je     b8649a <lp_lean1090_Lean1090_Impl_bdsWireValid+0xba>
+  b863fa:	test   $0x1,%cl
+  b863fd:	je     b864a5 <lp_lean1090_Lean1090_Impl_bdsWireValid+0xc5>
+  b86403:	cmp    %rax,%rsi
+  b86406:	jae    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b8640c:	test   $0x1,%dil
+  b86410:	je     b864c9 <lp_lean1090_Lean1090_Impl_bdsWireValid+0xe9>
+  b86416:	lea    -0xb(%rdi),%rax
+  b8641a:	shr    $1,%rax
+  b8641d:	cmp    $0x60,%rax
+  b86421:	ja     b86481 <lp_lean1090_Lean1090_Impl_bdsWireValid+0xa1>
+  b86423:	lea    -0x8bea0a(%rip),%rcx        # 2c7a20 <lp_lean1090_Lean1090_Impl_adsbTargetLayout___closed__1_value+0x70>
+  b8642a:	movslq (%rcx,%rax,4),%rax
+  b8642e:	add    %rcx,%rax
+  b86431:	jmp    *%rax
+  b86433:	mov    %rsi,%rdi
+  b86436:	mov    $0x3,%esi
+  b8643b:	mov    $0xb,%edx
+  b86440:	mov    %rdi,%rbx
+  b86443:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b86448:	test   $0x1,%al
+  b8644a:	je     b865ad <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1cd>
+  b86450:	cmp    $0x13,%rax
+  b86454:	setb   %cl
+  b86457:	cmp    $0x26,%rax
+  b8645b:	setae  %dl
+  b8645e:	or     %cl,%dl
+  b86460:	je     b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+  b86466:	cmp    $0x29,%rax
+  b8646a:	setae  %cl
+  b8646d:	cmp    $0x2e,%rax
+  b86471:	setb   %al
+  b86474:	test   %al,%cl
+  b86476:	jne    b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+  b8647c:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b86481:	cmp    $0xc1,%rdi
+  b86488:	jne    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b8648e:	mov    %rsi,%rdi
+  b86491:	pop    %rbx
+  b86492:	pop    %r14
+  b86494:	pop    %rbp
+  b86495:	jmp    b86230 <lp_lean1090_Lean1090_Impl_cbValid60>
+  b8649a:	xor    %ecx,%ecx
+  b8649c:	test   $0x1,%cl
+  b8649f:	jne    b86403 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x23>
+  b864a5:	mov    %rdi,%rbx
+  b864a8:	mov    %rsi,%rdi
+  b864ab:	mov    %rsi,%r14
+  b864ae:	mov    %rax,%rsi
+  b864b1:	call   48a7020 <lean_nat_big_lt>
+  b864b6:	mov    %rbx,%rdi
+  b864b9:	mov    %r14,%rsi
+  b864bc:	test   %al,%al
+  b864be:	jne    b8640c <lp_lean1090_Lean1090_Impl_bdsWireValid+0x2c>
+  b864c4:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b864c9:	mov    %rsi,%r14
+  b864cc:	mov    $0xb,%esi
+  b864d1:	mov    %rdi,%rbx
+  b864d4:	call   48a6fc0 <lean_nat_big_eq>
+  b864d9:	mov    %r14,%rsi
+  b864dc:	test   %al,%al
+  b864de:	jne    b86433 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x53>
+  b864e4:	mov    $0xcb,%esi
+  b864e9:	mov    %rbx,%rdi
+  b864ec:	call   48a6fc0 <lean_nat_big_eq>
+  b864f1:	mov    %r14,%rsi
+  b864f4:	test   %al,%al
+  b864f6:	je     b86547 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x167>
+  b864f8:	mov    %rsi,%rdi
+  b864fb:	mov    $0x3,%esi
+  b86500:	mov    $0xb,%edx
+  b86505:	mov    %rdi,%rbx
+  b86508:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b8650d:	test   $0x1,%al
+  b8650f:	je     b865f0 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x210>
+  b86515:	cmp    $0x3f,%rax
+  b86519:	jne    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b8651b:	mov    $0xd,%esi
+  b86520:	mov    $0x7,%edx
+  b86525:	mov    %rbx,%rdi
+  b86528:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b8652d:	test   $0x1,%al
+  b8652f:	je     b866fd <lp_lean1090_Lean1090_Impl_bdsWireValid+0x31d>
+  b86535:	cmp    $0x5,%rax
+  b86539:	jae    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b8653b:	mov    %rbx,%rdi
+  b8653e:	pop    %rbx
+  b8653f:	pop    %r14
+  b86541:	pop    %rbp
+  b86542:	jmp    b75230 <lp_lean1090_Lean1090_Impl_adsbHardValid>
+  b86547:	mov    $0x21,%esi
+  b8654c:	mov    %rbx,%rdi
+  b8654f:	call   48a6fc0 <lean_nat_big_eq>
+  b86554:	mov    %r14,%rsi
+  b86557:	test   %al,%al
+  b86559:	je     b86589 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a9>
+  b8655b:	mov    %rsi,%rdi
+  b8655e:	mov    $0x3,%esi
+  b86563:	mov    $0x11,%edx
+  b86568:	mov    %rdi,%rbx
+  b8656b:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b86570:	test   $0x1,%al
+  b86572:	je     b86623 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x243>
+  b86578:	cmp    $0x21,%rax
+  b8657c:	je     b86651 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x271>
+  b86582:	xor    %eax,%eax
+  b86584:	pop    %rbx
+  b86585:	pop    %r14
+  b86587:	pop    %rbp
+  b86588:	ret
+  b86589:	mov    $0x2f,%esi
+  b8658e:	mov    %rbx,%rdi
+  b86591:	call   48a6fc0 <lean_nat_big_eq>
+  b86596:	mov    %r14,%rsi
+  b86599:	test   %al,%al
+  b8659b:	je     b86674 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x294>
+  b865a1:	mov    %rsi,%rdi
+  b865a4:	pop    %rbx
+  b865a5:	pop    %r14
+  b865a7:	pop    %rbp
+  b865a8:	jmp    b84500 <lp_lean1090_Lean1090_Impl_cbValid17>
+  b865ad:	mov    $0x13,%edi
+  b865b2:	mov    %rax,%r14
+  b865b5:	mov    %rax,%rsi
+  b865b8:	call   48a6ff0 <lean_nat_big_le>
+  b865bd:	test   %al,%al
+  b865bf:	je     b86694 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x2b4>
+  b865c5:	mov    $0x25,%esi
+  b865ca:	mov    %r14,%rdi
+  b865cd:	call   48a6ff0 <lean_nat_big_le>
+  b865d2:	test   %al,%al
+  b865d4:	je     b86694 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x2b4>
+  b865da:	mov    (%r14),%eax
+  b865dd:	cmp    $0x2,%eax
+  b865e0:	jl     b868fa <lp_lean1090_Lean1090_Impl_bdsWireValid+0x51a>
+  b865e6:	dec    %eax
+  b865e8:	mov    %eax,(%r14)
+  b865eb:	jmp    b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+  b865f0:	mov    $0x3f,%esi
+  b865f5:	mov    %rax,%rdi
+  b865f8:	mov    %rax,%r14
+  b865fb:	call   48a6fc0 <lean_nat_big_eq>
+  b86600:	mov    %eax,%ebp
+  b86602:	mov    %r14,%rdi
+  b86605:	mov    (%r14),%eax
+  b86608:	cmp    $0x2,%eax
+  b8660b:	jl     b868a2 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x4c2>
+  b86611:	dec    %eax
+  b86613:	mov    %eax,(%rdi)
+  b86615:	test   %bpl,%bpl
+  b86618:	jne    b8651b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x13b>
+  b8661e:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b86623:	mov    $0x21,%esi
+  b86628:	mov    %rax,%rdi
+  b8662b:	mov    %rax,%r14
+  b8662e:	call   48a6fc0 <lean_nat_big_eq>
+  b86633:	mov    %eax,%ebp
+  b86635:	mov    %r14,%rdi
+  b86638:	mov    (%r14),%eax
+  b8663b:	cmp    $0x2,%eax
+  b8663e:	jl     b868b4 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x4d4>
+  b86644:	dec    %eax
+  b86646:	mov    %eax,(%rdi)
+  b86648:	test   %bpl,%bpl
+  b8664b:	je     b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b86651:	mov    $0x15,%esi
+  b86656:	mov    $0xb,%edx
+  b8665b:	mov    %rbx,%rdi
+  b8665e:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b86663:	test   $0x1,%al
+  b86665:	je     b86730 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x350>
+  b8666b:	cmp    $0x1,%rax
+  b8666f:	jmp    b867bf <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3df>
+  b86674:	mov    $0x31,%esi
+  b86679:	mov    %rbx,%rdi
+  b8667c:	call   48a6fc0 <lean_nat_big_eq>
+  b86681:	mov    %r14,%rsi
+  b86684:	test   %al,%al
+  b86686:	je     b866c7 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x2e7>
+  b86688:	mov    %rsi,%rdi
+  b8668b:	pop    %rbx
+  b8668c:	pop    %r14
+  b8668e:	pop    %rbp
+  b8668f:	jmp    b84930 <lp_lean1090_Lean1090_Impl_cbValid18>
+  b86694:	mov    $0x29,%edi
+  b86699:	mov    %r14,%rsi
+  b8669c:	call   48a6ff0 <lean_nat_big_le>
+  b866a1:	test   %al,%al
+  b866a3:	je     b866e7 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x307>
+  b866a5:	mov    $0x2d,%esi
+  b866aa:	mov    %r14,%rdi
+  b866ad:	call   48a6ff0 <lean_nat_big_le>
+  b866b2:	mov    %eax,%ebp
+  b866b4:	mov    (%r14),%eax
+  b866b7:	cmp    $0x2,%eax
+  b866ba:	jl     b868c6 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x4e6>
+  b866c0:	dec    %eax
+  b866c2:	mov    %eax,(%r14)
+  b866c5:	jmp    b86722 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x342>
+  b866c7:	mov    $0x33,%esi
+  b866cc:	mov    %rbx,%rdi
+  b866cf:	call   48a6fc0 <lean_nat_big_eq>
+  b866d4:	mov    %r14,%rsi
+  b866d7:	test   %al,%al
+  b866d9:	je     b8673a <lp_lean1090_Lean1090_Impl_bdsWireValid+0x35a>
+  b866db:	mov    %rsi,%rdi
+  b866de:	pop    %rbx
+  b866df:	pop    %r14
+  b866e1:	pop    %rbp
+  b866e2:	jmp    b84b50 <lp_lean1090_Lean1090_Impl_cbValid19>
+  b866e7:	mov    (%r14),%eax
+  b866ea:	cmp    $0x2,%eax
+  b866ed:	jl     b868d3 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x4f3>
+  b866f3:	dec    %eax
+  b866f5:	mov    %eax,(%r14)
+  b866f8:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b866fd:	mov    $0x5,%esi
+  b86702:	mov    %rax,%rdi
+  b86705:	mov    %rax,%r14
+  b86708:	call   48a7020 <lean_nat_big_lt>
+  b8670d:	mov    %eax,%ebp
+  b8670f:	mov    %r14,%rdi
+  b86712:	mov    (%r14),%eax
+  b86715:	cmp    $0x2,%eax
+  b86718:	jl     b868e8 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x508>
+  b8671e:	dec    %eax
+  b86720:	mov    %eax,(%rdi)
+  b86722:	test   %bpl,%bpl
+  b86725:	jne    b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+  b8672b:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b86730:	mov    $0x1,%esi
+  b86735:	jmp    b867cc <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3ec>
+  b8673a:	mov    $0x41,%esi
+  b8673f:	mov    %rbx,%rdi
+  b86742:	call   48a6fc0 <lean_nat_big_eq>
+  b86747:	mov    %r14,%rsi
+  b8674a:	test   %al,%al
+  b8674c:	je     b86771 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x391>
+  b8674e:	mov    %rsi,%rdi
+  b86751:	mov    $0x3,%esi
+  b86756:	mov    $0x11,%edx
+  b8675b:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b86760:	test   $0x1,%al
+  b86762:	je     b8676a <lp_lean1090_Lean1090_Impl_bdsWireValid+0x38a>
+  b86764:	cmp    $0x41,%rax
+  b86768:	jmp    b867bf <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3df>
+  b8676a:	mov    $0x41,%esi
+  b8676f:	jmp    b867cc <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3ec>
+  b86771:	mov    $0x43,%esi
+  b86776:	mov    %rbx,%rdi
+  b86779:	call   48a6fc0 <lean_nat_big_eq>
+  b8677e:	mov    %r14,%rsi
+  b86781:	test   %al,%al
+  b86783:	je     b86791 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3b1>
+  b86785:	mov    %rsi,%rdi
+  b86788:	pop    %rbx
+  b86789:	pop    %r14
+  b8678b:	pop    %rbp
+  b8678c:	jmp    b84d30 <lp_lean1090_Lean1090_Impl_cbValid21>
+  b86791:	mov    $0x61,%esi
+  b86796:	mov    %rbx,%rdi
+  b86799:	call   48a6fc0 <lean_nat_big_eq>
+  b8679e:	mov    %r14,%rsi
+  b867a1:	test   %al,%al
+  b867a3:	je     b867f3 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x413>
+  b867a5:	mov    %rsi,%rdi
+  b867a8:	mov    $0x3,%esi
+  b867ad:	mov    $0x11,%edx
+  b867b2:	call   b51cc0 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b867b7:	test   $0x1,%al
+  b867b9:	je     b867c7 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x3e7>
+  b867bb:	cmp    $0x61,%rax
+  b867bf:	sete   %al
+  b867c2:	pop    %rbx
+  b867c3:	pop    %r14
+  b867c5:	pop    %rbp
+  b867c6:	ret
+  b867c7:	mov    $0x61,%esi
+  b867cc:	mov    %rax,%rdi
+  b867cf:	mov    %rax,%r14
+  b867d2:	call   48a6fc0 <lean_nat_big_eq>
+  b867d7:	mov    %eax,%ebx
+  b867d9:	mov    %r14,%rdi
+  b867dc:	mov    (%r14),%eax
+  b867df:	cmp    $0x2,%eax
+  b867e2:	jl     b86890 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x4b0>
+  b867e8:	dec    %eax
+  b867ea:	mov    %eax,(%rdi)
+  b867ec:	mov    %ebx,%eax
+  b867ee:	pop    %rbx
+  b867ef:	pop    %r14
+  b867f1:	pop    %rbp
+  b867f2:	ret
+  b867f3:	mov    $0x81,%esi
+  b867f8:	mov    %rbx,%rdi
+  b867fb:	call   48a6fc0 <lean_nat_big_eq>
+  b86800:	mov    %r14,%rsi
+  b86803:	test   %al,%al
+  b86805:	je     b86813 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x433>
+  b86807:	mov    %rsi,%rdi
+  b8680a:	pop    %rbx
+  b8680b:	pop    %r14
+  b8680d:	pop    %rbp
+  b8680e:	jmp    b85350 <lp_lean1090_Lean1090_Impl_cbValid40>
+  b86813:	mov    $0x89,%esi
+  b86818:	mov    %rbx,%rdi
+  b8681b:	call   48a6fc0 <lean_nat_big_eq>
+  b86820:	mov    %r14,%rsi
+  b86823:	test   %al,%al
+  b86825:	je     b86833 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x453>
+  b86827:	mov    %rsi,%rdi
+  b8682a:	pop    %rbx
+  b8682b:	pop    %r14
+  b8682d:	pop    %rbp
+  b8682e:	jmp    b85590 <lp_lean1090_Lean1090_Impl_cbValid44>
+  b86833:	mov    $0x8b,%esi
+  b86838:	mov    %rbx,%rdi
+  b8683b:	call   48a6fc0 <lean_nat_big_eq>
+  b86840:	mov    %r14,%rsi
+  b86843:	test   %al,%al
+  b86845:	je     b86853 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x473>
+  b86847:	mov    %rsi,%rdi
+  b8684a:	pop    %rbx
+  b8684b:	pop    %r14
+  b8684d:	pop    %rbp
+  b8684e:	jmp    b85870 <lp_lean1090_Lean1090_Impl_cbValid45>
+  b86853:	mov    $0xa1,%esi
+  b86858:	mov    %rbx,%rdi
+  b8685b:	call   48a6fc0 <lean_nat_big_eq>
+  b86860:	mov    %r14,%rsi
+  b86863:	test   %al,%al
+  b86865:	je     b86873 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x493>
+  b86867:	mov    %rsi,%rdi
+  b8686a:	pop    %rbx
+  b8686b:	pop    %r14
+  b8686d:	pop    %rbp
+  b8686e:	jmp    b85ce0 <lp_lean1090_Lean1090_Impl_cbValid50>
+  b86873:	mov    $0xc1,%esi
+  b86878:	mov    %rbx,%rdi
+  b8687b:	call   48a6fc0 <lean_nat_big_eq>
+  b86880:	mov    %r14,%rsi
+  b86883:	test   %al,%al
+  b86885:	jne    b8648e <lp_lean1090_Lean1090_Impl_bdsWireValid+0xae>
+  b8688b:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b86890:	test   %eax,%eax
+  b86892:	je     b867ec <lp_lean1090_Lean1090_Impl_bdsWireValid+0x40c>
+  b86898:	call   48a3b70 <lean_dec_ref_cold>
+  b8689d:	jmp    b867ec <lp_lean1090_Lean1090_Impl_bdsWireValid+0x40c>
+  b868a2:	test   %eax,%eax
+  b868a4:	je     b86615 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x235>
+  b868aa:	call   48a3b70 <lean_dec_ref_cold>
+  b868af:	jmp    b86615 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x235>
+  b868b4:	test   %eax,%eax
+  b868b6:	je     b86648 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x268>
+  b868bc:	call   48a3b70 <lean_dec_ref_cold>
+  b868c1:	jmp    b86648 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x268>
+  b868c6:	test   %eax,%eax
+  b868c8:	je     b86722 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x342>
+  b868ce:	mov    %r14,%rdi
+  b868d1:	jmp    b868f0 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x510>
+  b868d3:	test   %eax,%eax
+  b868d5:	je     b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b868db:	mov    %r14,%rdi
+  b868de:	call   48a3b70 <lean_dec_ref_cold>
+  b868e3:	jmp    b86582 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x1a2>
+  b868e8:	test   %eax,%eax
+  b868ea:	je     b86722 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x342>
+  b868f0:	call   48a3b70 <lean_dec_ref_cold>
+  b868f5:	jmp    b86722 <lp_lean1090_Lean1090_Impl_bdsWireValid+0x342>
+  b868fa:	test   %eax,%eax
+  b868fc:	je     b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+  b86902:	mov    %r14,%rdi
+  b86905:	call   48a3b70 <lean_dec_ref_cold>
+  b8690a:	jmp    b8653b <lp_lean1090_Lean1090_Impl_bdsWireValid+0x15b>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

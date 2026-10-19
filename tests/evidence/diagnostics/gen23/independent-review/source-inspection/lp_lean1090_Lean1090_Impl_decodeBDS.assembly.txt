@@ -1,0 +1,159 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b86940 <lp_lean1090_Lean1090_Impl_decodeBDS>:
+  b86940:	push   %rbp
+  b86941:	push   %r15
+  b86943:	push   %r14
+  b86945:	push   %r12
+  b86947:	push   %rbx
+  b86948:	mov    %rsi,%r14
+  b8694b:	mov    %rdi,%rbx
+  b8694e:	test   $0x1,%bl
+  b86951:	je     b86970 <lp_lean1090_Lean1090_Impl_decodeBDS+0x30>
+  b86953:	cmp    $0xb,%rbx
+  b86957:	je     b86981 <lp_lean1090_Lean1090_Impl_decodeBDS+0x41>
+  b86959:	cmp    $0xcb,%rbx
+  b86960:	jne    b869aa <lp_lean1090_Lean1090_Impl_decodeBDS+0x6a>
+  b86962:	mov    %r14,%rdi
+  b86965:	call   b748d0 <lp_lean1090_Lean1090_Impl_adsbLayout>
+  b8696a:	test   $0x1,%al
+  b8696c:	je     b869b6 <lp_lean1090_Lean1090_Impl_decodeBDS+0x76>
+  b8696e:	jmp    b869e1 <lp_lean1090_Lean1090_Impl_decodeBDS+0xa1>
+  b86970:	mov    $0xb,%esi
+  b86975:	mov    %rbx,%rdi
+  b86978:	call   48a6fc0 <lean_nat_big_eq>
+  b8697d:	test   %al,%al
+  b8697f:	je     b86999 <lp_lean1090_Lean1090_Impl_decodeBDS+0x59>
+  b86981:	mov    0x3ffb339(%rip),%eax        # 4b81cc0 <lp_lean1090_Lean1090_Impl_bdsLayout___closed__0_once>
+  b86987:	cmp    $0x1,%eax
+  b8698a:	jne    b869c3 <lp_lean1090_Lean1090_Impl_decodeBDS+0x83>
+  b8698c:	mov    0x3ffb325(%rip),%rax        # 4b81cb8 <lp_lean1090_Lean1090_Impl_bdsLayout___closed__0>
+  b86993:	test   $0x1,%al
+  b86995:	je     b869b6 <lp_lean1090_Lean1090_Impl_decodeBDS+0x76>
+  b86997:	jmp    b869e1 <lp_lean1090_Lean1090_Impl_decodeBDS+0xa1>
+  b86999:	mov    $0xcb,%esi
+  b8699e:	mov    %rbx,%rdi
+  b869a1:	call   48a6fc0 <lean_nat_big_eq>
+  b869a6:	test   %al,%al
+  b869a8:	jne    b86962 <lp_lean1090_Lean1090_Impl_decodeBDS+0x22>
+  b869aa:	mov    %rbx,%rdi
+  b869ad:	call   b57040 <lp_lean1090_Lean1090_Impl_commBLayout>
+  b869b2:	test   $0x1,%al
+  b869b4:	jne    b869e1 <lp_lean1090_Lean1090_Impl_decodeBDS+0xa1>
+  b869b6:	movzbl 0x7(%rax),%ecx
+  b869ba:	test   %ecx,%ecx
+  b869bc:	jne    b869ef <lp_lean1090_Lean1090_Impl_decodeBDS+0xaf>
+  b869be:	jmp    b86aa0 <lp_lean1090_Lean1090_Impl_decodeBDS+0x160>
+  b869c3:	lea    0x3ffb2ee(%rip),%rdi        # 4b81cb8 <lp_lean1090_Lean1090_Impl_bdsLayout___closed__0>
+  b869ca:	lea    0x3ffb2ef(%rip),%rsi        # 4b81cc0 <lp_lean1090_Lean1090_Impl_bdsLayout___closed__0_once>
+  b869d1:	lea    -0xc8(%rip),%rdx        # b86910 <_init_lp_lean1090_Lean1090_Impl_bdsLayout___closed__0>
+  b869d8:	call   48ad080 <lean_obj_once_cold>
+  b869dd:	test   $0x1,%al
+  b869df:	je     b869b6 <lp_lean1090_Lean1090_Impl_decodeBDS+0x76>
+  b869e1:	mov    %rax,%rcx
+  b869e4:	shr    $1,%rcx
+  b869e7:	test   %ecx,%ecx
+  b869e9:	je     b86aa0 <lp_lean1090_Lean1090_Impl_decodeBDS+0x160>
+  b869ef:	mov    0x8(%rax),%r12
+  b869f3:	mov    (%rax),%ebp
+  b869f5:	cmp    $0x1,%ebp
+  b869f8:	jne    b869ff <lp_lean1090_Lean1090_Impl_decodeBDS+0xbf>
+  b869fa:	mov    %rax,%r15
+  b869fd:	jmp    b86a30 <lp_lean1090_Lean1090_Impl_decodeBDS+0xf0>
+  b869ff:	test   $0x1,%r12b
+  b86a03:	jne    b86a17 <lp_lean1090_Lean1090_Impl_decodeBDS+0xd7>
+  b86a05:	mov    (%r12),%ecx
+  b86a09:	test   %ecx,%ecx
+  b86a0b:	jle    b86aef <lp_lean1090_Lean1090_Impl_decodeBDS+0x1af>
+  b86a11:	inc    %ecx
+  b86a13:	mov    %ecx,(%r12)
+  b86a17:	mov    $0x1,%r15d
+  b86a1d:	test   $0x1,%al
+  b86a1f:	jne    b86a30 <lp_lean1090_Lean1090_Impl_decodeBDS+0xf0>
+  b86a21:	mov    (%rax),%ecx
+  b86a23:	cmp    $0x2,%ecx
+  b86a26:	jl     b86b05 <lp_lean1090_Lean1090_Impl_decodeBDS+0x1c5>
+  b86a2c:	dec    %ecx
+  b86a2e:	mov    %ecx,(%rax)
+  b86a30:	mov    %rbx,%rdi
+  b86a33:	mov    %r14,%rsi
+  b86a36:	call   b863e0 <lp_lean1090_Lean1090_Impl_bdsWireValid>
+  b86a3b:	test   %al,%al
+  b86a3d:	je     b86a79 <lp_lean1090_Lean1090_Impl_decodeBDS+0x139>
+  b86a3f:	mov    %r12,%rdi
+  b86a42:	mov    %r14,%rsi
+  b86a45:	call   b52310 <lp_lean1090_Lean1090_Impl_decodePayloadFields>
+  b86a4a:	mov    %rax,%r12
+  b86a4d:	mov    $0x18,%edi
+  b86a52:	call   490d1a0 <lean_alloc_small_object_core>
+  b86a57:	mov    %rax,%r14
+  b86a5a:	movl   $0x1,(%rax)
+  b86a60:	movw   $0x2,0x6(%rax)
+  b86a66:	mov    %rbx,0x8(%rax)
+  b86a6a:	mov    %r12,0x10(%rax)
+  b86a6e:	cmp    $0x1,%ebp
+  b86a71:	jne    b86ab8 <lp_lean1090_Lean1090_Impl_decodeBDS+0x178>
+  b86a73:	mov    %r14,0x8(%r15)
+  b86a77:	jmp    b86ad5 <lp_lean1090_Lean1090_Impl_decodeBDS+0x195>
+  b86a79:	test   $0x1,%r15b
+  b86a7d:	jne    b86a87 <lp_lean1090_Lean1090_Impl_decodeBDS+0x147>
+  b86a7f:	mov    %r15,%rdi
+  b86a82:	call   48a3a50 <lean_free_object>
+  b86a87:	test   $0x1,%r12b
+  b86a8b:	jne    b86aa0 <lp_lean1090_Lean1090_Impl_decodeBDS+0x160>
+  b86a8d:	mov    (%r12),%eax
+  b86a91:	cmp    $0x2,%eax
+  b86a94:	jl     b86b1a <lp_lean1090_Lean1090_Impl_decodeBDS+0x1da>
+  b86a9a:	dec    %eax
+  b86a9c:	mov    %eax,(%r12)
+  b86aa0:	mov    $0x1,%r15d
+  b86aa6:	test   $0x1,%bl
+  b86aa9:	jne    b86ad5 <lp_lean1090_Lean1090_Impl_decodeBDS+0x195>
+  b86aab:	mov    (%rbx),%eax
+  b86aad:	cmp    $0x2,%eax
+  b86ab0:	jl     b86ae1 <lp_lean1090_Lean1090_Impl_decodeBDS+0x1a1>
+  b86ab2:	dec    %eax
+  b86ab4:	mov    %eax,(%rbx)
+  b86ab6:	jmp    b86ad5 <lp_lean1090_Lean1090_Impl_decodeBDS+0x195>
+  b86ab8:	mov    $0x10,%edi
+  b86abd:	call   490d1a0 <lean_alloc_small_object_core>
+  b86ac2:	mov    %rax,%r15
+  b86ac5:	movl   $0x1,(%rax)
+  b86acb:	movw   $0x101,0x6(%rax)
+  b86ad1:	mov    %r14,0x8(%rax)
+  b86ad5:	mov    %r15,%rax
+  b86ad8:	pop    %rbx
+  b86ad9:	pop    %r12
+  b86adb:	pop    %r14
+  b86add:	pop    %r15
+  b86adf:	pop    %rbp
+  b86ae0:	ret
+  b86ae1:	test   %eax,%eax
+  b86ae3:	je     b86ad5 <lp_lean1090_Lean1090_Impl_decodeBDS+0x195>
+  b86ae5:	mov    %rbx,%rdi
+  b86ae8:	call   48a3b70 <lean_dec_ref_cold>
+  b86aed:	jmp    b86ad5 <lp_lean1090_Lean1090_Impl_decodeBDS+0x195>
+  b86aef:	cmp    $0x90000001,%ecx
+  b86af5:	jb     b86a17 <lp_lean1090_Lean1090_Impl_decodeBDS+0xd7>
+  b86afb:	lock decl (%r12)
+  b86b00:	jmp    b86a17 <lp_lean1090_Lean1090_Impl_decodeBDS+0xd7>
+  b86b05:	test   %ecx,%ecx
+  b86b07:	je     b86a30 <lp_lean1090_Lean1090_Impl_decodeBDS+0xf0>
+  b86b0d:	mov    %rax,%rdi
+  b86b10:	call   48a3b70 <lean_dec_ref_cold>
+  b86b15:	jmp    b86a30 <lp_lean1090_Lean1090_Impl_decodeBDS+0xf0>
+  b86b1a:	test   %eax,%eax
+  b86b1c:	je     b86aa0 <lp_lean1090_Lean1090_Impl_decodeBDS+0x160>
+  b86b1e:	mov    %r12,%rdi
+  b86b21:	call   48a3b70 <lean_dec_ref_cold>
+  b86b26:	jmp    b86aa0 <lp_lean1090_Lean1090_Impl_decodeBDS+0x160>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

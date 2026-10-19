@@ -21,6 +21,7 @@ import Proofs.PayloadIntegerShift
 import Proofs.CommBValidity40
 import Proofs.CommBValidity50
 import Proofs.CommBValidity60
+import Proofs.CommBSemanticReuse
 /-!
 The first complete implementation preserves the frozen pure algorithms while
 separating their executable dependencies from the specification and Mathlib.
@@ -364,7 +365,7 @@ private theorem decoder_commBLayout_eq : @Impl.commBLayout = @Spec.commBLayout :
 /-- Includes FC003's separate DTE oracle byte order; each extracted byte is
 rewritten through the already proved runtime/reference bit extraction equality. -/
 private theorem decoder_commBValue_eq : @Impl.commBValue = @Spec.commBValue := by
-  unfold Impl.commBValue Spec.commBValue
+  unfold Impl.commBValue Impl.commBAdjustValue Spec.commBValue
   simp only [decoder_cbSelected_eq, decoder_cbTemperature44_eq, decoder_cbVertical60_eq,
     decoder_cbWrapAngle_eq, decoder_commBLayout_eq, decoder_payloadBits_eq, decoder_payloadValue_eq]
   rfl
@@ -383,7 +384,9 @@ private theorem decoder_Semantics_commBLabels_eq :
     decoder_cbRegistration_eq, decoder_commBValue_eq, decoder_payloadBits_eq]
 private theorem decoder_Semantics_commBStandardFloats_eq :
     @Impl.Semantics.commBStandardFloats = @Spec.Semantics.commBStandardFloats := by
-  unfold Impl.Semantics.commBStandardFloats Spec.Semantics.commBStandardFloats
+  funext register word
+  rw [CommBSemanticReuse.commBStandardFloats_eq_old]
+  unfold Spec.Semantics.commBStandardFloats
   simp only [decoder_Presentation_oracleCommBFloats_eq, decoder_cbSigned_eq]
 private theorem decoder_cbThreat_eq : @Impl.cbThreat = @Spec.cbThreat := by
   unfold Impl.cbThreat Spec.cbThreat
@@ -400,7 +403,9 @@ private theorem decoder_cbStandardThreat_eq : @Impl.cbStandardThreat = @Spec.cbS
     decoder_standardThreatRange_eq]
   rfl
 private theorem decoder_Semantics_commB_eq : @Impl.Semantics.commB = @Spec.Semantics.commB := by
-  unfold Impl.Semantics.commB Spec.Semantics.commB
+  funext register word
+  rw [CommBSemanticReuse.commB_eq_old]
+  unfold Spec.Semantics.commB
   simp only [decoder_Presentation_oracleCommBFloats_eq, decoder_Semantics_adsb_eq,
     decoder_Semantics_commBLabels_eq, decoder_Semantics_commBStandardFloats_eq,
     decoder_Semantics_tableValues_eq, decoder_cbStandardThreat_eq, decoder_cbThreat_eq,

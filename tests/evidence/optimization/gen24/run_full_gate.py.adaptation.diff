@@ -1,0 +1,11 @@
+--- tests/evidence/optimization/gen23/run_full_gate.py
++++ tests/evidence/optimization/gen24/run_full_gate.py
+@@ -8,7 +8,7 @@
+ spec=importlib.util.spec_from_file_location('benchmark_provenance',path)
+ module=importlib.util.module_from_spec(spec)
+ spec.loader.exec_module(module)
+-out=root/'tests/evidence/optimization/gen23'
++out=root/'tests/evidence/optimization/gen24'
+ assert not (out/'gate-evidence.json').exists() and not (out/'gate-full.log').exists()
+ record={'schema':1,'status':'running','command':['scripts/check_all.sh','--full'],'generated_messages':10000000,
+         'started_at':datetime.now(timezone.utc).isoformat(),'input_hashes_before':module.gate_input_hashes()}

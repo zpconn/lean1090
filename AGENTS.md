@@ -44,8 +44,27 @@ All 96 samples and provenance are in `bench/runs/gen23/`; report:
 `bench/GEN23.md`. Signed CPR overhead is 0.596047914540 µs/message for Lean
 and 0.008262097523 for rs1090, including noise between mode medians. Full fixed
 and independent fresh 10M campaigns passed with all 200 correctness inputs
-unchanged. Result review, artifact/source binding and presentation review passed;
-publication remains. Fresh untimed diagnostics precede selecting generation 24.
+unchanged. Result review, artifact/source binding and presentation review passed.
+The reviewed source/artifacts were pushed to private main as
+`0ead24dfeba4f6cb95926f0a0fb8624f4ed08807`, with a clean tree at publication.
+Fresh diagnostics and independent reviews passed against that exact source-
+equivalent commit. Verified cleanup reclaimed 480,059,392 bytes; source/history
+hold is released. Generation 24 is implementing shared Comm-B scalar values and
+pure numerical expression construction, with absent-status and oracle exception
+behavior preserved. Runtime, both sharing proof modules and the combined
+production/refinement
+build pass. All 202 correctness inputs are unchanged; 346 printed facts use
+permitted axioms. Source/proof and native review pass (22 sets, 20 unchanged
+siblings, actual semantic sharing). The full fixed gate passes with all 202
+inputs unchanged. The fresh 10M
+campaign and independent replay pass with only documented D001 cases and
+full coverage. Verified fresh and fixed cleanup reclaimed 11,092,824,064 bytes. A
+completion-only reporting-path correction is retained; no tests or deletion
+repeated. Benchmark plan and final archive review pass. Source commit and isolated
+timing remain. Fresh seeds are 1,799,246,425 (messages)
+and 1,314,217,890 (Comm-B), recorded before generation.
+No generation 24 gain is claimed.
+See PROGRESS.md and `docs/GEN24-SEMANTIC-SHARING.md`.
 
 Generation 22 measured **2.203718886895× decode** and **1.715366461888×
 decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both

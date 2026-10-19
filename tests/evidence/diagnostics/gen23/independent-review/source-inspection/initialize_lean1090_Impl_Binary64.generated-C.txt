@@ -1,0 +1,20 @@
+{
+lean_object * res;
+if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_initialized = true;
+lean_initialize_runtime_module();
+res = initialize_Init(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Std(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable = _init_lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable();
+lean_mark_persistent(lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable);
+lp_lean1090_Lean1090_Impl_Binary64_maxFinite = _init_lp_lean1090_Lean1090_Impl_Binary64_maxFinite();
+lean_mark_persistent(lp_lean1090_Lean1090_Impl_Binary64_maxFinite);
+return lean_io_result_mk_ok(lean_box(0));
+}

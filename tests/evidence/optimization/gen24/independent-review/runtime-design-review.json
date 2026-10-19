@@ -1,0 +1,71 @@
+{
+  "status": "passed_read_only_runtime_design_review",
+  "recorded_utc": "2026-10-19T23:14:10.256128+00:00",
+  "head": "0ead24dfeba4f6cb95926f0a0fb8624f4ed08807",
+  "checks": [
+    "CommB runtime changes only the old correction body factoring and its delegated call",
+    "All nine named correction branches and default are byte-identical to the committed match",
+    "Public commBValue retains layout/name/status lookup before correction",
+    "Adjustment takes an already-present exact rational and returns the original option",
+    "Numeric reuse keeps BDS30 empty standard expressions and isolates BDS44 transformation",
+    "BDS44 temperature replaces only the expression; key and omission policy remain exact, independent of prior presence",
+    "All other registers return the supplied immutable expression list directly",
+    "Standalone standard-float API still delegates to current expression constructor with BDS30 guard",
+    "Oracle rational reuse preserves order/names and leaves every absent status as none",
+    "Complete payload record changes exactly two shared local lists and their consumers; labels, threats and ADS-B delegates unchanged",
+    "Every earlier semantic definition is byte-identical",
+    "Namespace suffix unchanged",
+    "Impl/Presentation.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/Numeric.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/CPRFloat.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/JSON.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/Message.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/CommBLayouts.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Impl/PayloadBits.lean unchanged; pure expression construction and existing Float evaluation boundary preserved",
+    "Tests/CommBDifferential.lean still invokes the live semantic path",
+    "Tests/DTEDifferential.lean still invokes the live semantic path",
+    "Tests/Upstream.lean still invokes the live semantic path",
+    "Impl/Message.lean still invokes the live semantic path",
+    "Impl/CommB.lean imports unchanged",
+    "Impl/CommB.lean adds no Float evaluator or prohibited implementation construct",
+    "Impl/Semantics.lean imports unchanged",
+    "Impl/Semantics.lean adds no Float evaluator or prohibited implementation construct",
+    "All 104 frozen entries retain exact locked hashes",
+    "Runtime target build exited successfully with final runtime hashes"
+  ],
+  "checks_passed": 29,
+  "bindings": {
+    "Impl/CommB.lean": "a029f566603ab536e1fa2ee084fb4db9649c1380cb34c84852602861c7cd99d2",
+    "Impl/Semantics.lean": "1b2964d186193d25ff13bda3c8eee1dc9ec1ecbb81c26857fd69a17f38497888",
+    "Impl/Presentation.lean": "6fd35e5559ca52d0101242398ee92c468927f7d310615a2b579d2d07eefdf8c9",
+    "Impl/Numeric.lean": "8d671d7e633845bb1a0493fc3b8a1a7737de3fa94da958befc83c283afba10d8",
+    "Impl/CPRFloat.lean": "d97d975cad3056e52c1c007d71c6063458a2aecc0fc9b53fd6de8992bf093a31",
+    "Impl/JSON.lean": "3c11994191c438eecb102d3edc596e74f71e8a7c53e74c2c9661fad897bdd194",
+    "Impl/Message.lean": "fc5a3098894fb4f539dd81fbacb260b138755bde1306ced8e885329113ebabbb",
+    "Impl/CommBLayouts.lean": "85558b5ddc27f6eb5422db9e7ff720019d85e9908f3e2ed4c3466ef95ada0cff",
+    "Impl/PayloadBits.lean": "4f386ca2f0924a9d5b39dbd2b6785661473c5874d633b586ceecd8eb52fa8faa",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf",
+    "Tests/DTEDifferential.lean": "35f0083599b6edfb54c51ec985f34a1b721c55a7641df52b71484f2b687f13d4",
+    "Tests/Upstream.lean": "49c0ded8fcc3016ea36221fb467332137b716626f7b5212cc80bea84b246a032",
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "tests/evidence/optimization/gen24/runtime/attempt-01/result.json": "45f9611c878524ec16d9ef4503d48f1c82059046b36e3cf0e877b0b75cfae8e9",
+    "tests/evidence/optimization/gen24/runtime/attempt-01/build.log": "a0bb7501fd1436ec7a5324dec49bee6f56da4c03288017070740dc5e518ba3de"
+  },
+  "findings": [],
+  "proof_obligations": [
+    "For each selected layout, column names are unique and find? of every listed column returns that column, preserving arbitrary registers/words and field order.",
+    "Unconditional list equality between reuse of tableValues and the original per-column commBValue lookup, including missing status and every named correction.",
+    "Unconditional NumericField-list equality for BDS30, BDS44 and the identity branch, preserving expression structure, missing policy and exact rational operands.",
+    "Complete Semantics.commB and public commBValue refinement retain existing theorem types and frozen adapter liveness."
+  ],
+  "native_obligations": [
+    "Actual linked Semantics.commB must compute one tableValues list and one oracle expression list per invocation and reuse them through the intended fields.",
+    "Oracle-value mapping must consume present values via adjustment without repeating layout search/payloadValue per column; public commBValue remains live for its other callers.",
+    "Shared pure expression constructors must not invoke new Float computations; the tested evaluation boundary stays unchanged."
+  ],
+  "limits": [
+    "Source-level review and existing runtime build evidence only; proofs and generated-C/object/linked paths will be checked after their owners release stable artifacts.",
+    "No benchmark or expected speedup is inferred from overlapping diagnostic costs."
+  ],
+  "checker_sha256": "424f8f24cfaf573c6e95f4fc230dbf5b7433772e44be0a79baf66f26c9ae605a"
+}

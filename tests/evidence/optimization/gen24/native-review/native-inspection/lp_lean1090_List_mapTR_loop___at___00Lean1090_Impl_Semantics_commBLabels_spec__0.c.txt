@@ -1,0 +1,65 @@
+2957: LEAN_EXPORT lean_object* lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_Semantics_commBLabels_spec__0(lean_object* v_register_941_, lean_object* v_word_942_, lean_object* v_a_943_, lean_object* v_a_944_){
+2958: _start:
+2959: {
+2960: if (lean_obj_tag(v_a_943_) == 0)
+2961: {
+2962: lean_object* v___x_945_; 
+2963: v___x_945_ = l_List_reverse___redArg(v_a_944_);
+2964: return v___x_945_;
+2965: }
+2966: else
+2967: {
+2968: lean_object* v_head_946_; lean_object* v_tail_947_; lean_object* v___x_949_; uint8_t v_isShared_950_; uint8_t v_isSharedCheck_958_; 
+2969: v_head_946_ = lean_ctor_get(v_a_943_, 0);
+2970: v_tail_947_ = lean_ctor_get(v_a_943_, 1);
+2971: v_isSharedCheck_958_ = !lean_is_exclusive(v_a_943_);
+2972: if (v_isSharedCheck_958_ == 0)
+2973: {
+2974: v___x_949_ = v_a_943_;
+2975: v_isShared_950_ = v_isSharedCheck_958_;
+2976: goto v_resetjp_948_;
+2977: }
+2978: else
+2979: {
+2980: lean_inc(v_tail_947_);
+2981: lean_inc(v_head_946_);
+2982: lean_dec(v_a_943_);
+2983: v___x_949_ = lean_box(0);
+2984: v_isShared_950_ = v_isSharedCheck_958_;
+2985: goto v_resetjp_948_;
+2986: }
+2987: v_resetjp_948_:
+2988: {
+2989: lean_object* v___x_951_; lean_object* v___x_952_; lean_object* v___x_953_; lean_object* v___x_955_; 
+2990: v___x_951_ = lp_lean1090_Lean1090_Impl_commBValue(v_register_941_, v_word_942_, v_head_946_);
+2991: v___x_952_ = lp_lean1090_Lean1090_Impl_Semantics_hazard(v___x_951_);
+2992: lean_dec(v___x_951_);
+2993: v___x_953_ = lean_alloc_ctor(0, 2, 0);
+2994: lean_ctor_set(v___x_953_, 0, v_head_946_);
+2995: lean_ctor_set(v___x_953_, 1, v___x_952_);
+2996: if (v_isShared_950_ == 0)
+2997: {
+2998: lean_ctor_set(v___x_949_, 1, v_a_944_);
+2999: lean_ctor_set(v___x_949_, 0, v___x_953_);
+3000: v___x_955_ = v___x_949_;
+3001: goto v_reusejp_954_;
+3002: }
+3003: else
+3004: {
+3005: lean_object* v_reuseFailAlloc_957_; 
+3006: v_reuseFailAlloc_957_ = lean_alloc_ctor(1, 2, 0);
+3007: lean_ctor_set(v_reuseFailAlloc_957_, 0, v___x_953_);
+3008: lean_ctor_set(v_reuseFailAlloc_957_, 1, v_a_944_);
+3009: v___x_955_ = v_reuseFailAlloc_957_;
+3010: goto v_reusejp_954_;
+3011: }
+3012: v_reusejp_954_:
+3013: {
+3014: v_a_943_ = v_tail_947_;
+3015: v_a_944_ = v___x_955_;
+3016: goto _start;
+3017: }
+3018: }
+3019: }
+3020: }
+3021: }

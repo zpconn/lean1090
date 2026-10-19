@@ -1,0 +1,61 @@
+--- HEAD:Impl/Semantics.lean
++++ Impl/Semantics.lean
+@@ -177,6 +177,18 @@
+       fun name => (name, hazard (commBValue register word name))
+   else []
+ 
++/-- Derive the standard numeric expressions from the already constructed oracle
++expressions. Only BDS44 temperature changes an expression; BDS30 has no standard
++scalar expressions. Every other register can share the original immutable list. -/
++def commBStandardFloatsFromOracle (register word : Nat)
++    (fields : List NumericField) : List NumericField :=
++  if register == 0x30 then [] else if register == 0x44 then
++    fields.map fun field =>
++      if field.key == "temperature" then
++        { field with value := some (.literal .binary64 (cbSigned word 24 11 / 4)) }
++      else field
++  else fields
++
+ -- Initial algorithm: Spec/Semantics.lean:165.
+ /-- Sun, 2nd ed. (2021), table18.1 temperature is signed quarter-degrees without the oracle's
+ legacy wrap. ICAO §4.3.8.4.2.2.1.6 range/bearing are typed estimates/sectors
+@@ -184,10 +196,14 @@
+ Other numeric programs use the exact operands and oracle operation order. -/
+ def commBStandardFloats (register word : Nat) : List NumericField :=
+   if register == 0x30 then [] else
+-    (oracleCommBFloats register word).map fun field =>
+-      if register == 0x44 && field.key == "temperature" then
+-        { field with value := some (.literal .binary64 (cbSigned word 24 11 / 4)) }
+-      else field
++    commBStandardFloatsFromOracle register word (oracleCommBFloats register word)
++
++/-- Preserve absent status values and apply the live oracle adjustment to each
++present value. Layout names are proved unique, so this agrees with looking up
++and decoding each named column again. No state persists across messages. -/
++def commBOracleValues (register word : Nat) (values : Values) : Values :=
++  values.map fun (name, value) =>
++    (name, value.bind (commBAdjustValue register word name))
+ 
+ -- Initial algorithm: Spec/Semantics.lean:176.
+ /-- Sun chs.16–18 and declared oracle adjustments in commBValue: all exact
+@@ -196,13 +212,15 @@
+ def commB (register word : Nat) : Payload :=
+   if register == 0x05 || register == 0x65 then adsb word else
+     let layout := (commBLayout register).getD []
+-    { tableValues := tableValues layout word
+-      standardValues := tableValues layout word
+-      oracleValues := layout.map fun c => (c.name, commBValue register word c.name)
++    let values := tableValues layout word
++    let oracleFloats := oracleCommBFloats register word
++    { tableValues := values
++      standardValues := values
++      oracleValues := commBOracleValues register word values
+       standardLabels := commBLabels register word
+       oracleLabels := commBLabels register word
+-      standardFloats := commBStandardFloats register word
+-      oracleFloats := oracleCommBFloats register word
++      standardFloats := commBStandardFloatsFromOracle register word oracleFloats
++      oracleFloats := oracleFloats
+       standardThreat := if register == 0x30 then cbStandardThreat word else none
+       oracleThreat := if register == 0x30 then some (cbThreat word) else none }
+ 

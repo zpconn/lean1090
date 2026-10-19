@@ -1,0 +1,27 @@
+--- tests/evidence/optimization/gen23/integration/run_production_build.py
++++ tests/evidence/optimization/gen24/integration/run_production_build.py
+@@ -14,8 +14,7 @@
+ 
+ ROOT = Path(__file__).resolve().parents[5]
+ OUT = Path(__file__).resolve().parent
+-SOURCES = ['Impl/CommB.lean', 'Proofs/CommBValidity40.lean',
+-           'Proofs/CommBValidity50.lean', 'Proofs/CommBValidity60.lean', 'Proofs/Decoder.lean']
++SOURCES = ['Impl/CommB.lean', 'Impl/Semantics.lean', 'Proofs/CommBValueReuse.lean', 'Proofs/CommBSemanticReuse.lean', 'Proofs/CommBTables.lean', 'Proofs/CommBPenalty.lean', 'Proofs/Decoder.lean']
+ COMMAND = ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'lean1090',
+            'messageGenerator', 'commbDifferential', 'lean1090-bench']
+ BINARIES = ('lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench')
+@@ -42,12 +41,12 @@
+     assert re.fullmatch(r'production-\d{2}', args.attempt), args.attempt
+     assert not (OUT / 'targeted-build.json').exists()
+     assert not (OUT / 'targeted-build.log').exists()
+-    spec = importlib.util.spec_from_file_location('gen23_build_inventory',
++    spec = importlib.util.spec_from_file_location('gen24_build_inventory',
+         ROOT / 'review/diagnostics/run_generation_benchmark.py')
+     inventory = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(inventory)
+     before = inventory.gate_input_hashes()
+-    assert len(before) == 200, len(before)
++    assert len(before) == 202, len(before)
+     assert set(SOURCES) <= set(before), set(SOURCES) - set(before)
+     attempt = OUT / args.attempt
+     attempt.mkdir()

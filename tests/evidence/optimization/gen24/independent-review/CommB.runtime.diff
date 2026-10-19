@@ -1,0 +1,43 @@
+--- HEAD:Impl/CommB.lean
++++ Impl/CommB.lean
+@@ -74,16 +74,11 @@
+ def cbWrapAngle (value : Rat) : Rat := if value < 0 then value + 360 else value
+ 
+ -- Initial algorithm: Spec/CommB.lean:62.
+-/-- Sun chs.16–18 standard unit projections, with named rs1090-derived
+-presentation exceptions: BDS10 DTE native-endian reporting on the pinned x86_64
+-target (bds10.rs/deku0.20.3), BDS40 altitude rounding, BDS44 temperature correction,
+-BDS50 unavailable rate sentinel, BDS60 rate sentinels and wrapped headings.
+-The QNH/Mach values here are exact pre-Float quantities; score arithmetic uses
+-`cbQNH64` / `cbMach64` separately. -/
+-def commBValue (register word : Nat) (name : String) : Option Rat := do
+-  let layout ← commBLayout register
+-  let c ← layout.find? (fun c => c.name == name)
+-  let value ← payloadValue c word
++/-- Apply the existing oracle presentation adjustments to a present field value.
++The caller retains the layout lookup and status check before reaching this
++helper. Sharing this exact operation lets semantic views reuse decoded fields. -/
++@[inline] def commBAdjustValue (register word : Nat) (name : String)
++    (value : Rat) : Option Rat :=
+   match register, name with
+   | 0x10, "dte" => some (payloadBits word 41 8 + 256 * payloadBits word 49 8 : Rat)
+   | 0x40, "selected_mcp" => some (cbSelected (payloadBits word 2 12))
+@@ -96,6 +91,18 @@
+   | 0x60, "vrate_barometric" => some (cbVertical60 word 36)
+   | 0x60, "vrate_inertial" => some (cbVertical60 word 47)
+   | _, _ => some value
++
++/-- Sun chs.16–18 standard unit projections, with named rs1090-derived
++presentation exceptions: BDS10 DTE native-endian reporting on the pinned x86_64
++target (bds10.rs/deku0.20.3), BDS40 altitude rounding, BDS44 temperature correction,
++BDS50 unavailable rate sentinel, BDS60 rate sentinels and wrapped headings.
++The QNH/Mach values here are exact pre-Float quantities; score arithmetic uses
++`cbQNH64` / `cbMach64` separately. -/
++def commBValue (register word : Nat) (name : String) : Option Rat := do
++  let layout ← commBLayout register
++  let c ← layout.find? (fun c => c.name == name)
++  let value ← payloadValue c word
++  commBAdjustValue register word name value
+ 
+ -- Initial algorithm: Spec/CommB.lean:83.
+ /-- ICAO Annex 10 IV (4th ed., 2007) table 3-8: A–Z, digits, space; all unassigned

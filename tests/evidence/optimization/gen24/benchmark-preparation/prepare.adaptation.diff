@@ -1,0 +1,63 @@
+--- tests/evidence/optimization/gen23/benchmark-preparation/prepare.py
++++ tests/evidence/optimization/gen24/benchmark-preparation/prepare.py
+@@ -25,17 +25,17 @@
+ 
+ 
+ pending = out / 'plan-pending.json'
+-assert sha(pending) == '07ef4d93ce00a5a265adfbe38ab483675fd3d3d989601ff854ace85e5f96e49c'
++assert sha(pending) == 'c630842cf75c288fef94e3466471a300c9b85089aba6fb42113253c1894c49d7'
+ plan = read(pending)
+ assert plan['status'] == 'pending_validation_not_ready_for_timing'
+-assert plan['generation'] == 23
++assert plan['generation'] == 24
+ reporting = plan['reporting_helper']
+ assert sha(root / reporting['path']) == reporting['sha256']
+ assert sha(root / reporting['independent_review']) == reporting['independent_review_sha256']
+ raw = (root / 'bench/results.csv').read_bytes()
+ assert raw == (root / plan['prior_csv_snapshot']).read_bytes()
+ assert sha(root / 'bench/results.csv') == plan['prior_csv_sha256']
+-assert len(archive.parse_prior_csv(raw, 23)) == plan['prior_csv_rows'] == 46
++assert len(archive.parse_prior_csv(raw, 24)) == plan['prior_csv_rows'] == 48
+ requirements = plan['requirements']
+ gate = read(root / requirements['full_gate'])
+ fresh = read(root / plan['fresh_verification'])
+@@ -47,16 +47,16 @@
+ assert gate['generated_messages'] == requirements['fixed_generated_messages'] == 10_000_000
+ assert gate['exit_code'] == 0 and gate['input_hashes_equal']
+ assert gate['input_hashes_before'] == gate['input_hashes_after']
+-assert len(gate['input_hashes_after']) == requirements['correctness_inputs'] == 200
++assert len(gate['input_hashes_after']) == requirements['correctness_inputs'] == 202
+ for name, digest in gate['input_hashes_after'].items():
+     assert sha(root / name) == digest, name
+ assert not native['findings'] and native['all_inputs_unchanged']
+-assert native['commb_validity_tables_live_path_verified']
++assert native['commb_semantic_reuse_live_path_verified']
+ assert native['linked_native_sets'] == requirements['native_sets'] == 22
+ assert native['integration_record_sha256'] == sha(root / requirements['combined_build'])
+ for name, digest in native['held_inputs'].items():
+     assert sha(root / name) == digest, name
+-assert completion['source_count'] == requirements['fresh_source_count'] == 125
++assert completion['source_count'] == requirements['fresh_source_count'] == 127
+ assert completion['binary_count'] == requirements['fresh_binary_count'] == 3
+ assert completion['retained_members'] == requirements['fresh_retained_members'] == 33
+ assert completion['full_coverage_reproduced'] and completion['decompressed_diagnostic_streams_reproduced']
+@@ -64,8 +64,8 @@
+ assert completion['native_held_inputs_rechecked']
+ for name in ('plan.json', 'preparation-verification.json'):
+     assert not (out / name).exists(), 'Preserve prior preparation attempts.'
+-assert not (root / 'bench/runs/gen23').exists()
+-assert not (root / 'bench/GEN23.md').exists()
++assert not (root / 'bench/runs/gen24').exists()
++assert not (root / 'bench/GEN24.md').exists()
+ plan.update(status='prepared_validation_passed_not_measured',
+             prepared_utc=datetime.now(timezone.utc).isoformat(),
+             pending_plan_sha256=sha(pending),
+@@ -82,7 +82,7 @@
+                 'plan_sha256': sha(out / 'plan.json'), 'pending_plan_sha256': sha(pending),
+                 'helper_sha256': reporting['sha256'],
+                 'helper_independent_review_sha256': reporting['independent_review_sha256'],
+-                'prior_csv_sha256': plan['prior_csv_sha256'], 'prior_rows': 46,
++                'prior_csv_sha256': plan['prior_csv_sha256'], 'prior_rows': 48,
+                 'fresh_status': 'passed', 'fresh_verification_sha256': plan['fresh_verification_sha256'],
+                 'gate_evidence_sha256': sha(root / requirements['full_gate']),
+                 'validation_bindings': plan['validation_bindings'],

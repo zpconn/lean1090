@@ -1,0 +1,11 @@
+--- HEAD:Proofs/CommBPenalty.lean
++++ Proofs/CommBPenalty.lean
+@@ -59,7 +59,7 @@
+         Impl.Binary64.sub 0 (Impl.Binary64.div (Impl.Binary64.sub tas gs).abs 100)
+       | _, _ => 0 := by
+   rw [cbWindPenalty50_eq_raw]
+-  simp [Impl.commBValue, Impl.commBLayout, Impl.bds50Layout, Impl.cbColumn,
++  simp [Impl.commBValue, Impl.commBAdjustValue, Impl.commBLayout, Impl.bds50Layout, Impl.cbColumn,
+     Impl.payloadValue, AffineValue.affineValue_eq, Impl.payloadInteger]
+   by_cases ht : Impl.payloadBits word 46 1 = 0 <;>
+     by_cases hg : Impl.payloadBits word 24 1 = 0 <;> simp_all

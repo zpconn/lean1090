@@ -40,8 +40,79 @@ preparations passed independent review on their first executions (27 decode
 checks and 76 CPR checks), with no build or profile executed. Receipts:
 `4c94c93d72437ccc24c018dcb8e3e806e790b9a82ac545e93b61523176670179`
 and `09ae371d246942e19f97946337bb03e8c756e8b0d7e6231e3235337358b353c4`.
-Publication and fresh untimed diagnostics of this measured code precede
-selection of generation 24.
+The reviewed source and artifacts were pushed to private `main` as
+`0ead24dfeba4f6cb95926f0a0fb8624f4ed08807`, under the user's identity, with
+a clean tree at publication. All 200 staged correctness inputs matched the
+passed full gate and timed source. A root precommit status-label assumption
+was corrected without changing any receipt; both attempts are recorded.
+Fresh diagnostics completed against that exact source-equivalent commit.
+Decode collected 6,562,740,540 instructions; CPR collected 8,892,177,343.
+All 172,432 tracking rows, 11,347 positions and the complete final state match.
+Both final independent reviews passed:
+`ec75cbe3aec3567b8b854b1e647807ad46079065b9cf2acf4a6114af51e808d9`
+and `f6d653b68993074dc2fc6aea4667ad5d01018c7134e8399b0e8759342c65e10f`.
+A reviewer-only tooling-schema correction is retained; no producer run repeated.
+Verified cleanup reclaimed 480,059,392 allocated bytes, preserving unique perf
+and all sealed evidence. Receipts:
+`18752a92e13812e448d9825b1ab79763cdaf9178237927d9d0795130523506f5`
+and `63f7af6105ac88570eb602ddf9ac340eeef785c3dab56cfe6c3ae11a75fcc8d5`.
+The source/history hold is released.
+
+**Generation 24 is implementing common Comm-B semantic-view sharing.**
+Inference and semantics are the largest decode stages, at 2,306,055,650 and
+2,229,067,976 instructions. The oracle scalar view repeats 525,932 field
+decodes, costing 552,281,123 overlapping instructions within its `commBValue`
+calls. Standard and oracle numerical expression construction also repeats.
+The new path reuses the table values, keeps absent status as `none`, and applies
+the existing exact oracle adjustments. It also constructs the oracle numeric
+expression list once and derives the standard list from it. This is pure
+expression sharing, with no Float evaluator or callback change. All registered
+layouts and arbitrary input words remain in scope.
+
+The runtime build and both independent proof modules pass: scalar reuse proves
+13 facts and numerical-expression/full-payload reuse proves eight. All printed
+axioms are permitted. The combined decoder/proof build passed on its first
+attempt: 3,549 jobs,
+202 unchanged correctness inputs, 127 audited sources and 346 printed facts
+using only permitted axioms. Source/proof review passed all 32 checks. Native
+review passed 122 checks,
+binding 274 inputs and 22 native sets; 20 sibling sets are unchanged. The real
+worker shares scalar values and expression lists while preserving the Float
+boundary. A reviewer-only call-site-count correction is retained: LLVM duplicated
+one C call into mutually exclusive allocation/reuse branches. No producer
+change was needed. Native receipt:
+`d8df3f6f6934f3ae2096576dce7369d22a92f9246dbabbf1132f087c64f4a442`.
+The full fixed gate passed on its first execution, from 23:17:45.700112 to
+23:34:30.349660 UTC on 2026-10-19, with all 202 correctness inputs unchanged.
+Gate receipt: `2345a34d0ef0c61f80f05bdf2b219fa4e70851a00d4d13217b617c9c1f6caef6`.
+
+The separate fresh 10M campaign passed on its first execution, with
+message seed 1,799,246,425 and Comm-B seed 1,314,217,890 recorded before
+generation. Its 10,476,164 messages comprise 9,542,841 exact matches and
+933,323 documented D001 cases, with 2,038,032 standard-view differences.
+All 101,244 direct cases match exactly, with full 32/70/14 branch coverage
+and no unclassified finding. Retention binds 33 members, 127 sources and
+three binaries. Independent retention and frozen comparison replay both passed
+on their first executions. Fresh raw cleanup passed; the completion reporter
+then encountered an outdated reviewer-log filename. The failed reporter is
+retained and completion-only recovery passed, without repeating tests or
+deletion. Fresh completion: `da713cf8be524ce2ecea8b42aac115c6edc22126f43b20aacaed372cf0799717`.
+Fixed archival and verified cleanup also passed. Across both campaigns,
+11,092,824,064 allocated bytes of duplicate scratch were reclaimed, with all
+compressed evidence and unique failures retained. Fixed archive:
+`8ada495695bc1a3b89a422e69335cd47c65064e020469d15b362fb9de9a43fbc`.
+Fixed cleanup: `69fafea1bc74d1aa1dedb63f33a41652d51064c4cd7e4b57faba5e8877af8c9d`.
+The fixed campaign matched 9,542,689 messages exactly and classified 933,475
+as documented D001; all 101,244 direct cases matched exactly. The benchmark
+plan is finalized with both 2.00× targets and the unchanged 48-row CSV prefix.
+Final archive review passed: `1e0e8ce1e43e54bba0c3ac855b4d447aa0aa92bca4ad7dbf94d3387f8abac894`.
+Two reviewer-only failures are retained: a missing launcher flag stopped
+before any checks, then a sorted JSON map-key order assumption required
+correction. No producer evidence or correctness input changed. Final review
+passed; source commit and isolated timing are next.
+Fresh preflight passed: `e346450a17206bf8998adb74c01bd841ecca4c2e399f66607d2fa5d64d963d09`.
+Commit and both frozen measurements remain. No generation 24 gain is claimed.
+See [implementation plan](docs/GEN24-SEMANTIC-SHARING.md).
 
 **Previous measurement: generation 22 reached 2.203718886895× decode and
 1.715366461888× with CPR.** Decode has reached 2.00×; CPR has not. Continue

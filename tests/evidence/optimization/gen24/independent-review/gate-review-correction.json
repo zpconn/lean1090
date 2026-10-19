@@ -1,0 +1,14 @@
+{
+  "status": "reviewer_only_correction",
+  "findings_in_producer": [],
+  "cause": "The unchanged durable JSON writer sorts object keys, so selection.protected map iteration order differs from the explicitly ordered command protection list. Compare exact map membership as a set; the preceding separate assertion still verifies the exact ordered three command protections.",
+  "before_sha256": "2aa97fa640e81a1d1b27fa257e8964f4da901db9851a4a8f5adf11091fd91aa1",
+  "after_sha256": "564eafe3aae417f5b7c494818d3d76359695acdf6fb2cff3a2939fb70c1c9985",
+  "preserved_attempts": {
+    "tests/evidence/optimization/gen24/independent-review/gate-attempt-01/execution.json": "d4ae33805affc425fa3a24fbc463599a03a7c0aec59bcafced50f89a8ba327a6",
+    "tests/evidence/optimization/gen24/independent-review/gate-attempt-02/execution.json": "908555708fde277214f39de1a5e684101fa5db8c540f68dc57d6eb784fb20ae8"
+  },
+  "old_assertion": "assert list(selection['protected']) == fixed_start['protected']",
+  "new_assertion": "assert set(selection['protected']) == set(fixed_start['protected'])",
+  "no_producer_or_gate_source_changes": true
+}

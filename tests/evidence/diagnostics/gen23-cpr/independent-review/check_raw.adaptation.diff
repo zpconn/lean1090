@@ -1,0 +1,28 @@
+--- tests/evidence/diagnostics/gen22-cpr/independent-review/check_raw.py
++++ tests/evidence/diagnostics/gen23-cpr/independent-review/check_raw.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from collections import Counter,defaultdict,deque
+ import gzip,hashlib,json,re
+-B=Path('tests/evidence/diagnostics/gen22-cpr');R=B/'independent-review'
++B=Path('tests/evidence/diagnostics/gen23-cpr');R=B/'independent-review'
+ ROOT='l_Lean1090_Diagnostics_CPRCosts_runCPR';P='lp_lean1090_Lean1090_Impl_';POL=P+'CPR_Policy_'
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def read(p):
+@@ -158,14 +158,14 @@
+ assert by_stage==table['by_stage'] and dict(totals)==table['total']
+ assert sum(calls[k] for k in tagged if base(full(k))==table['anchors']['table_entry'])==table['table_constructor_entries_inside_root']==0
+ # Actual callable CRC entries are separate from source/census iteration predictions.
+-source=read(R/'source-review.json');assert source['byte_crc_live_path_verified'] and source['raw_word_syndrome_live_path_verified']
++source=read(R/'source-review.json');assert source['commb_validity_tables_live_path_verified'] and source['byte_crc_live_path_verified'] and source['raw_word_syndrome_live_path_verified']
+ crc_symbols={k:source[k] for k in ['parity_byte_fold_anchor','parity_bit_fold_anchor']}
+ crc_symbols.update(byte_wrapper=P+'Parity_syndromeBytes',bit_wrapper=P+'Parity_syndromeBits',syndrome=P+'Parity_syndrome',checksum=P+'Parity_checksum',frame=P+'frameSyndrome',parser=P+'decodeFrameWithWord',public_parser=P+'decodeFrame',packing=P+'packFields')
+ crc_observed={k:sum(calls[x] for x in tagged if base(full(x))==symbol) for k,symbol in crc_symbols.items()}
+ for k in ['parity_byte_fold_anchor','byte_wrapper','syndrome','parser']:assert crc_observed[k]==172432,(k,crc_observed)
+ for k in ['parity_bit_fold_anchor','bit_wrapper','checksum','frame','public_parser','packing']:assert crc_observed[k]==0
+ assert sum(calls[x] for x in tagged if base(full(x)) in {P+'Parity_byteStep',P+'Parity_wordStep',P+'Parity_step'})==0
+-census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen22/native/all.jsonl').read_text().splitlines() if x]
++census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen23/native/all.jsonl').read_text().splitlines() if x]
+ crc_census=next(x for x in census_rows if x.get('kind')=='post_decode_crc_census')
+ assert sum(x['crc_call_predictions'] for x in crc_census['per_df'])==172432
+ predicted_bits=sum(x['crc_step_predictions'] for x in crc_census['per_df']);assert predicted_bits%8==0

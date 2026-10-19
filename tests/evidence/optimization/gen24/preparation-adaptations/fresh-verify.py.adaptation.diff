@@ -1,0 +1,20 @@
+--- tests/evidence/optimization/gen23/fresh-verify.py
++++ tests/evidence/optimization/gen24/fresh-verify.py
+@@ -3,7 +3,7 @@
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ from pathlib import Path
+ import json,gzip,hashlib,datetime
+-P=Path('tests/evidence/optimization/gen23'); Q=P/'fresh-message'
++P=Path('tests/evidence/optimization/gen24'); Q=P/'fresh-message'
+ load=lambda p:json.loads(Path(p).read_text())
+ def digest(path):
+  h=hashlib.sha256()
+@@ -23,7 +23,7 @@
+ for key in ('source_sha256','binary_sha256'):
+  assert run[key+'_before']==run[key+'_after']
+  for p,h in run[key+'_before'].items():assert digest(p)==h,p
+-assert len(run['source_sha256_before'])==125 and len(run['binary_sha256_before'])==3
++assert len(run['source_sha256_before'])==127 and len(run['binary_sha256_before'])==3
+ assert commb['source_sha256']==commb['source_sha256_after']
+ assert commb['binary_sha256_before']==commb['binary_sha256_after']
+ for p,h in s['source_sha256'].items():assert digest(p)==h,p

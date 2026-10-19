@@ -1,0 +1,93 @@
+--- tests/evidence/optimization/gen23/independent-review/check_artifact_commit_inputs.py
++++ tests/evidence/optimization/gen24/independent-review/check_artifact_commit_inputs.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Bind gen23 result artifacts to the passing gate; no commit or native work."""
++"""Bind gen24 result artifacts to the passing gate; no commit or native work."""
+ import sys
+ sys.dont_write_bytecode = True
+ import argparse
+@@ -14,9 +14,9 @@
+ sys.path.insert(0, str(ROOT / 'review/diagnostics'))
+ import run_generation_benchmark as provenance
+ 
+-BASE = ROOT / 'tests/evidence/optimization/gen23'
++BASE = ROOT / 'tests/evidence/optimization/gen24'
+ OUT = BASE / 'independent-review'
+-BENCH = ROOT / 'bench/runs/gen23'
++BENCH = ROOT / 'bench/runs/gen24'
+ 
+ 
+ def sha(path):
+@@ -34,9 +34,11 @@
+ 
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--timed-commit', required=True)
+     parser.add_argument('--results-review-sha256', required=True)
+     parser.add_argument('--results-review-checks', type=int, required=True)
+     args = parser.parse_args()
++    assert len(args.timed_commit) == 40 and all(c in '0123456789abcdef' for c in args.timed_commit)
+     assert len(args.results_review_sha256) == 64
+     output = OUT / 'artifact-commit-source-binding.json'
+     assert not output.exists(), 'refuse to overwrite an earlier artifact binding'
+@@ -46,10 +48,10 @@
+     assert review['total_samples'] == 96 and review['checks_passed'] == args.results_review_checks
+     assert review['decode_target_ratio'] == review['cpr_target_ratio'] == {'numerator': 2, 'denominator': 1}
+     commit = review['commit']
+-    assert git('rev-parse', 'HEAD').decode().strip() == commit == '9b6868f21fcac0a59044153f01e6691d091dbb5c'
++    assert git('rev-parse', 'HEAD').decode().strip() == commit == args.timed_commit
+     gate = load(BASE / 'gate-evidence.json')
+     inputs = provenance.gate_input_hashes()
+-    assert len(inputs) == 200
++    assert len(inputs) == 202
+     assert inputs == gate['input_hashes_before'] == gate['input_hashes_after']
+     assert inputs == review['current_gate_input_sha256'] == load(BENCH / 'correctness-inputs.json')
+     gate_validation = provenance.verify_gate_evidence(gate, sha(BASE / 'gate-full.log'), inputs)
+@@ -63,7 +65,7 @@
+                  for r in review['results']}
+     assert decisions == {'decode': review['decode_threshold_reached'], 'cpr': review['cpr_threshold_reached']}
+     assert all(decisions.values()) == review['all_mode_thresholds_reached']
+-    assert sha(ROOT / 'bench/GEN23.md') == review['report_sha256']
++    assert sha(ROOT / 'bench/GEN24.md') == review['report_sha256']
+     assert sha(ROOT / 'bench/results.csv') == review['csv_after_sha256']
+     assert review['cpr_overhead'] == load(BENCH / 'report-verification.json')['cpr_overhead']
+     for name, digest in review['clean_checkpoint_sha256'].items():
+@@ -71,24 +73,24 @@
+         checkpoint = load(BENCH / (name + '-git.json'))
+         assert checkpoint['commit'] == commit and checkpoint['clean'] and not checkpoint['stdout']
+     precommit = load(BASE / 'precommit-verification.json')
+-    assert precommit['status'] == 'passed' and precommit['correctness_inputs'] == 200
++    assert precommit['status'] == 'passed' and precommit['correctness_inputs'] == 202
+     assert precommit['gate_evidence_sha256'] == sha(BASE / 'gate-evidence.json')
+     assert precommit['gate_review_sha256'] == sha(OUT / 'gate-review.json')
+     assert precommit['current_head'] == git('rev-parse', commit + '^').decode().strip()
+     assert sha(BASE / 'precommit-verification.json') == hashlib.sha256(git('cat-file', 'blob', commit + ':' + str((BASE / 'precommit-verification.json').relative_to(ROOT)))).hexdigest()
+     archive = load(BENCH / 'archive-verification.json')
+     assert archive['status'] == 'passed' and archive['file_count'] == 48
+-    assert archive['source'] == '.cache/bench-runs/gen23-' + commit[:7]
++    assert archive['source'] == '.cache/bench-runs/gen24-' + commit[:7]
+     assert not (BASE / 'benchmark-archival/relocation.json').exists()
+     protocol = load(BASE / 'benchmark-preparation/execution-protocol.json')
+     assert protocol['output_resolution']['source_parent'] == '.cache/bench-runs'
+-    assert protocol['output_resolution']['source_basename'] == 'gen23-<actual committed HEAD first 7 hex characters>'
++    assert protocol['output_resolution']['source_basename'] == 'gen24-<actual committed HEAD first 7 hex characters>'
+     paths = [BENCH / name for name in ('results-review.json', 'archive-verification.json', 'report-verification.json',
+                                      'correctness-inputs.json', 'binary-built.json')]
+     paths += [BASE / name for name in ('gate-evidence.json', 'gate-full.log', 'gate-archive.json', 'fresh-final-verification.json')]
+     paths += [OUT / name for name in ('gate-review.json', 'check_benchmark_result.py',
+                                      'benchmark-result-review-01.log', 'check_artifact_commit_inputs.py')]
+-    paths += [ROOT / 'bench/GEN23.md', ROOT / 'bench/results.csv']
++    paths += [ROOT / 'bench/GEN24.md', ROOT / 'bench/results.csv']
+     paths += [BASE / 'independent-review/fresh-completion.json', BASE / 'benchmark-preparation/plan.json']
+     paths += [OUT / 'benchmark-result-review-preparation.json', OUT / 'benchmark-result-reviewer.diff', OUT / 'artifact-binding-preparation.json']
+     paths += [BASE / 'precommit-verification.json', BASE / 'benchmark-preparation/execution-protocol.json']
+@@ -101,7 +103,7 @@
+         'recorded_utc': datetime.now(timezone.utc).isoformat(), 'timed_commit': commit,
+         'correctness_input_count': len(inputs), 'gate_validation': gate_validation,
+         'all_inputs_match_passed_full_gate_current_tree_and_timed_commit': True,
+-        'correctness_inventory': 'bench/runs/gen23/correctness-inputs.json',
++        'correctness_inventory': 'bench/runs/gen24/correctness-inputs.json',
+         'correctness_inventory_sha256': sha(BENCH / 'correctness-inputs.json'),
+         'files': files, 'current_git_status': status,
+         'configured_identity': 'zpconn <zpconn@gmail.com>', 'target_ratio_each_mode': {'numerator': 2, 'denominator': 1},

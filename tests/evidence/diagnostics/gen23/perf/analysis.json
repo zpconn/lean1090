@@ -1,0 +1,234 @@
+{
+  "classification": "one-pass diagnostic cpu-clock stack attribution; no throughput claim",
+  "total_samples": 197,
+  "decode_descendant_samples": 46,
+  "excluded_samples": 151,
+  "excluded_by_visible_context": {
+    "worker other phase, no decode frame": 100,
+    "no decode or worker frame; may include unwind failures": 36,
+    "worker decode-loop stack, no decode frame": 15
+  },
+  "all_samples_with_unknown_frame": 197,
+  "total_period": 989949625,
+  "decode_descendant_period": 231155750,
+  "disjoint_top_stages": {
+    "report/projection": 33,
+    "shared frame syndrome": 7,
+    "frame extraction": 6
+  },
+  "disjoint_detail_stages": {
+    "Comm-B inference and raw payload": 8,
+    "shared frame syndrome": 7,
+    "frame extraction": 6,
+    "report other/self/unresolved substage": 11,
+    "Comm-B semantic projection": 5,
+    "ADS-B semantic projection": 6,
+    "ADS-B raw payload": 3
+  },
+  "nested_overlapping_categories": {
+    "Parity (inclusive overlap)": 7,
+    "software Binary64 (inclusive overlap)": 1,
+    "Rat (inclusive overlap)": 6,
+    "GMP/mpz (inclusive overlap)": 8,
+    "density table lookup path (inclusive overlap)": 1,
+    "exact score enclosure (inclusive overlap)": 7
+  },
+  "decode_leaf_top30": [
+    [
+      "lean_alloc_small_object_core",
+      8
+    ],
+    [
+      "lp_lean1090___private_Init_Data_Nat_Fold_0__Nat_foldTR_loop___at___00Lean1090_Impl_Parity_syndromeBytes_spec__0___redArg",
+      7
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      3
+    ],
+    [
+      "lean_dec_ref_cold",
+      3
+    ],
+    [
+      "l_List_elem___at___00Lean_Meta_Occurrences_contains_spec__0",
+      2
+    ],
+    [
+      "lean::mpz::~mpz()",
+      2
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_ScoreGate_choose",
+      2
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_frameCommB",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_bytesWordPrefix",
+      1
+    ],
+    [
+      "l_Char_ofNat",
+      1
+    ],
+    [
+      "__gmp_default_reallocate",
+      1
+    ],
+    [
+      "l_Option_instDecidableEq___redArg",
+      1
+    ],
+    [
+      "lean_string_eq_cold",
+      1
+    ],
+    [
+      "__gmpz_init_set_ui",
+      1
+    ],
+    [
+      "mi_free",
+      1
+    ],
+    [
+      "lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_adsbCallsign_spec__0",
+      1
+    ],
+    [
+      "lean_nat_big_shiftr",
+      1
+    ],
+    [
+      "__gmpz_clear",
+      1
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_field",
+      1
+    ],
+    [
+      "lean_int_big_mul",
+      1
+    ],
+    [
+      "lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_decodePayloadFields_spec__0",
+      1
+    ],
+    [
+      "l_Rat_ofInt",
+      1
+    ],
+    [
+      "lp_lean1090_List_foldl___at___00List_foldl___at___00Lean1090_Impl_ScoreGate_scaledTotals_spec__0_spec__0",
+      1
+    ],
+    [
+      "__gmp_default_allocate",
+      1
+    ],
+    [
+      "__gmpz_set_str",
+      1
+    ],
+    [
+      "malloc",
+      1
+    ]
+  ],
+  "all_samples_leaf_top20": [
+    [
+      "lean_dec_ref_cold",
+      21
+    ],
+    [
+      "malloc",
+      20
+    ],
+    [
+      "lean_alloc_small_object_core",
+      17
+    ],
+    [
+      "[unknown]",
+      9
+    ],
+    [
+      "mi_free",
+      8
+    ],
+    [
+      "lp_lean1090___private_Init_Data_Nat_Fold_0__Nat_foldTR_loop___at___00Lean1090_Impl_Parity_syndromeBytes_spec__0___redArg",
+      7
+    ],
+    [
+      "lean_free_object",
+      6
+    ],
+    [
+      "realloc",
+      5
+    ],
+    [
+      "lean::mpz::~mpz()",
+      5
+    ],
+    [
+      "lean_string_utf8_get",
+      5
+    ],
+    [
+      "lean::lean_del_core_other(lean_object*, unsigned char, lean_object*)",
+      4
+    ],
+    [
+      "cfree",
+      4
+    ],
+    [
+      "__gmpn_gcd_1",
+      4
+    ],
+    [
+      "__gmpz_init_set",
+      4
+    ],
+    [
+      "lean_string_utf8_next",
+      4
+    ],
+    [
+      "l_Rat_mul",
+      3
+    ],
+    [
+      "malloc@plt",
+      3
+    ],
+    [
+      "l_String_splitOnAux",
+      3
+    ],
+    [
+      "lean_int_big_mul",
+      3
+    ],
+    [
+      "lp_lean1090_Lean1090_Impl_payloadBits",
+      3
+    ]
+  ],
+  "limitations": [
+    "Only samples with the exact live Impl.decode frame are included. Missing/unwound/truncated ancestors can exclude real decoder samples; excluded samples are not assumed to be preparation.",
+    "Substages use visible symbol names; inlining and tail calls can erase stage frames. report-other remains explicit rather than guessed. The gen12 byte path inlines bounded UInt64 byte folds into bytesValue; the prefix helper is live, and the original Nat fold remains for inputs longer than sixteen bytes. Changed ownership/tail-call conventions can change visible ancestors without proving a change in semantic-stage cost.",
+    "Percentages within decoded stacks are conditional on successful stack attribution and may be biased; see whole-process leaf samples and excluded count.",
+    "Software cpu-clock samples are statistical CPU-time evidence, not hardware instructions/cycles or a benchmark.",
+    "Inclusive nested categories overlap; only disjoint stage tables sum to included samples.",
+    "The live BDS60 ratio gate uses exact integer enclosure arithmetic and a software-rounding fallback; it still receives an eagerly normalized exact ratio. Inlining/tail-call visibility prevents attributing that division by assumption. This generation eagerly initializes 13 immutable density tables, the 1024-entry Mach table, the 4096-entry QNH table the 2047-entry BDS50 wind-penalty table and the 2098-entry format-exponent power table plus the five field-validity Bool tables during module startup before main; such costs are excluded from decode-root samples when their actual stacks are outside Impl.decode, never charged to the steady-state decision by assumption.",
+    "The worker runs through Lean runtime worker-thread startup; parent/child hardware/thread attribution was checked by visible decode stacks.",
+    "Compilation completed and Callgrind/native diagnostics were held during capture; other agents could read evidence or prepare orchestration. No benchmark or comparative timing claim."
+  ]
+}

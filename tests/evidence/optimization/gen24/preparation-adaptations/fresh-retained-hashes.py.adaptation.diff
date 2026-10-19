@@ -1,0 +1,11 @@
+--- tests/evidence/optimization/gen23/fresh-retained-hashes.py
++++ tests/evidence/optimization/gen24/fresh-retained-hashes.py
+@@ -3,7 +3,7 @@
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ from pathlib import Path
+ import datetime,gzip,hashlib,json
+-p=Path('tests/evidence/optimization/gen23');q=p/'fresh-message'
++p=Path('tests/evidence/optimization/gen24');q=p/'fresh-message'
+ sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()
+ s=json.loads((q/'summary.json').read_text());v=json.loads((p/'fresh-final-verification.json').read_text());e=json.loads((p/'fresh-execution.json').read_text());pre=json.loads((p/'fresh-preflight.json').read_text())
+ assert v['status']=='passed' and e['status']=='primary_verified' and s['status']=='PASS'

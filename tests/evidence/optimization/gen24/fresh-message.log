@@ -1,0 +1,960 @@
++ python3 scripts/check_lock.py
+Lock audit: 104 frozen files match SHA-256.
++ git -C vendor/rs1090 diff --exit-code HEAD -- crates/rs1090 Cargo.toml Cargo.lock
++ python3 scripts/check_commb_fuzz.py /home/zpconn/code/lean1090/.cache/gen24-gate/fresh-commb.csv
+Comm-B coverage: 101244 rows, 100000 random assignments, 14 registers, 33 mandatory bound families, all five -3 brackets, one exact -3 payload.
++ lake build lean1090 messageGenerator commbDifferential
+⚠ [1459/1473] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+Build completed successfully (2890 jobs).
++ cargo build --locked --offline --manifest-path differential/message-oracle/Cargo.toml --profile dist --bin lean1090-message-oracle --bin commb-oracle
+    Finished `dist` profile [optimized] target(s) in 0.04s
++ /home/zpconn/code/lean1090/.lake/build/bin/messageGenerator /home/zpconn/code/lean1090/.cache/message-differential-bex6yqlv/generated.tsv 10000000 1799246425
+Generated 10000000 independently assigned encoded/corrupted messages; seed 1799246425.
++ /home/zpconn/code/lean1090/.lake/build/bin/lean1090 --diagnostic
++ /home/zpconn/code/lean1090/.cache/rs1090-target/dist/lean1090-message-oracle
++ /home/zpconn/code/lean1090/.lake/build/bin/commbDifferential
++ /home/zpconn/code/lean1090/.cache/rs1090-target/dist/commb-oracle
+{
+  "coverage_note": "All 70 actual ADS-B branches require uncorrupted generated inputs. All 14 Comm-B layouts have targeted three-context messages and direct named-register comparisons. BDS65 has zero whole-message inferred candidates by the pinned API's offset policy; direct decoder coverage is separately reported. Standard/oracle-view differences are retained separately, never used to waive oracle-view failures.",
+  "diagnostic": true,
+  "direct_registers": {
+    "counts": {
+      "cases": 101244,
+      "exact_matches": 101244
+    },
+    "mismatch_fields": {}
+  },
+  "generated_messages": 10000000,
+  "known_exception": "D001 only: exact standard 112-bit Comm-D frame vs oracle rejection; every instance retained",
+  "message": {
+    "adsb": {
+      "TC0": {
+        "inputs": 26135,
+        "lean_accepted": 19461,
+        "lean_rejected": 6674,
+        "oracle_accepted": 19461,
+        "oracle_rejected": 6674,
+        "uncorrupted_generated": 12988
+      },
+      "TC1": {
+        "inputs": 26163,
+        "lean_accepted": 19472,
+        "lean_rejected": 6691,
+        "oracle_accepted": 19472,
+        "oracle_rejected": 6691,
+        "uncorrupted_generated": 12986
+      },
+      "TC10": {
+        "inputs": 26096,
+        "lean_accepted": 18110,
+        "lean_rejected": 7986,
+        "oracle_accepted": 18110,
+        "oracle_rejected": 7986,
+        "uncorrupted_generated": 12986
+      },
+      "TC11": {
+        "inputs": 36543,
+        "lean_accepted": 28560,
+        "lean_rejected": 7983,
+        "oracle_accepted": 28560,
+        "oracle_rejected": 7983,
+        "uncorrupted_generated": 12986
+      },
+      "TC12": {
+        "inputs": 27205,
+        "lean_accepted": 18584,
+        "lean_rejected": 8621,
+        "oracle_accepted": 18584,
+        "oracle_rejected": 8621,
+        "uncorrupted_generated": 12986
+      },
+      "TC13": {
+        "inputs": 26527,
+        "lean_accepted": 18357,
+        "lean_rejected": 8170,
+        "oracle_accepted": 18357,
+        "oracle_rejected": 8170,
+        "uncorrupted_generated": 12986
+      },
+      "TC14": {
+        "inputs": 26085,
+        "lean_accepted": 18113,
+        "lean_rejected": 7972,
+        "oracle_accepted": 18113,
+        "oracle_rejected": 7972,
+        "uncorrupted_generated": 12986
+      },
+      "TC15": {
+        "inputs": 29465,
+        "lean_accepted": 19634,
+        "lean_rejected": 9831,
+        "oracle_accepted": 19634,
+        "oracle_rejected": 9831,
+        "uncorrupted_generated": 12986
+      },
+      "TC16": {
+        "inputs": 26121,
+        "lean_accepted": 18181,
+        "lean_rejected": 7940,
+        "oracle_accepted": 18181,
+        "oracle_rejected": 7940,
+        "uncorrupted_generated": 12986
+      },
+      "TC17": {
+        "inputs": 27337,
+        "lean_accepted": 18725,
+        "lean_rejected": 8612,
+        "oracle_accepted": 18725,
+        "oracle_rejected": 8612,
+        "uncorrupted_generated": 12986
+      },
+      "TC18": {
+        "inputs": 27182,
+        "lean_accepted": 18545,
+        "lean_rejected": 8637,
+        "oracle_accepted": 18545,
+        "oracle_rejected": 8637,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.0": {
+        "inputs": 24534,
+        "lean_accepted": 18710,
+        "lean_rejected": 5824,
+        "oracle_accepted": 18710,
+        "oracle_rejected": 5824,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.1": {
+        "inputs": 34953,
+        "lean_accepted": 29154,
+        "lean_rejected": 5799,
+        "oracle_accepted": 29154,
+        "oracle_rejected": 5799,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.2": {
+        "inputs": 24530,
+        "lean_accepted": 18735,
+        "lean_rejected": 5795,
+        "oracle_accepted": 18735,
+        "oracle_rejected": 5795,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.3": {
+        "inputs": 24508,
+        "lean_accepted": 18777,
+        "lean_rejected": 5731,
+        "oracle_accepted": 18777,
+        "oracle_rejected": 5731,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.4": {
+        "inputs": 24493,
+        "lean_accepted": 18759,
+        "lean_rejected": 5734,
+        "oracle_accepted": 18759,
+        "oracle_rejected": 5734,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.5": {
+        "inputs": 24538,
+        "lean_accepted": 18763,
+        "lean_rejected": 5775,
+        "oracle_accepted": 18763,
+        "oracle_rejected": 5775,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.6": {
+        "inputs": 24576,
+        "lean_accepted": 18768,
+        "lean_rejected": 5808,
+        "oracle_accepted": 18768,
+        "oracle_rejected": 5808,
+        "uncorrupted_generated": 12986
+      },
+      "TC19.7": {
+        "inputs": 24489,
+        "lean_accepted": 18687,
+        "lean_rejected": 5802,
+        "oracle_accepted": 18687,
+        "oracle_rejected": 5802,
+        "uncorrupted_generated": 12986
+      },
+      "TC2": {
+        "inputs": 26081,
+        "lean_accepted": 19431,
+        "lean_rejected": 6650,
+        "oracle_accepted": 19431,
+        "oracle_rejected": 6650,
+        "uncorrupted_generated": 12986
+      },
+      "TC20": {
+        "inputs": 27249,
+        "lean_accepted": 18562,
+        "lean_rejected": 8687,
+        "oracle_accepted": 18562,
+        "oracle_rejected": 8687,
+        "uncorrupted_generated": 12986
+      },
+      "TC21": {
+        "inputs": 26749,
+        "lean_accepted": 18463,
+        "lean_rejected": 8286,
+        "oracle_accepted": 18463,
+        "oracle_rejected": 8286,
+        "uncorrupted_generated": 12986
+      },
+      "TC22": {
+        "inputs": 26087,
+        "lean_accepted": 18167,
+        "lean_rejected": 7920,
+        "oracle_accepted": 18167,
+        "oracle_rejected": 7920,
+        "uncorrupted_generated": 12986
+      },
+      "TC23": {
+        "inputs": 30676,
+        "lean_accepted": 21737,
+        "lean_rejected": 8939,
+        "oracle_accepted": 21737,
+        "oracle_rejected": 8939,
+        "uncorrupted_generated": 12986
+      },
+      "TC24": {
+        "inputs": 46106,
+        "lean_accepted": 38947,
+        "lean_rejected": 7159,
+        "oracle_accepted": 38947,
+        "oracle_rejected": 7159,
+        "uncorrupted_generated": 12986
+      },
+      "TC25": {
+        "inputs": 26745,
+        "lean_accepted": 19720,
+        "lean_rejected": 7025,
+        "oracle_accepted": 19720,
+        "oracle_rejected": 7025,
+        "uncorrupted_generated": 12986
+      },
+      "TC26": {
+        "inputs": 26098,
+        "lean_accepted": 19487,
+        "lean_rejected": 6611,
+        "oracle_accepted": 19487,
+        "oracle_rejected": 6611,
+        "uncorrupted_generated": 12986
+      },
+      "TC27": {
+        "inputs": 30749,
+        "lean_accepted": 21848,
+        "lean_rejected": 8901,
+        "oracle_accepted": 21848,
+        "oracle_rejected": 8901,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.0": {
+        "inputs": 24846,
+        "lean_accepted": 18855,
+        "lean_rejected": 5991,
+        "oracle_accepted": 18855,
+        "oracle_rejected": 5991,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.1": {
+        "inputs": 24522,
+        "lean_accepted": 18753,
+        "lean_rejected": 5769,
+        "oracle_accepted": 18753,
+        "oracle_rejected": 5769,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.2": {
+        "inputs": 24635,
+        "lean_accepted": 18785,
+        "lean_rejected": 5850,
+        "oracle_accepted": 18785,
+        "oracle_rejected": 5850,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.3": {
+        "inputs": 24507,
+        "lean_accepted": 18700,
+        "lean_rejected": 5807,
+        "oracle_accepted": 18700,
+        "oracle_rejected": 5807,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.4": {
+        "inputs": 24654,
+        "lean_accepted": 18854,
+        "lean_rejected": 5800,
+        "oracle_accepted": 18854,
+        "oracle_rejected": 5800,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.5": {
+        "inputs": 24485,
+        "lean_accepted": 18745,
+        "lean_rejected": 5740,
+        "oracle_accepted": 18745,
+        "oracle_rejected": 5740,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.6": {
+        "inputs": 24525,
+        "lean_accepted": 18765,
+        "lean_rejected": 5760,
+        "oracle_accepted": 18765,
+        "oracle_rejected": 5760,
+        "uncorrupted_generated": 12986
+      },
+      "TC28.7": {
+        "inputs": 24505,
+        "lean_accepted": 18738,
+        "lean_rejected": 5767,
+        "oracle_accepted": 18738,
+        "oracle_rejected": 5767,
+        "uncorrupted_generated": 12986
+      },
+      "TC29.0": {
+        "inputs": 27491,
+        "lean_accepted": 20218,
+        "lean_rejected": 7273,
+        "oracle_accepted": 20218,
+        "oracle_rejected": 7273,
+        "uncorrupted_generated": 12986
+      },
+      "TC29.1": {
+        "inputs": 29531,
+        "lean_accepted": 23370,
+        "lean_rejected": 6161,
+        "oracle_accepted": 23370,
+        "oracle_rejected": 6161,
+        "uncorrupted_generated": 12986
+      },
+      "TC29.2": {
+        "inputs": 25247,
+        "lean_accepted": 19126,
+        "lean_rejected": 6121,
+        "oracle_accepted": 19126,
+        "oracle_rejected": 6121,
+        "uncorrupted_generated": 12986
+      },
+      "TC29.3": {
+        "inputs": 25266,
+        "lean_accepted": 19082,
+        "lean_rejected": 6184,
+        "oracle_accepted": 19082,
+        "oracle_rejected": 6184,
+        "uncorrupted_generated": 12986
+      },
+      "TC3": {
+        "inputs": 27275,
+        "lean_accepted": 20073,
+        "lean_rejected": 7202,
+        "oracle_accepted": 20073,
+        "oracle_rejected": 7202,
+        "uncorrupted_generated": 12986
+      },
+      "TC30": {
+        "inputs": 30648,
+        "lean_accepted": 21678,
+        "lean_rejected": 8970,
+        "oracle_accepted": 21678,
+        "oracle_rejected": 8970,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v0": {
+        "inputs": 24483,
+        "lean_accepted": 12749,
+        "lean_rejected": 11734,
+        "oracle_accepted": 12749,
+        "oracle_rejected": 11734,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v1": {
+        "inputs": 24016,
+        "lean_accepted": 12448,
+        "lean_rejected": 11568,
+        "oracle_accepted": 12448,
+        "oracle_rejected": 11568,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v2": {
+        "inputs": 26139,
+        "lean_accepted": 14556,
+        "lean_rejected": 11583,
+        "oracle_accepted": 14556,
+        "oracle_rejected": 11583,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v3": {
+        "inputs": 23983,
+        "lean_accepted": 12526,
+        "lean_rejected": 11457,
+        "oracle_accepted": 12526,
+        "oracle_rejected": 11457,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v4": {
+        "inputs": 24044,
+        "lean_accepted": 12481,
+        "lean_rejected": 11563,
+        "oracle_accepted": 12481,
+        "oracle_rejected": 11563,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v5": {
+        "inputs": 24013,
+        "lean_accepted": 12500,
+        "lean_rejected": 11513,
+        "oracle_accepted": 12500,
+        "oracle_rejected": 11513,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v6": {
+        "inputs": 23981,
+        "lean_accepted": 12462,
+        "lean_rejected": 11519,
+        "oracle_accepted": 12462,
+        "oracle_rejected": 11519,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.0.v7": {
+        "inputs": 24009,
+        "lean_accepted": 12489,
+        "lean_rejected": 11520,
+        "oracle_accepted": 12489,
+        "oracle_rejected": 11520,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v0": {
+        "inputs": 24228,
+        "lean_accepted": 12610,
+        "lean_rejected": 11618,
+        "oracle_accepted": 12610,
+        "oracle_rejected": 11618,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v1": {
+        "inputs": 23952,
+        "lean_accepted": 12527,
+        "lean_rejected": 11425,
+        "oracle_accepted": 12527,
+        "oracle_rejected": 11425,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v2": {
+        "inputs": 24526,
+        "lean_accepted": 13007,
+        "lean_rejected": 11519,
+        "oracle_accepted": 13007,
+        "oracle_rejected": 11519,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v3": {
+        "inputs": 23941,
+        "lean_accepted": 12433,
+        "lean_rejected": 11508,
+        "oracle_accepted": 12433,
+        "oracle_rejected": 11508,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v4": {
+        "inputs": 23957,
+        "lean_accepted": 12491,
+        "lean_rejected": 11466,
+        "oracle_accepted": 12491,
+        "oracle_rejected": 11466,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v5": {
+        "inputs": 23985,
+        "lean_accepted": 12488,
+        "lean_rejected": 11497,
+        "oracle_accepted": 12488,
+        "oracle_rejected": 11497,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v6": {
+        "inputs": 23983,
+        "lean_accepted": 12529,
+        "lean_rejected": 11454,
+        "oracle_accepted": 12529,
+        "oracle_rejected": 11454,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.1.v7": {
+        "inputs": 23969,
+        "lean_accepted": 12491,
+        "lean_rejected": 11478,
+        "oracle_accepted": 12491,
+        "oracle_rejected": 11478,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.2": {
+        "inputs": 25680,
+        "lean_accepted": 19330,
+        "lean_rejected": 6350,
+        "oracle_accepted": 19330,
+        "oracle_rejected": 6350,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.3": {
+        "inputs": 25747,
+        "lean_accepted": 19365,
+        "lean_rejected": 6382,
+        "oracle_accepted": 19365,
+        "oracle_rejected": 6382,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.4": {
+        "inputs": 25769,
+        "lean_accepted": 19388,
+        "lean_rejected": 6381,
+        "oracle_accepted": 19388,
+        "oracle_rejected": 6381,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.5": {
+        "inputs": 25685,
+        "lean_accepted": 19311,
+        "lean_rejected": 6374,
+        "oracle_accepted": 19311,
+        "oracle_rejected": 6374,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.6": {
+        "inputs": 24680,
+        "lean_accepted": 18853,
+        "lean_rejected": 5827,
+        "oracle_accepted": 18853,
+        "oracle_rejected": 5827,
+        "uncorrupted_generated": 12986
+      },
+      "TC31.7": {
+        "inputs": 24514,
+        "lean_accepted": 18790,
+        "lean_rejected": 5724,
+        "oracle_accepted": 18790,
+        "oracle_rejected": 5724,
+        "uncorrupted_generated": 12986
+      },
+      "TC4": {
+        "inputs": 27412,
+        "lean_accepted": 20785,
+        "lean_rejected": 6627,
+        "oracle_accepted": 20785,
+        "oracle_rejected": 6627,
+        "uncorrupted_generated": 12986
+      },
+      "TC5": {
+        "inputs": 26115,
+        "lean_accepted": 19412,
+        "lean_rejected": 6703,
+        "oracle_accepted": 19412,
+        "oracle_rejected": 6703,
+        "uncorrupted_generated": 12986
+      },
+      "TC6": {
+        "inputs": 26135,
+        "lean_accepted": 19504,
+        "lean_rejected": 6631,
+        "oracle_accepted": 19504,
+        "oracle_rejected": 6631,
+        "uncorrupted_generated": 12986
+      },
+      "TC7": {
+        "inputs": 28621,
+        "lean_accepted": 21935,
+        "lean_rejected": 6686,
+        "oracle_accepted": 21935,
+        "oracle_rejected": 6686,
+        "uncorrupted_generated": 12986
+      },
+      "TC8": {
+        "inputs": 26190,
+        "lean_accepted": 19496,
+        "lean_rejected": 6694,
+        "oracle_accepted": 19496,
+        "oracle_rejected": 6694,
+        "uncorrupted_generated": 12986
+      },
+      "TC9": {
+        "inputs": 25992,
+        "lean_accepted": 18049,
+        "lean_rejected": 7943,
+        "oracle_accepted": 18049,
+        "oracle_rejected": 7943,
+        "uncorrupted_generated": 12986
+      }
+    },
+    "commb": {
+      "05": {
+        "direct_inputs": 7180,
+        "direct_lean_accepted": 5820,
+        "direct_lean_rejected": 1360,
+        "direct_oracle_accepted": 5820,
+        "direct_oracle_rejected": 1360,
+        "lean_inferred": 48657,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 48657,
+        "targeted_messages": 21540
+      },
+      "10": {
+        "direct_inputs": 7204,
+        "direct_lean_accepted": 5808,
+        "direct_lean_rejected": 1396,
+        "direct_oracle_accepted": 5808,
+        "direct_oracle_rejected": 1396,
+        "lean_inferred": 18052,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 18052,
+        "targeted_messages": 21612
+      },
+      "17": {
+        "direct_inputs": 7227,
+        "direct_lean_accepted": 5778,
+        "direct_lean_rejected": 1449,
+        "direct_oracle_accepted": 5778,
+        "direct_oracle_rejected": 1449,
+        "lean_inferred": 17697,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 17697,
+        "targeted_messages": 21681
+      },
+      "18": {
+        "direct_inputs": 7312,
+        "direct_lean_accepted": 5810,
+        "direct_lean_rejected": 1502,
+        "direct_oracle_accepted": 5810,
+        "direct_oracle_rejected": 1502,
+        "lean_inferred": 17435,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 17435,
+        "targeted_messages": 21936
+      },
+      "19": {
+        "direct_inputs": 7312,
+        "direct_lean_accepted": 5796,
+        "direct_lean_rejected": 1516,
+        "direct_oracle_accepted": 5796,
+        "direct_oracle_rejected": 1516,
+        "lean_inferred": 17384,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 17384,
+        "targeted_messages": 21936
+      },
+      "20": {
+        "direct_inputs": 7174,
+        "direct_lean_accepted": 7169,
+        "direct_lean_rejected": 5,
+        "direct_oracle_accepted": 7169,
+        "direct_oracle_rejected": 5,
+        "lean_inferred": 30258,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 30258,
+        "targeted_messages": 21522
+      },
+      "21": {
+        "direct_inputs": 7192,
+        "direct_lean_accepted": 5752,
+        "direct_lean_rejected": 1440,
+        "direct_oracle_accepted": 5752,
+        "direct_oracle_rejected": 1440,
+        "lean_inferred": 35364,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 35364,
+        "targeted_messages": 21576
+      },
+      "30": {
+        "direct_inputs": 7218,
+        "direct_lean_accepted": 7213,
+        "direct_lean_rejected": 5,
+        "direct_oracle_accepted": 7213,
+        "direct_oracle_rejected": 5,
+        "lean_inferred": 28649,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 28649,
+        "targeted_messages": 21654
+      },
+      "40": {
+        "direct_inputs": 7240,
+        "direct_lean_accepted": 5791,
+        "direct_lean_rejected": 1449,
+        "direct_oracle_accepted": 5791,
+        "direct_oracle_rejected": 1449,
+        "lean_inferred": 20042,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 20042,
+        "targeted_messages": 21720
+      },
+      "44": {
+        "direct_inputs": 7230,
+        "direct_lean_accepted": 5775,
+        "direct_lean_rejected": 1455,
+        "direct_oracle_accepted": 5775,
+        "direct_oracle_rejected": 1455,
+        "lean_inferred": 7497,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 7497,
+        "targeted_messages": 21690
+      },
+      "45": {
+        "direct_inputs": 7243,
+        "direct_lean_accepted": 5775,
+        "direct_lean_rejected": 1468,
+        "direct_oracle_accepted": 5775,
+        "direct_oracle_rejected": 1468,
+        "lean_inferred": 10347,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 10347,
+        "targeted_messages": 21729
+      },
+      "50": {
+        "direct_inputs": 7282,
+        "direct_lean_accepted": 5835,
+        "direct_lean_rejected": 1447,
+        "direct_oracle_accepted": 5835,
+        "direct_oracle_rejected": 1447,
+        "lean_inferred": 12197,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 12197,
+        "targeted_messages": 21846
+      },
+      "60": {
+        "direct_inputs": 7237,
+        "direct_lean_accepted": 5793,
+        "direct_lean_rejected": 1444,
+        "direct_oracle_accepted": 5793,
+        "direct_oracle_rejected": 1444,
+        "lean_inferred": 26367,
+        "message_candidate_checks": 2158619,
+        "oracle_inferred": 26367,
+        "targeted_messages": 21711
+      },
+      "65": {
+        "direct_inputs": 7193,
+        "direct_lean_accepted": 5842,
+        "direct_lean_rejected": 1351,
+        "direct_oracle_accepted": 5842,
+        "direct_oracle_rejected": 1351,
+        "message_candidate_checks": 2158619,
+        "targeted_messages": 21579
+      }
+    },
+    "counts": {
+      "D001": 933323,
+      "exact_matches": 9542841,
+      "messages": 10476164,
+      "standard_view_differences": 2038032
+    },
+    "coverage_errors": [],
+    "df": {
+      "0": {
+        "inputs": 888691,
+        "lean_accepted": 888691,
+        "oracle_accepted": 888691
+      },
+      "1": {
+        "inputs": 29538,
+        "lean_rejected": 29538,
+        "oracle_rejected": 29538
+      },
+      "10": {
+        "inputs": 12630,
+        "lean_rejected": 12630,
+        "oracle_rejected": 12630
+      },
+      "11": {
+        "inputs": 888831,
+        "lean_accepted": 888831,
+        "oracle_accepted": 888831
+      },
+      "12": {
+        "inputs": 12785,
+        "lean_rejected": 12785,
+        "oracle_rejected": 12785
+      },
+      "13": {
+        "inputs": 12757,
+        "lean_rejected": 12757,
+        "oracle_rejected": 12757
+      },
+      "14": {
+        "inputs": 1040,
+        "lean_rejected": 1040,
+        "oracle_rejected": 1040
+      },
+      "15": {
+        "inputs": 12484,
+        "lean_rejected": 12484,
+        "oracle_rejected": 12484
+      },
+      "16": {
+        "inputs": 911955,
+        "lean_accepted": 900199,
+        "lean_rejected": 11756,
+        "oracle_accepted": 900199,
+        "oracle_rejected": 11756
+      },
+      "17": {
+        "inputs": 929168,
+        "lean_accepted": 448219,
+        "lean_rejected": 480949,
+        "oracle_accepted": 448219,
+        "oracle_rejected": 480949
+      },
+      "18": {
+        "inputs": 911185,
+        "lean_accepted": 834985,
+        "lean_rejected": 76200,
+        "oracle_accepted": 834985,
+        "oracle_rejected": 76200
+      },
+      "19": {
+        "inputs": 892132,
+        "lean_accepted": 891983,
+        "lean_rejected": 149,
+        "oracle_accepted": 891983,
+        "oracle_rejected": 149
+      },
+      "2": {
+        "inputs": 17846,
+        "lean_rejected": 17846,
+        "oracle_rejected": 17846
+      },
+      "20": {
+        "inputs": 1135543,
+        "lean_accepted": 1123512,
+        "lean_rejected": 12031,
+        "oracle_accepted": 1123512,
+        "oracle_rejected": 12031
+      },
+      "21": {
+        "inputs": 1023076,
+        "lean_accepted": 1011191,
+        "lean_rejected": 11885,
+        "oracle_accepted": 1011191,
+        "oracle_rejected": 11885
+      },
+      "22": {
+        "inputs": 12987,
+        "lean_rejected": 12987,
+        "oracle_rejected": 12987
+      },
+      "23": {
+        "inputs": 12626,
+        "lean_rejected": 12626,
+        "oracle_rejected": 12626
+      },
+      "24": {
+        "D001": 118226,
+        "inputs": 118372,
+        "lean_accepted": 118226,
+        "lean_rejected": 146,
+        "oracle_rejected": 118372
+      },
+      "25": {
+        "D001": 118598,
+        "inputs": 118750,
+        "lean_accepted": 118598,
+        "lean_rejected": 152,
+        "oracle_rejected": 118750
+      },
+      "26": {
+        "D001": 117972,
+        "inputs": 118112,
+        "lean_accepted": 117972,
+        "lean_rejected": 140,
+        "oracle_rejected": 118112
+      },
+      "27": {
+        "D001": 118113,
+        "inputs": 129800,
+        "lean_accepted": 118113,
+        "lean_rejected": 11687,
+        "oracle_rejected": 129800
+      },
+      "28": {
+        "D001": 117797,
+        "inputs": 117946,
+        "lean_accepted": 117797,
+        "lean_rejected": 149,
+        "oracle_rejected": 117946
+      },
+      "29": {
+        "D001": 118005,
+        "inputs": 118148,
+        "lean_accepted": 118005,
+        "lean_rejected": 143,
+        "oracle_rejected": 118148
+      },
+      "3": {
+        "inputs": 17868,
+        "lean_rejected": 17868,
+        "oracle_rejected": 17868
+      },
+      "30": {
+        "D001": 112474,
+        "inputs": 112474,
+        "lean_accepted": 112474,
+        "oracle_rejected": 112474
+      },
+      "31": {
+        "D001": 112138,
+        "inputs": 112278,
+        "lean_accepted": 112138,
+        "lean_rejected": 140,
+        "oracle_rejected": 112278
+      },
+      "4": {
+        "inputs": 887477,
+        "lean_accepted": 887477,
+        "oracle_accepted": 887477
+      },
+      "5": {
+        "inputs": 870735,
+        "lean_accepted": 870735,
+        "oracle_accepted": 870735
+      },
+      "6": {
+        "inputs": 11742,
+        "lean_rejected": 11742,
+        "oracle_rejected": 11742
+      },
+      "7": {
+        "inputs": 11833,
+        "lean_rejected": 11833,
+        "oracle_rejected": 11833
+      },
+      "8": {
+        "inputs": 12755,
+        "lean_rejected": 12755,
+        "oracle_rejected": 12755
+      },
+      "9": {
+        "inputs": 12600,
+        "lean_rejected": 12600,
+        "oracle_rejected": 12600
+      }
+    },
+    "first_mismatch_by_field": {},
+    "mismatch_fields": {}
+  },
+  "oracle_pin": "685dfaa34c5ab186c691bca3cfe2a22e12517d30",
+  "seed": 1799246425,
+  "status": "PASS",
+  "strata": {
+    "corpus": 172432,
+    "generated:encoded_fields": 4999620,
+    "generated:one_bit_corruption": 2500190,
+    "generated:two_bit_corruption": 2500190,
+    "structured_commb:df20_matching_altitude": 101244,
+    "structured_commb:df20_none": 101244,
+    "structured_commb:df21": 101244
+  }
+}
+Every mismatch is retained in /home/zpconn/code/lean1090/tests/evidence/optimization/gen24/fresh-message/mismatches.jsonl.gz and direct-mismatches.jsonl.gz.

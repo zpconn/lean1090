@@ -1,0 +1,97 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b7de70 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0>:
+  b7de70:	push   %r14
+  b7de72:	push   %rbx
+  b7de73:	push   %rax
+  b7de74:	test   $0x1,%dil
+  b7de78:	sete   %al
+  b7de7b:	mov    %rdi,%rcx
+  b7de7e:	shr    $0x20,%rcx
+  b7de82:	sete   %cl
+  b7de85:	or     %al,%cl
+  b7de87:	jne    b7de94 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x24>
+  b7de89:	shr    $1,%rdi
+  b7de8c:	call   48a83d0 <lean_big_size_t_to_int>
+  b7de91:	mov    %rax,%rdi
+  b7de94:	mov    0x4003b36(%rip),%eax        # 4b819d0 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0___closed__0_once>
+  b7de9a:	cmp    $0x1,%eax
+  b7de9d:	jne    b7def7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x87>
+  b7de9f:	mov    0x4003b22(%rip),%rsi        # 4b819c8 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0___closed__0>
+  b7dea6:	test   $0x1,%dil
+  b7deaa:	je     b7df23 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0xb3>
+  b7deac:	test   $0x1,%sil
+  b7deb0:	je     b7df3d <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0xcd>
+  b7deb6:	shr    $1,%rdi
+  b7deb9:	movslq %edi,%rdi
+  b7debc:	shr    $1,%rsi
+  b7debf:	movslq %esi,%rax
+  b7dec2:	sub    %rax,%rdi
+  b7dec5:	movslq %edi,%rax
+  b7dec8:	cmp    %rdi,%rax
+  b7decb:	jne    b7df47 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0xd7>
+  b7decd:	mov    %edi,%eax
+  b7decf:	lea    0x1(,%rax,2),%rbx
+  b7ded7:	mov    %rbx,%rdi
+  b7deda:	call   b7dc70 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoFormula>
+  b7dedf:	test   $0x1,%bl
+  b7dee2:	jne    b7deef <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x7f>
+  b7dee4:	mov    (%rbx),%ecx
+  b7dee6:	cmp    $0x2,%ecx
+  b7dee9:	jl     b7df51 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0xe1>
+  b7deeb:	dec    %ecx
+  b7deed:	mov    %ecx,(%rbx)
+  b7deef:	add    $0x8,%rsp
+  b7def3:	pop    %rbx
+  b7def4:	pop    %r14
+  b7def6:	ret
+  b7def7:	lea    0x4003aca(%rip),%rax        # 4b819c8 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0___closed__0>
+  b7defe:	lea    0x4003acb(%rip),%rsi        # 4b819d0 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0___closed__0_once>
+  b7df05:	lea    0x74(%rip),%rdx        # b7df80 <_init_lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0___closed__0>
+  b7df0c:	mov    %rdi,%rbx
+  b7df0f:	mov    %rax,%rdi
+  b7df12:	call   48ad080 <lean_obj_once_cold>
+  b7df17:	mov    %rbx,%rdi
+  b7df1a:	mov    %rax,%rsi
+  b7df1d:	test   $0x1,%dil
+  b7df21:	jne    b7deac <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x3c>
+  b7df23:	mov    %rdi,%r14
+  b7df26:	call   48a8840 <lean_int_big_sub>
+  b7df2b:	mov    %rax,%rbx
+  b7df2e:	mov    (%r14),%eax
+  b7df31:	cmp    $0x2,%eax
+  b7df34:	jl     b7df6b <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0xfb>
+  b7df36:	dec    %eax
+  b7df38:	mov    %eax,(%r14)
+  b7df3b:	jmp    b7ded7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x67>
+  b7df3d:	call   48a8840 <lean_int_big_sub>
+  b7df42:	mov    %rax,%rbx
+  b7df45:	jmp    b7ded7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x67>
+  b7df47:	call   48a8440 <lean_big_int64_to_int>
+  b7df4c:	mov    %rax,%rbx
+  b7df4f:	jmp    b7ded7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x67>
+  b7df51:	test   %ecx,%ecx
+  b7df53:	je     b7deef <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x7f>
+  b7df55:	mov    %rbx,%rdi
+  b7df58:	mov    %rax,%rbx
+  b7df5b:	call   48a3b70 <lean_dec_ref_cold>
+  b7df60:	mov    %rbx,%rax
+  b7df63:	add    $0x8,%rsp
+  b7df67:	pop    %rbx
+  b7df68:	pop    %r14
+  b7df6a:	ret
+  b7df6b:	test   %eax,%eax
+  b7df6d:	je     b7ded7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x67>
+  b7df73:	mov    %r14,%rdi
+  b7df76:	call   48a3b70 <lean_dec_ref_cold>
+  b7df7b:	jmp    b7ded7 <lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable___lam__0+0x67>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

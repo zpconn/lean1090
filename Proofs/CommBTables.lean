@@ -20,7 +20,7 @@ set_option maxRecDepth 4000
 private theorem density40 (word : Nat) :
     cbDensityTermsFast 0x40 word = cbDensityTerms 0x40 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
-    cbQNHScoreTable, cbSelectedScoreTable, commBValue, commBLayout,
+    cbQNHScoreTable, cbSelectedScoreTable, commBValue, commBAdjustValue, commBLayout,
     bds40Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField,
     CommBQNH.cbQNH64_eq_runtime]
   repeat' split <;> simp_all
@@ -29,7 +29,7 @@ private theorem density50 (word : Nat) :
     cbDensityTermsFast 0x50 word = cbDensityTerms 0x50 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbRollScoreTable, cbRateScoreTable, cbTASScoreTable,
-    cbGroundSpeedScoreTable, commBValue, commBLayout,
+    cbGroundSpeedScoreTable, commBValue, commBAdjustValue, commBLayout,
     bds50Layout, cbColumn, payloadValue, AffineValue.affineValue_eq, cbScoreField, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num
   by_cases h1 : payloadBits word 1 1 = 0 <;>
@@ -47,7 +47,7 @@ private theorem density60 (word : Nat) :
     cbDensityTermsFast 0x60 word = cbDensityTerms 0x60 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbIASScoreTable, cbMachScoreTable, cbVerticalScoreTable,
-    commBValue, commBLayout, bds60Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
+    commBValue, commBAdjustValue, commBLayout, bds60Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, CommBMach.cbMach64_eq_runtime, cbVertical60, cbSigned, verticalMagnitude,
     PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num
@@ -59,7 +59,7 @@ private theorem density44 (word : Nat) :
     cbDensityTermsFast 0x44 word = cbDensityTerms 0x44 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
     cbTemperature44ScoreTable, cbWindScoreTable, cbPressureScoreTable,
-    commBValue, commBLayout, bds44Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
+    commBValue, commBAdjustValue, commBLayout, bds44Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, cbTemperature44, cbSigned, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^11 = 2048 := by norm_num
   by_cases h5 : payloadBits word 5 1 = 0 <;>
@@ -68,7 +68,7 @@ private theorem density44 (word : Nat) :
 private theorem density45 (word : Nat) :
     cbDensityTermsFast 0x45 word = cbDensityTerms 0x45 word := by
   simp [cbDensityTermsFast, cbDensityTerms, cbDensityTableGet,
-    cbTemperature45ScoreTable, cbPressureScoreTable, commBValue,
+    cbTemperature45ScoreTable, cbPressureScoreTable, commBValue, commBAdjustValue,
     commBLayout, bds45Layout, cbColumn, payloadValue, AffineValue.affineValue_eq,
     cbScoreField, PayloadIntegerShift.payloadInteger_eq_old]
   have power : (2 : Rat)^10 = 1024 := by norm_num

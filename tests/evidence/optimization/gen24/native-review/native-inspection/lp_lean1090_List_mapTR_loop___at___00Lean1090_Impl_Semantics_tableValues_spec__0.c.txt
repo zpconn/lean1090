@@ -1,0 +1,65 @@
+381: LEAN_EXPORT lean_object* lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_Semantics_tableValues_spec__0(lean_object* v_word_1_, lean_object* v_a_2_, lean_object* v_a_3_){
+382: _start:
+383: {
+384: if (lean_obj_tag(v_a_2_) == 0)
+385: {
+386: lean_object* v___x_4_; 
+387: v___x_4_ = l_List_reverse___redArg(v_a_3_);
+388: return v___x_4_;
+389: }
+390: else
+391: {
+392: lean_object* v_head_5_; lean_object* v_tail_6_; lean_object* v___x_8_; uint8_t v_isShared_9_; uint8_t v_isSharedCheck_17_; 
+393: v_head_5_ = lean_ctor_get(v_a_2_, 0);
+394: v_tail_6_ = lean_ctor_get(v_a_2_, 1);
+395: v_isSharedCheck_17_ = !lean_is_exclusive(v_a_2_);
+396: if (v_isSharedCheck_17_ == 0)
+397: {
+398: v___x_8_ = v_a_2_;
+399: v_isShared_9_ = v_isSharedCheck_17_;
+400: goto v_resetjp_7_;
+401: }
+402: else
+403: {
+404: lean_inc(v_tail_6_);
+405: lean_inc(v_head_5_);
+406: lean_dec(v_a_2_);
+407: v___x_8_ = lean_box(0);
+408: v_isShared_9_ = v_isSharedCheck_17_;
+409: goto v_resetjp_7_;
+410: }
+411: v_resetjp_7_:
+412: {
+413: lean_object* v_name_10_; lean_object* v___x_11_; lean_object* v___x_12_; lean_object* v___x_14_; 
+414: v_name_10_ = lean_ctor_get(v_head_5_, 0);
+415: lean_inc_ref(v_name_10_);
+416: v___x_11_ = lp_lean1090_Lean1090_Impl_payloadValue(v_head_5_, v_word_1_);
+417: v___x_12_ = lean_alloc_ctor(0, 2, 0);
+418: lean_ctor_set(v___x_12_, 0, v_name_10_);
+419: lean_ctor_set(v___x_12_, 1, v___x_11_);
+420: if (v_isShared_9_ == 0)
+421: {
+422: lean_ctor_set(v___x_8_, 1, v_a_3_);
+423: lean_ctor_set(v___x_8_, 0, v___x_12_);
+424: v___x_14_ = v___x_8_;
+425: goto v_reusejp_13_;
+426: }
+427: else
+428: {
+429: lean_object* v_reuseFailAlloc_16_; 
+430: v_reuseFailAlloc_16_ = lean_alloc_ctor(1, 2, 0);
+431: lean_ctor_set(v_reuseFailAlloc_16_, 0, v___x_12_);
+432: lean_ctor_set(v_reuseFailAlloc_16_, 1, v_a_3_);
+433: v___x_14_ = v_reuseFailAlloc_16_;
+434: goto v_reusejp_13_;
+435: }
+436: v_reusejp_13_:
+437: {
+438: v_a_2_ = v_tail_6_;
+439: v_a_3_ = v___x_14_;
+440: goto _start;
+441: }
+442: }
+443: }
+444: }
+445: }
