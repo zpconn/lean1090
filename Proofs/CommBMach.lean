@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.CommB
 import Spec.CommB
 import Proofs.PayloadBits
@@ -31,7 +32,7 @@ theorem cbMach64_eq_runtime (word : Nat) :
 /-- The live lookup equals the frozen software reference for every input. -/
 theorem cbMach64_eq (word : Nat) : Impl.cbMach64 word = Spec.cbMach64 word := by
   rw [cbMach64_eq_runtime, PayloadBits.payloadBits_eq]
-  rfl
+  simp only [Binary64Runtime.div_eq, Binary64Runtime.mul_eq, Binary64Runtime.literal_eq, Spec.cbMach64]
 
 /-- The minimum code remains zero. -/
 theorem zero_witness : Impl.cbMach64 0 = 0 := by

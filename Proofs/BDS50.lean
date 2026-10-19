@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.BDS50
 import Spec.BDS50
 
@@ -27,14 +28,16 @@ namespace Lean1090.Proofs.BDS50
   simp [Impl.BDS50.wireValid, Spec.bdsWireValid, Spec.cbValid50]
   rfl
 
-@[simp] theorem round_eq (x : Rat) : Impl.Binary64.round x = Spec.Binary64.round x := rfl
-@[simp] theorem add_eq (x y : Rat) : Impl.Binary64.add x y = Spec.Binary64.add x y := rfl
-@[simp] theorem sub_eq (x y : Rat) : Impl.Binary64.sub x y = Spec.Binary64.sub x y := rfl
-@[simp] theorem mul_eq (x y : Rat) : Impl.Binary64.mul x y = Spec.Binary64.mul x y := rfl
-@[simp] theorem div_eq (x y : Rat) : Impl.Binary64.div x y = Spec.Binary64.div x y := rfl
-@[simp] theorem literal_eq (x : Rat) : Impl.Binary64.literal x = Spec.Binary64.literal x := rfl
-@[simp] theorem gaussian_eq (x m s : Rat) : Impl.BDS50.gaussian x m s = Spec.cbGaussian x m s := rfl
-@[simp] theorem laplace_eq (x m s : Rat) : Impl.BDS50.laplace x m s = Spec.cbLaplace x m s := rfl
+@[simp] theorem round_eq (x : Rat) : Impl.Binary64.round x = Spec.Binary64.round x := Binary64Runtime.round_eq x
+@[simp] theorem add_eq (x y : Rat) : Impl.Binary64.add x y = Spec.Binary64.add x y := Binary64Runtime.add_eq x y
+@[simp] theorem sub_eq (x y : Rat) : Impl.Binary64.sub x y = Spec.Binary64.sub x y := Binary64Runtime.sub_eq x y
+@[simp] theorem mul_eq (x y : Rat) : Impl.Binary64.mul x y = Spec.Binary64.mul x y := Binary64Runtime.mul_eq x y
+@[simp] theorem div_eq (x y : Rat) : Impl.Binary64.div x y = Spec.Binary64.div x y := Binary64Runtime.div_eq x y
+@[simp] theorem literal_eq (x : Rat) : Impl.Binary64.literal x = Spec.Binary64.literal x := Binary64Runtime.literal_eq x
+@[simp] theorem gaussian_eq (x m s : Rat) : Impl.BDS50.gaussian x m s = Spec.cbGaussian x m s := by
+  simp [Impl.BDS50.gaussian, Spec.cbGaussian]
+@[simp] theorem laplace_eq (x m s : Rat) : Impl.BDS50.laplace x m s = Spec.cbLaplace x m s := by
+  simp [Impl.BDS50.laplace, Spec.cbLaplace]
 @[simp] theorem scoreField_eq (x : Option Rat) (f : Rat → Rat) :
     Impl.BDS50.scoreField x f = Spec.cbScoreField x f := rfl
 @[simp] theorem terms_eq (w : Nat) : Impl.BDS50.densityTerms w = Spec.cbDensityTerms 0x50 w := by
@@ -65,11 +68,15 @@ theorem exact_threshold_nonvacuous :
     Impl.BDS50.combinedScore 40532396648603648 = -3 ∧
     (Impl.BDS50.decode 40532396648603648).isSome = true ∧
     (Impl.BDS50.decode 40532396648601600).isSome = true ∧
-    (Impl.BDS50.decode 40532396648605696).isSome = false := by decide +kernel
+    (Impl.BDS50.decode 40532396648605696).isSome = false := by
+  simp only [wireValid_eq, score_eq, refinement]
+  decide +kernel
 
 theorem pilot_nonvacuous : ∃ word result, Impl.BDS50.decode word = some result := by
   refine ⟨40532396648603648, ?_⟩
-  have h : (Impl.BDS50.decode 40532396648603648).isSome = true := by decide +kernel
+  have h : (Impl.BDS50.decode 40532396648603648).isSome = true := by
+    rw [refinement]
+    decide +kernel
   cases he : Impl.BDS50.decode 40532396648603648 with
   | none => simp [he] at h
   | some result => exact ⟨result, rfl⟩

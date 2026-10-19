@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.CommB
 import Proofs.AffineValue
 import Mathlib.Tactic.Ring
@@ -66,6 +67,7 @@ theorem cbWindPenalty50_eq_runtime (word : Nat) :
 /-- Both absent statuses suppress the penalty even for nonzero speed bits. -/
 theorem missing_both_witness : Impl.cbWindPenalty50 1023 = 0 := by
   rw [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Either unavailable speed independently suppresses the penalty. -/
@@ -73,12 +75,14 @@ theorem missing_one_witness :
     Impl.cbWindPenalty50 (2^10 + 1023) = 0 ∧
     Impl.cbWindPenalty50 (2^32 + 1023 * 2^22) = 0 := by
   simp only [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Equal speeds select the central zero-difference entry. -/
 theorem equal_witness :
     Impl.cbWindPenalty50 (2^32 + 341 * 2^22 + 2^10 + 341) = 0 := by
   rw [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Adjacent speed codes retain nonexact binary64 division, not rational 1/50. -/
@@ -86,6 +90,7 @@ theorem fractional_witness :
     Impl.cbWindPenalty50 (2^32 + 2^10 + 1) < 0 ∧
     Impl.cbWindPenalty50 (2^32 + 2^10 + 1) ≠ (-1 / 50 : Rat) := by
   simp only [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Both signed endpoints retain the complete rounded 2046-knot penalty. -/
@@ -95,6 +100,7 @@ theorem extremes_witness :
     Impl.cbWindPenalty50 (2^32 + 1023 * 2^22 + 2^10) =
       Impl.Binary64.sub 0 (Impl.Binary64.div 2046 100) := by
   simp only [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Extra high bits do not affect either extreme's field extraction. -/
@@ -102,6 +108,7 @@ theorem overwide_witness :
     Impl.cbWindPenalty50 (2^130 + 2^32 + 2^10 + 1023) =
       Impl.cbWindPenalty50 (2^32 + 2^10 + 1023) := by
   simp only [cbWindPenalty50_eq_raw]
+  simp only [Binary64Runtime.sub_eq, Binary64Runtime.div_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 #print axioms table_size

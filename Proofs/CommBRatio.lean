@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.CommB
 import Proofs.Binary64Error
 
@@ -58,7 +59,8 @@ theorem cbRatioOutside250800_eq (q : Rat) :
     have h := Binary64Error.round_error_of_bound q (|q| + 1)
       (by have := abs_nonneg q; linarith) (by linarith)
     calc
-      |rounded - q| ≤ 2 * (|q| + 1) / (2 : Rat)^52 := h
+      |rounded - q| ≤ 2 * (|q| + 1) / (2 : Rat)^52 := by
+        simpa only [rounded, Binary64Runtime.round_eq] using h
       _ = error := by norm_num [error, k]; ring
   obtain ⟨blo, bhi⟩ := abs_le.mp bounded
   have rlo : (c : Rat) - e ≤ factor * rounded := by
@@ -101,6 +103,7 @@ theorem cbRatioOutside250800_eq (q : Rat) :
 
 /-- Values strictly inside the interval take the definite inside branch. -/
 theorem inside_witness : Impl.cbRatioOutside250800 500 = false := by
+  simp only [cbRatioOutside250800_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Values on either far side, including negative ratios, are outside. -/
@@ -108,12 +111,14 @@ theorem outside_witness :
     Impl.cbRatioOutside250800 0 = true ∧
     Impl.cbRatioOutside250800 (-1) = true ∧
     Impl.cbRatioOutside250800 1000 = true := by
+  simp only [cbRatioOutside250800_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Exact thresholds preserve the inclusive interval through the fallback. -/
 theorem thresholds_witness :
     Impl.cbRatioOutside250800 250 = false ∧
     Impl.cbRatioOutside250800 800 = false := by
+  simp only [cbRatioOutside250800_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Exact rationals just outside either edge round back onto that edge.
@@ -125,12 +130,14 @@ theorem roundback_witness :
     Impl.Binary64.round (800 + 1 / (2 : Rat)^50) = 800 ∧
     Impl.cbRatioOutside250800 (250 - 1 / (2 : Rat)^50) = false ∧
     Impl.cbRatioOutside250800 (800 + 1 / (2 : Rat)^50) = false := by
+  simp only [cbRatioOutside250800_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Larger neighboring offsets remain outside after rounding. -/
 theorem outside_neighbors_witness :
     Impl.cbRatioOutside250800 (250 - 1 / (2 : Rat)^40) = true ∧
     Impl.cbRatioOutside250800 (800 + 1 / (2 : Rat)^40) = true := by
+  simp only [cbRatioOutside250800_eq, Binary64Runtime.round_eq]
   decide +kernel
 
 /-- Both exact boundaries and both round-back examples actually enter the

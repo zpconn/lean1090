@@ -1,0 +1,83 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b51980 <main>:
+  b51980:	push   %rbp
+  b51981:	push   %r14
+  b51983:	push   %rbx
+  b51984:	mov    %edi,%ebp
+  b51986:	call   48e44a8 <lean_setup_args>
+  b5198b:	mov    %rax,%r14
+  b5198e:	mov    $0x1,%edi
+  b51993:	call   b51720 <initialize_lean1090_Bench_WholeDecoder>
+  b51998:	mov    %rax,%rbx
+  b5199b:	call   48c3850 <lean_io_mark_end_initialization>
+  b519a0:	cmpl   $0xffffff,0x4(%rbx)
+  b519a7:	ja     b519cd <main+0x4d>
+  b519a9:	mov    (%rbx),%eax
+  b519ab:	cmp    $0x2,%eax
+  b519ae:	jl     b51a0f <main+0x8f>
+  b519b0:	dec    %eax
+  b519b2:	mov    %eax,(%rbx)
+  b519b4:	call   48a43d0 <lean_init_task_manager>
+  b519b9:	lea    -0xb0(%rip),%rdi        # b51910 <run_main>
+  b519c0:	mov    %ebp,%esi
+  b519c2:	mov    %r14,%rdx
+  b519c5:	call   4852f90 <lean_run_main>
+  b519ca:	mov    %rax,%rbx
+  b519cd:	call   48a4460 <lean_finalize_task_manager>
+  b519d2:	cmpl   $0xffffff,0x4(%rbx)
+  b519d9:	ja     b519f2 <main+0x72>
+  b519db:	mov    0x8(%rbx),%rax
+  b519df:	shr    $1,%rax
+  b519e2:	mov    (%rbx),%ecx
+  b519e4:	cmp    $0x2,%ecx
+  b519e7:	jl     b51a1d <main+0x9d>
+  b519e9:	dec    %ecx
+  b519eb:	mov    %ecx,(%rbx)
+  b519ed:	pop    %rbx
+  b519ee:	pop    %r14
+  b519f0:	pop    %rbp
+  b519f1:	ret
+  b519f2:	mov    %rbx,%rdi
+  b519f5:	call   48c36f0 <lean_io_result_show_error>
+  b519fa:	mov    (%rbx),%ecx
+  b519fc:	cmp    $0x2,%ecx
+  b519ff:	jl     b51a34 <main+0xb4>
+  b51a01:	dec    %ecx
+  b51a03:	mov    %ecx,(%rbx)
+  b51a05:	mov    $0x1,%eax
+  b51a0a:	pop    %rbx
+  b51a0b:	pop    %r14
+  b51a0d:	pop    %rbp
+  b51a0e:	ret
+  b51a0f:	test   %eax,%eax
+  b51a11:	je     b519b4 <main+0x34>
+  b51a13:	mov    %rbx,%rdi
+  b51a16:	call   48a2ab0 <lean_dec_ref_cold>
+  b51a1b:	jmp    b519b4 <main+0x34>
+  b51a1d:	test   %ecx,%ecx
+  b51a1f:	je     b519ed <main+0x6d>
+  b51a21:	mov    %rbx,%rdi
+  b51a24:	mov    %rax,%rbx
+  b51a27:	call   48a2ab0 <lean_dec_ref_cold>
+  b51a2c:	mov    %rbx,%rax
+  b51a2f:	pop    %rbx
+  b51a30:	pop    %r14
+  b51a32:	pop    %rbp
+  b51a33:	ret
+  b51a34:	mov    $0x1,%eax
+  b51a39:	test   %ecx,%ecx
+  b51a3b:	je     b519ed <main+0x6d>
+  b51a3d:	mov    %rbx,%rdi
+  b51a40:	call   48a2ab0 <lean_dec_ref_cold>
+  b51a45:	jmp    b51a05 <main+0x85>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

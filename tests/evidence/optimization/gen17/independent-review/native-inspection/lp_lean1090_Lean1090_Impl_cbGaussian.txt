@@ -1,0 +1,86 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b869a0 <lp_lean1090_Lean1090_Impl_cbGaussian>:
+  b869a0:	push   %r14
+  b869a2:	push   %rbx
+  b869a3:	push   %rax
+  b869a4:	mov    %rdx,%rbx
+  b869a7:	mov    %rdi,%r14
+  b869aa:	mov    %rsi,%rdi
+  b869ad:	call   b7ea00 <lp_lean1090_Lean1090_Impl_Binary64_round>
+  b869b2:	mov    %r14,%rdi
+  b869b5:	mov    %rax,%rsi
+  b869b8:	call   b7ef60 <lp_lean1090_Lean1090_Impl_Binary64_sub>
+  b869bd:	mov    %rax,%r14
+  b869c0:	mov    %rbx,%rdi
+  b869c3:	call   b7ea00 <lp_lean1090_Lean1090_Impl_Binary64_round>
+  b869c8:	mov    %r14,%rdi
+  b869cb:	mov    %rax,%rsi
+  b869ce:	call   b7ef80 <lp_lean1090_Lean1090_Impl_Binary64_div>
+  b869d3:	mov    %rax,%rbx
+  b869d6:	mov    (%r14),%eax
+  b869d9:	cmp    $0x2,%eax
+  b869dc:	jl     b86a2a <lp_lean1090_Lean1090_Impl_cbGaussian+0x8a>
+  b869de:	dec    %eax
+  b869e0:	mov    %eax,(%r14)
+  b869e3:	mov    0x3ffa1bf(%rip),%eax        # 4b80ba8 <lp_lean1090_Lean1090_Impl_cbGaussian___closed__2_once>
+  b869e9:	cmp    $0x1,%eax
+  b869ec:	jne    b86a38 <lp_lean1090_Lean1090_Impl_cbGaussian+0x98>
+  b869ee:	mov    0x3ffa1ab(%rip),%rdi        # 4b80ba0 <lp_lean1090_Lean1090_Impl_cbGaussian___closed__2>
+  b869f5:	mov    (%rbx),%eax
+  b869f7:	test   %eax,%eax
+  b869f9:	jle    b86a5b <lp_lean1090_Lean1090_Impl_cbGaussian+0xbb>
+  b869fb:	inc    %eax
+  b869fd:	mov    %eax,(%rbx)
+  b869ff:	mov    %rbx,%rsi
+  b86a02:	call   b7ef70 <lp_lean1090_Lean1090_Impl_Binary64_mul>
+  b86a07:	mov    %rax,%r14
+  b86a0a:	mov    %rax,%rdi
+  b86a0d:	mov    %rbx,%rsi
+  b86a10:	call   b7ef70 <lp_lean1090_Lean1090_Impl_Binary64_mul>
+  b86a15:	mov    (%r14),%ecx
+  b86a18:	cmp    $0x2,%ecx
+  b86a1b:	jl     b86a67 <lp_lean1090_Lean1090_Impl_cbGaussian+0xc7>
+  b86a1d:	dec    %ecx
+  b86a1f:	mov    %ecx,(%r14)
+  b86a22:	add    $0x8,%rsp
+  b86a26:	pop    %rbx
+  b86a27:	pop    %r14
+  b86a29:	ret
+  b86a2a:	test   %eax,%eax
+  b86a2c:	je     b869e3 <lp_lean1090_Lean1090_Impl_cbGaussian+0x43>
+  b86a2e:	mov    %r14,%rdi
+  b86a31:	call   48a2ab0 <lean_dec_ref_cold>
+  b86a36:	jmp    b869e3 <lp_lean1090_Lean1090_Impl_cbGaussian+0x43>
+  b86a38:	lea    0x3ffa161(%rip),%rdi        # 4b80ba0 <lp_lean1090_Lean1090_Impl_cbGaussian___closed__2>
+  b86a3f:	lea    0x3ffa162(%rip),%rsi        # 4b80ba8 <lp_lean1090_Lean1090_Impl_cbGaussian___closed__2_once>
+  b86a46:	lea    0x43(%rip),%rdx        # b86a90 <_init_lp_lean1090_Lean1090_Impl_cbGaussian___closed__2>
+  b86a4d:	call   48abfc0 <lean_obj_once_cold>
+  b86a52:	mov    %rax,%rdi
+  b86a55:	mov    (%rbx),%eax
+  b86a57:	test   %eax,%eax
+  b86a59:	jg     b869fb <lp_lean1090_Lean1090_Impl_cbGaussian+0x5b>
+  b86a5b:	cmp    $0x90000001,%eax
+  b86a60:	jb     b869ff <lp_lean1090_Lean1090_Impl_cbGaussian+0x5f>
+  b86a62:	lock decl (%rbx)
+  b86a65:	jmp    b869ff <lp_lean1090_Lean1090_Impl_cbGaussian+0x5f>
+  b86a67:	test   %ecx,%ecx
+  b86a69:	je     b86a22 <lp_lean1090_Lean1090_Impl_cbGaussian+0x82>
+  b86a6b:	mov    %r14,%rdi
+  b86a6e:	mov    %rax,%rbx
+  b86a71:	call   48a2ab0 <lean_dec_ref_cold>
+  b86a76:	mov    %rbx,%rax
+  b86a79:	add    $0x8,%rsp
+  b86a7d:	pop    %rbx
+  b86a7e:	pop    %r14
+  b86a80:	ret
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

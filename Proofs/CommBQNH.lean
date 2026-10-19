@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.CommB
 import Spec.CommB
 import Proofs.PayloadBits
@@ -32,7 +33,7 @@ theorem cbQNH64_eq_runtime (word : Nat) :
 /-- The live lookup equals the frozen software reference for every input. -/
 theorem cbQNH64_eq (word : Nat) : Impl.cbQNH64 word = Spec.cbQNH64 word := by
   rw [cbQNH64_eq_runtime, PayloadBits.payloadBits_eq]
-  rfl
+  simp only [Binary64Runtime.add_eq, Binary64Runtime.mul_eq, Binary64Runtime.literal_eq, Spec.cbQNH64]
 
 /-- The minimum code is exactly the inclusive 800 hPa plausibility boundary. -/
 theorem zero_witness : Impl.cbQNH64 0 = 800 := by

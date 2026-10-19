@@ -40,8 +40,12 @@ Generation 16 measured decode 1.668888276454× rs1090 and CPR
 1.029132958936×. The measured source is
 `1593898c4425fb174ba4085ab68691feba28124e`; independent result review passed.
 All samples and provenance are in `bench/runs/gen16/`, with the report in
-`bench/GEN16.md`. Both 2.00× targets remain unmet. Obtain fresh decode and CPR diagnostics
-before choosing generation 17. Keep all existing frozen-file, proof, full-gate,
+`bench/GEN16.md`. Both 2.00× targets remain unmet. The fresh decode and CPR diagnostics passed
+independent review. Generation 17 is the immutable exact `Binary64.powerTwo`
+format-exponent table with unrestricted original-formula fallback. Its proofs,
+full fixed gate and fresh 10M campaign have passed, as have archival and final
+independent review. It is ready for the source commit and isolated benchmark.
+No generation 17 measurement exists yet. Keep all existing frozen-file, proof, full-gate,
 isolated benchmark and disk-retention requirements. `PROGRESS.md` records
 current work and review results.
 

@@ -1,3 +1,4 @@
+import Proofs.Binary64Runtime
 import Impl.Message
 import Capstones
 import Proofs.CommBTables
@@ -65,31 +66,24 @@ private theorem decoder_Altitude_oracleAC13_eq : @Impl.Altitude.oracleAC13 = @Sp
   simp only [decoder_Altitude_bit_eq, decoder_Altitude_decodeAC13_eq]
   rfl
 private theorem decoder_Binary64_powerTwo_eq : @Impl.Binary64.powerTwo = @Spec.Binary64.powerTwo := by
-  rfl
+  exact Binary64Runtime.powerTwo_function_eq
 private theorem decoder_Binary64_exponent_eq : @Impl.Binary64.exponent = @Spec.Binary64.exponent := by
-  unfold Impl.Binary64.exponent Spec.Binary64.exponent
-  simp only [decoder_Binary64_powerTwo_eq]
+  exact Binary64Runtime.exponent_function_eq
 private theorem decoder_Binary64_nearestEven_eq :
     @Impl.Binary64.nearestEven = @Spec.Binary64.nearestEven := by
-  rfl
+  exact Binary64Runtime.nearestEven_function_eq
 private theorem decoder_Binary64_round_eq : @Impl.Binary64.round = @Spec.Binary64.round := by
-  unfold Impl.Binary64.round Spec.Binary64.round
-  simp only [decoder_Binary64_exponent_eq, decoder_Binary64_nearestEven_eq, decoder_Binary64_powerTwo_eq]
+  exact Binary64Runtime.round_function_eq
 private theorem decoder_Binary64_add_eq : @Impl.Binary64.add = @Spec.Binary64.add := by
-  unfold Impl.Binary64.add Spec.Binary64.add
-  simp only [decoder_Binary64_round_eq]
+  exact Binary64Runtime.add_function_eq
 private theorem decoder_Binary64_div_eq : @Impl.Binary64.div = @Spec.Binary64.div := by
-  unfold Impl.Binary64.div Spec.Binary64.div
-  simp only [decoder_Binary64_round_eq]
+  exact Binary64Runtime.div_function_eq
 private theorem decoder_Binary64_literal_eq : @Impl.Binary64.literal = @Spec.Binary64.literal := by
-  unfold Impl.Binary64.literal Spec.Binary64.literal
-  simp only [decoder_Binary64_round_eq]
+  exact Binary64Runtime.literal_function_eq
 private theorem decoder_Binary64_mul_eq : @Impl.Binary64.mul = @Spec.Binary64.mul := by
-  unfold Impl.Binary64.mul Spec.Binary64.mul
-  simp only [decoder_Binary64_round_eq]
+  exact Binary64Runtime.mul_function_eq
 private theorem decoder_Binary64_sub_eq : @Impl.Binary64.sub = @Spec.Binary64.sub := by
-  unfold Impl.Binary64.sub Spec.Binary64.sub
-  simp only [decoder_Binary64_round_eq]
+  exact Binary64Runtime.sub_function_eq
 private theorem decoder_FrameBody_informationBits_eq :
     @Impl.informationBits = @Spec.FrameBody.informationBits := by
   rfl

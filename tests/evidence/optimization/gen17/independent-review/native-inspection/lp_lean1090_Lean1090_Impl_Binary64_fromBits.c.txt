@@ -1,0 +1,79 @@
+574: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Binary64_fromBits(lean_object* v_bits_146_){
+575: _start:
+576: {
+577: lean_object* v___x_147_; lean_object* v___x_148_; lean_object* v___x_149_; lean_object* v_e_150_; lean_object* v___x_151_; uint8_t v___x_152_; 
+578: v___x_147_ = lean_unsigned_to_nat(52u);
+579: v___x_148_ = lean_nat_shiftr(v_bits_146_, v___x_147_);
+580: v___x_149_ = lean_unsigned_to_nat(2048u);
+581: v_e_150_ = lean_nat_mod(v___x_148_, v___x_149_);
+582: lean_dec(v___x_148_);
+583: v___x_151_ = lean_unsigned_to_nat(2047u);
+584: v___x_152_ = lean_nat_dec_eq(v_e_150_, v___x_151_);
+585: if (v___x_152_ == 0)
+586: {
+587: lean_object* v___x_153_; lean_object* v_fraction_154_; lean_object* v___x_155_; lean_object* v___y_157_; uint8_t v___x_164_; 
+588: v___x_153_ = lean_cstr_to_nat("4503599627370496");
+589: v_fraction_154_ = lean_nat_mod(v_bits_146_, v___x_153_);
+590: v___x_155_ = lean_unsigned_to_nat(0u);
+591: v___x_164_ = lean_nat_dec_eq(v_e_150_, v___x_155_);
+592: if (v___x_164_ == 0)
+593: {
+594: lean_object* v___x_165_; lean_object* v___x_166_; lean_object* v___x_167_; lean_object* v___x_168_; lean_object* v___x_169_; lean_object* v___x_170_; lean_object* v___x_171_; 
+595: v___x_165_ = lean_nat_add(v___x_153_, v_fraction_154_);
+596: lean_dec(v_fraction_154_);
+597: v___x_166_ = l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0(v___x_165_);
+598: v___x_167_ = lean_nat_to_int(v_e_150_);
+599: v___x_168_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__0, &lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__0_once, _init_lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__0);
+600: v___x_169_ = lean_int_sub(v___x_167_, v___x_168_);
+601: lean_dec(v___x_167_);
+602: v___x_170_ = lp_lean1090_Lean1090_Impl_Binary64_powerTwo(v___x_169_);
+603: lean_dec(v___x_169_);
+604: v___x_171_ = l_Rat_mul(v___x_166_, v___x_170_);
+605: lean_dec_ref(v___x_166_);
+606: v___y_157_ = v___x_171_;
+607: goto v___jp_156_;
+608: }
+609: else
+610: {
+611: lean_object* v___x_172_; lean_object* v___x_173_; lean_object* v___x_174_; 
+612: lean_dec(v_e_150_);
+613: v___x_172_ = l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0(v_fraction_154_);
+614: v___x_173_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__1, &lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__1_once, _init_lp_lean1090_Lean1090_Impl_Binary64_fromBits___closed__1);
+615: v___x_174_ = l_Rat_mul(v___x_172_, v___x_173_);
+616: lean_dec_ref(v___x_172_);
+617: v___y_157_ = v___x_174_;
+618: goto v___jp_156_;
+619: }
+620: v___jp_156_:
+621: {
+622: lean_object* v___x_158_; lean_object* v___x_159_; uint8_t v___x_160_; 
+623: v___x_158_ = lean_unsigned_to_nat(63u);
+624: v___x_159_ = lean_nat_shiftr(v_bits_146_, v___x_158_);
+625: v___x_160_ = lean_nat_dec_eq(v___x_159_, v___x_155_);
+626: lean_dec(v___x_159_);
+627: if (v___x_160_ == 0)
+628: {
+629: lean_object* v___x_161_; lean_object* v___x_162_; 
+630: v___x_161_ = l_Rat_neg(v___y_157_);
+631: v___x_162_ = lean_alloc_ctor(1, 1, 0);
+632: lean_ctor_set(v___x_162_, 0, v___x_161_);
+633: return v___x_162_;
+634: }
+635: else
+636: {
+637: lean_object* v___x_163_; 
+638: v___x_163_ = lean_alloc_ctor(1, 1, 0);
+639: lean_ctor_set(v___x_163_, 0, v___y_157_);
+640: return v___x_163_;
+641: }
+642: }
+643: }
+644: else
+645: {
+646: lean_object* v___x_175_; 
+647: lean_dec(v_e_150_);
+648: v___x_175_ = lean_box(0);
+649: return v___x_175_;
+650: }
+651: }
+652: }

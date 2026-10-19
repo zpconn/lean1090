@@ -24,10 +24,107 @@ limitations documented. [Report and raw samples](bench/GEN16.md).
 The artifact-commit binding confirms all 187 inputs still match the passed
 full gate, current tree and timed commit; record SHA-256:
 `7f16e0febb363bbe3e4e2929c04a20f55dc55e7962aab33164922a760690b61a`.
-The reviewed artifacts accompany the result commit for the existing private
-repository. Next: obtain fresh untimed decode and CPR diagnostics before
-choosing generation 17. Production source
-and native artifacts remain held during this assessment.
+The source and reviewed artifacts were pushed to the existing private repository
+as `b4765cc1e07a758bc4661c4f6f513deb39672b9f`. Fresh untimed decode and CPR
+diagnostics passed before choosing generation 17. Both fresh diagnostic reviews passed, releasing the hold after verified
+scratch cleanup. Decode total: 10,748,675,266 collected instructions; Comm-B
+is its largest stage at 3,617,157,311. CPR total: 17,998,526,291; numeric
+geography is the largest detailed category at 5,562,629,612. All full outputs,
+172,432 tracking rows and final state match. These are diagnostic counts,
+not benchmark predictions. Review hashes:
+`2e02055deba6efcf24b82ea55574a2e7ca0f8e616a4d769f181373da1ff5ff9e`
+(decode) and
+`36fa921f9dab11420481847ff59cf32f97d3207c1aaa4f1b38c1ee0c6f799c95`
+(CPR). The reviewed decode cleanup reclaimed 277,315,584 allocated bytes,
+retaining its unique raw perf capture and compressed evidence.
+
+**Generation 17 selected:** replace repeated `Binary64.powerTwo` construction
+with an immutable 2,098-entry table keyed only by format exponents −1074
+through 1023. Keep the original total formula for every other exponent.
+The table constructor uses that formula directly; it must not depend on
+rounding or its own lookup. Prove equality for every integer exponent and
+propagate it through all arithmetic, decoder and CPR tracking contracts.
+The numeric-geography profile observed 460,693 power calls with
+1,738,677,460 overlapping inclusive instructions, including 261,723 direct
+rational divisions. No table-hit frequency or speedup is inferred. Preserve
+observed initialization costs in the frozen benchmark. Zero new trusted
+primitives or frozen-file changes are authorized. Implementation and proof
+work are in progress. The central helper build passed; all 32 printed facts
+use permitted axioms, including five kernel witnesses covering seven boundary
+exponents. The first helper proof attempt needed a simplifier-normalization
+correction; its source and log remain retained. Implementation summary SHA-256:
+`8b53c1c599e86afd938aaf0ae9683ddf3024eb559c24b8260b36328c8b78706e`.
+The CPR duplicate cleanup additionally reclaimed 243,105,792 allocated bytes.
+The six decoder/Comm-B proof modules passed their first build (2,079 jobs,
+190 permitted-axiom facts). The CPR proof passed after adding two explicit
+reflexivity closures; all ten printed facts use only permitted axioms,
+including complete numerical-geography program equality. Its failed attempt
+is retained. The combined six-target build passed all 3,532 jobs on its first
+execution with nine sources and all 188 correctness inputs unchanged;
+record SHA-256:
+`eb800bef73aa6513d18f3b33f90bb19851ae037b977155080c9e8dd72cdf554f`.
+The full gate passed from 17:08:05 to 17:25:59 UTC with all 188 correctness
+inputs unchanged. It checked all 23 capstones, 152 witness proofs, 1,011 unit
+assertions and all seven differential components. The fixed campaign checked
+10,476,164 messages: 9,542,689 exact matches + 933,475 documented D001 cases;
+all 101,244 direct Comm-B cases matched exactly, with no coverage errors.
+Its 2,038,998 standard-view differences remain separately recorded. Full-gate
+record SHA-256:
+`2af7f2c62ee23ab7d7cfe20fed2251084e68abee165a15a7d1fee2fb408bd38b`.
+The separately seeded 10M campaign passed on its
+first execution (messages 1092673074, Comm-B 2959148338, recorded beforehand):
+10,476,164 messages = 9,542,937 exact matches + 933,227 documented D001 cases,
+with 2,038,816 standard-view differences recorded separately. All 101,244
+direct Comm-B cases match exactly. Coverage includes all 32 DF attempts,
+70 ADS-B branches and 14 registers, with no unclassified differences or gaps.
+All 113 sources and three binaries remained unchanged. Independent retention
+review passed all 33 retained files; the frozen comparison-only replay also
+passed. Fresh verification SHA-256:
+`2fb04dd1fae997f4595a2701fa48a3ead90207193a4d412d16af14d26318c9d6`.
+Independent retention review SHA-256:
+`e31b6401a01dd89362dc5b44ea9ee2e8b707fd6e842d41902f65d5ddfedbe205`.
+The fresh cleanup removed only eight verified raw duplicates and reclaimed
+5,359,292,416 allocated bytes, preserving all 33 retained files and the active
+fixed run. Completion SHA-256:
+`bfaf3c44cce4cc6fb62bb38769d15cb588e24c24c71fccd14d5392bee46a1070`.
+Independent central-source/proof and linked runtime reviews passed. Native
+review checked 111 conditions, all 22 linked sets, 260 held inputs, eager
+initialization before main, guarded lookup/fallback and live CPR/Comm-B
+consumers; the other 21 native sets are byte-identical to generation 16.
+Review SHA-256:
+`cb162d0f05f10dde89132d4a09f930c3e84b9e620839861cd0e16062108ff59c`.
+The combined log has 200 permitted-axiom facts, including three axiom-free
+facts. Reviewer-only count/filter corrections are retained; no producer
+change was needed. Fixed-gate archival and final independent review passed
+on their first executions. The review checked all 188 inputs, seven
+components and 62 retained files, fixed/fresh coverage, native/proof bindings,
+the unchanged 34-row CSV prefix and both exact 2/1 targets. Review SHA-256:
+`fe14b67f2435e228eb70a7fe910e6fc2adaad5f6f24e1a30b791c796924b879e`.
+The fixed cleanup reclaimed another 5,733,330,944 allocated bytes; combined
+fixed/fresh cleanup reclaimed 11,092,623,360 bytes while preserving compressed
+evidence and unique earlier failures. The source is ready to commit, then
+measure from a clean fresh build with all other work stopped. No generation
+17 timing exists yet.
+[Implementation and proof](docs/GEN17-POWER-TABLE.md).
+
+Read-only planning for a possible later CPR change identified an exact dyadic
+shortcut for `toFloat`: nonzero canonical rational numerator magnitude below
+2^53, denominator exactly 2^k and k ≤ 1074. Integer shifts can construct its
+binary64 bits after proving exact binade and rounding identities. Zero would
+remain positive zero; every rejected input keeps the existing conversion.
+The guard covers finite binary64-derived rationals with magnitude below 2^53,
+not arbitrary small dyadic rationals. No such implementation or new lemma has
+been written, and no hit rate or speedup is claimed. Selection requires the
+next measured generation's fresh diagnostic. `toFloat32` would remain separate
+because its negative-underflow sign behavior differs.
+A separate read-only decode candidate is direct integer-times-rational
+construction in `affineValue`: multiply the field integer by `scale.num` and
+normalize once against `scale.den`, with a denominator-one shortcut, preserving
+the offset step. Current code skips only identity scales and zero offsets.
+No implementation, proof or per-scale frequency count exists yet; this also
+requires the next diagnostic before selection.
+See [decode](docs/GEN16-COST-BREAKDOWN.md) and
+[CPR](docs/GEN16-CPR-COST-BREAKDOWN.md) diagnostics.
 
 Generation 16 started from pushed commit
 `7163b2506f3b4045caa98721aa90b7042733b0fe`. The preceding untimed live
@@ -99,8 +196,8 @@ with the original total formula outside that range. It would need a central
 all-input binary64 equality proof and propagation through the decoder,
 BDS50, Mach/QNH, ratio and CPR tracking proofs. The table must initialize
 from the original power formula, without calling rounding or its own lookup.
-No such change is selected or implemented; assess it against fresh diagnostics
-after generation 16's measured result.
+This was subsequently selected for generation 17 after the fresh generation 16
+diagnostics and independent reviews above.
 
 The unfrozen reporting
 helper now supports separate exact targets for both modes; seven fixture

@@ -1,0 +1,30 @@
+{
+  "status": "passed_read_only_tooling_review",
+  "reviewed_utc": "2026-10-19T16:54:20.771537+00:00",
+  "findings": [],
+  "files": {
+    "review/diagnostics/archive_cpr_costs.py": "c3f60c2b1e0207e8f7ec38beab52996a71cdf026530310b97eeb325b1ce69faf",
+    "tests/evidence/diagnostics/gen16-cpr/archive-helper-review/archive_cpr_costs-before.py": "812096566d5995631ca4af5ec68442d28b2284915a7912a5cd98369d884c321a",
+    "tests/evidence/diagnostics/gen16-cpr/archive-helper-review/check.py": "22e422796a8c2efb2509a6c241f994aa2939783dcfd07c1936f1d066ad6b1b34",
+    "tests/evidence/diagnostics/gen16-cpr/archive-helper-review/tests.json": "335058196e75f2ba004e831f50c4cd52bfc56f1af5da52e3938e03bd8948f19f",
+    "review/diagnostics/analyze_cpr_costs.py": "5f56f20da3e3a0534e2220061a3487afb6ec6505a302a7394a53b088eebc04c0",
+    "tests/evidence/diagnostics/gen16-cpr/archive-helper-review/analyze_cpr_costs-before-wording.py": "8f7489ff0f78abc4e984bfe7264c87d7b825add3b57ed765c51ee837e962122b"
+  },
+  "unchanged_archive_functions": [
+    "retain",
+    "sha"
+  ],
+  "independent_selection_cases": 13,
+  "retained_author_fixture_cases": 11,
+  "full_archival_fixtures_read": 2,
+  "native_or_profile_execution": false,
+  "assessment": [
+    "The historical default directory list is unchanged; only an explicitly validated single perf-* child name selects the new capture directory.",
+    "Archive main retains all pre-existing identity, result, native-input, compression, no-overwrite and raw-content checks. The option is validated before archive writes.",
+    "Full author fixtures exercise default and override archive membership, raw gzip roundtrip, untouched originals and refusal to overwrite; independent pure controls also reject trailing newline, empty suffix and non-ASCII names.",
+    "The analyzer changes only recovery-description prose to positive path from collection root. Its algorithm and every numerical calculation are byte-identical outside that phrase."
+  ],
+  "limits": [
+    "Read-only source/AST review and pure selection controls, not a second native diagnostic or live archival run."
+  ]
+}

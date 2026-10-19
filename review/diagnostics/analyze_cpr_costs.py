@@ -48,7 +48,7 @@ def analyze(profile):
    stage=explicit_chain_stage(name)
    if stage is not None:
     labels[name].add(stage)
-    recovered.append({'symbol':name,'self_Ir':node.own['Ir'],'stage':stage,'basis':'Explicit retained caller chain contains the exact collection root; no positive incoming graph edge.'})
+    recovered.append({'symbol':name,'self_Ir':node.own['Ir'],'stage':stage,'basis':'Explicit retained caller chain contains the exact collection root; no positive incoming path from collection root.'})
  buckets=Counter();functions=[];groups={};incoming=Counter();inclusive=Counter()
  for node in profile.nodes.values():
   for callee,counts in node.edges.items():incoming[callee]+=node.calls[callee];inclusive[callee]+=counts['Ir']

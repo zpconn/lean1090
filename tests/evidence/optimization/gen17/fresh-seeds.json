@@ -1,0 +1,91 @@
+{
+  "recorded_utc": "2026-10-19T17:04:53.380843+00:00",
+  "message_seed": 1092673074,
+  "commb_seed": 2959148338,
+  "sampling": "Separate secrets.randbits(32) draws before fixture generation; all recorded historical seed values and mutual collisions rejected.",
+  "historical_seed_values_checked": 59,
+  "historical_seed_records_sha256": {
+    "tests/evidence/capstones-complete/fresh-seeds.json": "8d80569493d366ceeb5a35defa0fbec2375c8d642a5381fc2bdb93cca1251f20",
+    "tests/evidence/fresh-seed-FC004/seeds.json": "3de8ef2a531ca078b181272620d1fdab90183e75ce4df2b7dfb310f437d3f65f",
+    "tests/evidence/fresh-seed-FC005-revision/seeds.json": "02e4e04cacfe7f60b572ed9d2ab3a30421584186efb01decc3e3a8724adc4acb",
+    "tests/evidence/frozen-changes/FC005/fresh-seeds.json": "b1fbd7e14e76ae541288d1aa13ce01969c48d52762f1095498d1b2e93168dfef",
+    "tests/evidence/frozen-changes/FC006/fresh-seeds.json": "ff08a7b4615e8737fe030c5916805f817c1dd402523c4a7c65b0228e7fbc57d1",
+    "tests/evidence/optimization/gen1/fresh-seeds.json": "e25126778aa25fc459bd314752b03a28d4b1efd88578a1602f33b38f8dba92a1",
+    "tests/evidence/optimization/gen10/fresh-seeds.json": "0e563ceda9729cbb1ed2741492c7ac32fc85bcb0b2c2c3389ea85e2e0bfad932",
+    "tests/evidence/optimization/gen11/fresh-seeds.json": "0317f63f41bb6f5a4ac44f6aa758d83814c64cf72428140aa5c8c545a7643436",
+    "tests/evidence/optimization/gen12/fresh-seeds.json": "b46cb7055c4840ab7cccec6b1c54325da21ea2b02707226d33b4bb6812617952",
+    "tests/evidence/optimization/gen13/fresh-seeds.json": "10ed90ebd1bd9eee4f4dafe7a9109a05d64a96808345a4aa82e9fa7b483c09eb",
+    "tests/evidence/optimization/gen14/fresh-seeds.json": "fa6a51b42d3d5db067dc9f3df99a630ccd9a0fb1a1c8129e65d204aad278ae27",
+    "tests/evidence/optimization/gen15/fresh-seeds.json": "fdb0947043402431e7716498bccf18ba01def08213b98121f006b830af71475c",
+    "tests/evidence/optimization/gen16/fresh-seeds.json": "50af330a4bf89aa281709a5e33a5b2b41d18022bc31880ded3a0a06b483b28a0",
+    "tests/evidence/optimization/gen2/fresh-seeds.json": "5bd632e5626a2c68efbf0604b8f492849662bde58a51d7f9a2809ac9bbda4f0e",
+    "tests/evidence/optimization/gen3/fresh-seeds.json": "9c60fcf82e336c148082eda00a3dc7e4b1262b9525c57bdf4c171e026ac23654",
+    "tests/evidence/optimization/gen4/fresh-seeds.json": "7f0b7e0d70e3de93c3606f914c6021606fbfc0ada5b9156179e26cd53ea90672",
+    "tests/evidence/optimization/gen5/fresh-seeds.json": "a54451a186109b83b3dc21d8394c6e4ca591f0aa592b9a171307271b8c2e0466",
+    "tests/evidence/optimization/gen6/fresh-seeds.json": "617df04b362ad32af0147aab85ca6b3818c78059a2cf70c4f77bd61b92ced718",
+    "tests/evidence/optimization/gen7/fresh-seeds.json": "1611a49454c174dd5ea1a8e554a45ced87ec9304a02685d774d117dca3d7d2cc",
+    "tests/evidence/optimization/gen8/attempt-01-failed-fresh/fresh-seeds.json": "7842d31116990984e4b117ef4ea16ca25f8aaa91e9c8c488be51146aa9fdc519",
+    "tests/evidence/optimization/gen8/fresh-seeds.json": "7842d31116990984e4b117ef4ea16ca25f8aaa91e9c8c488be51146aa9fdc519",
+    "tests/evidence/optimization/gen9/fresh-seeds.json": "2236771cbcb9980d0babd4f8ede519608a57a1181f0d6aa8582abc0da0c18076",
+    "tests/evidence/publication/fresh-seeds.json": "d3e397f59ba1327009f515e5f1136bc651cc94157ebaa4d8adabbf5fc8c91ec2"
+  },
+  "generated_messages": 10000000,
+  "random_commb_assignments": 100000,
+  "additional_commb_strata": "All mandatory encoder, plausibility, status, extrema and score-boundary strata from unchanged frozen FuzzCommB.lean.",
+  "head_before_run": "b4765cc1e07a758bc4661c4f6f513deb39672b9f",
+  "source_sha256": {
+    "spec.lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "scripts/FuzzCommB.lean": "91f00452977717578c6449dbf32bc0b47088fed4aec292d3a16c9176ce1d6a12",
+    "scripts/check_commb_fuzz.py": "a4ded84426008492dbaa8052fbdc2d413b98024743637469bae240546b7f34b1",
+    "scripts/check_message_differential.py": "88d3ea0acb9fa3936135a1720039d1e892faa23c007f2d7748dd37e88084135d",
+    "Tests/MessageGenerator.lean": "4b6eb334dce721d5d95575164c764d344279a41453a5c3f44e5c721d43588a36",
+    "Tests/CommBDifferential.lean": "dbb8b735ccd30dc91ee4f72503db153428d59d0e0b71eb4b938fd7d2961b67cf"
+  },
+  "commands": [
+    [
+      "lake",
+      "env",
+      "lean",
+      "--run",
+      "scripts/FuzzCommB.lean",
+      ".cache/gen17-gate/fresh-commb.csv",
+      "100000",
+      "2959148338"
+    ],
+    [
+      "python3",
+      "-B",
+      "scripts/check_commb_fuzz.py",
+      ".cache/gen17-gate/fresh-commb.csv",
+      "tests/evidence/optimization/gen17/fresh-commb-coverage.json"
+    ],
+    [
+      "python3",
+      "-B",
+      "scripts/check_message_differential.py",
+      "--corpus",
+      "--generated",
+      "10000000",
+      "--seed",
+      "1092673074",
+      "--commb-boundaries",
+      ".cache/gen17-gate/fresh-commb.csv",
+      "--diagnostic",
+      "--output",
+      "tests/evidence/optimization/gen17/fresh-message"
+    ]
+  ],
+  "authorization_note": "Root selected generation17 only after both gen16 diagnostic reviews passed. Preparation only: campaign requires completed integrated build, current source/binary/helper preflight and explicit root launch release.",
+  "cache_prepared_before_generation": {
+    "path": ".cache/gen17-gate",
+    "prepared_utc": "2026-10-19T17:04:53.383474+00:00",
+    "previously_absent": true,
+    "initial_entries": []
+  },
+  "selected_scope": {
+    "runtime": "Impl/Binary64.lean",
+    "new_proof": "Proofs/Binary64Runtime.lean",
+    "integration": "Existing Decoder, BDS50/Comm-B and CPRTracking proof bridges",
+    "concept": "Complete immutable exact powerTwo table \u22121074..1023 with original all-Int formula fallback."
+  }
+}

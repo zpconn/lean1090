@@ -3,8 +3,11 @@
 import sys
 sys.dont_write_bytecode=True
 from pathlib import Path
-import argparse,gzip,hashlib,json,shutil
+import argparse,gzip,hashlib,json,re,shutil
 ROOT=Path(__file__).resolve().parents[2]
+def archive_subdirectories(perf_subdir='perf-gen15-cpr'):
+ assert re.fullmatch(r'perf-[A-Za-z0-9_-]+',perf_subdir), 'perf subdirectory must be one simple perf-* name'
+ return ['driver-attempt01','driver','driver-final','validation','callgrind',perf_subdir]
 def sha(p):
  h=hashlib.sha256()
  with p.open('rb') as f:
@@ -25,7 +28,8 @@ def retain(src,dst):
  assert sha(src)==rawsha
  return dst,{'source':str(src.relative_to(ROOT)),'source_sha256':rawsha,'source_bytes':size,'stored_sha256':sha(dst),'stored_bytes':dst.stat().st_size,'encoding':'deterministic-gzip-mtime0-no-filename' if compressed else 'identity'}
 def main():
- a=argparse.ArgumentParser();a.add_argument('--cache',type=Path,default=Path('.cache/gen15-cpr'));a.add_argument('--output',type=Path,default=Path('tests/evidence/diagnostics/gen15-cpr'));args=a.parse_args();cache=ROOT/args.cache;out=ROOT/args.output
+ a=argparse.ArgumentParser();a.add_argument('--cache',type=Path,default=Path('.cache/gen15-cpr'));a.add_argument('--output',type=Path,default=Path('tests/evidence/diagnostics/gen15-cpr'));a.add_argument('--perf-subdir',default='perf-gen15-cpr',help='single perf-* cache subdirectory; historical default preserved');args=a.parse_args();cache=ROOT/args.cache;out=ROOT/args.output
+ subdirectories=archive_subdirectories(args.perf_subdir)
  manifest=out/'archive-manifest.json';assert not manifest.exists()
  build=json.loads((cache/'driver-final/driver-build.json').read_text());run=json.loads((cache/'callgrind/run.json').read_text());val=json.loads((cache/'validation/summary.json').read_text());assert build['status']==run['status']==val['status']=='passed'
  assert run['root']=='l_Lean1090_Diagnostics_CPRCosts_runCPR' and run['prepared']['selected']==run['decoded']['retained']==172432
@@ -33,7 +37,7 @@ def main():
  for n,h in build['unchanged_native_inputs'].items():assert sha(ROOT/n)==h,n
  for n,h in build['artifacts'].items():assert sha(ROOT/n)==h,n
  files={};omitted={}
- for sub in ['driver-attempt01','driver','driver-final','validation','callgrind','perf-gen15-cpr']:
+ for sub in subdirectories:
   directory=cache/sub
   for src in sorted(directory.rglob('*')):
    if src.is_dir():continue

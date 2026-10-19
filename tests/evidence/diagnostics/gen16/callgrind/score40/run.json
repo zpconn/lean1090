@@ -1,0 +1,153 @@
+{
+  "kind": "untimed_instruction_profile",
+  "status": "passed",
+  "mode": "score40",
+  "root": "lp_lean1090_Lean1090_Impl_cbScorePasses",
+  "argv": [
+    "/home/zpconn/code/lean1090/.cache/profiling-tools/bin/valgrind",
+    "--tool=callgrind",
+    "--instr-atstart=no",
+    "--collect-atstart=no",
+    "--toggle-collect=lp_lean1090_Lean1090_Impl_cbScorePasses",
+    "--separate-callers=40",
+    "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+    "--callgrind-out-file=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/callgrind.out",
+    "--log-file=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/callgrind.log",
+    "/home/zpconn/code/lean1090/.cache/gen16-costs/driver/decode-costs",
+    "score40",
+    "/home/zpconn/code/lean1090/vendor/rs1090/crates/rs1090/data/long_flight.csv",
+    "--wait"
+  ],
+  "hashes": {
+    "binary": "73a9091ccdf63a6401d3e0f13a598bbc39b750dd8d2191e37144071145c60de6",
+    "corpus": "3e5aa149f2d45d675f79960f03c39a6a0e4f7c6acc3c067bebdd7b9be6ce5505",
+    "lock": "5217cce1fcaab1267b9544acf56992bec8accee67fb1645446887cba37bffaf8",
+    "orchestrator": "19494d6c90c2733f50debeee4ad075e10adbb721f9b455c76d611e8ba1705bbe"
+  },
+  "control": [
+    {
+      "label": "initial-state",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "status",
+        "internal"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 20
+    },
+    {
+      "label": "instrument-on",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "instrumentation",
+        "on"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 42
+    },
+    {
+      "label": "enabled-state",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "status",
+        "internal"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 35
+    },
+    {
+      "label": "dump",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "dump",
+        "production-root-complete"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 26
+    },
+    {
+      "label": "instrument-off",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "instrumentation",
+        "off"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 40
+    },
+    {
+      "label": "disabled-state",
+      "argv": [
+        "/home/zpconn/code/lean1090/.cache/profiling-tools/root/usr/bin/vgdb",
+        "--max-invoke-ms=0",
+        "--vgdb-prefix=/home/zpconn/code/lean1090/.cache/gen16-costs/callgrind/score40/vgdb",
+        "--pid=186",
+        "status",
+        "internal"
+      ],
+      "returncode": 0,
+      "poll_wakeups": 38
+    }
+  ],
+  "events": "Ir",
+  "interpretation": "Executed instructions, not elapsed time or throughput.",
+  "notes": [
+    "Preparation and output consumption run with instrumentation disabled.",
+    "Only production root calls and their descendants are collected.",
+    "Caller append and heartbeat reads are outside the collection root.",
+    "Use the explicit pre-disable dump callgrind.out.1; the termination dump can have zero totals and a wrapped summary after instrumentation is disabled."
+  ],
+  "pid": 186,
+  "prepared": {
+    "mode": "score40",
+    "non_additive_probe": true,
+    "nonempty_commb": 47166,
+    "phase": "prepared",
+    "probe_scope": "score_only",
+    "selected": 15513
+  },
+  "decoded": {
+    "loop_small_allocations": 458312,
+    "mode": "score40",
+    "phase": "decoded",
+    "retained": 15513
+  },
+  "result": {
+    "df20": 5944,
+    "df21": 9569,
+    "digest": {
+      "count": 15513,
+      "fnv1a64_decimal": 5894518989463146977,
+      "repr_bytes": 513686
+    },
+    "loop_small_allocations": 458312,
+    "mode": "score40",
+    "non_additive_probe": true,
+    "passes": 15513,
+    "phase": "result",
+    "probe_scope": "score_only",
+    "register_decimal": 64
+  },
+  "returncode": 0,
+  "profile_files": {
+    "callgrind.out": "cec3a90a75e6689ce7ec06d02e1555acccc7b81635e7aadc55a580e14ba947b0",
+    "callgrind.out.1": "da33d2b8692fe9b6a9ee241d51fc7a9095f0a221a01d32976387eee49b6d0dec"
+  },
+  "primary_profile": "callgrind.out.1",
+  "primary_ir": 381827703
+}

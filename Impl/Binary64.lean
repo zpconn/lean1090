@@ -21,10 +21,24 @@ to be modeled by these rational operations. `inRange` exposes that boundary.
 
 namespace Lean1090.Impl.Binary64
 
-/-- Rust f64, `MANTISSA_DIGITS`, `MIN_EXP`: exact integer powers of two. -/
-def powerTwo (exponent : Int) : Rat :=
+/-- Exact total power formula, also used to construct the immutable format table. -/
+def powerTwoFormula (exponent : Int) : Rat :=
   if exponent < 0 then 1 / (2 ^ exponent.natAbs : Nat)
   else (2 ^ exponent.toNat : Nat)
+
+/-- Every binary64 format exponent from −1074 through 1023, keyed only by exponent.
+Entries use the original exact formula, with no dependency on rounding or lookup. -/
+def powerTwoTable : Array Rat := Array.ofFn fun code : Fin 2098 =>
+  powerTwoFormula ((code.val : Int) - 1074)
+
+/-- Rust f64, `MANTISSA_DIGITS`, `MIN_EXP`: exact integer powers of two.
+Exponents outside the format table retain the unrestricted total formula. -/
+def powerTwo (exponent : Int) : Rat :=
+  if h : -1074 ≤ exponent ∧ exponent ≤ 1023 then
+    powerTwoTable[(exponent + 1074).toNat]'(by
+      have bound : (exponent + 1074).toNat < 2098 := by omega
+      simpa [powerTwoTable] using bound)
+  else powerTwoFormula exponent
 
 /-- Rust f64, arithmetic nearest/ties-even: round a nonnegative ratio
 to an integer by quotient/remainder, independent of Float. -/
