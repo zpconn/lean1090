@@ -36,38 +36,32 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 19 measured decode 1.795418481745× rs1090 and CPR
-1.432826926432×. The measured source is
-`79cc25b8c6f104da94e2b532439fe6e9b47f72ea`; independent result review passed
-all 683 checks on its first execution. All 96 samples and provenance are in
-`bench/runs/gen19/`, with the report in `bench/GEN19.md`. Both 2.00× targets
-remain unmet. Generation 19 replaces powers-of-two arithmetic with exact
-natural shifts/masks in four altitude, identity and signed-field definitions.
-All-input proofs, the full fixed gate, fresh 10M campaign and final reviews
-passed with 192 correctness inputs unchanged. Verified scratch cleanup
-reclaimed 11,092,008,960 allocated bytes.
+Generation 20 measured decode 1.852064793419× rs1090 and CPR
+1.485653752657×. Both 2.00× targets remain unmet. The measured source is
+`d3a10f60e7e83a35c53d5e4066a82dce048ad2be`, under the user's identity.
+All 96 samples and provenance are in `bench/runs/gen20/`, with the report in
+`bench/GEN20.md`. CPR overhead is 0.673603983019 µs/message for Lean and
+0.077853872831 for rs1090, as a difference between mode medians including noise.
 
-Presentation refresh, independent visual/data review and artifact-commit
-binding passed. Reviewed artifacts were committed and pushed as
-`3f3478c62a1db4c43b40cd8464bdf1787e10976f`, under the user's identity.
-Both diagnostics, full output/state accounting, independent reviews and bounded
-cleanup passed. The source/history hold is released. Generation 20 now batches
-eight CRC bit updates per loop iteration, targeting the largest frame/CRC
-stage. The same UInt32 update is unrolled; byte-aligned widths through 128 use
-the cached-word path, and all other natural widths retain the live bit loop.
-Runtime compilation and cached-bit, fold-regrouping and integrated all-input
-refinement proofs passed. The combined production/proof build and full fixed
-gate passed with 195 unchanged correctness inputs; fresh 10M validation and
-independent replay also passed. Verified scratch cleanup reclaimed
-11,092,819,968 allocated bytes. Final archive/plan review passed; all jobs are
-stopped for the clean source commit and timing. No table, Float code, trusted primitive or
-frozen change is added. The independently reviewed reporting helper now adds
-CPR overhead to future reports, with historical values in
-`bench/CPR-OVERHEAD.md` and evidence under
-`tests/evidence/optimization/cpr-overhead-reporting/`.
-Keep all existing
-frozen-file, proof, full-gate, isolated benchmark and disk-retention rules.
-`PROGRESS.md` records current work and review results.
+Generation 20 batches eight exact CRC bit updates per loop iteration. Its
+unconditional proofs preserve every natural width and word; the original bit
+loop remains the live fallback. No table, Float code, trusted primitive or
+frozen change was added. The full gate passed with 195 unchanged inputs and
+all 23 capstones. The separate fresh 10M campaign, independent replay and
+archive/plan review also passed. Verified scratch cleanup reclaimed
+11,092,819,968 allocated bytes. The clean-commit fresh-build benchmark and
+archival checks passed; independent measured-result review passed 706 checks.
+Artifact-source binding, presentation refresh and independent presentation
+review passed. All jobs are stopped for artifact publication. CPR diagnostic
+preparation and review are ready, with execution after the artifact commit.
+No generation 21 change is selected. Fresh diagnostics must
+precede that selection.
+
+The independently reviewed reporting helper now adds CPR overhead to every
+new report, with historical values through generation 19 in
+`bench/CPR-OVERHEAD.md`. Keep all existing frozen-file, proof, full-gate,
+isolated benchmark and disk-retention rules. `PROGRESS.md` records detailed
+current work, evidence and the formatting-only precommit wrapper error.
 
 ## CPR optimization and reporting constraints
 

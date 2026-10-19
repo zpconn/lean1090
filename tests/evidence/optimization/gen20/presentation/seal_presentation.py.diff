@@ -1,0 +1,57 @@
+--- tests/evidence/optimization/gen19/presentation/seal_presentation.py
++++ tests/evidence/optimization/gen20/presentation/seal_presentation.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Seal completed gen19 presentation and recorded visual inspection only."""
++"""Seal completed gen20 presentation and recorded visual inspection only."""
+ import sys
+ sys.dont_write_bytecode = True
+ import hashlib
+@@ -25,11 +25,11 @@
+ verification = load(E / 'verification.json')
+ readme = load(E / 'readme-verification.json')
+ assert execution['status'] == verification['status'] == readme['status'] == 'passed'
+-assert execution['review_sha256'] == '7ce0ffac700b450d0b56284fd36c5c2829cc6a9cb5f2c874657dbca0a2a4e984'
++assert execution['review_sha256'] == sha(ROOT / 'bench/runs/gen20/results-review.json')
+ assert execution['all_held_inputs_unchanged'] and execution['capstone_section_unchanged']
+ assert all(readme['checks'].values()) and not readme['findings']
+-assert verification['source_rows'] == 40 and verification['frames'] == 20
+-assert verification['plotted_values_checked'] == 840
++assert verification['source_rows'] == 42 and verification['frames'] == 21
++assert verification['plotted_values_checked'] == 924
+ assert len(readme['checks']) == 30 and len(readme['capstones']) == 23
+ assert all(item['valid'] for item in readme['local_links'])
+ for path, digest in execution['before_hashes'].items():
+@@ -45,7 +45,7 @@
+ assert len(previews) == 4
+ visual = {
+     'status': 'passed',
+-    'scope': 'Manual view_image inspection of final PNG and extracted GIF generations 0, 10 and 19 at 800 px README width; source/artist/all-frame checks are separate.',
++    'scope': 'Manual view_image inspection of final PNG and extracted GIF generations 0, 10 and 20 at 800 px README width; source/artist/all-frame checks are separate.',
+     'observations': [
+         'Titles, scales, units, legends and current endpoint labels are readable.',
+         'The 2.00x target is visible above both series and explicitly applies to both modes.',
+@@ -63,7 +63,7 @@
+ paths += [ROOT / path for path in ('review/packaging/check_presentation.py', 'review/presentation/render_throughput.py', 'review/presentation/verify_throughput.py')]
+ paths += [path for path in E.iterdir() if path.is_file() and path.name not in ('seal.stdout', 'seal.stderr', 'completion.json')]
+ completion = {
+-    'status': 'passed', 'generation': 19,
++    'status': 'passed', 'generation': 20,
+     'completed_utc': datetime.now(timezone.utc).isoformat(),
+     'benchmark_review_sha256': execution['review_sha256'],
+     'timed_commit': execution['timed_commit'],
+@@ -76,13 +76,12 @@
+         'source_artist_frame_values': verification['plotted_values_checked'],
+         'README_checks': len(readme['checks']), 'local_links': len(readme['local_links']),
+         'capstones_verbatim': True,
+-        'correctness_inputs': 192,
++        'correctness_inputs': 195,
+         'all_held_inputs_rehashed_at_completion': len(execution['before_hashes']),
+         'all_correctness_and_measured_native_inputs_held': True,
+     },
+     'prior_presentation_git_binding': execution['prior_presentation_commit'],
+     'producer_attempts': [{'attempt': 1, 'status': 'passed'}],
+-    'retained_read_only_inspection_error': 'inspection-01-error.json',
+     'limitations': 'Presentation only. No benchmark, decoder, proof build or profiler executed. Original presentation remains in Git history; all benchmark CSV/report/archive bytes retained. Evidence-local checker adds exact per-mode and conjunctive target status; generic checker and renderer are unchanged. Separate independent presentation review follows this producer seal.',
+ }
+ save(E / 'completion.json', completion)

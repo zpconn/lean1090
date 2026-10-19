@@ -1,0 +1,282 @@
+--- tests/evidence/diagnostics/gen19-cpr/run_prepared.py
++++ tests/evidence/diagnostics/gen20-cpr/run_prepared.py
+@@ -11,7 +11,7 @@
+ from pathlib import Path
+ from datetime import datetime,timezone
+ ROOT=Path(__file__).resolve().parents[4]
+-E=ROOT/'tests/evidence/diagnostics/gen19-cpr';C=ROOT/'.cache/gen19-cpr-costs';B=ROOT/'bench/runs/gen19'
++E=ROOT/'tests/evidence/diagnostics/gen20-cpr';C=ROOT/'.cache/gen20-cpr-costs';B=ROOT/'bench/runs/gen20'
+ os.environ['PYTHONDONTWRITEBYTECODE']='1';os.environ['GIT_OPTIONAL_LOCKS']='0'
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -24,10 +24,13 @@
+ def guard():
+  plan=read(E/'preparation.json')
+  for name,digest in plan['helpers'].items():assert sha(ROOT/name)==digest,name
+- spec=importlib.util.spec_from_file_location('gen19_decode_preflight',ROOT/'tests/evidence/diagnostics/gen19/run_prepared.py')
++ spec=importlib.util.spec_from_file_location('gen20_decode_preflight',ROOT/'tests/evidence/diagnostics/gen20/run_prepared.py')
+  module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+  summary=module.guard()  # Reviewed benchmark, six clean checks, full inputs/native/lock binding.
+- assert summary['generation']==19
++ assert summary['generation']==20
++ correctness=read(B/'correctness-inputs.json')
++ assert len(correctness)==195
++ assert {'Proofs/ParityByteBits.lean','Proofs/FoldBlocks.lean','Proofs/ParityByte.lean'} <= set(correctness)
+  head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+  assert head!=summary['commit'],'Await the reviewed artifact commit after timing.'
+  built=read(B/'binary-built.json');fresh=read(B/'fresh-native-inputs.json')
+@@ -45,7 +48,7 @@
+ def verify_build():
+  p=C/'driver-final/driver-build.json';build=read(p)
+  assert build['status']=='passed' and build['lock_sha256']==sha(ROOT/'spec.lock')
+- assert build['fresh_benchmark_native_binding']['path']=='bench/runs/gen19/fresh-native-inputs.json'
++ assert build['fresh_benchmark_native_binding']['path']=='bench/runs/gen20/fresh-native-inputs.json'
+  verify(build['unchanged_native_inputs']);verify(build['artifacts'])
+  return build
+ 
+@@ -74,20 +77,22 @@
+  return row
+ 
+ def main():
+- p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['build','collect']);p.add_argument('--execute',action='store_true');args=p.parse_args();os.chdir(ROOT)
++ p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['build','collect']);p.add_argument('--execute',action='store_true');p.add_argument('--artifact-commit',help='Exact published artifact commit supplied by root');args=p.parse_args();os.chdir(ROOT)
+  summary,head,held=guard();perf=None
++ if args.execute:assert args.artifact_commit==head, 'Root must supply the exact published artifact commit before execution.'
++ elif args.artifact_commit is not None:assert args.artifact_commit==head
+  if args.phase=='build':
+   assert not (C/'driver-final').exists(),'Retain previous driver attempt.'
+   commands=[([sys.executable,'-B','review/diagnostics/build_cpr_costs.py','--output',rel(C/'driver-final'),'--fresh-native-inputs',rel(B/'fresh-native-inputs.json')],'driver-build')]
+  else:
+-  build=verify_build();assert read(ROOT/'.cache/gen19-costs/driver/driver-build.json')['status']=='passed'
++  build=verify_build();assert read(ROOT/'.cache/gen20-costs/driver/driver-build.json')['status']=='passed'
+   perf=require_perf(summary)
+   assert not (C/'validation').exists() and not (C/'callgrind').exists(),'Retain previous native/profile attempt.'
+   commands=[([sys.executable,'-B','review/diagnostics/validate_cpr_costs.py','--build',rel(C/'driver-final/driver-build.json'),'--output',rel(C/'validation')],'native-validation'),([sys.executable,'-B','review/diagnostics/profile_cpr_costs.py','all','--binary',rel(C/'driver-final/cpr-costs'),'--output',rel(C/'callgrind')],'callgrind')]
+  print(json.dumps({'status':'guarded_not_executed' if not args.execute else 'authorized_execution_requested','phase':args.phase,'timed_commit':summary['commit'],'artifact_commit':head,'commands':commands}),flush=True)
+  if not args.execute:return
+  record=E/(args.phase+'-execution.json');assert not record.exists()
+- result={'status':'running','phase':args.phase,'started_utc':now(),'timed_commit':summary['commit'],'artifact_commit':head,'worker_sha256':summary['binary_sha256'],'benchmark_review_sha256':sha(B/'results-review.json'),'before_hashes':held,'perf_completion_sha256':perf,'controller_sha256':sha(__file__),'decode_controller_sha256':sha(ROOT/'tests/evidence/diagnostics/gen19/run_prepared.py'),'commands':[]}
++ result={'status':'running','phase':args.phase,'started_utc':now(),'timed_commit':summary['commit'],'artifact_commit':head,'worker_sha256':summary['binary_sha256'],'benchmark_review_sha256':sha(B/'results-review.json'),'before_hashes':held,'perf_completion_sha256':perf,'controller_sha256':sha(__file__),'decode_controller_sha256':sha(ROOT/'tests/evidence/diagnostics/gen20/run_prepared.py'),'commands':[]}
+  def save():record.write_text(json.dumps(result,indent=2)+'\n')
+  save()
+  try:
+--- tests/evidence/diagnostics/gen19-cpr/analyze_and_archive.py
++++ tests/evidence/diagnostics/gen20-cpr/analyze_and_archive.py
+@@ -7,8 +7,8 @@
+ import gzip, hashlib, json, os, shutil, subprocess
+ 
+ ROOT = Path.cwd()
+-BASE = ROOT / 'tests/evidence/diagnostics/gen19-cpr'
+-CACHE = ROOT / '.cache/gen19-cpr-costs'
++BASE = ROOT / 'tests/evidence/diagnostics/gen20-cpr'
++CACHE = ROOT / '.cache/gen20-cpr-costs'
+ def sha(p):
+     h = hashlib.sha256()
+     with p.open('rb') as f:
+@@ -85,7 +85,7 @@
+                            (CACHE/'analysis/fixture-checks.json',BASE/'analysis/fixture-checks.json')]:
+     assert not destination.exists();shutil.copyfile(source,destination);assert sha(source)==sha(destination)
+ execute('archive',['review/diagnostics/archive_cpr_costs.py','--cache',CACHE,'--output',BASE,
+-                   '--perf-subdir','perf-gen19-cpr'])
++                   '--perf-subdir','perf-gen20-cpr'])
+ print(json.dumps({'status':'passed','total_Ir':a['total_Ir'],'exclusive_stages':a['exclusive_stages'],
+                   'analysis_sha256':sha(BASE/'analysis/analysis.json.gz'),
+                   'archive_manifest_sha256':sha(BASE/'archive-manifest.json')}))
+--- tests/evidence/diagnostics/gen19-cpr/extract_table_contexts.py
++++ tests/evidence/diagnostics/gen20-cpr/extract_table_contexts.py
+@@ -13,7 +13,7 @@
+ def main():
+  p=argparse.ArgumentParser();p.add_argument('--profile',type=Path,required=True);p.add_argument('--analysis',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+  assert not a.output.exists()
+- source=Path('tests/evidence/diagnostics/gen19/independent-review/source-review.json');s=json.loads(source.read_text())
++ source=Path('tests/evidence/diagnostics/gen20/independent-review/source-review.json');s=json.loads(source.read_text())
+  assert s['status']=='passed_read_only_source_and_native_review' and s['power_two_table_live_path_verified']
+  lookup,formula,entry=[s[k] for k in ['power_two_lookup_anchor','power_two_formula_anchor','power_two_table_entry_anchor']]
+  analysis=json.loads(a.analysis.read_text());profile=parser.parse(a.profile)
+--- tests/evidence/diagnostics/gen19-cpr/extract_remaining_contexts.py
++++ tests/evidence/diagnostics/gen20-cpr/extract_remaining_contexts.py
+@@ -8,7 +8,7 @@
+ sys.path.insert(0, str(Path.cwd() / 'review/diagnostics'))
+ import analyze_callgrind as parser
+ 
+-E = Path('tests/evidence/diagnostics/gen19-cpr')
++E = Path('tests/evidence/diagnostics/gen20-cpr')
+ P = 'lp_lean1090_Lean1090_Impl_'
+ target = E / 'remaining-conversion-contexts.json'
+ assert not target.exists()
+--- tests/evidence/diagnostics/gen19-cpr/finalize.py
++++ tests/evidence/diagnostics/gen20-cpr/finalize.py
+@@ -10,7 +10,7 @@
+ import json
+ 
+ ROOT = Path(__file__).resolve().parents[4]
+-BASE = ROOT / 'tests/evidence/diagnostics/gen19-cpr'
++BASE = ROOT / 'tests/evidence/diagnostics/gen20-cpr'
+ 
+ 
+ def sha(p):
+@@ -81,7 +81,7 @@
+     assert actual.pop('batch_state_check') is False and expected == actual
+     assert native['tracking_rows'] == native['tracking_bit_identical'] == 172432
+     assert native['resolved_positions'] == 11347 and native['complete_batch_StreamState_and_routed_positions_equal']
+-    decode_result_path = ROOT / 'tests/evidence/diagnostics/gen19/native/all.jsonl'
++    decode_result_path = ROOT / 'tests/evidence/diagnostics/gen20/native/all.jsonl'
+     decode_result = [json.loads(line) for line in decode_result_path.read_text().splitlines()
+                      if line.strip()]
+     decode_result = [row for row in decode_result if row.get('phase') == 'result']
+@@ -131,7 +131,7 @@
+     assert remaining['actual_fallback_calls_inside_root'] == sum(
+         row['calls'] for row in conversion if row['target'] == source_review['dyadic_to_float_fallback_anchor'])
+     assert sha(ROOT / source_review['driver_build_manifest']) == source_review['driver_build_manifest_sha256']
+-    assert sha(ROOT / 'bench/runs/gen19/fresh-native-inputs.json') == source_review['fresh_native_inputs_sha256']
++    assert sha(ROOT / 'bench/runs/gen20/fresh-native-inputs.json') == source_review['fresh_native_inputs_sha256']
+     assert source_review['worker_sha256'] == perf['before_hashes']['.lake/build/bin/lean1090-bench']
+     isolated = load(BASE / 'isolated-perf-completion.json')
+     assert isolated['status'] == 'passed' and isolated['all_jobs_stopped'] and isolated['sequential_modes'] == ['decode', 'cpr']
+@@ -141,7 +141,7 @@
+         assert command['exit_code'] == 0
+         assert sha(BASE / (label + '.stdout')) == command['stdout_sha256']
+         assert sha(BASE / (label + '.stderr')) == command['stderr_sha256']
+-    report = ROOT / 'docs/GEN19-CPR-COST-BREAKDOWN.md'
++    report = ROOT / 'docs/GEN20-CPR-COST-BREAKDOWN.md'
+     final_files = {str(p.relative_to(BASE)): sha(p) for p in sorted(BASE.rglob('*'))
+                    if p.is_file() and 'independent-review' not in p.relative_to(BASE).parts
+                    and p.name not in {'validation.json', 'finalize-execution.log', 'finalize-sealed-execution.log'}}
+--- tests/evidence/diagnostics/gen19-cpr/write_report.py
++++ tests/evidence/diagnostics/gen20-cpr/write_report.py
+@@ -6,7 +6,7 @@
+ import gzip, json
+ 
+ ROOT = Path.cwd()
+-B = ROOT / 'tests/evidence/diagnostics/gen19-cpr'
++B = ROOT / 'tests/evidence/diagnostics/gen20-cpr'
+ load = lambda p: json.loads(p.read_text())
+ gz = lambda p: json.loads(gzip.decompress(p.read_bytes()))
+ a = gz(B/'analysis/analysis.json.gz')
+@@ -58,7 +58,7 @@
+ conversion_edges = [r for r in n['grouped_direct_edges'] if r['target'] in conversion_targets]
+ conversion_table = '\n'.join(f"| {r['stage']} | `{r['direct_caller']}` → `{r['target']}` | {r['calls']:,} | {r['inclusive_Ir_non_additive']:,} |" for r in conversion_edges)
+ r=v['result']; recoveries=a['explicit_chain_recoveries']; count=sum(x['self_Ir'] for x in recoveries)
+-text=f'''# Generation 19: live decode-plus-CPR instruction diagnostic
++text=f'''# Generation 20: live decode-plus-CPR instruction diagnostic
+ 
+ The full corpus loop executed **{total:,} collected instructions**. {largest_label} is the largest individual
+ category at {100*largest_value/total:.2f}% after separating the decoder's stages.
+@@ -71,7 +71,7 @@
+ `{source['worker_sha256']}`.
+ The unchanged diagnostic driver reuses 21 production/model objects from all
+ 22 freshly timed native sets, replacing only the worker object. The
+-[source/native review](../tests/evidence/diagnostics/gen19-cpr/independent-review/source-review.json)
++[source/native review](../tests/evidence/diagnostics/gen20-cpr/independent-review/source-review.json)
+ checks the live generated C and linked functions. No production code, proofs,
+ frozen files or build configuration changed during diagnosis.
+ 
+@@ -100,7 +100,7 @@
+ {r['full_state_repr_bytes']:,} representation bytes, digest
+ `{r['full_state_fnv1a64_decimal']}`. Routed reports include {r['airborne']:,}
+ airborne, {r['surface']:,} surface and {r['other']:,} other messages.
+-[Full validation](../tests/evidence/diagnostics/gen19-cpr/retained/validation/summary.json)
++[Full validation](../tests/evidence/diagnostics/gen20-cpr/retained/validation/summary.json)
+ retains commands, complete row/state checks and unchanged input hashes.
+ 
+ The following rows form one **exclusive self-cost partition**. The five
+@@ -120,8 +120,8 @@
+ transitions along those chains. Incoming edges from other unreachable nodes
+ do not establish root reachability. Foreign chains and remaining outside-root
+ events still fail. All eight attribution fixtures pass. The same previously reviewed
+-attribution algorithm is used unchanged. [Complete compressed analysis](../tests/evidence/diagnostics/gen19-cpr/analysis/analysis.json.gz),
+-[decoder subpartition](../tests/evidence/diagnostics/gen19-cpr/decoder-stages-summary.json).
++attribution algorithm is used unchanged. [Complete compressed analysis](../tests/evidence/diagnostics/gen20-cpr/analysis/analysis.json.gz),
++[decoder subpartition](../tests/evidence/diagnostics/gen20-cpr/decoder-stages-summary.json).
+ 
+ These helper observations are **overlapping inclusive costs**. They nest
+ inside the exclusive rows and each other; do not sum them into another total.
+@@ -156,7 +156,7 @@
+ The retained profile has {remaining['actual_fallback_calls_inside_root']:,} actual incoming calls to the source-verified
+ callable `toFloatFallback` boundary. This is an observation for this corpus;
+ the fallback remains required for arbitrary rational inputs. The separate
+-[remaining-conversion contexts](../tests/evidence/diagnostics/gen19-cpr/remaining-conversion-contexts.json)
++[remaining-conversion contexts](../tests/evidence/diagnostics/gen20-cpr/remaining-conversion-contexts.json)
+ reconcile `fromBits`, rounding and exponent calls against the complete helper
+ groups, preserving the caller chains that distinguish policy arithmetic from
+ conversion fallback. Their costs overlap and do not imply a timing gain.
+@@ -165,8 +165,8 @@
+ are below. Each callee-inclusive row is from an actual edge; parent calls,
+ rational normalization and nested GCD/power costs overlap. All {len(n['grouped_direct_edges'])}
+ grouped edges across stages, and their full contexts, are retained in the
+-[numeric supplement](../tests/evidence/diagnostics/gen19-cpr/numeric-contexts.json.gz).
+-The [power-only extraction](../tests/evidence/diagnostics/gen19-cpr/power-contexts.json)
++[numeric supplement](../tests/evidence/diagnostics/gen20-cpr/numeric-contexts.json.gz).
++The [power-only extraction](../tests/evidence/diagnostics/gen20-cpr/power-contexts.json)
+ is retained separately. Those inclusive costs do not measure exponent frequency or table-hit coverage.
+ The separate direct-edge census below observes the lookup/fallback branch
+ populations. Rounding and rational normalization remain present.
+@@ -193,7 +193,7 @@
+ is not inferred from cost. There are {tc['table_constructor_entries_inside_root']} observed table-entry constructor calls
+ inside collection. Construction occurs eagerly before the root, and its
+ startup work is not claimed to be zero. No claim is made about all possible
+-exponents. [Exact contexts and source binding](../tests/evidence/diagnostics/gen19-cpr/table-contexts.json.gz).
++exponents. [Exact contexts and source binding](../tests/evidence/diagnostics/gen20-cpr/table-contexts.json.gz).
+ 
+ The actual frozen worker was sampled separately before diagnostic native or
+ profile workers. Decode then CPR ran sequentially on CPU 0 using `cpu-clock:u`,
+@@ -203,7 +203,7 @@
+ {perf['unknown_cpr_leaf_samples']} unknown included leaves. Both report headers explicitly state zero lost
+ samples. Missing/erased ancestors make these conditional observations unsuitable
+ for whole-workload timing shares. One-pass durations are not benchmark results.
+-[Capture and exclusions](../tests/evidence/diagnostics/gen19-cpr/perf/completion.json).
++[Capture and exclusions](../tests/evidence/diagnostics/gen20-cpr/perf/completion.json).
+ 
+ Callgrind uses `--instr-atstart=no`, `--collect-atstart=no` and
+ `--separate-callers=40`. Its prepared/run/decoded/consume handshake and every
+@@ -211,17 +211,17 @@
+ `{a['raw_sha256']}`. Instruction profiling may overlap other instruction
+ diagnostics; none is a timing measurement.
+ 
+-The [archive](../tests/evidence/diagnostics/gen19-cpr/archive-manifest.json)
++The [archive](../tests/evidence/diagnostics/gen20-cpr/archive-manifest.json)
+ retains {archive['file_count']} original/tooling files in {archive['stored_bytes']:,} bytes,
+ with deterministic compressed and decompressed hashes. Large analysis outputs
+-are [separately compressed](../tests/evidence/diagnostics/gen19-cpr/analysis-retention.json).
++are [separately compressed](../tests/evidence/diagnostics/gen20-cpr/analysis-retention.json).
+ Rebuildable binaries stay outside Git with exact hashes and build provenance.
+ No old artifacts are recopied or replaced. The previously reviewed archive helper is reused unchanged with an explicit
+-`perf-gen19-cpr` directory. [Producer validation](../tests/evidence/diagnostics/gen19-cpr/validation.json)
++`perf-gen20-cpr` directory. [Producer validation](../tests/evidence/diagnostics/gen20-cpr/validation.json)
+ binds this report and all inputs. Independent raw-accounting review remains
+ the condition for selecting the next optimization.
+ '''
+-target=ROOT/'docs/GEN19-CPR-COST-BREAKDOWN.md'
++target=ROOT/'docs/GEN20-CPR-COST-BREAKDOWN.md'
+ assert not target.exists()
+ target.write_text(text)
+ print(json.dumps({'status':'passed','report':str(target.relative_to(ROOT)),
+--- tests/evidence/diagnostics/gen19-cpr/cleanup_cache.py
++++ tests/evidence/diagnostics/gen20-cpr/cleanup_cache.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Remove only reviewed, hash-bound gen19 CPR diagnostic cache duplicates.
++"""Remove only reviewed, hash-bound gen20 CPR diagnostic cache duplicates.
+ 
+ Run after independent review and with all diagnostic producers stopped. Raw
+ perf.data and every unbound cache file remain. No other cache root is allowed.
+@@ -16,8 +16,8 @@
+ import stat
+ 
+ ROOT = Path.cwd().resolve()
+-E = ROOT / 'tests/evidence/diagnostics/gen19-cpr'
+-C = ROOT / '.cache/gen19-cpr-costs'
++E = ROOT / 'tests/evidence/diagnostics/gen20-cpr'
++C = ROOT / '.cache/gen20-cpr-costs'
+ 
+ 
+ def sha(path, compressed=False):
+@@ -65,7 +65,7 @@
+     assert json.loads((E / 'validation.json').read_text())['status'] == 'passed'
+     assert C.resolve() == C and C.is_dir()
+     selected, seen = [], set()
+-    raw = C / 'perf-gen19-cpr/perf.data'
++    raw = C / 'perf-gen20-cpr/perf.data'
+     for name, binding in manifest['files'].items():
+         source = (ROOT / binding['source']).absolute()
+         if not source.is_relative_to(C) or source == raw:

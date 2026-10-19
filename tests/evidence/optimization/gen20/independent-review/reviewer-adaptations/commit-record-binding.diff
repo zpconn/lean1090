@@ -1,0 +1,32 @@
+--- tests/evidence/optimization/gen20/independent-review/reviewer-adaptations/check_benchmark_result-prepared.py
++++ tests/evidence/optimization/gen20/independent-review/check_benchmark_result.py
+@@ -135,6 +135,20 @@
+     require(len(inputs) == 195 and inputs == runner.gate_input_hashes(), 'current correctness inventory differs')
+     for name, digest in inputs.items():
+         require(archive.committed_sha(commit, name) == digest, 'gate input not committed: ' + name)
++    commit_record_path = EVIDENCE / 'independent-review/commit-verification.json'
++    require(sha(commit_record_path) == '85d1498ba0489e3c86e9374a0b68e2cd85b6bd0ed4d8d01622c1d73dc5607c31',
++            'retained commit verification changed')
++    commit_record = load(commit_record_path)
++    require(commit_record['status'] == 'passed' and commit_record['head'] == commit
++            and commit_record['author'] == 'zpconn <zpconn@gmail.com>'
++            and commit_record['clean_tree'] and commit_record['gate_inputs_match']
++            and commit_record['gate_input_count'] == len(inputs), 'commit verification differs')
++    require(commit_record['format_exit_code'] == 0 and not commit_record['format_stdout']
++            and not commit_record['format_stderr'] and bool(commit_record['prior_wrapper_error']),
++            'authored-source formatting or retained wrapper failure record differs')
++    require(datetime.fromisoformat(commit_record['recorded_utc'])
++            < datetime.fromisoformat(load(source / 'commands.json')[0]['start']['utc']),
++            'commit verification was not retained before benchmark preparation')
+     frozen = dict((name, digest) for digest, name in
+                   (line.split('  ', 1) for line in (ROOT / 'spec.lock').read_text().splitlines()))
+     require(len(frozen) == 104, 'wrong frozen membership')
+@@ -277,6 +291,8 @@
+         'report_verification_sha256': sha(destination / 'report-verification.json'),
+         'fresh_completion_sha256': sha(completion_path), 'gate_review_sha256': sha(gate_review_path), 'gate': data['gate'],
+         'current_gate_input_sha256': inputs,
++        'commit_verification_sha256': sha(commit_record_path),
++        'retained_commit_wrapper_error': commit_record['prior_wrapper_error'],
+         'history_scope': 'Prior sealed review hashes, their committed blobs, and exact 40-row CSV byte prefix; no new historical copies.',
+         'environment': {'platform': environments[0]['platform'], 'compiler': environments[0]['c_compiler'],
+                         'host_limits': {side: host['limitations'] for side, host in hosts.items()}},

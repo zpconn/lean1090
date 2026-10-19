@@ -1,6 +1,8 @@
 # Generation 20: eight-bit CRC loop batching
 
-This generation is in progress. No generation 20 throughput is claimed.
+Generation 20 measured 1.852064793419× rs1090 in decode mode and
+1.485653752657× with CPR. The frozen benchmark, archival checks and independent
+result review passed. [Measured results and raw samples](../bench/GEN20.md).
 
 The [generation 19 decoder diagnostic](GEN19-COST-BREAKDOWN.md) identifies
 frame/CRC as the largest exclusive stage: 3,496,975,683 of 9,587,482,169
@@ -40,8 +42,11 @@ Comm-B comparisons. Standard-view differences remain recorded separately.
 Independent fresh replay passed. Verified cleanup reclaimed 11,092,819,968
 allocated bytes of duplicate scratch while preserving evidence.
 
-Final archive/plan review passed with no findings. An isolated clean-commit
-benchmark is next; no throughput result is claimed yet.
+Final archive/plan review passed with no findings. The isolated benchmark ran
+once from clean commit `d3a10f60e7e83a35c53d5e4066a82dce048ad2be` with a fresh
+build and retained samples in both modes. Its reported CPR overhead is the
+difference of mode medians: 0.673603983019 µs/message for Lean and
+0.077853872831 for rs1090, including measurement noise.
 No Float code, tested-only callback, trusted primitive, frozen source or
 benchmark is changed. [Validation evidence](../tests/evidence/optimization/gen20/)
 includes every proof attempt and both complete campaigns.

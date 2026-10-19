@@ -5,7 +5,50 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 19 reached 1.795418481745× decode and
+**Latest measurement: generation 20 reached 1.852064793419× decode and
+1.485653752657× with CPR.** Both 2.00× targets remain unmet. The measured
+source is `d3a10f60e7e83a35c53d5e4066a82dce048ad2be`, authored and committed
+by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 434.308678/804.367812 ms
+for decode and 550.459560/817.792311 ms for CPR. Lean throughput increased
+by 3.94% and 3.08% versus generation 19. CPR overhead, computed from the
+difference between mode medians, is 0.673603983019 µs/message for Lean and
+0.077853872831 for rs1090; it includes measurement noise. All 96 samples, six
+clean-tree/lock checks, 22 fresh native sets and four Ultimate Performance
+power-plan captures are retained. Actual worker SHA-256:
+`b201da708eb97f588535d09c7b75d63ad1d098a93554b7f5db7014e780f0448b`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +508,499,458 ns
+(decode) and +532,239,355 ns (CPR) remain unadjusted. Worker monotonic durations
+determine the results. Environment: Intel Core Ultra 9 285K / WSL2, CPU 0;
+host workload limits remain documented. [Report and raw samples](bench/GEN20.md).
+The frozen benchmark and archival checks passed. Independent result review
+passed all 706 checks on its first execution, including both signed overhead
+values, all samples and provenance. Review SHA-256:
+`e06a8581344ad8dcf87fc58897c4c72edee764ac2487eb95053c2d5fe7455a23`.
+Artifact-source binding passed: all 195 inputs match the passed full gate,
+current tree and timed commit. Binding SHA-256:
+`6e9cb605d11ef12d5a1fa4ca5155f890b685d7bc2ab3f168d5f687032b0cde76`.
+Presentation refresh passed: 42 CSV rows, 21 GIF frames, 924 plotted values,
+95 links and all 23 capstones verbatim. Producer visual review and root PNG
+inspection passed. Producer completion SHA-256:
+`5ee30702a2059de2e48689b526e993dacdad3bcdaf8be1ababbc207ce066e8c8`.
+Independent presentation review passed all 1,138 checks on its first execution;
+the initial producer directory-preparation failure is retained, and no render
+or measurement was repeated. Independent completion SHA-256:
+`92a9c56bf5e59eee715b2023a0bd9b25df7920298e2d8cd8ce5063e7c3dc9505`.
+All jobs are stopped for the artifact commit and private push. CPR diagnostic
+preparation and its review are ready without any build, profile or history
+snapshot; execution waits for the published artifact commit. No generation 21
+change is selected.
+
+A broad precommit formatting check flagged whitespace in byte-preserved
+compiler excerpts and a generated diagnostic report. The wrapper still executed
+the authorized commit after that formatting assertion failed. The required
+full gate and source-equality check had passed. A scoped authored-source check,
+all 195 committed gate inputs and clean tree were verified before timing;
+the raw evidence remains unchanged. The exact account is retained in
+`tests/evidence/optimization/gen20/independent-review/commit-verification.json`.
+
+**Previous measurement: generation 19 reached 1.795418481745× decode and
 1.432826926432× with CPR.** Both 2.00× targets remain unmet. The measured
 source is `79cc25b8c6f104da94e2b532439fe6e9b47f72ea`, authored and committed
 by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 451.410097/810.470031 ms
@@ -50,7 +93,7 @@ unique raw perf. Receipts:
 `00a097e14a052474a5e641ae7776602b68efda0be5907b178e035b67bd02e7d1`.
 The source/history hold is released.
 
-**Generation 20 selected:** batch eight CRC bit updates per loop iteration,
+**Generation 20 implementation and validation:** batch eight CRC bit updates per loop iteration,
 targeting the largest frame/CRC stage. The same UInt32 update is explicitly
 unrolled; two cached words provide byte-aligned inputs through width 128.
 The original bit loop remains live for every other natural width. No table,
@@ -87,8 +130,8 @@ executions. Verified fresh cleanup reclaimed 5,359,484,928 allocated bytes from
 eight raw duplicate files, preserving all 33 retained artifacts and the active
 fixed-gate scratch. Completion SHA-256:
 `b1e049d14c9b407fb362c21591ad678b9666f6b0cc1492830bd1aafbd44e61a8`.
-No generation 20 measurement has started. Independent source/proof review
-passed 133 checks.
+These checks completed before timing. Independent source/proof review passed
+133 checks.
 Native review passed 751 checks, confirming the live byte loop and fallback
 with only Parity changed among 22 linked project native sets. Separate native
 assessment review passed 733 checks:
@@ -97,8 +140,8 @@ Final gate/archive/plan review passed its first execution with no findings,
 binding all 195 inputs, seven components, 62 archived files, fresh evidence,
 cleanup receipts and both exact 2/1 targets. Review SHA-256:
 `c6cc3596250bfe1e19fa64acb51d656b58c95336a86d69f3a733457a66df64cf`.
-All build, test and review jobs are stopped. The verified source commit and
-fresh-build benchmark in both modes are next, with plan SHA-256
+All build, test and review jobs were stopped before the verified source commit
+and fresh-build benchmark in both modes, with plan SHA-256
 `ce2871dde8fe9b696ec24c13654678e5f013bdb4e6af599a870426ca3db6d0a1`.
 [Design and current proof obligations](docs/GEN20-BYTE-CRC.md).
 

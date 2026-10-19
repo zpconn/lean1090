@@ -1,0 +1,34 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-19T20:09:55.888744+00:00",
+  "generation": 20,
+  "expected_csv_rows": 42,
+  "expected_frames": 21,
+  "expected_correctness_inputs": 195,
+  "inputs": {
+    "tests/evidence/optimization/gen19/presentation/run_refresh.py": "57997b3c39b499bd56893ace335a5873c0c3aebff38eca8e45f1afe86d9beeaf",
+    "tests/evidence/optimization/gen19/presentation/seal_presentation.py": "3ef7ca2a8da3bdae71482f2f6dbd60c0dbe2def71a0a5f59b49514bbc5a295ff",
+    "review/packaging/check_presentation.py": "d21b3ef563e88dd05dd85c50a879a94fa24368404c42e07803cf90c2bb0f188f",
+    "review/presentation/render_throughput.py": "8ae36a8cec232f20b29e540b7664aafa46655c5f1826cd91d5330c03b58d872b",
+    "review/presentation/verify_throughput.py": "4fb0c2bfdde70c6136e4c678501fa31e83dff5937fe71bd95630dc2e181eb7c8"
+  },
+  "files": {
+    "tests/evidence/optimization/gen20/presentation/run_refresh.py": "9e873d1f0747eedee4007251315ed56ef3fb8c1dd36e252dafbd63590cb73351",
+    "tests/evidence/optimization/gen20/presentation/run_refresh.py.diff": "3323d57c1f34bf3a5dbb205c0fd73b307043819d858b4b91ba14b7d55dba0183",
+    "tests/evidence/optimization/gen20/presentation/check_presentation.py": "a11a76ad0cce7a677938d502dc5ec6248fe0ef24bb4544622a1429a1ebeb0db4",
+    "tests/evidence/optimization/gen20/presentation/check_presentation.py.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen20/presentation/seal_presentation.py": "75a9b56705af0bd9a011760a458d85037a6cca194da35feadb5f99cf99f7d3b1",
+    "tests/evidence/optimization/gen20/presentation/seal_presentation.py.diff": "b8961f9f9e21f55946c0f283888c3889f12fa5bb4f42cd9fa8d8662725b47225",
+    "tests/evidence/optimization/gen20/presentation/checker.diff": "1aeb1d9021754cebc92191a1767beb61f97be1f8092192e7864a5545709fae28",
+    "tests/evidence/optimization/gen20/presentation/controller.diff": "3323d57c1f34bf3a5dbb205c0fd73b307043819d858b4b91ba14b7d55dba0183"
+  },
+  "changes": [
+    "Generation/path/count updates only in the established controller, plus explicitly preserve and hash the CPR overhead history link/files.",
+    "Evidence-local checker is byte-identical to gen19; generic renderer/verifier/packaging checker remain unchanged.",
+    "Seal binds the actual reviewed result hash from controller execution instead of a stale generation-specific literal; no reused reviewer error record.",
+    "Exact per-mode and conjunctive 2/1 decisions, prior capstones and all held source/native checks retained."
+  ],
+  "release_command_template": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen20/presentation/run_refresh.py --execute --expected-review-sha256 <actual-passed-gen20-results-review-SHA256>",
+  "syntax_validation": "ast.parse only; no rendering, README edit, native workload or build executed.",
+  "retained_preparation_failure": "preparation-attempt-01.json"
+}

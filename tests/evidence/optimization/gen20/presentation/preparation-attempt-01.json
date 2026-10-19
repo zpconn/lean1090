@@ -1,0 +1,15 @@
+{
+  "status": "failed_before_producer_preparation",
+  "recorded_utc": "2026-10-19T20:09:55.866598+00:00",
+  "executed_source_prefix": "from pathlib import Path\nfrom datetime import datetime,timezone\nimport ast,difflib,hashlib,json,re\nold=Path('tests/evidence/optimization/gen19/presentation');p=Path('tests/evidence/optimization/gen20/presentation');p.mkdir(exist_ok=False)",
+  "error": "FileExistsError: [Errno 17] File exists: 'tests/evidence/optimization/gen20/presentation'",
+  "cause": "Independent reviewer created its two owned files concurrently before producer directory creation.",
+  "existing_reviewer_files_sha256": {
+    "tests/evidence/optimization/gen20/presentation/check_independent.py": "4a314fa8c27e9e536fcb6cc4b6fc383fa6f96ae4e506edf4d3ce0532923b8c7b",
+    "tests/evidence/optimization/gen20/presentation/independent-checker.diff": "bfd9328d28d3b4bf1933f3d9912a0307be00f17b3bfde19e3a15695d83a75e28"
+  },
+  "writes_performed_before_error": false,
+  "renderer_executed": false,
+  "README_changed": false,
+  "resolution": "Use the existing directory and assert every new producer filename is absent; preserve reviewer files unchanged. Retained prepare.py executes that narrow correction."
+}
