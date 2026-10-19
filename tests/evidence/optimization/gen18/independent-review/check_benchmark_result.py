@@ -175,7 +175,7 @@ def main():
     require(all(report_receipt[key] == value for key, value in target_fields.items()), 'report target fields differ')
     require((ROOT / 'bench/results.csv').read_bytes() == prior + appended.getvalue().encode(),
             'CSV prior bytes or two appended rows differ')
-    report = ROOT / 'bench/GEN17.md'
+    report = ROOT / 'bench/GEN18.md'
     expected_report = archive.report_text(plan, data, source, old_rows, fresh)
     require(report.read_bytes() == expected_report.encode() and sha(report) == report_receipt['report_sha256'],
             'report reconstruction differs')
@@ -213,7 +213,8 @@ def main():
     require(archive.inventory(source) == original, 'original run files changed during review')
     require(archive.inventory(destination) == archived, 'archive files changed during review')
     result = {
-        'status': 'passed', 'generation': GEN, 'verified_utc': datetime.now(timezone.utc).isoformat(),
+        'status': 'passed', 'generation': GEN,
+        'reviewer_attempts': [{'attempt': 1, 'status': 'failed_reviewer_report_path', 'reason': 'Uppercase GEN17.md path remained in adapted reviewer; actual GEN18 report already matched exact reconstruction.', 'script_sha256': sha(EVIDENCE / 'independent-review/check_benchmark_result-attempt-01.py'), 'log_sha256': sha(EVIDENCE / 'independent-review/benchmark-result-01.log')}, {'attempt': 2, 'status': 'passed'}], 'verified_utc': datetime.now(timezone.utc).isoformat(),
         'checks_passed': checks, 'findings': [], 'commit': commit, 'attribution': attribution,
         'binary_sha256': summary['binary_sha256'], 'reviewer_sha256': sha(__file__),
         'source': str(source.relative_to(ROOT)), 'archive_original_files': 48, 'total_samples': 96,

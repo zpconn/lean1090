@@ -1,6 +1,9 @@
 # Generation 18: exact dyadic conversion
 
-This generation is in progress. No generation 18 benchmark result exists yet.
+Generation 18 measured **1.672168× decode** and **1.342735× decode plus CPR**
+against rs1090. CPR throughput improved 17.68% over generation 17; decode
+throughput changed by 0.06%. Both 2.00× targets remain unmet.
+[Measurements and raw samples](../bench/GEN18.md).
 
 The preceding [CPR diagnostic](GEN17-CPR-COST-BREAKDOWN.md) found numeric
 geography to be the largest detailed category: 3,857,692,962 of
@@ -72,6 +75,7 @@ compressed evidence and unique failures remain retained.
 
 Implementation, proof attempts and validation are retained
 under [`tests/evidence/optimization/gen18`](../tests/evidence/optimization/gen18/).
-Final independent gate/archive/plan review passed. The clean committed build
-and frozen two-mode benchmark remain required before accepting a performance
-result. No generation 18 throughput is claimed yet.
+Final independent gate/archive/plan review passed. Both modes were measured
+from a clean committed fresh build with all other project work stopped. The
+result review checked all 96 samples, native/build bindings and power/clock
+metadata; the unchanged full-gate inputs also bind the result artifact commit.

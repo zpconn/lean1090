@@ -8,13 +8,13 @@ decoder's scope, Comm-B inference and CPR position tracking. A separate referenc
 specification describes the wire formats; proofs keep the optimized decoder
 equal to it for **every byte input**.
 
-On the recorded single-core workload, generation 17 reaches **1.66937× rs1090
-throughput for decode and 1.15046× with CPR**. The goal is **2.00× in both modes**;
+On the recorded single-core workload, generation 18 reaches **1.67217× rs1090
+throughput for decode and 1.34273× with CPR**. The goal is **2.00× in both modes**;
 neither target is reached. All 23 capstone contracts are proved. No
 project-specific trusted primitives were added.
 
 [Get started](#try-it) · [Proofs](THEOREMS.md) · [Scope](SCOPE.md) ·
-[Benchmarks](bench/GEN17.md) · [Developer guide](docs/DEVELOPING.md)
+[Benchmarks](bench/GEN18.md) · [Developer guide](docs/DEVELOPING.md)
 
 ## Try it
 
@@ -42,12 +42,12 @@ decodes individual messages. See the [API and setup guide](docs/DEVELOPING.md).
 
 ## Performance
 
-Generation 17, commit `0f7882f3f949118c6871a40bc012bb8a957a6a3d`:
+Generation 18, commit `c19e00dd6bd45c89e4d6238d4ea9973947625449`:
 
 | Workload | lean1090 | rs1090 | Throughput ratio |
 | --- | ---: | ---: | ---: |
-| Decode | **356,867 msg/s** | 213,773 msg/s | **1.66937×** |
-| Decode + CPR | **243,907 msg/s** | 212,008 msg/s | **1.15046×** |
+| Decode | **357,069 msg/s** | 213,537 msg/s | **1.67217×** |
+| Decode + CPR | **287,039 msg/s** | 213,772 msg/s | **1.34273×** |
 
 ![Measured throughput across optimization generations](docs/images/throughput.png)
 
@@ -58,9 +58,9 @@ pairs; medians are reported. The measured host is an Intel Core Ultra 9 285K und
 WSL2 with the Windows Ultimate Performance plan. These are results on that
 workload and machine; they do not establish performance on other hosts or inputs.
 
-[Method and environment](bench/GEN17.md) ·
-[Raw decode samples](bench/runs/gen17/decode/samples.csv) ·
-[Raw CPR samples](bench/runs/gen17/cpr/samples.csv) ·
+[Method and environment](bench/GEN18.md) ·
+[Raw decode samples](bench/runs/gen18/decode/samples.csv) ·
+[Raw CPR samples](bench/runs/gen18/cpr/samples.csv) ·
 [All generations](bench/results.csv) ·
 [Animated history](docs/images/throughput.gif)
 

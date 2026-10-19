@@ -36,21 +36,19 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
-Generation 17 measured decode 1.669372647154× rs1090 and CPR
-1.150460800400×. The measured source is
-`0f7882f3f949118c6871a40bc012bb8a957a6a3d`; independent result review passed.
-All samples and provenance are in `bench/runs/gen17/`, with the report in
-`bench/GEN17.md`. Both 2.00× targets remain unmet. Generation 17 is the immutable
-exact `Binary64.powerTwo` format-exponent table with unrestricted formula
-fallback. Its proofs, full fixed gate, fresh 10M campaign and final gate review
-passed. Fresh decode and CPR diagnostics, independent reviews and bounded
-cleanup also passed. Generation 18 is now the exact small-dyadic integer
-bit-packing path for `Impl.CPR.Policy.toFloat`, with its original total
-conversion retained as fallback. Its all-input proof and CPR integration pass
-their targeted builds. The combined build and full fixed and fresh 10M
-validation passed. Evidence archival, verified scratch cleanup and final
-independent review passed. Source commit and isolated measurement are next;
-no generation 18 speedup is claimed.
+Generation 18 measured decode 1.672168328366× rs1090 and CPR
+1.342734836785×. The measured source is
+`c19e00dd6bd45c89e4d6238d4ea9973947625449`; independent result review passed.
+All samples and provenance are in `bench/runs/gen18/`, with the report in
+`bench/GEN18.md`. Both 2.00× targets remain unmet. Generation 18 adds exact
+small-dyadic integer bit packing to `Impl.CPR.Policy.toFloat`, with the original
+total conversion retained as fallback. Its all-input proof, CPR integration,
+full fixed gate, fresh 10M campaign and final reviews passed. Verified scratch
+cleanup reclaimed 11,092,893,696 allocated bytes. Result and presentation
+reviews passed; the artifacts are ready for commit and push. Fresh decode and CPR
+diagnostic controllers are prepared and independently reviewed; run them
+after the artifact commit before selecting generation 19. No generation 19
+change has been selected.
 Keep all existing frozen-file, proof, full-gate,
 isolated benchmark and disk-retention requirements. `PROGRESS.md` records
 current work and review results.

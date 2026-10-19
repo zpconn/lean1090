@@ -5,7 +5,36 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 17 reached 1.669372647154× decode and
+**Latest measurement: generation 18 reached 1.672168328366× decode and
+1.342734836785× with CPR.** Both 2.00× targets remain unmet. The measured
+source is `c19e00dd6bd45c89e4d6238d4ea9973947625449`, authored and committed
+by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 482.908888/807.504948 ms
+for decode and 600.725692/806.615314 ms for CPR. Lean throughput changed by
++0.06% and +17.68% respectively versus generation 17. All 96 raw samples,
+six clean-tree and lock checks, 22 freshly built native sets and four Ultimate
+Performance power-plan captures are retained. Actual worker SHA-256:
+`60f7c3a9b63468db3d65565e59760eba1f10f58b5cc2fc69ee2c6dc283eebe4d`.
+No UTC backsteps occurred; UTC-minus-monotonic differences of +429,111,109 ns
+(decode) and +420,362,503 ns (CPR) remain unadjusted. Worker monotonic durations
+determine the results. Environment: Intel Core Ultra 9 285K / WSL2, CPU 0;
+host workload limitations remain documented. [Report and raw samples](bench/GEN18.md).
+Independent result review passed all 679 checks. A reviewer-only stale report
+path was corrected with its failed attempt retained; no measured artifact
+changed. Review SHA-256:
+`26224c15327d4378b3aeba5d3885057ed93b95896e8f2b5c333ae47e58ff0bb8`.
+The artifact-commit binding confirms that all 190 correctness inputs match
+the passed full gate, timed source and current tree:
+`d61ec0289b3588a2a5890b198728c8ab32b689187de3bc1c3e426b5f454454da`.
+The README and charts now show generation 18 and both unmet 2.00× targets.
+Presentation validation checked all 38 CSV rows, 19 GIF frames, 760 plotted
+values, 93 local links and all 23 capstones verbatim. Visual inspection and
+independent review passed. Completion SHA-256:
+`fc9814b940b8be9e30f190466e95025d652b0866856ea560a0e435f5fa3cec26`.
+Next: commit and push the reviewed artifacts, run the prepared fresh decode
+and CPR diagnostics, and obtain independent review before selecting
+generation 19. No generation 19 change has been selected.
+
+**Previous measurement: generation 17 reached 1.669372647154× decode and
 1.150460800400× with CPR.** Both 2.00× targets remain unmet. The timed source
 is `0f7882f3f949118c6871a40bc012bb8a957a6a3d`, authored and committed by
 `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 483.182346/806.611392 ms
@@ -87,7 +116,8 @@ cases; 2,038,998 standard-view differences remain separately recorded.
 All 101,244 direct Comm-B cases match exactly, with complete coverage.
 Full-gate record SHA-256:
 `93d94f75ed06e97358da45b35367fc2e6f26876806effa3bc25f05bbb165cacb`.
-No generation 18 measurement has completed. The separate fresh campaign passed on its first execution with
+The generation 18 measurement and result review are recorded above. The
+separate fresh campaign passed on its first execution with
 seeds recorded beforehand: messages 22,240,697 and Comm-B 2,968,091,489.
 It checked 10,476,164 messages: 9,543,003 exact matches + 933,161 documented
 D001 cases, with 2,039,700 standard-view differences recorded separately.
@@ -121,9 +151,10 @@ targets. Review SHA-256:
 `a3aba9a73f0044243785a8b04636b627a6405c86ca2565fc413fd04fdfa22142`.
 A reviewer-only assumption about two diagnostic seals awaiting this commit
 was corrected with its failed attempt retained; producer evidence was
-unchanged. All jobs are stopped for the source commit and isolated measurement.
-The next diagnostic controllers are prepared and independently reviewed;
-they have not run and require the completed, reviewed generation 18 benchmark.
+unchanged. The source was committed and both modes measured from its clean,
+fresh build with all other project work stopped. The next diagnostic
+controllers are prepared and independently reviewed; they have not run and
+await the generation 18 artifact commit.
 
 **Previous measurement: generation 16 reached 1.668888276454× decode and
 1.029132958936× with CPR.** Neither 2.00× target is reached. The measured source
