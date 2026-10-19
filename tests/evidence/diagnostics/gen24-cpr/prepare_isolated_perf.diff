@@ -1,0 +1,92 @@
+--- tests/evidence/diagnostics/gen23-cpr/prepare_isolated_perf.py
++++ tests/evidence/diagnostics/gen24-cpr/prepare_isolated_perf.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Bind the prior sequential perf controller after both gen23 builds complete.
++"""Bind the prior sequential perf controller after both gen24 builds complete.
+ 
+ This preparation script does not execute the generated controller. Root supplies
+ the published artifact commit and separately releases isolated capture afterward.
+@@ -16,7 +16,7 @@
+ 
+ R = Path(__file__).resolve().parents[4]
+ E = Path(__file__).resolve().parent
+-OLD = R / 'tests/evidence/diagnostics/gen22-cpr'
++OLD = R / 'tests/evidence/diagnostics/gen23-cpr'
+ sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ load = lambda p: json.loads(Path(p).read_text())
+ p = argparse.ArgumentParser(description=__doc__)
+@@ -24,18 +24,18 @@
+ args = p.parse_args()
+ head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=R, text=True).strip()
+ assert head == args.artifact_commit
+-summary = load(R / 'bench/runs/gen23/summary.json')
+-review = load(R / 'bench/runs/gen23/results-review.json')
++summary = load(R / 'bench/runs/gen24/summary.json')
++review = load(R / 'bench/runs/gen24/results-review.json')
+ assert summary['status'] == 'complete' and review['status'] == 'passed' and not review['findings']
+-assert summary['commit'] == review['commit'] == '9b6868f21fcac0a59044153f01e6691d091dbb5c'
+-assert summary['binary_sha256'] == review['binary_sha256'] == 'ece1cad565de9b2b45288ee494b2b944e51f3cd6ac00b4728eaa41d94e55d47e'
++assert summary['commit'] == review['commit'] == 'cc337104e8d756f2acaef134096c4d593b888f5f'
++assert summary['binary_sha256'] == review['binary_sha256'] == '2af19ab4d11000ae0fe849e7c54221d1ad0dfd8b027990135536d7b574a3dedc'
+ assert head != summary['commit'], 'Root must supply the published artifact commit after timing.'
+-binding_path = R / 'tests/evidence/diagnostics/gen23/benchmark-source-binding.json'
++binding_path = R / 'tests/evidence/diagnostics/gen24/benchmark-source-binding.json'
+ binding = load(binding_path)
+ assert binding['status'] == 'passed' and binding['diagnostic_commit'] == head
+ assert binding['timed_original_commit'] == summary['commit']
+-builds = [R / '.cache/gen23-costs/driver/driver-build.json',
+-          R / '.cache/gen23-cpr-costs/driver-final/driver-build.json']
++builds = [R / '.cache/gen24-costs/driver/driver-build.json',
++          R / '.cache/gen24-cpr-costs/driver-final/driver-build.json']
+ for path in builds:
+     driver = load(path)
+     assert driver['status'] == 'passed'
+@@ -46,8 +46,8 @@
+ assert execution['status'] == 'passed' and execution['all_inputs_unchanged']
+ assert execution['artifact_commit'] == head
+ assert execution['build_manifest_sha256'] == sha(builds[1])
+-correctness = load(R / 'bench/runs/gen23/correctness-inputs.json')
+-assert len(correctness) == 200
++correctness = load(R / 'bench/runs/gen24/correctness-inputs.json')
++assert len(correctness) == 202
+ for name, digest in correctness.items():
+     assert sha(R / name) == digest, name
+ 
+@@ -55,14 +55,14 @@
+ prior_binding = load(OLD / 'run_isolated_perf.preparation.json')
+ assert sha(prior) == prior_binding['source_sha256']
+ replacements = {
+-    'gen22': 'gen23',
++    'gen23': 'gen24',
+     prior_binding['artifact_commit']: head,
+     prior_binding['timed_commit']: summary['commit'],
+     prior_binding['worker_sha256']: summary['binary_sha256'],
+     prior_binding['source_binding_sha256']: sha(binding_path),
+-    prior_binding['builds']['.cache/gen22-costs/driver/driver-build.json']: sha(builds[0]),
+-    prior_binding['builds']['.cache/gen22-cpr-costs/driver-final/driver-build.json']: sha(builds[1]),
+-    '==197': '==200', "'correctness_inputs':197": "'correctness_inputs':200",
++    prior_binding['builds']['.cache/gen23-costs/driver/driver-build.json']: sha(builds[0]),
++    prior_binding['builds']['.cache/gen23-cpr-costs/driver-final/driver-build.json']: sha(builds[1]),
++    '==200': '==202', "'correctness_inputs':200": "'correctness_inputs':202",
+ }
+ before = prior.read_text()
+ after = before
+@@ -71,7 +71,7 @@
+     after = after.replace(old, new)
+ prepared_helpers = {str((E / 'perf' / name).relative_to(R)): sha(E / 'perf' / name)
+                     for name in ['analyze_cpr_perf.py', 'seal_perf.py']}
+-old_helpers = {name.replace('gen22', 'gen23'): digest
++old_helpers = {name.replace('gen23', 'gen24'): digest
+                for name, digest in prior_binding['prepared_perf_helpers'].items()}
+ needle = 'prepared_perf_helpers=' + repr(old_helpers)
+ assert after.count(needle) == 1
+@@ -92,7 +92,7 @@
+           'builds': {str(path.relative_to(R)): sha(path) for path in builds},
+           'source_binding_sha256': sha(binding_path), 'artifact_commit': head,
+           'timed_commit': summary['commit'], 'worker_sha256': summary['binary_sha256'],
+-          'correctness_inputs': 200,
++          'correctness_inputs': 202,
+           'changes': 'Only generation/count and exact completed source/build/helper identities. Sequential decode then CPR, CPU 0, cpu-clock:u at 199 Hz, full input/output checks and overwrite guards are unchanged. Only the exact two prepared CPR helper files may preexist in its output directory.',
+           'execution': 'Only source binding/preparation ran; generated controller AST parsed, never imported or executed. Root explicit capture release and all-other-jobs-stop confirmation required.'}
+ with (E / 'run_isolated_perf.preparation.json').open('x') as stream:

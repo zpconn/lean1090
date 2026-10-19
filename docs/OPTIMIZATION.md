@@ -1,9 +1,11 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 23 reached
-2.41023× decode and 1.83573× with CPR; [its report](../bench/GEN23.md) retains
-all samples and conditions. No project-specific trusted primitive is authorized.
+Stop for review only when both measured ratios reach it. Generation 24 reached
+2.71966× decode and 1.98891× with CPR; [its report](../bench/GEN24.md) retains
+all samples and conditions. CPR remains below 2.00×; the result is retained
+without rounding up or repeating the benchmark. Fresh diagnostics precede
+the next change. No project-specific trusted primitive is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
 Float callbacks, including haversine, or adding tested-only Float code requires
@@ -85,10 +87,10 @@ are possibilities, not implemented changes or predicted speedups.
 - `fromBits` could construct the exact signed dyadic directly, retaining the
   same finite-value rejection and an unrestricted bit-pattern refinement.
   The existing Float callbacks and their arithmetic must remain unchanged.
-- Semantic field construction repeats some field decoding for standard and
-  oracle views. Sharing would require exact per-layout proofs, including every
-  documented discrepancy and unrestricted input; identical-looking formulas
-  are insufficient evidence.
+- Generation 24 implemented common Comm-B scalar and numerical-expression
+  sharing, with unrestricted per-layout proofs and all documented exceptions.
+  Any further semantic sharing must follow diagnostics of that measured code
+  and retain the same exact output guarantees.
 - ScoreGate's multiplication by 2^40 can potentially be moved out of its
   comparisons using exact integer ceiling/floor division. Its measured tail
   is smaller than the complete gate cost. Any alternative early decision from

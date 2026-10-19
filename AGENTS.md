@@ -36,6 +36,22 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
+Generation 24 measured **2.719659888260× decode** and **1.988905566484×
+decode plus CPR**. CPR remains below 2.00×; retain the result without rounding
+up or repeating it. Timed source:
+`cc337104e8d756f2acaef134096c4d593b888f5f`, under the user's identity.
+All 96 samples and provenance are in `bench/runs/gen24/`; report:
+`bench/GEN24.md`. Signed CPR overhead is 0.626399722789 µs/message for Lean
+and 0.025449638118 for rs1090, including noise between mode medians. Full fixed
+and separate fresh 10M campaigns passed with all 202 correctness inputs
+unchanged; all 23 contracts remain proved. Verified cleanup reclaimed
+11,092,824,064 allocated bytes of duplicate scratch. Canonical archival and independent result/source binding passed (731 checks,
+202 unchanged inputs). Presentation producer and independent review passed (1,461 checks). Artifact
+commit/private push is next. Fresh decode/CPR preparations passed independent review (27 and 77 checks),
+without builds or profiling. Build release follows artifact publication.
+Then collect fresh diagnostics before selecting the next optimization.
+No frozen file, Float callback or trusted primitive change is authorized.
+
 Generation 23 measured **2.410234595243× decode** and **1.835727795894×
 decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both
 mode targets are reached. Measured source:
@@ -49,7 +65,7 @@ The reviewed source/artifacts were pushed to private main as
 `0ead24dfeba4f6cb95926f0a0fb8624f4ed08807`, with a clean tree at publication.
 Fresh diagnostics and independent reviews passed against that exact source-
 equivalent commit. Verified cleanup reclaimed 480,059,392 bytes; source/history
-hold is released. Generation 24 is implementing shared Comm-B scalar values and
+hold is released. Generation 24 implemented shared Comm-B scalar values and
 pure numerical expression construction, with absent-status and oracle exception
 behavior preserved. Runtime, both sharing proof modules and the combined
 production/refinement
@@ -60,10 +76,10 @@ inputs unchanged. The fresh 10M
 campaign and independent replay pass with only documented D001 cases and
 full coverage. Verified fresh and fixed cleanup reclaimed 11,092,824,064 bytes. A
 completion-only reporting-path correction is retained; no tests or deletion
-repeated. Benchmark plan and final archive review pass. Source commit and isolated
-timing remain. Fresh seeds are 1,799,246,425 (messages)
+repeated. Benchmark plan and final archive review pass; source commit and both
+isolated measurements completed, with the result reported above. Fresh seeds are 1,799,246,425 (messages)
 and 1,314,217,890 (Comm-B), recorded before generation.
-No generation 24 gain is claimed.
+The generation 24 measurements and result/presentation reviews are above.
 See PROGRESS.md and `docs/GEN24-SEMANTIC-SHARING.md`.
 
 Generation 22 measured **2.203718886895× decode** and **1.715366461888×

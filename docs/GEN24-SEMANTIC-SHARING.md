@@ -64,7 +64,14 @@ correction is documented; tests and deletion were not repeated. Fixed archive:
 Final archive review passed: `1e0e8ce1e43e54bba0c3ac855b4d447aa0aa92bca4ad7dbf94d3387f8abac894`.
 Two reviewer-only failures are retained: a missing launcher flag and a
 sorted JSON map-key order assumption. Neither changed producer evidence
-or correctness inputs. Source commit and frozen timing are next.
-No speedup is claimed.
+or correctness inputs. The verified source was committed as
+`cc337104e8d756f2acaef134096c4d593b888f5f` and measured once under the
+frozen protocol. Decode reached 2.719659888260× and CPR 1.988905566484×;
+CPR remains below 2.00×. See [the report](../bench/GEN24.md) for all samples,
+signed CPR overheads, environment and limitations. Independent result review
+passed 731 checks; artifact/source binding confirms all 202 inputs match the
+full gate and timed commit. Presentation refresh and independent review
+passed (1,461 checks). Both measured modes, signed overheads and the CPR
+shortfall are reported without rounding the target result upward.
 
 Evidence will be retained under [generation 24](../tests/evidence/optimization/gen24/).

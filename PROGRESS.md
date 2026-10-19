@@ -5,7 +5,49 @@
 **Current state: optimization resumed toward 2.00× rs1090 in both modes.**
 The user set a new stretch goal of **2.00× headline decode and 2.00×
 decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 23 reached 2.410234595243× decode and
+**Latest measurement: generation 24 reached 2.719659888260× decode and
+1.988905566484× with CPR.** The CPR target remains unmet; do not round it up
+or repeat the measurement to seek a passing sample. Timed source:
+`cc337104e8d756f2acaef134096c4d593b888f5f`, authored and committed by
+`zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 287.971006/783.183194 ms
+for decode and 395.982363/787.571526 ms for CPR. Lean throughput increased
+13.18% and 8.26% versus generation 23. Signed CPR overhead is
+0.626399722789 µs/message for Lean and 0.025449638118 for rs1090, calculated
+from separate mode medians and including noise. All 96 samples, six clean-tree
+and lock checks, 22 fresh native sets and four Ultimate Performance power-plan
+captures are retained. Actual timed worker SHA-256:
+`2af19ab4d11000ae0fe849e7c54221d1ad0dfd8b027990135536d7b574a3dedc`.
+No UTC backsteps occurred; UTC-minus-monotonic differences were +4.546 µs
+(decode) and −2.025 µs (CPR), retained without adjustment. Worker monotonic
+durations determine the result. Environment: Intel Core Ultra 9 285K / WSL2,
+CPU 0, with host-observation limitations retained. The canonical archive and
+reporting checks passed on their first execution; all 48 original files are
+byte-identical and both CSV rows preserve the 48-row historical prefix.
+[Report and raw samples](bench/GEN24.md). Archive SHA-256:
+`e94dd48256a5be2c8f6e547c2e49e0cf55e4c8ec347d7cff5e6da7752bb4b4a8`.
+Independent result review passed all 731 checks on its first execution:
+`222ae998abbd12fd0dd2dcc1a06a6f58f49bb3b02e54826dacb24de26bf9949a`.
+Artifact/source binding also passed on its first execution, with all 202 inputs
+matching the full gate, timed commit and current tree:
+`510fb936238afea6995e1eb3f0334a2bae6cc547c52823a371d3eff5c88ed348`.
+Presentation refresh passed on its first execution: 50 CSV rows, 25 GIF
+frames, 1,300 plotted values, 95 links and all 23 capstones verbatim. Producer
+and root visual inspection passed. Independent presentation review passed
+1,461 checks; completion:
+`863bb28bca097bc162cad185f50717054232b8e766f79e65268ffe3bfb0e9f4c`.
+One reviewer-only diff-header path assumption was corrected and retained,
+with no producer rerender or changed evidence. The reviewer independently
+recomputed the added overhead history from 480 raw rows and 20 medians,
+preserving generations 0–19 exactly. Producer completion: `40e5bae8b4de0a47bc49a34da199ecd710d5ef31c92c23429f6e879cee647e04`.
+Artifact commit/private push follows. Both fresh diagnostic preparations
+passed independent review on their first executions: 27 decode checks and
+77 CPR checks, with no build or profile executed. Receipts:
+`7078435b8ff207ec4e3c19b95dcb63907aa6f4c5a0c3c426cecde6161fc61a0e`
+and `fb0f066431fa4f7b85472d06409822e0d6eeb7943cfc24c0a83262ac1bd1ae6d`.
+Collect and review those diagnostics after publication before selecting the
+next optimization. No generation 25 change is selected.
+
+**Previous measurement: generation 23 reached 2.410234595243× decode and
 1.835727795894× with CPR.** The CPR target remains unmet. Timed source:
 `9b6868f21fcac0a59044153f01e6691d091dbb5c`, authored and committed by
 `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 325.927027/785.560596 ms
@@ -58,7 +100,7 @@ and all sealed evidence. Receipts:
 and `63f7af6105ac88570eb602ddf9ac340eeef785c3dab56cfe6c3ae11a75fcc8d5`.
 The source/history hold is released.
 
-**Generation 24 is implementing common Comm-B semantic-view sharing.**
+**Generation 24 implementation and validation evidence.**
 Inference and semantics are the largest decode stages, at 2,306,055,650 and
 2,229,067,976 instructions. The oracle scalar view repeats 525,932 field
 decodes, costing 552,281,123 overlapping instructions within its `commBValue`
@@ -109,9 +151,11 @@ Final archive review passed: `1e0e8ce1e43e54bba0c3ac855b4d447aa0aa92bca4ad7dbf94
 Two reviewer-only failures are retained: a missing launcher flag stopped
 before any checks, then a sorted JSON map-key order assumption required
 correction. No producer evidence or correctness input changed. Final review
-passed; source commit and isolated timing are next.
+passed; source commit and isolated timing subsequently completed, with the
+measured results recorded above.
 Fresh preflight passed: `e346450a17206bf8998adb74c01bd841ecca4c2e399f66607d2fa5d64d963d09`.
-Commit and both frozen measurements remain. No generation 24 gain is claimed.
+Both frozen measurements and result/presentation reviews have passed;
+see the latest measurement above.
 See [implementation plan](docs/GEN24-SEMANTIC-SHARING.md).
 
 **Previous measurement: generation 22 reached 2.203718886895× decode and

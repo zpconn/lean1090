@@ -1,0 +1,43 @@
+{
+  "status": "prepared_not_executed",
+  "generation": 24,
+  "prepared_utc": "2026-10-19T23:44:56.121125+00:00",
+  "preparer": "tests/evidence/diagnostics/gen24-cpr/prepare_isolated_perf.py",
+  "preparer_sha256": "96a817595c45334d45cf2c8a29aa2f4d2d07702e57a3ae88faaa9d7e65e34991",
+  "preparer_diff": "tests/evidence/diagnostics/gen24-cpr/prepare_isolated_perf.diff",
+  "preparer_diff_sha256": "b7bde637316bc3a42357dea5494088215f9ef4ea899a4a6829f190394cfe83d1",
+  "prior_controller": "tests/evidence/diagnostics/gen23-cpr/run_isolated_perf.py",
+  "prior_controller_sha256": "5f06c701617819cb22ace27663935b6fdab91baf283dcb77c096f7e9e29cb38c",
+  "prior_bindings": "tests/evidence/diagnostics/gen23-cpr/run_isolated_perf.preparation.json",
+  "prior_bindings_sha256": "ad6d5430eb71de2b9c6c9883ab4e7f0705ba26fc1e813d6b9c548d7174ab8fa4",
+  "cpr_preparation_sha256": "5778039be6f8502246160005910c36e9d15335bda651802b381ec931688b44ce",
+  "timed_commit": "cc337104e8d756f2acaef134096c4d593b888f5f",
+  "worker_sha256": "2af19ab4d11000ae0fe849e7c54221d1ad0dfd8b027990135536d7b574a3dedc",
+  "correctness_inputs": 202,
+  "artifact_commit": null,
+  "source_binding_sha256": null,
+  "driver_build_hashes": null,
+  "future_preparation_command": [
+    "python3",
+    "-B",
+    "tests/evidence/diagnostics/gen24-cpr/prepare_isolated_perf.py",
+    "--artifact-commit",
+    "EXACT_PUBLISHED_ARTIFACT_COMMIT_FROM_ROOT"
+  ],
+  "future_root_capture_command": [
+    "python3",
+    "-B",
+    "tests/evidence/diagnostics/gen24-cpr/run_isolated_perf.py"
+  ],
+  "execution_prerequisites": [
+    "Both diagnostic builds and source-equivalence binding passed against root-supplied published artifact commit.",
+    "Final controller and its concrete build/hash binding reviewed; root explicitly releases isolated sampling after all other jobs stop."
+  ],
+  "protocol": "Unchanged sequential actual frozen-worker decode then CPR, CPU0, cpu-clock:u199Hz, dwarf16384; ready172432 and exact positions from reviewed samples; all protected inputs rehashed before/after; raw perf retained. No throughput claim.",
+  "overwrite_guards": "Both cache outputs must be absent; decode output must be absent; CPR output may contain only exact two hash-bound prepared sample helpers.",
+  "syntax_check": "ast.parse only; preparation/controller not imported or executed",
+  "build_started": false,
+  "history_snapshot_started": false,
+  "capture_started": false,
+  "native_work_started": false
+}
