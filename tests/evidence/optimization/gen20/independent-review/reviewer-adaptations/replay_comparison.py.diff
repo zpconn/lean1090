@@ -1,0 +1,20 @@
+--- tests/evidence/optimization/gen19/independent-review/replay_comparison.py
++++ tests/evidence/optimization/gen20/independent-review/replay_comparison.py
+@@ -6,7 +6,7 @@
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import gzip,hashlib,importlib.util,json,tempfile,time,traceback
+-P=Path('tests/evidence/optimization/gen19');Q=P/'fresh-message';R=P/'independent-review'
++P=Path('tests/evidence/optimization/gen20');Q=P/'fresh-message';R=P/'independent-review'
+ def sha(p):
+  h=hashlib.sha256()
+  with Path(p).open('rb') as f:
+@@ -29,7 +29,7 @@
+ module_spec=importlib.util.spec_from_file_location('frozen_comparison_replay',source);module=importlib.util.module_from_spec(module_spec);module_spec.loader.exec_module(module)
+ # The guarded CLI main is never invoked: no build, generation or decoder run.
+ assert module.LOG==[]
+-cache=Path(tempfile.mkdtemp(prefix='gen19-comparison-replay-',dir='.cache'))
++cache=Path(tempfile.mkdtemp(prefix='gen20-comparison-replay-',dir='.cache'))
+ record={'status':'running','started_utc':datetime.now(timezone.utc).isoformat(),'started_monotonic_ns':time.monotonic_ns(),'comparison_source_sha256':sha(source),'retention_manifest_sha256':sha(P/'fresh-retained-hashes.json'),'summary_sha256':sha(Q/'summary.json'),'temporary_output':str(cache),'native_execution':False}
+ def write():(R/'comparison-replay.json').write_text(json.dumps(record,indent=2)+'\n')
+ assert not (R/'comparison-replay.json').exists();write()

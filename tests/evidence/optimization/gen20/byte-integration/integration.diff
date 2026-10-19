@@ -1,0 +1,18 @@
+--- before/ParityWord.lean
++++ Proofs/ParityWord.lean
+@@ -1,4 +1,5 @@
+ import Proofs.ParityBits
++import Proofs.ParityByte
+ import Proofs.ParityLinear
+ import Mathlib.Tactic.IntervalCases
+ 
+@@ -76,7 +77,8 @@
+ natural width and word, including zero widths and indices beyond the cache. -/
+ theorem syndrome_eq (width word : Nat) :
+     Impl.Parity.syndrome width word = Spec.Parity.syndrome width word := by
+-  unfold Impl.Parity.syndrome Spec.Parity.syndrome
++  rw [ParityByte.syndrome_eq_bits]
++  unfold Impl.Parity.syndromeBits Spec.Parity.syndrome
+   simp only [ParityBits.cachedBit_eq, fold_range]
+   symm
+   exact List.foldl_hom (fun r : UInt32 => BitVec.ofNat 24 r.toNat)

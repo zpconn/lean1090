@@ -1,0 +1,29 @@
+--- tests/evidence/optimization/gen19/prepare_preflight.py
++++ tests/evidence/optimization/gen20/prepare_preflight.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import argparse,hashlib,importlib.util,json,secrets,subprocess
+-R=Path.cwd();P=Path('tests/evidence/optimization/gen19');C=Path('.cache/gen19-gate');OLD=Path('tests/evidence/optimization/gen18/fresh')
++R=Path.cwd();P=Path('tests/evidence/optimization/gen20');C=Path('.cache/gen20-gate');OLD=Path('tests/evidence/optimization/gen19')
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ load=lambda p:json.loads(Path(p).read_text())
+@@ -17,7 +17,7 @@
+ assert not(P/'fresh-execution.json').exists() and not any((P/'fresh-message').glob('*'))
+ build=load(P/'integration/targeted-build.json');assert build['status']=='passed' and build['exit_code']==0
+ sp=importlib.util.spec_from_file_location('fresh_gate_inventory',R/'review/diagnostics/run_generation_benchmark.py');mod=importlib.util.module_from_spec(sp);sp.loader.exec_module(mod)
+-gate=mod.gate_input_hashes();assert len(gate)==192 and gate==build['all_inputs_before']==build['all_inputs_after']
++gate=mod.gate_input_hashes();assert len(gate)==195 and gate==build['all_inputs_before']==build['all_inputs_after']
+ prep=load(P/'preparation.json');review=load(P/'independent-review/preparation-review.json');assert review['status']=='passed_read_only_preparation_review' and not review['findings']
+ for name,h in review['bindings'].items():assert sha(name)==h,name
+ helpers={name:row['sha256'] for name,row in prep['helpers'].items()}
+@@ -25,7 +25,7 @@
+ assert sha(__file__)==prep['preflight_preparer_sha256']
+ names=set(load(OLD/'fresh-message-run.json')['source_sha256_before'])
+ for directory in ['Impl','Model','Spec','Proofs','CLI','Tests']:names.update(str(p) for p in Path(directory).rglob('*.lean'))
+-names.update(['lakefile.toml','lake-manifest.json','lean-toolchain','Capstones.lean']);assert len(names)==117
++names.update(['lakefile.toml','lake-manifest.json','lean-toolchain','Capstones.lean']);assert len(names)==120
+ sources={name:sha(name) for name in sorted(names)}
+ binaries={'.lake/build/bin/'+name:sha('.lake/build/bin/'+name) for name in ['lean1090','messageGenerator','commbDifferential']}
+ for name,h in binaries.items():assert h==build['binary_hashes'][Path(name).name]

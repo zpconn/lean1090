@@ -1,0 +1,38 @@
+--- tests/evidence/optimization/gen19/fresh-orchestrate.py
++++ tests/evidence/optimization/gen20/fresh-orchestrate.py
+@@ -3,7 +3,7 @@
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ from pathlib import Path
+ import datetime,hashlib,json,subprocess,sys,time,traceback
+-p=Path('tests/evidence/optimization/gen19')
++p=Path('tests/evidence/optimization/gen20')
+ sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()
+ now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+ EXPECTED_RETENTION = ['fresh-commb-check.log', 'fresh-commb-coverage.json', 'fresh-commb-generate.log', 'fresh-commb-run.json', 'fresh-commb.csv.coverage.csv.gz', 'fresh-commb.csv.gz', 'fresh-execution.json', 'fresh-final-verification.json', 'fresh-message-run.json', 'fresh-message.log', 'fresh-message/commands.log', 'fresh-message/direct-input.txt.gz', 'fresh-message/direct-lean.jsonl.gz', 'fresh-message/direct-mismatches.jsonl.gz', 'fresh-message/direct-oracle.jsonl.gz', 'fresh-message/fresh-commb.csv.gz', 'fresh-message/generated.tsv.gz', 'fresh-message/input.hex.gz', 'fresh-message/lean.jsonl.gz', 'fresh-message/metadata.jsonl.gz', 'fresh-message/mismatches.jsonl.gz', 'fresh-message/oracle.jsonl.gz', 'fresh-message/standard-differences.jsonl.gz', 'fresh-message/summary.json', 'fresh-orchestrate.py', 'fresh-orchestration.log', 'fresh-preflight.json', 'fresh-retained-hashes.py', 'fresh-retention-execution.json', 'fresh-run-campaign.py', 'fresh-seeds.json', 'fresh-verification.log', 'fresh-verify.py']
+@@ -12,7 +12,7 @@
+ pre=json.loads((p/'fresh-preflight.json').read_text())
+ assert pre['status']=='passed' and pre['authorized_by']=='/root'
+ assert pre['seed_record_sha256']==sha(p/'fresh-seeds.json')
+-assert pre['source_count']==117
++assert pre['source_count']==120
+ for group in ['source_sha256','binary_sha256']:
+  for f,h in pre[group].items():assert sha(f)==h,f
+ for f,h in pre['helpers'].items():assert sha(f)==h,f
+@@ -24,7 +24,7 @@
+ assert not (p/'fresh-execution.json').exists(), 'Refuse to overwrite a campaign.'
+ assert not (p/'fresh-commb-run.json').exists() and not (p/'fresh-message-run.json').exists()
+ assert not any((p/'fresh-message').glob('*'))
+-cache=Path('.cache/gen19-gate')
++cache=Path('.cache/gen20-gate')
+ assert cache.is_dir(), 'Prepared cache directory is required before generation.'
+ assert not any((cache/name).exists() for name in ['fresh-commb.csv','fresh-commb.csv.coverage.csv']), 'Refuse to overwrite previous fixture artifacts.'
+ r={'status':'running','started_utc':now(),'started_monotonic_ns':time.monotonic_ns(),'preflight_sha256':sha(p/'fresh-preflight.json'),'seed_record_sha256':sha(p/'fresh-seeds.json'),'orchestrator_sha256':sha(__file__),'commands':[]}
+@@ -60,7 +60,7 @@
+  for f,info in manifest['files'].items():
+   if f not in mutable_records:assert sha(f)==info['sha256'] and Path(f).stat().st_size==info['bytes'],f
+  run=json.loads((p/'fresh-message-run.json').read_text())
+- assert len(run['source_sha256_after'])==117 and len(run['binary_sha256_after'])==3
++ assert len(run['source_sha256_after'])==120 and len(run['binary_sha256_after'])==3
+  for group in ['source_sha256','binary_sha256']:
+   assert run[group+'_before']==run[group+'_after']
+   for f,h in run[group+'_after'].items():assert sha(f)==h,f

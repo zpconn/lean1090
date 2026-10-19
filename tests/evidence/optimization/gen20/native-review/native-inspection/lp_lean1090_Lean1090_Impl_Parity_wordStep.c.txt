@@ -1,0 +1,51 @@
+76: LEAN_EXPORT uint32_t lp_lean1090_Lean1090_Impl_Parity_wordStep(uint32_t v_remainder_2_, uint8_t v_bit_3_){
+77: _start:
+78: {
+79: uint32_t v___y_5_; uint32_t v___y_6_; uint32_t v___x_10_; uint32_t v___x_11_; uint32_t v___y_13_; 
+80: v___x_10_ = 1;
+81: v___x_11_ = lean_uint32_shift_left(v_remainder_2_, v___x_10_);
+82: if (v_bit_3_ == 0)
+83: {
+84: uint32_t v___x_20_; 
+85: v___x_20_ = 0;
+86: v___y_13_ = v___x_20_;
+87: goto v___jp_12_;
+88: }
+89: else
+90: {
+91: v___y_13_ = v___x_10_;
+92: goto v___jp_12_;
+93: }
+94: v___jp_4_:
+95: {
+96: uint32_t v___x_7_; uint32_t v___x_8_; uint32_t v___x_9_; 
+97: v___x_7_ = lean_uint32_xor(v___y_5_, v___y_6_);
+98: v___x_8_ = 16777215;
+99: v___x_9_ = lean_uint32_land(v___x_7_, v___x_8_);
+100: return v___x_9_;
+101: }
+102: v___jp_12_:
+103: {
+104: uint32_t v_shifted_14_; uint32_t v___x_15_; uint32_t v___x_16_; uint32_t v___x_17_; uint8_t v___x_18_; 
+105: v_shifted_14_ = lean_uint32_lor(v___x_11_, v___y_13_);
+106: v___x_15_ = 8388608;
+107: v___x_16_ = lean_uint32_land(v_remainder_2_, v___x_15_);
+108: v___x_17_ = 0;
+109: v___x_18_ = lean_uint32_dec_eq(v___x_16_, v___x_17_);
+110: if (v___x_18_ == 0)
+111: {
+112: uint32_t v___x_19_; 
+113: v___x_19_ = 33551369;
+114: v___y_5_ = v_shifted_14_;
+115: v___y_6_ = v___x_19_;
+116: goto v___jp_4_;
+117: }
+118: else
+119: {
+120: v___y_5_ = v_shifted_14_;
+121: v___y_6_ = v___x_17_;
+122: goto v___jp_4_;
+123: }
+124: }
+125: }
+126: }

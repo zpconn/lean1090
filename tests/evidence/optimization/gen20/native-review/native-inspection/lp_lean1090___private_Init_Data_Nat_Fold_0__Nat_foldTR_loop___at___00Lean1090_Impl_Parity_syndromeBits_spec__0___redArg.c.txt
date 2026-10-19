@@ -1,0 +1,120 @@
+768: LEAN_EXPORT uint32_t lp_lean1090___private_Init_Data_Nat_Fold_0__Nat_foldTR_loop___at___00Lean1090_Impl_Parity_syndromeBits_spec__0___redArg(lean_object* v_width_299_, lean_object* v_word_300_, uint64_t v_high_301_, uint64_t v_low_302_, lean_object* v_n_303_, lean_object* v_j_304_, uint32_t v_a_305_){
+769: _start:
+770: {
+771: lean_object* v_zero_306_; uint8_t v_isZero_307_; 
+772: v_zero_306_ = lean_unsigned_to_nat(0u);
+773: v_isZero_307_ = lean_nat_dec_eq(v_j_304_, v_zero_306_);
+774: if (v_isZero_307_ == 1)
+775: {
+776: lean_dec(v_j_304_);
+777: return v_a_305_;
+778: }
+779: else
+780: {
+781: lean_object* v_one_308_; lean_object* v_n_309_; uint32_t v___y_311_; uint32_t v___y_312_; uint32_t v___y_318_; uint32_t v___y_319_; uint8_t v___y_327_; lean_object* v___x_331_; lean_object* v___x_332_; lean_object* v___x_333_; lean_object* v___x_334_; uint8_t v___x_335_; 
+782: v_one_308_ = lean_unsigned_to_nat(1u);
+783: v_n_309_ = lean_nat_sub(v_j_304_, v_one_308_);
+784: v___x_331_ = lean_nat_sub(v_n_303_, v_j_304_);
+785: lean_dec(v_j_304_);
+786: v___x_332_ = lean_nat_sub(v_width_299_, v_one_308_);
+787: v___x_333_ = lean_nat_sub(v___x_332_, v___x_331_);
+788: lean_dec(v___x_331_);
+789: lean_dec(v___x_332_);
+790: v___x_334_ = lean_unsigned_to_nat(64u);
+791: v___x_335_ = lean_nat_dec_lt(v___x_333_, v___x_334_);
+792: if (v___x_335_ == 0)
+793: {
+794: lean_object* v___x_336_; uint8_t v___x_337_; 
+795: v___x_336_ = lean_unsigned_to_nat(128u);
+796: v___x_337_ = lean_nat_dec_lt(v___x_333_, v___x_336_);
+797: if (v___x_337_ == 0)
+798: {
+799: uint8_t v___x_338_; 
+800: v___x_338_ = l_Nat_testBit(v_word_300_, v___x_333_);
+801: lean_dec(v___x_333_);
+802: v___y_327_ = v___x_338_;
+803: goto v___jp_326_;
+804: }
+805: else
+806: {
+807: lean_object* v___x_339_; uint64_t v___x_340_; uint64_t v___x_341_; uint64_t v___x_342_; uint64_t v___x_343_; uint8_t v___x_344_; 
+808: v___x_339_ = lean_nat_sub(v___x_333_, v___x_334_);
+809: lean_dec(v___x_333_);
+810: v___x_340_ = lean_uint64_of_nat(v___x_339_);
+811: lean_dec(v___x_339_);
+812: v___x_341_ = lean_uint64_shift_right(v_high_301_, v___x_340_);
+813: v___x_342_ = 1ULL;
+814: v___x_343_ = lean_uint64_land(v___x_341_, v___x_342_);
+815: v___x_344_ = lean_uint64_dec_eq(v___x_343_, v___x_342_);
+816: v___y_327_ = v___x_344_;
+817: goto v___jp_326_;
+818: }
+819: }
+820: else
+821: {
+822: uint64_t v___x_345_; uint64_t v___x_346_; uint64_t v___x_347_; uint64_t v___x_348_; uint8_t v___x_349_; 
+823: v___x_345_ = lean_uint64_of_nat(v___x_333_);
+824: lean_dec(v___x_333_);
+825: v___x_346_ = lean_uint64_shift_right(v_low_302_, v___x_345_);
+826: v___x_347_ = 1ULL;
+827: v___x_348_ = lean_uint64_land(v___x_346_, v___x_347_);
+828: v___x_349_ = lean_uint64_dec_eq(v___x_348_, v___x_347_);
+829: v___y_327_ = v___x_349_;
+830: goto v___jp_326_;
+831: }
+832: v___jp_310_:
+833: {
+834: uint32_t v___x_313_; uint32_t v___x_314_; uint32_t v___x_315_; 
+835: v___x_313_ = lean_uint32_xor(v___y_311_, v___y_312_);
+836: v___x_314_ = 16777215;
+837: v___x_315_ = lean_uint32_land(v___x_313_, v___x_314_);
+838: v_j_304_ = v_n_309_;
+839: v_a_305_ = v___x_315_;
+840: goto _start;
+841: }
+842: v___jp_317_:
+843: {
+844: uint32_t v_shifted_320_; uint32_t v___x_321_; uint32_t v___x_322_; uint32_t v___x_323_; uint8_t v___x_324_; 
+845: v_shifted_320_ = lean_uint32_lor(v___y_318_, v___y_319_);
+846: v___x_321_ = 8388608;
+847: v___x_322_ = lean_uint32_land(v_a_305_, v___x_321_);
+848: v___x_323_ = 0;
+849: v___x_324_ = lean_uint32_dec_eq(v___x_322_, v___x_323_);
+850: if (v___x_324_ == 0)
+851: {
+852: uint32_t v___x_325_; 
+853: v___x_325_ = 33551369;
+854: v___y_311_ = v_shifted_320_;
+855: v___y_312_ = v___x_325_;
+856: goto v___jp_310_;
+857: }
+858: else
+859: {
+860: v___y_311_ = v_shifted_320_;
+861: v___y_312_ = v___x_323_;
+862: goto v___jp_310_;
+863: }
+864: }
+865: v___jp_326_:
+866: {
+867: uint32_t v___x_328_; uint32_t v___x_329_; 
+868: v___x_328_ = 1;
+869: v___x_329_ = lean_uint32_shift_left(v_a_305_, v___x_328_);
+870: if (v___y_327_ == 0)
+871: {
+872: uint32_t v___x_330_; 
+873: v___x_330_ = 0;
+874: v___y_318_ = v___x_329_;
+875: v___y_319_ = v___x_330_;
+876: goto v___jp_317_;
+877: }
+878: else
+879: {
+880: v___y_318_ = v___x_329_;
+881: v___y_319_ = v___x_328_;
+882: goto v___jp_317_;
+883: }
+884: }
+885: }
+886: }
+887: }

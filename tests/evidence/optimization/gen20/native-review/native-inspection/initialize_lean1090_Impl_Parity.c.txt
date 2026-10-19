@@ -1,0 +1,18 @@
+1713: LEAN_EXPORT lean_object* initialize_lean1090_Impl_Parity(uint8_t builtin) {
+1714: lean_object * res;
+1715: if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+1716: _G_initialized = true;
+1717: lean_initialize_runtime_module();
+1718: res = initialize_Init(builtin);
+1719: if (lean_io_result_is_error(res)) return res;
+1720: lean_dec_ref(res);
+1721: res = initialize_Init(builtin);
+1722: if (lean_io_result_is_error(res)) return res;
+1723: lean_dec_ref(res);
+1724: res = initialize_lean1090_Impl_Bits(builtin);
+1725: if (lean_io_result_is_error(res)) return res;
+1726: lean_dec_ref(res);
+1727: lp_lean1090_Lean1090_Impl_Parity_generator = _init_lp_lean1090_Lean1090_Impl_Parity_generator();
+1728: lean_mark_persistent(lp_lean1090_Lean1090_Impl_Parity_generator);
+1729: return lean_io_result_mk_ok(lean_box(0));
+1730: }

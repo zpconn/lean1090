@@ -1,0 +1,99 @@
+{
+_start:
+{
+lean_object* v___y_122_; lean_object* v___y_123_; lean_object* v_start_129_; lean_object* v_width_130_; uint8_t v_coding_131_; lean_object* v_scale_132_; lean_object* v_offset_133_; lean_object* v_status_134_; lean_object* v___x_143_; uint8_t v___x_144_; 
+v_start_129_ = lean_ctor_get(v_column_119_, 1);
+lean_inc(v_start_129_);
+v_width_130_ = lean_ctor_get(v_column_119_, 2);
+lean_inc(v_width_130_);
+v_coding_131_ = lean_ctor_get_uint8(v_column_119_, sizeof(void*)*6);
+v_scale_132_ = lean_ctor_get(v_column_119_, 3);
+lean_inc_ref(v_scale_132_);
+v_offset_133_ = lean_ctor_get(v_column_119_, 4);
+lean_inc_ref(v_offset_133_);
+v_status_134_ = lean_ctor_get(v_column_119_, 5);
+lean_inc(v_status_134_);
+lean_dec_ref(v_column_119_);
+v___x_143_ = lean_unsigned_to_nat(0u);
+v___x_144_ = lean_nat_dec_eq(v_status_134_, v___x_143_);
+if (v___x_144_ == 0)
+{
+lean_object* v___x_145_; lean_object* v___x_146_; uint8_t v___x_147_; 
+v___x_145_ = lean_unsigned_to_nat(1u);
+v___x_146_ = lp_lean1090_Lean1090_Impl_payloadBits(v_word_120_, v_status_134_, v___x_145_);
+lean_dec(v_status_134_);
+v___x_147_ = lean_nat_dec_eq(v___x_146_, v___x_143_);
+lean_dec(v___x_146_);
+if (v___x_147_ == 0)
+{
+goto v___jp_135_;
+}
+else
+{
+lean_object* v___x_148_; 
+lean_dec_ref(v_offset_133_);
+lean_dec_ref(v_scale_132_);
+lean_dec(v_width_130_);
+lean_dec(v_start_129_);
+v___x_148_ = lean_box(0);
+return v___x_148_;
+}
+}
+else
+{
+lean_dec(v_status_134_);
+goto v___jp_135_;
+}
+v___jp_121_:
+{
+lean_object* v___x_124_; uint8_t v___x_125_; 
+v___x_124_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_payloadValue___closed__0, &lp_lean1090_Lean1090_Impl_payloadValue___closed__0_once, _init_lp_lean1090_Lean1090_Impl_payloadValue___closed__0);
+v___x_125_ = l_instDecidableEqRat_decEq(v___y_122_, v___x_124_);
+if (v___x_125_ == 0)
+{
+lean_object* v___x_126_; lean_object* v___x_127_; 
+v___x_126_ = l_Rat_add(v___y_123_, v___y_122_);
+v___x_127_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v___x_127_, 0, v___x_126_);
+return v___x_127_;
+}
+else
+{
+lean_object* v___x_128_; 
+lean_dec_ref(v___y_122_);
+v___x_128_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v___x_128_, 0, v___y_123_);
+return v___x_128_;
+}
+}
+v___jp_135_:
+{
+lean_object* v___x_136_; lean_object* v___x_137_; lean_object* v___x_138_; uint8_t v___x_139_; 
+v___x_136_ = lp_lean1090_Lean1090_Impl_payloadBits(v_word_120_, v_start_129_, v_width_130_);
+lean_dec(v_start_129_);
+v___x_137_ = lp_lean1090_Lean1090_Impl_payloadInteger(v_coding_131_, v_width_130_, v___x_136_);
+lean_dec(v_width_130_);
+v___x_138_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_payloadValue___closed__1, &lp_lean1090_Lean1090_Impl_payloadValue___closed__1_once, _init_lp_lean1090_Lean1090_Impl_payloadValue___closed__1);
+v___x_139_ = l_instDecidableEqRat_decEq(v_scale_132_, v___x_138_);
+if (v___x_139_ == 0)
+{
+lean_object* v___x_140_; lean_object* v___x_141_; 
+v___x_140_ = l_Rat_ofInt(v___x_137_);
+v___x_141_ = l_Rat_mul(v___x_140_, v_scale_132_);
+lean_dec_ref(v___x_140_);
+v___y_122_ = v_offset_133_;
+v___y_123_ = v___x_141_;
+goto v___jp_121_;
+}
+else
+{
+lean_object* v___x_142_; 
+lean_dec_ref(v_scale_132_);
+v___x_142_ = l_Rat_ofInt(v___x_137_);
+v___y_122_ = v_offset_133_;
+v___y_123_ = v___x_142_;
+goto v___jp_121_;
+}
+}
+}
+}

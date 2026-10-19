@@ -1,0 +1,38 @@
+1599: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Parity_syndrome(lean_object* v_width_691_, lean_object* v_word_692_){
+1600: _start:
+1601: {
+1602: lean_object* v___x_693_; uint8_t v___x_694_; 
+1603: v___x_693_ = lean_unsigned_to_nat(128u);
+1604: v___x_694_ = lean_nat_dec_le(v_width_691_, v___x_693_);
+1605: if (v___x_694_ == 0)
+1606: {
+1607: lean_object* v___x_695_; 
+1608: v___x_695_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBits(v_width_691_, v_word_692_);
+1609: return v___x_695_;
+1610: }
+1611: else
+1612: {
+1613: lean_object* v___x_696_; lean_object* v___x_697_; lean_object* v___x_698_; uint8_t v___x_699_; 
+1614: v___x_696_ = lean_unsigned_to_nat(8u);
+1615: v___x_697_ = lean_nat_mod(v_width_691_, v___x_696_);
+1616: v___x_698_ = lean_unsigned_to_nat(0u);
+1617: v___x_699_ = lean_nat_dec_eq(v___x_697_, v___x_698_);
+1618: lean_dec(v___x_697_);
+1619: if (v___x_699_ == 0)
+1620: {
+1621: lean_object* v___x_700_; 
+1622: v___x_700_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBits(v_width_691_, v_word_692_);
+1623: return v___x_700_;
+1624: }
+1625: else
+1626: {
+1627: lean_object* v___x_701_; lean_object* v___x_702_; lean_object* v___x_703_; 
+1628: v___x_701_ = lean_unsigned_to_nat(3u);
+1629: v___x_702_ = lean_nat_shiftr(v_width_691_, v___x_701_);
+1630: lean_dec(v_width_691_);
+1631: v___x_703_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBytes(v___x_702_, v_word_692_);
+1632: return v___x_703_;
+1633: }
+1634: }
+1635: }
+1636: }

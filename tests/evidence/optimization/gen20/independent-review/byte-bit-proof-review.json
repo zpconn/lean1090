@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "reviewer": "/root (did not author ParityByteBits)",
+  "reviewed_utc": "2026-10-19T19:44:06.552740+00:00",
+  "summary_sha256": "7d91aeecf93211d082f2fd717d548d7add29a2601a0e8e767b95468033724a4c",
+  "source_sha256": "a0a0a0cc555d7a6a5ec3083279fad00608fdc37d34072369f5b41e0ddbc9b261",
+  "runtime_sha256": "28e045ae6c7723d96ce5ef3749af4726c3b2be149ebe0bfcd6e2944bc1f1f660",
+  "checks": [
+    "Read every helper proof and imported ParityBits machine-bit lemma.",
+    "byteStep_eq_fold is unrestricted in the full UInt32 state and UInt64 byte; unfolding preserves descending 7..0 bit order.",
+    "cachedByte_wordBit_eq restricts only offset<128, alignment modulo 8, j<8. The Nat word remains arbitrary.",
+    "Alignment plus cache-side bound proves shifted byte never crosses a UInt64 boundary; shifts remain below 64, preventing count wrap.",
+    "UInt64 modulo conversion preserves the selected bit; the high branch adds 64 back to its index.",
+    "Seven kernel witnesses cover non-palindromic order, high state/byte bits, offsets 0/56/64/120, over-wide word and ignored bit above cache.",
+    "All 15 retained proof/evidence file hashes and sizes checked; successful build has nine permitted-axiom facts."
+  ],
+  "findings": [],
+  "lock_check": {
+    "command": [
+      "python3",
+      "-B",
+      "scripts/check_lock.py"
+    ],
+    "exit_code": 0,
+    "stdout": "Lock audit: 104 frozen files match SHA-256.\n",
+    "stderr": ""
+  }
+}

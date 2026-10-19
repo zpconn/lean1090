@@ -48,13 +48,43 @@ passed with 192 correctness inputs unchanged. Verified scratch cleanup
 reclaimed 11,092,008,960 allocated bytes.
 
 Presentation refresh, independent visual/data review and artifact-commit
-binding passed. Commit and push the reviewed artifacts under the user's
-identity, then complete fresh
-untimed decode and CPR diagnostics before selecting generation 20. Prepared
-controllers are in `tests/evidence/diagnostics/gen19/` and `gen19-cpr/` and
-have not executed. No new optimization is selected. Keep all existing
+binding passed. Reviewed artifacts were committed and pushed as
+`3f3478c62a1db4c43b40cd8464bdf1787e10976f`, under the user's identity.
+Both diagnostics, full output/state accounting, independent reviews and bounded
+cleanup passed. The source/history hold is released. Generation 20 now batches
+eight CRC bit updates per loop iteration, targeting the largest frame/CRC
+stage. The same UInt32 update is unrolled; byte-aligned widths through 128 use
+the cached-word path, and all other natural widths retain the live bit loop.
+Runtime compilation and cached-bit, fold-regrouping and integrated all-input
+refinement proofs passed. The combined production/proof build and full fixed
+gate passed with 195 unchanged correctness inputs; fresh 10M validation and
+independent replay also passed. Verified scratch cleanup reclaimed
+11,092,819,968 allocated bytes. Final archive/plan review passed; all jobs are
+stopped for the clean source commit and timing. No table, Float code, trusted primitive or
+frozen change is added. The independently reviewed reporting helper now adds
+CPR overhead to future reports, with historical values in
+`bench/CPR-OVERHEAD.md` and evidence under
+`tests/evidence/optimization/cpr-overhead-reporting/`.
+Keep all existing
 frozen-file, proof, full-gate, isolated benchmark and disk-retention rules.
 `PROGRESS.md` records current work and review results.
+
+## CPR optimization and reporting constraints
+
+The user requires each future generation report to include CPR overhead for
+both implementations in microseconds per message: `1e6 / cpr_msg_s -
+1e6 / decode_msg_s`, equivalently the difference of full-corpus median
+nanoseconds divided by `172432 * 1000`. Retain signed differences and label
+this as a difference between mode medians; do not imply precise isolated CPR
+cost or clamp measurement noise. Add historical values in a separate supplement
+without rewriting sealed benchmark artifacts.
+
+CPR optimizations must stay inside the proved boundary. Do not move work into
+tested-only Float callbacks (including haversine) or add tested-only Float code
+without explicit user approval. No hardware Float primitive is authorized.
+The benchmark harness and interleaver remain frozen. Generation 19's Lean
+CPR overhead is 0.672669156537 µs/message versus rs1090's 0.014589281572;
+the combined target needs decode headroom as well as lower CPR overhead.
 
 ## Ground rules
 

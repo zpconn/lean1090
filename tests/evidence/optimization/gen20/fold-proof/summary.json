@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-10-19T19:40:44.917242+00:00",
+  "module": "Proofs/FoldBlocks.lean",
+  "source_sha256": "8dbdf96b8db6ba34331ab49723400baac1299153d2ec278ccde7ea10a325b5be",
+  "theorem": "Lean1090.Proofs.FoldBlocks.fold_blocks",
+  "type": "{\u03b1 : Type u} \u2192 (blockCount blockSize : Nat) \u2192 (f : Nat \u2192 \u03b1 \u2192 \u03b1) \u2192 (init : \u03b1) \u2192 Nat.fold (blockCount * blockSize) (fun i _ a => f i a) init = Nat.fold blockCount (fun i _ a => Nat.fold blockSize (fun j _ b => f (i * blockSize + j) b) a) init",
+  "assumptions": "None on dimensions, accumulator or transition; order preserved, including empty blocks.",
+  "imports": [
+    "Init.Data.Nat.Fold"
+  ],
+  "attempts": [
+    {
+      "number": 1,
+      "exit_code": 1,
+      "source_sha256": "06d4d79da161bc36bdb71415bca537afdd52601b10a110247a8fe7d2ca192361",
+      "log_sha256": "702f2f6798a7bf552eb74be31b8f7d645da28c21ccc84f394712c6124cf2b9d8",
+      "finding": "Core simp did not rewrite the fold length through its dependent proof argument. The zero case was unresolved; no placeholder exists in source. Failed compiler diagnostics retained."
+    },
+    {
+      "number": 2,
+      "exit_code": 0,
+      "source_sha256": "8dbdf96b8db6ba34331ab49723400baac1299153d2ec278ccde7ea10a325b5be",
+      "log_sha256": "229c56724d15e8d9acefedb4d667b812991276ff85ba61a9b7628dd0a7df52ab",
+      "change": "Use core Nat.fold_congr (Nat.zero_mul blockSize) explicitly in the zero case. Succ case and theorem statement unchanged."
+    }
+  ],
+  "printed_axioms": {
+    "Lean1090.Proofs.FoldBlocks.fold_blocks": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.FoldBlocks.ordered_blocks_witness": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Lean1090.Proofs.FoldBlocks.empty_blocks_witness": [
+      "propext",
+      "Quot.sound"
+    ]
+  },
+  "witnesses": [
+    "Decimal accumulation over two three-element blocks produces 123456, detecting either kind of order reversal.",
+    "Zero-size blocks and zero outer count preserve initial state 37."
+  ],
+  "runtime_and_frozen_files_not_edited": true,
+  "all_locked_inputs_rehashed_unchanged": true,
+  "all_lake_jobs_stopped": true
+}

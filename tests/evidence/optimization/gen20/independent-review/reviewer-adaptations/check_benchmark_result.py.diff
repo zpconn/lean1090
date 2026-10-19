@@ -1,0 +1,162 @@
+--- tests/evidence/optimization/gen19/independent-review/check_benchmark_result.py
++++ tests/evidence/optimization/gen20/independent-review/check_benchmark_result.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Read-only gen19 result review; run only after both modes and archival finish.
++"""Read-only gen20 result review; run only after both modes and archival finish.
+ 
+ Reuses reviewed validation APIs, independently derives medians and exact targets,
+ and binds current-generation inputs. Historical checks use sealed review hashes
+@@ -12,6 +12,7 @@
+ import argparse
+ import csv
+ from datetime import datetime, timezone
++from fractions import Fraction
+ import hashlib
+ import io
+ import json
+@@ -26,8 +27,8 @@
+ import archive_generation_benchmark_target as archive
+ import run_generation_benchmark as runner
+ 
+-GEN = 19
+-EVIDENCE = ROOT / 'tests/evidence/optimization/gen19'
++GEN = 20
++EVIDENCE = ROOT / 'tests/evidence/optimization/gen20'
+ checks = 0
+ 
+ 
+@@ -55,13 +56,47 @@
+     return subprocess.check_output(['git', *args], cwd=ROOT, env=env)
+ 
+ 
++def independent_cpr_overhead(results):
++    """Derive signed overhead from independently sorted raw integer medians."""
++    modes = {row['mode']: row for row in results}
++    require(len(results) == len(modes) == 2 and set(modes) == {'decode', 'cpr'},
++            'overhead needs exactly the two measured modes')
++    count = 172432
++    require(archive.COUNT == count, 'overhead interval count differs')
++    implementations = {}
++    for implementation in ('lean1090', 'rs1090'):
++        medians = {mode: modes[mode]['medians_nanoseconds'][implementation]
++                   for mode in ('decode', 'cpr')}
++        require(all(type(value) is int and value > 0 for value in medians.values()),
++                'overhead medians must be exact positive integers')
++        difference = medians['cpr'] - medians['decode']
++        exact = Fraction(difference, count * 1000)
++        reciprocal = (Fraction(1000000) / Fraction(count * 1000000000, medians['cpr'])
++                      - Fraction(1000000) / Fraction(count * 1000000000, medians['decode']))
++        require(exact == reciprocal, 'exact reciprocal-throughput formula differs')
++        require((exact > 0) == (difference > 0) and (exact < 0) == (difference < 0),
++                'signed overhead was clamped or changed')
++        implementations[implementation] = {
++            'median_nanoseconds': medians,
++            'difference_nanoseconds': difference,
++            'microseconds_per_message_divisor': count * 1000,
++            'microseconds_per_message': difference / (count * 1000),
++        }
++    return {
++        'messages_per_interval': count,
++        'formula': '1e6 / cpr_messages_per_second - 1e6 / decode_messages_per_second',
++        'interpretation': 'Difference of independently measured mode medians; includes measurement noise. Signed values are retained without clamping.',
++        'implementations': implementations,
++    }
++
++
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--source', type=Path, required=True)
+     parser.add_argument('--plan', type=Path, required=True)
+     args = parser.parse_args()
+     source, plan_path = args.source.resolve(), args.plan.resolve()
+-    destination = ROOT / 'bench/runs/gen19'
++    destination = ROOT / 'bench/runs/gen20'
+     output = destination / 'results-review.json'
+     require(not output.exists(), 'refuse to overwrite previous review')
+     plan = load(plan_path)
+@@ -71,7 +106,7 @@
+     data = archive.validate_source(source, GEN)
+     summary, build = data['summary'], data['build']
+     commit = summary['commit']
+-    require(source == ROOT / '.cache/bench-runs' / ('gen19-' + commit[:7]), 'wrong source path')
++    require(source == ROOT / '.cache/bench-runs' / ('gen20-' + commit[:7]), 'wrong source path')
+     require(git('rev-parse', 'HEAD').decode().strip() == commit, 'HEAD differs from timed source')
+     attribution = git('show', '-s', '--format=%an <%ae>%n%cn <%ce>', commit).decode().splitlines()
+     require(attribution == ['zpconn <zpconn@gmail.com>'] * 2, 'wrong author or committer')
+@@ -97,7 +132,7 @@
+     require(sha(plan_path) == report_receipt['plan_sha256'], 'report plan binding differs')
+ 
+     inputs = load(source / 'correctness-inputs.json')
+-    require(len(inputs) == 192 and inputs == runner.gate_input_hashes(), 'current correctness inventory differs')
++    require(len(inputs) == 195 and inputs == runner.gate_input_hashes(), 'current correctness inventory differs')
+     for name, digest in inputs.items():
+         require(archive.committed_sha(commit, name) == digest, 'gate input not committed: ' + name)
+     frozen = dict((name, digest) for digest, name in
+@@ -126,7 +161,7 @@
+             'fresh verifier plan binding differs')
+     require(fresh['status'] == 'passed' and fresh['exit_code'] == 0, 'fresh verifier failed')
+     preflight, run = load(EVIDENCE / 'fresh-preflight.json'), load(EVIDENCE / 'fresh-message-run.json')
+-    require(len(preflight['source_sha256']) == 117 and len(preflight['binary_sha256']) == 3,
++    require(len(preflight['source_sha256']) == 120 and len(preflight['binary_sha256']) == 3,
+             'fresh source/binary cardinality differs')
+     require(preflight['source_sha256'] == run['source_sha256_before'] == run['source_sha256_after'],
+             'fresh source identity differs')
+@@ -152,7 +187,7 @@
+     prior_sha = hashlib.sha256(prior).hexdigest()
+     require(prior_sha == plan['prior_csv_sha256'] == preparation['prior_csv_sha256'], 'prior CSV seal differs')
+     old_rows = archive.parse_prior_csv(prior, GEN)
+-    require(len(old_rows) == plan['prior_csv_rows'] == 38, 'wrong prior row count')
++    require(len(old_rows) == plan['prior_csv_rows'] == 40, 'wrong prior row count')
+     appended = io.StringIO(newline='')
+     writer = csv.writer(appended, lineterminator='\n')
+     decisions = {}
+@@ -173,12 +208,24 @@
+     target_fields, reached = archive.reporting_targets(plan, data['results'])
+     require(reached == all(decisions.values()), 'joint target must use AND')
+     require(all(report_receipt[key] == value for key, value in target_fields.items()), 'report target fields differ')
++    overhead = independent_cpr_overhead(data['results'])
++    require(report_receipt['cpr_overhead'] == overhead, 'structured CPR overhead differs')
++    require(archive.cpr_overhead(data['results']) == overhead, 'reporting overhead API differs')
+     require((ROOT / 'bench/results.csv').read_bytes() == prior + appended.getvalue().encode(),
+             'CSV prior bytes or two appended rows differ')
+-    report = ROOT / 'bench/GEN19.md'
++    report = ROOT / 'bench/GEN20.md'
+     expected_report = archive.report_text(plan, data, source, old_rows, fresh)
+     require(report.read_bytes() == expected_report.encode() and sha(report) == report_receipt['report_sha256'],
+             'report reconstruction differs')
++    report_text = report.read_text()
++    for implementation, label in [('lean1090', 'Lean'), ('rs1090', 'rs1090')]:
++        value = overhead['implementations'][implementation]['microseconds_per_message']
++        require(f'{value:.12f} µs/message for {label}' in report_text,
++                'displayed signed overhead differs: ' + implementation)
++    require('1e6 / cpr_msg_s - 1e6 / decode_msg_s' in report_text
++            and 'independently measured mode medians' in report_text
++            and 'Negative differences are retained without clamping.' in report_text,
++            'overhead formula or measurement-noise qualification missing')
+ 
+     # Reuse immutable historical seals rather than re-copying/re-reading all old trees.
+     for name, digest in preparation['history_bindings'].items():
+@@ -218,18 +265,19 @@
+         'checks_passed': checks, 'findings': [], 'commit': commit, 'attribution': attribution,
+         'binary_sha256': summary['binary_sha256'], 'reviewer_sha256': sha(__file__),
+         'source': str(source.relative_to(ROOT)), 'archive_original_files': 48, 'total_samples': 96,
+-        'gate_input_count': len(inputs), 'fresh_source_count': 117, 'fresh_binary_count': 3,
++        'gate_input_count': len(inputs), 'fresh_source_count': 120, 'fresh_binary_count': 3,
+         'frozen_file_count': len(frozen), 'fresh_native_sets': data['fresh_native_sets'],
+         'clean_tree_and_lock_checkpoints': 6, 'windows_power_plan_captures': 4,
+         'cpu_affinity': [0], 'results': data['results'], **target_fields,
++        'cpr_overhead': overhead,
+         'clocks': data['clocks'], 'wrapper_backsteps': data['wrapper_backsteps'],
+-        'power_plan_guid': data['power_plan_guid'], 'prior_rows_preserved': 38, 'rows_appended': 2,
++        'power_plan_guid': data['power_plan_guid'], 'prior_rows_preserved': 40, 'rows_appended': 2,
+         'prior_csv_sha256': prior_sha, 'csv_after_sha256': sha(ROOT / 'bench/results.csv'),
+         'report_sha256': sha(report), 'archive_verification_sha256': sha(destination / 'archive-verification.json'),
+         'report_verification_sha256': sha(destination / 'report-verification.json'),
+         'fresh_completion_sha256': sha(completion_path), 'gate_review_sha256': sha(gate_review_path), 'gate': data['gate'],
+         'current_gate_input_sha256': inputs,
+-        'history_scope': 'Prior sealed review hashes, their committed blobs, and exact 38-row CSV byte prefix; no new historical copies.',
++        'history_scope': 'Prior sealed review hashes, their committed blobs, and exact 40-row CSV byte prefix; no new historical copies.',
+         'environment': {'platform': environments[0]['platform'], 'compiler': environments[0]['c_compiler'],
+                         'host_limits': {side: host['limitations'] for side, host in hosts.items()}},
+         'limitations': ['Worker monotonic durations alone determine medians; raw UTC differences/backsteps are retained without correction.',

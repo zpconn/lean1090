@@ -29,9 +29,107 @@ PNG inspection passed. A harmless read-only metadata-display error was
 retained; no render or measurement was repeated. Independent presentation
 review passed all 1,095 checks on its first execution. Completion SHA-256:
 `befb0c4dd2ef52224c816cfc5488085f04f46c9c35088d786a3bea66adba966b`.
-The reviewed artifacts are ready to commit and push. Then complete fresh
-untimed decode and CPR diagnostics before selecting generation 20. No new
-optimization is selected.
+The reviewed artifacts were committed and pushed to the private repository
+as `3f3478c62a1db4c43b40cd8464bdf1787e10976f`, under the user's identity.
+Both diagnostic driver builds passed against that source-equivalent commit.
+Sequential isolated actual-worker decode and CPR perf captures passed with
+all 283 recorded inputs unchanged and the expected 0/11,347 positions. Full
+instruction accounting and both independent reviews passed. Decode collected
+9,587,482,169 instructions, with frame/CRC the largest exclusive stage at
+3,496,975,683. CPR collected 11,916,756,598 instructions, including
+9,590,711,983 attributed to decoding. Complete output/state checks passed.
+Decode review SHA-256:
+`17348a8945769f7f3c19689fa720591c52560db23a633b25911384cb7f714fe2`;
+CPR review:
+`be4ea08ab946b48b44bc9016a91f9dbbf678904c6973c43d279cc3e3aba37753`.
+A reviewer-only old log-name assumption was corrected with its failure
+retained; producer data stayed unchanged. Verified bounded cleanup completed, reclaiming 273,371,136 bytes from the
+decode scratch and 215,306,240 from CPR, preserving compressed evidence and
+unique raw perf. Receipts:
+`23a768936fb4ce1c4b2995baa247ecaffb86e8fe863a6dd92e435204a0aa2756`,
+`00a097e14a052474a5e641ae7776602b68efda0be5907b178e035b67bd02e7d1`.
+The source/history hold is released.
+
+**Generation 20 selected:** batch eight CRC bit updates per loop iteration,
+targeting the largest frame/CRC stage. The same UInt32 update is explicitly
+unrolled; two cached words provide byte-aligned inputs through width 128.
+The original bit loop remains live for every other natural width. No table,
+Float code, tested-only callback, trusted primitive or frozen change is added.
+The runtime module passes its initial five-job build. The cached-bit and
+fold-regrouping helper proofs passed; their initial tactic failures are retained.
+The all-input syndrome refinement and existing proof integration passed on the
+first attempt, with 2,048 build jobs and 17 permitted-axiom facts. Every existing
+theorem statement is preserved. Root independently reviewed the cached-bit
+proof and its evidence; the frozen 104-entry lock passes. A mistaken read-only
+guard filename was corrected before any checker ran, with the error retained.
+All five correctness files are staged. The combined production/proof build
+passed its first execution: 3,539 jobs, 256 permitted-axiom facts, and all 195
+correctness inputs unchanged. Build record SHA-256:
+`5931eac2829867e7185a50b800141e3dc888084abae6ab324e8617712f8dde1f`.
+The full fixed gate passed from 19:44:31 to 20:01:47 UTC, with all 195
+correctness inputs unchanged. All 23 capstones, 152 witness proofs, 1,011 unit
+assertions and seven differential components passed. The fixed message campaign
+checked 10,476,164 messages: 9,542,689 exact matches plus 933,475 documented
+D001 cases, with 2,038,998 standard-view differences recorded separately.
+All 101,244 direct cases match exactly. Gate record SHA-256:
+`64e83419ed91aa6997d09a94c6126a9a9b15e1b95f83c2c43a0aff88419d258c`.
+Archival and verified fixed cleanup passed, reclaiming 5,733,335,040 allocated
+bytes. The separate fresh 10M campaign passed
+with seeds recorded beforehand: messages 1,008,384,763 and Comm-B
+2,832,253,467. It checked 10,476,164 messages: 9,542,976 exact matches plus
+933,188 documented D001 cases; 2,039,134 standard-view differences are
+recorded separately. All 101,244 direct Comm-B cases match exactly, with full
+32/70/14 coverage. All 120 sources and three binaries remain unchanged.
+Final verifier SHA-256:
+`e6361c95a4d104911d649a73d189eb727f9240590b9ab3a65121c5950a1ad243`.
+Independent retention and frozen comparison-only replay passed on their first
+executions. Verified fresh cleanup reclaimed 5,359,484,928 allocated bytes from
+eight raw duplicate files, preserving all 33 retained artifacts and the active
+fixed-gate scratch. Completion SHA-256:
+`b1e049d14c9b407fb362c21591ad678b9666f6b0cc1492830bd1aafbd44e61a8`.
+No generation 20 measurement has started. Independent source/proof review
+passed 133 checks.
+Native review passed 751 checks, confirming the live byte loop and fallback
+with only Parity changed among 22 linked project native sets. Separate native
+assessment review passed 733 checks:
+`3dfd870dde73a85854da7e472082297e57a0eed95956ae7f90e540b09361eb86`.
+Final gate/archive/plan review passed its first execution with no findings,
+binding all 195 inputs, seven components, 62 archived files, fresh evidence,
+cleanup receipts and both exact 2/1 targets. Review SHA-256:
+`c6cc3596250bfe1e19fa64acb51d656b58c95336a86d69f3a733457a66df64cf`.
+All build, test and review jobs are stopped. The verified source commit and
+fresh-build benchmark in both modes are next, with plan SHA-256
+`ce2871dde8fe9b696ec24c13654678e5f013bdb4e6af599a870426ca3db6d0a1`.
+[Design and current proof obligations](docs/GEN20-BYTE-CRC.md).
+
+**Reviewer steering after generation 19:** report CPR overhead for both
+implementations in every future generation report, and add historical values
+in a separate supplement while preserving sealed results. Exact generation 19
+median differences are 0.672669156537 µs/message for Lean and
+0.014589281572 for rs1090. Lean decode is 2.617902112137 µs/message and CPR
+is 3.290571268674; the current rs1090 CPR median sets a 2× budget of
+2.357409558551 µs/message. These are differences between independently
+measured mode medians; retain noise and signed values honestly. Optimize
+both decoder cost and CPR overhead. Keep every CPR optimization within the
+proved boundary; moving work into tested-only Float callbacks or adding
+new tested-only Float code requires explicit user approval. Hardware Float
+primitives and frozen harness/interleaver changes remain unauthorized.
+A reporting-only candidate and historical supplement are prepared in
+`.cache/cpr-overhead-reporting-prep/`, without changing live tools or sealed
+artifacts. Nine edge/error checks passed; all 80 mode medians were recomputed
+from 1,920 raw sample rows. Read-only preview confirms exactly one added
+paragraph and unchanged target decisions. Candidate helper SHA-256:
+`c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312`.
+Independent review passed, independently sorting all 80 medians and checking
+28 precision/sign cases and 10 invalid-input rejections. Review SHA-256:
+`8318ed72d9250268730c26883efa711ac10a6b79d7faff173c30366ab558c231`.
+After the diagnostic hold was released, the reviewed reporting helper and
+historical supplement were applied. Preserved preparation and application:
+`tests/evidence/optimization/cpr-overhead-reporting/`; application SHA-256:
+`8474e15b60df10dbdd89f9aca27f505c414ecc97ea9155c08ff91a872fbe0531`.
+All 60 historical summary/sample files, the lock and frozen benchmark sources
+were rehashed unchanged. [Historical overheads](bench/CPR-OVERHEAD.md) include
+every generation through 19; future reports include both values directly.
 
 **Previous measurement: generation 18 reached 1.672168328366× decode and
 1.342734836785× with CPR.** Both 2.00× targets remain unmet. The measured

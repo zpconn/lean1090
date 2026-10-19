@@ -1,0 +1,5 @@
+# Generation 19 CPR actual-worker diagnostic sampling
+
+One actual frozen worker run was sampled on CPU 0 with cpu-clock:u at 199 Hz after both diagnostic builds. Decode and CPR captures ran sequentially with other native/profile jobs held. This is not a benchmark. All 283 protected inputs and 22 fresh native sets remain unchanged. The explicit source binding relates timed 79cc25b8c6f104da94e2b532439fe6e9b47f72ea to artifact 3f3478c62a1db4c43b40cd8464bdf1787e10976f; documentation commits have no measured speed attribution.
+
+All 240 recorded samples were parsed; 117 have a visible frozen runCPROnce ancestor and 123 are excluded, not assumed to be preparation. Unknown frames appear in 233 stacks, with 5 included unknown leaves. Both retained reports explicitly state zero lost samples. Conditional shares can be biased by inlining, tail calls and unwinding. Eager immutable table startup, including the complete power-of-two table, is outside the visible loop subset; scalar first-use constants may remain inside. No table-hit frequency or throughput effect is inferred from samples.

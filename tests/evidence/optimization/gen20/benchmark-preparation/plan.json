@@ -1,0 +1,22 @@
+{
+  "generation": 20,
+  "prepared_utc": "2026-10-19T20:03:10.450338+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen20/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "2c3660e73049aae44f289d31c3bcf1ccbace9e725db33f789d120f1ded84864d",
+  "prior_csv_rows": 40,
+  "fresh_verification": "tests/evidence/optimization/gen20/fresh-final-verification.json",
+  "fresh_verification_sha256": "e6361c95a4d104911d649a73d189eb727f9240590b9ab3a65121c5950a1ad243",
+  "title": "eight-bit CRC loop batching",
+  "change_description": "The live CRC path groups eight exact UInt32 updates per iteration for aligned widths through 128. Unconditional proofs preserve the original syndrome for every natural width and word, with the original bit loop as the live fallback. No lookup table, Float code, trusted primitive or corpus-specific branch is added. [Implementation and proof evidence](../docs/GEN20-BYTE-CRC.md).",
+  "row_note": "Proved eight-bit CRC loop batching; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "cpr_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "review_threshold": "Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.",
+  "note": "Prepared before timing. Contains no speculative measurement. The reviewed reporting helper only archives a completed run."
+}

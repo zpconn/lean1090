@@ -1,0 +1,611 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b9ca30 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback>:
+  b9ca30:	push   %rbp
+  b9ca31:	push   %r15
+  b9ca33:	push   %r14
+  b9ca35:	push   %r13
+  b9ca37:	push   %r12
+  b9ca39:	push   %rbx
+  b9ca3a:	push   %rax
+  b9ca3b:	call   b7f440 <lp_lean1090_Lean1090_Impl_Binary64_round>
+  b9ca40:	mov    %rax,%r14
+  b9ca43:	mov    0x3fe650f(%rip),%eax        # 4b82f58 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0_once>
+  b9ca49:	cmp    $0x1,%eax
+  b9ca4c:	jne    b9cbb9 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x189>
+  b9ca52:	mov    0x3fe64f7(%rip),%r15        # 4b82f50 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0>
+  b9ca59:	mov    (%r14),%eax
+  b9ca5c:	test   %eax,%eax
+  b9ca5e:	jle    b9cbe1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x1b1>
+  b9ca64:	inc    %eax
+  b9ca66:	mov    %eax,(%r14)
+  b9ca69:	mov    %r14,%rdi
+  b9ca6c:	mov    %r15,%rsi
+  b9ca6f:	call   4774550 <l_Rat_blt>
+  b9ca74:	test   %al,%al
+  b9ca76:	je     b9ca90 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x60>
+  b9ca78:	mov    0x3fe64ea(%rip),%eax        # 4b82f68 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8_once>
+  b9ca7e:	cmp    $0x1,%eax
+  b9ca81:	jne    b9cbf5 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x1c5>
+  b9ca87:	mov    0x3fe64d2(%rip),%rbx        # 4b82f60 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8>
+  b9ca8e:	jmp    b9ca95 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x65>
+  b9ca90:	mov    $0x1,%ebx
+  b9ca95:	mov    %r14,%rdi
+  b9ca98:	call   4778360 <l_Rat_abs>
+  b9ca9d:	mov    %rax,%r14
+  b9caa0:	mov    %rax,%rdi
+  b9caa3:	mov    %r15,%rsi
+  b9caa6:	call   4773fd0 <l_instDecidableEqRat_decEq>
+  b9caab:	mov    (%r14),%ecx
+  b9caae:	test   %al,%al
+  b9cab0:	je     b9cac8 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x98>
+  b9cab2:	cmp    $0x2,%ecx
+  b9cab5:	jl     b9cc17 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x1e7>
+  b9cabb:	dec    %ecx
+  b9cabd:	mov    %ecx,(%r14)
+  b9cac0:	mov    %rbx,%r14
+  b9cac3:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9cac8:	test   %ecx,%ecx
+  b9caca:	jle    b9cc47 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x217>
+  b9cad0:	inc    %ecx
+  b9cad2:	mov    %ecx,(%r14)
+  b9cad5:	mov    %r14,%rdi
+  b9cad8:	call   b7f130 <lp_lean1090_Lean1090_Impl_Binary64_exponent>
+  b9cadd:	mov    %rax,%r12
+  b9cae0:	mov    0x3fe6492(%rip),%eax        # 4b82f78 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1_once>
+  b9cae6:	cmp    $0x1,%eax
+  b9cae9:	jne    b9cc5c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x22c>
+  b9caef:	mov    0x3fe647a(%rip),%r15        # 4b82f70 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1>
+  b9caf6:	test   $0x1,%r15b
+  b9cafa:	je     b9cc83 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x253>
+  b9cb00:	test   $0x1,%r12b
+  b9cb04:	je     b9cc83 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x253>
+  b9cb0a:	mov    %r15,%rax
+  b9cb0d:	shr    $1,%rax
+  b9cb10:	mov    %r12,%rcx
+  b9cb13:	shr    $1,%rcx
+  b9cb16:	cmp    %ecx,%eax
+  b9cb18:	jge    b9cc96 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x266>
+  b9cb1e:	test   $0x1,%r12b
+  b9cb22:	jne    b9cb37 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x107>
+  b9cb24:	mov    (%r12),%eax
+  b9cb28:	cmp    $0x2,%eax
+  b9cb2b:	jl     b9cfdf <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x5af>
+  b9cb31:	dec    %eax
+  b9cb33:	mov    %eax,(%r12)
+  b9cb37:	mov    (%r14),%eax
+  b9cb3a:	cmp    $0x2,%eax
+  b9cb3d:	jl     b9cd5a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x32a>
+  b9cb43:	dec    %eax
+  b9cb45:	mov    %eax,(%r14)
+  b9cb48:	lea    -0x8e1495(%rip),%rdi        # 2bb6ba <_ZZN10__cxxabiv112_GLOBAL__N_19__globalsEvE10eh_globals+0x2bb5da>
+  b9cb4f:	call   48a6670 <lean_cstr_to_nat>
+  b9cb54:	test   $0x1,%bl
+  b9cb57:	je     b9cd6f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x33f>
+  b9cb5d:	test   $0x1,%al
+  b9cb5f:	je     b9cdce <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x39e>
+  b9cb65:	shr    $1,%rbx
+  b9cb68:	shr    $1,%rax
+  b9cb6b:	add    %rbx,%rax
+  b9cb6e:	js     b9cd4a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x31a>
+  b9cb74:	lea    0x1(,%rax,2),%r14
+  b9cb7c:	test   $0x1,%r14b
+  b9cb80:	jne    b9cba0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x170>
+  b9cb82:	mov    %r14,%rdi
+  b9cb85:	call   48aa1f0 <lean_uint64_of_big_nat>
+  b9cb8a:	mov    %rax,%rdi
+  b9cb8d:	mov    (%r14),%eax
+  b9cb90:	cmp    $0x2,%eax
+  b9cb93:	jl     b9cc2c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x1fc>
+  b9cb99:	dec    %eax
+  b9cb9b:	mov    %eax,(%r14)
+  b9cb9e:	jmp    b9cba6 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x176>
+  b9cba0:	shr    $1,%r14
+  b9cba3:	mov    %r14,%rdi
+  b9cba6:	add    $0x8,%rsp
+  b9cbaa:	pop    %rbx
+  b9cbab:	pop    %r12
+  b9cbad:	pop    %r13
+  b9cbaf:	pop    %r14
+  b9cbb1:	pop    %r15
+  b9cbb3:	pop    %rbp
+  b9cbb4:	jmp    48aa570 <lean_float_of_bits>
+  b9cbb9:	lea    0x3fe6390(%rip),%rdi        # 4b82f50 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0>
+  b9cbc0:	lea    0x3fe6391(%rip),%rsi        # 4b82f58 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0_once>
+  b9cbc7:	lea    0x7c2(%rip),%rdx        # b9d390 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0>
+  b9cbce:	call   48ad700 <lean_obj_once_cold>
+  b9cbd3:	mov    %rax,%r15
+  b9cbd6:	mov    (%r14),%eax
+  b9cbd9:	test   %eax,%eax
+  b9cbdb:	jg     b9ca64 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x34>
+  b9cbe1:	cmp    $0x90000001,%eax
+  b9cbe6:	jb     b9ca69 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x39>
+  b9cbec:	lock decl (%r14)
+  b9cbf0:	jmp    b9ca69 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x39>
+  b9cbf5:	lea    0x3fe6364(%rip),%rdi        # 4b82f60 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8>
+  b9cbfc:	lea    0x3fe6365(%rip),%rsi        # 4b82f68 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8_once>
+  b9cc03:	lea    0x796(%rip),%rdx        # b9d3a0 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8>
+  b9cc0a:	call   48ad700 <lean_obj_once_cold>
+  b9cc0f:	mov    %rax,%rbx
+  b9cc12:	jmp    b9ca95 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x65>
+  b9cc17:	test   %ecx,%ecx
+  b9cc19:	je     b9cac0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x90>
+  b9cc1f:	mov    %r14,%rdi
+  b9cc22:	call   48a41f0 <lean_dec_ref_cold>
+  b9cc27:	jmp    b9cac0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x90>
+  b9cc2c:	test   %eax,%eax
+  b9cc2e:	je     b9cba6 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x176>
+  b9cc34:	mov    %rdi,%rbx
+  b9cc37:	mov    %r14,%rdi
+  b9cc3a:	call   48a41f0 <lean_dec_ref_cold>
+  b9cc3f:	mov    %rbx,%rdi
+  b9cc42:	jmp    b9cba6 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x176>
+  b9cc47:	cmp    $0x90000001,%ecx
+  b9cc4d:	jb     b9cad5 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0xa5>
+  b9cc53:	lock decl (%r14)
+  b9cc57:	jmp    b9cad5 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0xa5>
+  b9cc5c:	lea    0x3fe630d(%rip),%rdi        # 4b82f70 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1>
+  b9cc63:	lea    0x3fe630e(%rip),%rsi        # 4b82f78 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1_once>
+  b9cc6a:	lea    0x73f(%rip),%rdx        # b9d3b0 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1>
+  b9cc71:	call   48ad700 <lean_obj_once_cold>
+  b9cc76:	mov    %rax,%r15
+  b9cc79:	test   $0x1,%r15b
+  b9cc7d:	jne    b9cb00 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0xd0>
+  b9cc83:	mov    %r15,%rdi
+  b9cc86:	mov    %r12,%rsi
+  b9cc89:	call   48aa150 <lean_int_big_lt>
+  b9cc8e:	test   %al,%al
+  b9cc90:	jne    b9cb1e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0xee>
+  b9cc96:	mov    0x3fe62ec(%rip),%eax        # 4b82f88 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3_once>
+  b9cc9c:	cmp    $0x1,%eax
+  b9cc9f:	jne    b9cd7f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x34f>
+  b9cca5:	mov    0x3fe62d4(%rip),%rsi        # 4b82f80 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3>
+  b9ccac:	test   $0x1,%r12b
+  b9ccb0:	je     b9cda6 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x376>
+  b9ccb6:	test   $0x1,%sil
+  b9ccba:	je     b9cde1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x3b1>
+  b9ccc0:	mov    %r12,%rax
+  b9ccc3:	shr    $1,%rax
+  b9ccc6:	shr    $1,%rsi
+  b9ccc9:	cmp    %esi,%eax
+  b9cccb:	jge    b9cdf1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x3c1>
+  b9ccd1:	mov    0x3fe62d1(%rip),%eax        # 4b82fa8 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7_once>
+  b9ccd7:	cmp    $0x1,%eax
+  b9ccda:	jne    b9cff4 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x5c4>
+  b9cce0:	mov    0x3fe62b9(%rip),%rsi        # 4b82fa0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7>
+  b9cce7:	mov    %r14,%rdi
+  b9ccea:	call   4775f90 <l_Rat_div>
+  b9ccef:	mov    (%r14),%ecx
+  b9ccf2:	cmp    $0x2,%ecx
+  b9ccf5:	jl     b9d016 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x5e6>
+  b9ccfb:	dec    %ecx
+  b9ccfd:	mov    %ecx,(%r14)
+  b9cd00:	mov    %rax,%rdi
+  b9cd03:	call   4777e50 <l_Rat_floor>
+  b9cd08:	mov    %rax,%r14
+  b9cd0b:	mov    %rax,%rdi
+  b9cd0e:	call   4709f50 <l_Int_toNat>
+  b9cd13:	test   $0x1,%r14b
+  b9cd17:	jne    b9cd2a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2fa>
+  b9cd19:	mov    (%r14),%ecx
+  b9cd1c:	cmp    $0x2,%ecx
+  b9cd1f:	jl     b9d25f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x82f>
+  b9cd25:	dec    %ecx
+  b9cd27:	mov    %ecx,(%r14)
+  b9cd2a:	test   $0x1,%bl
+  b9cd2d:	je     b9d031 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x601>
+  b9cd33:	test   $0x1,%al
+  b9cd35:	je     b9d142 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x712>
+  b9cd3b:	shr    $1,%rbx
+  b9cd3e:	shr    $1,%rax
+  b9cd41:	add    %rbx,%rax
+  b9cd44:	jns    b9cb74 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x144>
+  b9cd4a:	mov    %rax,%rdi
+  b9cd4d:	call   48a6710 <lean_big_usize_to_nat>
+  b9cd52:	mov    %rax,%r14
+  b9cd55:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9cd5a:	test   %eax,%eax
+  b9cd5c:	je     b9cb48 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x118>
+  b9cd62:	mov    %r14,%rdi
+  b9cd65:	call   48a41f0 <lean_dec_ref_cold>
+  b9cd6a:	jmp    b9cb48 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x118>
+  b9cd6f:	mov    %rbx,%rdi
+  b9cd72:	mov    %rax,%rsi
+  b9cd75:	call   48a68b0 <lean_nat_big_add>
+  b9cd7a:	jmp    b9d12b <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6fb>
+  b9cd7f:	lea    0x3fe61fa(%rip),%rdi        # 4b82f80 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3>
+  b9cd86:	lea    0x3fe61fb(%rip),%rsi        # 4b82f88 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3_once>
+  b9cd8d:	lea    0x62c(%rip),%rdx        # b9d3c0 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3>
+  b9cd94:	call   48ad700 <lean_obj_once_cold>
+  b9cd99:	mov    %rax,%rsi
+  b9cd9c:	test   $0x1,%r12b
+  b9cda0:	jne    b9ccb6 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x286>
+  b9cda6:	mov    %r12,%rdi
+  b9cda9:	call   48aa150 <lean_int_big_lt>
+  b9cdae:	test   %al,%al
+  b9cdb0:	je     b9cfcf <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x59f>
+  b9cdb6:	mov    (%r12),%eax
+  b9cdba:	cmp    $0x2,%eax
+  b9cdbd:	jl     b9d343 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x913>
+  b9cdc3:	dec    %eax
+  b9cdc5:	mov    %eax,(%r12)
+  b9cdc9:	jmp    b9ccd1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2a1>
+  b9cdce:	mov    %rbx,%rdi
+  b9cdd1:	mov    %rax,%rsi
+  b9cdd4:	call   48a68b0 <lean_nat_big_add>
+  b9cdd9:	mov    %rax,%r14
+  b9cddc:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9cde1:	mov    %r12,%rdi
+  b9cde4:	call   48aa150 <lean_int_big_lt>
+  b9cde9:	test   %al,%al
+  b9cdeb:	jne    b9ccd1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2a1>
+  b9cdf1:	test   $0x1,%r15b
+  b9cdf5:	je     b9cfcf <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x59f>
+  b9cdfb:	mov    %r12,%rax
+  b9cdfe:	shr    $1,%rax
+  b9ce01:	cltq
+  b9ce03:	shr    $1,%r15
+  b9ce06:	movslq %r15d,%rdi
+  b9ce09:	add    %rax,%rdi
+  b9ce0c:	movslq %edi,%rax
+  b9ce0f:	cmp    %rdi,%rax
+  b9ce12:	jne    b9d225 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7f5>
+  b9ce18:	mov    %edi,%eax
+  b9ce1a:	lea    0x1(,%rax,2),%r15
+  b9ce22:	mov    %r15,%rdi
+  b9ce25:	call   4709f50 <l_Int_toNat>
+  b9ce2a:	mov    %rax,%rbp
+  b9ce2d:	test   $0x1,%r15b
+  b9ce31:	jne    b9ce44 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x414>
+  b9ce33:	mov    (%r15),%eax
+  b9ce36:	cmp    $0x2,%eax
+  b9ce39:	jl     b9d27a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x84a>
+  b9ce3f:	dec    %eax
+  b9ce41:	mov    %eax,(%r15)
+  b9ce44:	lea    -0x8ddb5e(%rip),%rdi        # 2bf2ed <_ZZN10__cxxabiv112_GLOBAL__N_19__globalsEvE10eh_globals+0x2bf20d>
+  b9ce4b:	call   48a6670 <lean_cstr_to_nat>
+  b9ce50:	mov    %rax,%r15
+  b9ce53:	test   $0x1,%bpl
+  b9ce57:	je     b9d054 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x624>
+  b9ce5d:	test   $0x1,%r15b
+  b9ce61:	je     b9d16f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x73f>
+  b9ce67:	mov    %rbp,%rdi
+  b9ce6a:	shr    $1,%rdi
+  b9ce6d:	je     b9ce99 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x469>
+  b9ce6f:	mov    %r15,%rsi
+  b9ce72:	shr    $1,%rsi
+  b9ce75:	mov    %rdi,%rax
+  b9ce78:	mul    %rsi
+  b9ce7b:	seto   %cl
+  b9ce7e:	test   %rax,%rax
+  b9ce81:	js     b9ce87 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x457>
+  b9ce83:	test   %cl,%cl
+  b9ce85:	je     b9ce91 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x461>
+  b9ce87:	call   48a6f60 <lean_nat_overflow_mul>
+  b9ce8c:	mov    %rax,%rbp
+  b9ce8f:	jmp    b9ce99 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x469>
+  b9ce91:	lea    0x1(,%rax,2),%rbp
+  b9ce99:	test   $0x1,%bl
+  b9ce9c:	je     b9d07b <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x64b>
+  b9cea2:	test   $0x1,%bpl
+  b9cea6:	je     b9d182 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x752>
+  b9ceac:	shr    $1,%rbx
+  b9ceaf:	shr    $1,%rbp
+  b9ceb2:	add    %rbx,%rbp
+  b9ceb5:	js     b9d232 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x802>
+  b9cebb:	lea    0x1(,%rbp,2),%r13
+  b9cec3:	mov    0x3fe60cf(%rip),%eax        # 4b82f98 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4_once>
+  b9cec9:	cmp    $0x1,%eax
+  b9cecc:	jne    b9d098 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x668>
+  b9ced2:	mov    0x3fe60b7(%rip),%rsi        # 4b82f90 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4>
+  b9ced9:	test   $0x1,%r12b
+  b9cedd:	je     b9d0bf <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x68f>
+  b9cee3:	test   $0x1,%sil
+  b9cee7:	je     b9d1be <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x78e>
+  b9ceed:	shr    $1,%r12
+  b9cef0:	movslq %r12d,%rdi
+  b9cef3:	shr    $1,%rsi
+  b9cef6:	movslq %esi,%rax
+  b9cef9:	sub    %rax,%rdi
+  b9cefc:	movslq %edi,%rax
+  b9ceff:	cmp    %rdi,%rax
+  b9cf02:	jne    b9d242 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x812>
+  b9cf08:	mov    %edi,%eax
+  b9cf0a:	lea    0x1(,%rax,2),%rbx
+  b9cf12:	mov    %rbx,%rdi
+  b9cf15:	call   b7eb60 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo>
+  b9cf1a:	test   $0x1,%bl
+  b9cf1d:	jne    b9cf2e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4fe>
+  b9cf1f:	mov    (%rbx),%ecx
+  b9cf21:	cmp    $0x2,%ecx
+  b9cf24:	jl     b9d28f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x85f>
+  b9cf2a:	dec    %ecx
+  b9cf2c:	mov    %ecx,(%rbx)
+  b9cf2e:	mov    %r14,%rdi
+  b9cf31:	mov    %rax,%rsi
+  b9cf34:	call   4775f90 <l_Rat_div>
+  b9cf39:	mov    (%r14),%ecx
+  b9cf3c:	cmp    $0x2,%ecx
+  b9cf3f:	jl     b9d0e2 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6b2>
+  b9cf45:	dec    %ecx
+  b9cf47:	mov    %ecx,(%r14)
+  b9cf4a:	mov    %rax,%rdi
+  b9cf4d:	call   4777e50 <l_Rat_floor>
+  b9cf52:	mov    %rax,%rbx
+  b9cf55:	mov    %rax,%rdi
+  b9cf58:	call   4709f50 <l_Int_toNat>
+  b9cf5d:	test   $0x1,%bl
+  b9cf60:	jne    b9cf71 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x541>
+  b9cf62:	mov    (%rbx),%ecx
+  b9cf64:	cmp    $0x2,%ecx
+  b9cf67:	jl     b9d2aa <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x87a>
+  b9cf6d:	dec    %ecx
+  b9cf6f:	mov    %ecx,(%rbx)
+  b9cf71:	test   $0x1,%r13b
+  b9cf75:	je     b9d0fd <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6cd>
+  b9cf7b:	test   $0x1,%al
+  b9cf7d:	je     b9d1ce <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x79e>
+  b9cf83:	shr    $1,%r13
+  b9cf86:	shr    $1,%rax
+  b9cf89:	add    %r13,%rax
+  b9cf8c:	js     b9d24f <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x81f>
+  b9cf92:	lea    0x1(,%rax,2),%rbx
+  b9cf9a:	test   $0x1,%bl
+  b9cf9d:	je     b9d120 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6f0>
+  b9cfa3:	test   $0x1,%r15b
+  b9cfa7:	je     b9d212 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7e2>
+  b9cfad:	shr    $1,%rbx
+  b9cfb0:	shr    $1,%r15
+  b9cfb3:	mov    $0x1,%r14d
+  b9cfb9:	sub    %r15,%rbx
+  b9cfbc:	jb     b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9cfc2:	lea    0x1(,%rbx,2),%r14
+  b9cfca:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9cfcf:	mov    %r12,%rdi
+  b9cfd2:	mov    %r15,%rsi
+  b9cfd5:	call   48a8bf0 <lean_int_big_add>
+  b9cfda:	jmp    b9d22a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7fa>
+  b9cfdf:	test   %eax,%eax
+  b9cfe1:	je     b9cb37 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x107>
+  b9cfe7:	mov    %r12,%rdi
+  b9cfea:	call   48a41f0 <lean_dec_ref_cold>
+  b9cfef:	jmp    b9cb37 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x107>
+  b9cff4:	lea    0x3fe5fa5(%rip),%rdi        # 4b82fa0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7>
+  b9cffb:	lea    0x3fe5fa6(%rip),%rsi        # 4b82fa8 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7_once>
+  b9d002:	lea    0x427(%rip),%rdx        # b9d430 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7>
+  b9d009:	call   48ad700 <lean_obj_once_cold>
+  b9d00e:	mov    %rax,%rsi
+  b9d011:	jmp    b9cce7 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2b7>
+  b9d016:	test   %ecx,%ecx
+  b9d018:	je     b9cd00 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2d0>
+  b9d01e:	mov    %r14,%rdi
+  b9d021:	mov    %rax,%r14
+  b9d024:	call   48a41f0 <lean_dec_ref_cold>
+  b9d029:	mov    %r14,%rax
+  b9d02c:	jmp    b9cd00 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2d0>
+  b9d031:	mov    %rbx,%rdi
+  b9d034:	mov    %rax,%rsi
+  b9d037:	mov    %rax,%r12
+  b9d03a:	call   48a68b0 <lean_nat_big_add>
+  b9d03f:	mov    %rax,%r14
+  b9d042:	mov    %r12,%r15
+  b9d045:	test   $0x1,%r12b
+  b9d049:	jne    b9d12e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6fe>
+  b9d04f:	jmp    b9d153 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x723>
+  b9d054:	mov    %rbp,%rdi
+  b9d057:	mov    %r15,%rsi
+  b9d05a:	call   48a6cf0 <lean_nat_big_mul>
+  b9d05f:	mov    %rax,%r13
+  b9d062:	mov    0x0(%rbp),%eax
+  b9d065:	cmp    $0x2,%eax
+  b9d068:	jl     b9d358 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x928>
+  b9d06e:	dec    %eax
+  b9d070:	mov    %eax,0x0(%rbp)
+  b9d073:	mov    %r13,%rbp
+  b9d076:	jmp    b9ce99 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x469>
+  b9d07b:	mov    %rbx,%rdi
+  b9d07e:	mov    %rbp,%rsi
+  b9d081:	call   48a68b0 <lean_nat_big_add>
+  b9d086:	mov    %rax,%r13
+  b9d089:	test   $0x1,%bpl
+  b9d08d:	je     b9d190 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x760>
+  b9d093:	jmp    b9d1aa <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x77a>
+  b9d098:	lea    0x3fe5ef1(%rip),%rdi        # 4b82f90 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4>
+  b9d09f:	lea    0x3fe5ef2(%rip),%rsi        # 4b82f98 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4_once>
+  b9d0a6:	lea    0x373(%rip),%rdx        # b9d420 <_init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4>
+  b9d0ad:	call   48ad700 <lean_obj_once_cold>
+  b9d0b2:	mov    %rax,%rsi
+  b9d0b5:	test   $0x1,%r12b
+  b9d0b9:	jne    b9cee3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4b3>
+  b9d0bf:	mov    %r12,%rdi
+  b9d0c2:	call   48a8ec0 <lean_int_big_sub>
+  b9d0c7:	mov    %rax,%rbx
+  b9d0ca:	mov    (%r12),%eax
+  b9d0ce:	cmp    $0x2,%eax
+  b9d0d1:	jl     b9d36d <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x93d>
+  b9d0d7:	dec    %eax
+  b9d0d9:	mov    %eax,(%r12)
+  b9d0dd:	jmp    b9cf12 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4e2>
+  b9d0e2:	test   %ecx,%ecx
+  b9d0e4:	je     b9cf4a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x51a>
+  b9d0ea:	mov    %r14,%rdi
+  b9d0ed:	mov    %rax,%rbx
+  b9d0f0:	call   48a41f0 <lean_dec_ref_cold>
+  b9d0f5:	mov    %rbx,%rax
+  b9d0f8:	jmp    b9cf4a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x51a>
+  b9d0fd:	mov    %r13,%rdi
+  b9d100:	mov    %rax,%rsi
+  b9d103:	mov    %rax,%r12
+  b9d106:	call   48a68b0 <lean_nat_big_add>
+  b9d10b:	mov    %rax,%rbx
+  b9d10e:	mov    %r12,%r14
+  b9d111:	test   $0x1,%r12b
+  b9d115:	je     b9d1df <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7af>
+  b9d11b:	jmp    b9d1fa <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7ca>
+  b9d120:	mov    %rbx,%rdi
+  b9d123:	mov    %r15,%rsi
+  b9d126:	call   48a6ad0 <lean_nat_big_sub>
+  b9d12b:	mov    %rax,%r14
+  b9d12e:	mov    (%rbx),%eax
+  b9d130:	cmp    $0x2,%eax
+  b9d133:	jl     b9d2c5 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x895>
+  b9d139:	dec    %eax
+  b9d13b:	mov    %eax,(%rbx)
+  b9d13d:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9d142:	mov    %rbx,%rdi
+  b9d145:	mov    %rax,%r15
+  b9d148:	mov    %rax,%rsi
+  b9d14b:	call   48a68b0 <lean_nat_big_add>
+  b9d150:	mov    %rax,%r14
+  b9d153:	mov    (%r15),%eax
+  b9d156:	cmp    $0x2,%eax
+  b9d159:	jl     b9d2da <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x8aa>
+  b9d15f:	dec    %eax
+  b9d161:	mov    %eax,(%r15)
+  b9d164:	test   $0x1,%bl
+  b9d167:	jne    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9d16d:	jmp    b9d12e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x6fe>
+  b9d16f:	mov    %rbp,%rdi
+  b9d172:	mov    %r15,%rsi
+  b9d175:	call   48a6cf0 <lean_nat_big_mul>
+  b9d17a:	mov    %rax,%rbp
+  b9d17d:	jmp    b9ce99 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x469>
+  b9d182:	mov    %rbx,%rdi
+  b9d185:	mov    %rbp,%rsi
+  b9d188:	call   48a68b0 <lean_nat_big_add>
+  b9d18d:	mov    %rax,%r13
+  b9d190:	mov    0x0(%rbp),%eax
+  b9d193:	cmp    $0x2,%eax
+  b9d196:	jl     b9d2ef <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x8bf>
+  b9d19c:	dec    %eax
+  b9d19e:	mov    %eax,0x0(%rbp)
+  b9d1a1:	test   $0x1,%bl
+  b9d1a4:	jne    b9cec3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x493>
+  b9d1aa:	mov    (%rbx),%eax
+  b9d1ac:	cmp    $0x2,%eax
+  b9d1af:	jl     b9d319 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x8e9>
+  b9d1b5:	dec    %eax
+  b9d1b7:	mov    %eax,(%rbx)
+  b9d1b9:	jmp    b9cec3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x493>
+  b9d1be:	mov    %r12,%rdi
+  b9d1c1:	call   48a8ec0 <lean_int_big_sub>
+  b9d1c6:	mov    %rax,%rbx
+  b9d1c9:	jmp    b9cf12 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4e2>
+  b9d1ce:	mov    %r13,%rdi
+  b9d1d1:	mov    %rax,%r14
+  b9d1d4:	mov    %rax,%rsi
+  b9d1d7:	call   48a68b0 <lean_nat_big_add>
+  b9d1dc:	mov    %rax,%rbx
+  b9d1df:	mov    (%r14),%eax
+  b9d1e2:	cmp    $0x2,%eax
+  b9d1e5:	jl     b9d304 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x8d4>
+  b9d1eb:	dec    %eax
+  b9d1ed:	mov    %eax,(%r14)
+  b9d1f0:	test   $0x1,%r13b
+  b9d1f4:	jne    b9cf9a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x56a>
+  b9d1fa:	mov    0x0(%r13),%eax
+  b9d1fe:	cmp    $0x2,%eax
+  b9d201:	jl     b9d32e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x8fe>
+  b9d207:	dec    %eax
+  b9d209:	mov    %eax,0x0(%r13)
+  b9d20d:	jmp    b9cf9a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x56a>
+  b9d212:	mov    %rbx,%rdi
+  b9d215:	mov    %r15,%rsi
+  b9d218:	call   48a6ad0 <lean_nat_big_sub>
+  b9d21d:	mov    %rax,%r14
+  b9d220:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9d225:	call   48a8ac0 <lean_big_int64_to_int>
+  b9d22a:	mov    %rax,%r15
+  b9d22d:	jmp    b9ce22 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x3f2>
+  b9d232:	mov    %rbp,%rdi
+  b9d235:	call   48a6710 <lean_big_usize_to_nat>
+  b9d23a:	mov    %rax,%r13
+  b9d23d:	jmp    b9cec3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x493>
+  b9d242:	call   48a8ac0 <lean_big_int64_to_int>
+  b9d247:	mov    %rax,%rbx
+  b9d24a:	jmp    b9cf12 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4e2>
+  b9d24f:	mov    %rax,%rdi
+  b9d252:	call   48a6710 <lean_big_usize_to_nat>
+  b9d257:	mov    %rax,%rbx
+  b9d25a:	jmp    b9cf9a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x56a>
+  b9d25f:	test   %ecx,%ecx
+  b9d261:	je     b9cd2a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2fa>
+  b9d267:	mov    %r14,%rdi
+  b9d26a:	mov    %rax,%r14
+  b9d26d:	call   48a41f0 <lean_dec_ref_cold>
+  b9d272:	mov    %r14,%rax
+  b9d275:	jmp    b9cd2a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2fa>
+  b9d27a:	test   %eax,%eax
+  b9d27c:	je     b9ce44 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x414>
+  b9d282:	mov    %r15,%rdi
+  b9d285:	call   48a41f0 <lean_dec_ref_cold>
+  b9d28a:	jmp    b9ce44 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x414>
+  b9d28f:	test   %ecx,%ecx
+  b9d291:	je     b9cf2e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4fe>
+  b9d297:	mov    %rbx,%rdi
+  b9d29a:	mov    %rax,%rbx
+  b9d29d:	call   48a41f0 <lean_dec_ref_cold>
+  b9d2a2:	mov    %rbx,%rax
+  b9d2a5:	jmp    b9cf2e <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4fe>
+  b9d2aa:	test   %ecx,%ecx
+  b9d2ac:	je     b9cf71 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x541>
+  b9d2b2:	mov    %rbx,%rdi
+  b9d2b5:	mov    %rax,%rbx
+  b9d2b8:	call   48a41f0 <lean_dec_ref_cold>
+  b9d2bd:	mov    %rbx,%rax
+  b9d2c0:	jmp    b9cf71 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x541>
+  b9d2c5:	test   %eax,%eax
+  b9d2c7:	je     b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9d2cd:	mov    %rbx,%rdi
+  b9d2d0:	call   48a41f0 <lean_dec_ref_cold>
+  b9d2d5:	jmp    b9cb7c <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x14c>
+  b9d2da:	test   %eax,%eax
+  b9d2dc:	je     b9d164 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x734>
+  b9d2e2:	mov    %r15,%rdi
+  b9d2e5:	call   48a41f0 <lean_dec_ref_cold>
+  b9d2ea:	jmp    b9d164 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x734>
+  b9d2ef:	test   %eax,%eax
+  b9d2f1:	je     b9d1a1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x771>
+  b9d2f7:	mov    %rbp,%rdi
+  b9d2fa:	call   48a41f0 <lean_dec_ref_cold>
+  b9d2ff:	jmp    b9d1a1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x771>
+  b9d304:	test   %eax,%eax
+  b9d306:	je     b9d1f0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7c0>
+  b9d30c:	mov    %r14,%rdi
+  b9d30f:	call   48a41f0 <lean_dec_ref_cold>
+  b9d314:	jmp    b9d1f0 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x7c0>
+  b9d319:	test   %eax,%eax
+  b9d31b:	je     b9cec3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x493>
+  b9d321:	mov    %rbx,%rdi
+  b9d324:	call   48a41f0 <lean_dec_ref_cold>
+  b9d329:	jmp    b9cec3 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x493>
+  b9d32e:	test   %eax,%eax
+  b9d330:	je     b9cf9a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x56a>
+  b9d336:	mov    %r13,%rdi
+  b9d339:	call   48a41f0 <lean_dec_ref_cold>
+  b9d33e:	jmp    b9cf9a <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x56a>
+  b9d343:	test   %eax,%eax
+  b9d345:	je     b9ccd1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2a1>
+  b9d34b:	mov    %r12,%rdi
+  b9d34e:	call   48a41f0 <lean_dec_ref_cold>
+  b9d353:	jmp    b9ccd1 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x2a1>
+  b9d358:	test   %eax,%eax
+  b9d35a:	je     b9d073 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x643>
+  b9d360:	mov    %rbp,%rdi
+  b9d363:	call   48a41f0 <lean_dec_ref_cold>
+  b9d368:	jmp    b9d073 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x643>
+  b9d36d:	test   %eax,%eax
+  b9d36f:	je     b9cf12 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4e2>
+  b9d375:	mov    %r12,%rdi
+  b9d378:	call   48a41f0 <lean_dec_ref_cold>
+  b9d37d:	jmp    b9cf12 <lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback+0x4e2>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

@@ -41,6 +41,25 @@ number supplies higher bits, preserving the unrestricted input domain. -/
   else if i < 128 then wordBit high (i - 64)
   else word.testBit i
 
+/-- Eight exact MSB-first remainder updates, unrolled over one cached word's
+low byte. Bits above that byte are ignored; no table or new primitive is used. -/
+@[inline] def byteStep (remainder : UInt32) (byte : UInt64) : UInt32 :=
+  let r := wordStep remainder (wordBit byte 7)
+  let r := wordStep r (wordBit byte 6)
+  let r := wordStep r (wordBit byte 5)
+  let r := wordStep r (wordBit byte 4)
+  let r := wordStep r (wordBit byte 3)
+  let r := wordStep r (wordBit byte 2)
+  let r := wordStep r (wordBit byte 1)
+  wordStep r (wordBit byte 0)
+
+/-- Shift an aligned byte to the low end of its containing cached word.
+The fast caller establishes an offset divisible by eight and below 128;
+`byteStep` reads only the low eight bits of the returned word. -/
+@[inline] def cachedByte (low high : UInt64) (offset : Nat) : UInt64 :=
+  if offset < 64 then low >>> offset.toUInt64
+  else high >>> (offset - 64).toUInt64
+
 -- Initial algorithm: Spec/Parity.lean:25.
 /-- Annex 10 IV (4th ed.), §3.1.2.3.3.1.2: receiver remainder of the full
 word, with no initial/final complement and no extra trailing zero bits.
@@ -48,12 +67,29 @@ The specialized natural-number fold uses a tail-recursive native loop with
 a machine-word remainder, avoiding a temporary list of bit indices. Widths
 and words remain unrestricted; indices beyond the cache use `cachedBit`'s
 original arbitrary-precision path. -/
-def syndrome (width word : Nat) : BitVec 24 :=
+def syndromeBits (width word : Nat) : BitVec 24 :=
   let low := word.toUInt64
   let high := (word >>> 64).toUInt64
   let remainder := width.fold
     (fun i _ rem => wordStep rem (cachedBit word low high (width - 1 - i))) 0
   BitVec.ofNat 24 remainder.toNat
+
+/-- Process complete cached bytes from most to least significant. The public
+entry point restricts this path to at most sixteen bytes. The loop retains one
+UInt32 remainder and performs the same eight updates in their original order. -/
+def syndromeBytes (byteCount word : Nat) : BitVec 24 :=
+  let low := word.toUInt64
+  let high := (word >>> 64).toUInt64
+  let remainder := byteCount.fold
+    (fun i _ rem => byteStep rem (cachedByte low high (8 * (byteCount - 1 - i)))) 0
+  BitVec.ofNat 24 remainder.toNat
+
+/-- The live receiver remainder batches complete bytes within the two-word
+cache. Every other width uses the original bit loop, preserving arbitrary
+natural widths and words, including zero width and over-wide inputs. -/
+def syndrome (width word : Nat) : BitVec 24 :=
+  if width ≤ 128 ∧ width % 8 = 0 then syndromeBytes (width / 8) word
+  else syndromeBits width word
 
 -- Initial algorithm: Spec/Parity.lean:31.
 /-- Annex 10 IV (4th ed.), §3.1.2.3.3.1.2: sender appends 24 zero bits. -/

@@ -1,0 +1,42 @@
+229: LEAN_EXPORT uint8_t lp_lean1090_Lean1090_Impl_Parity_cachedBit(lean_object* v_word_66_, uint64_t v_low_67_, uint64_t v_high_68_, lean_object* v_i_69_){
+230: _start:
+231: {
+232: lean_object* v___x_70_; uint8_t v___x_71_; 
+233: v___x_70_ = lean_unsigned_to_nat(64u);
+234: v___x_71_ = lean_nat_dec_lt(v_i_69_, v___x_70_);
+235: if (v___x_71_ == 0)
+236: {
+237: lean_object* v___x_72_; uint8_t v___x_73_; 
+238: v___x_72_ = lean_unsigned_to_nat(128u);
+239: v___x_73_ = lean_nat_dec_lt(v_i_69_, v___x_72_);
+240: if (v___x_73_ == 0)
+241: {
+242: uint8_t v___x_74_; 
+243: v___x_74_ = l_Nat_testBit(v_word_66_, v_i_69_);
+244: return v___x_74_;
+245: }
+246: else
+247: {
+248: lean_object* v___x_75_; uint64_t v___x_76_; uint64_t v___x_77_; uint64_t v___x_78_; uint64_t v___x_79_; uint8_t v___x_80_; 
+249: v___x_75_ = lean_nat_sub(v_i_69_, v___x_70_);
+250: v___x_76_ = lean_uint64_of_nat(v___x_75_);
+251: lean_dec(v___x_75_);
+252: v___x_77_ = lean_uint64_shift_right(v_high_68_, v___x_76_);
+253: v___x_78_ = 1ULL;
+254: v___x_79_ = lean_uint64_land(v___x_77_, v___x_78_);
+255: v___x_80_ = lean_uint64_dec_eq(v___x_79_, v___x_78_);
+256: return v___x_80_;
+257: }
+258: }
+259: else
+260: {
+261: uint64_t v___x_81_; uint64_t v___x_82_; uint64_t v___x_83_; uint64_t v___x_84_; uint8_t v___x_85_; 
+262: v___x_81_ = lean_uint64_of_nat(v_i_69_);
+263: v___x_82_ = lean_uint64_shift_right(v_low_67_, v___x_81_);
+264: v___x_83_ = 1ULL;
+265: v___x_84_ = lean_uint64_land(v___x_82_, v___x_83_);
+266: v___x_85_ = lean_uint64_dec_eq(v___x_84_, v___x_83_);
+267: return v___x_85_;
+268: }
+269: }
+270: }

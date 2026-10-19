@@ -1,0 +1,56 @@
+139: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Parity_step(lean_object* v_remainder_27_, uint8_t v_bit_28_){
+140: _start:
+141: {
+142: lean_object* v___x_29_; uint32_t v___y_31_; uint32_t v___y_32_; uint32_t v___x_38_; uint32_t v___x_39_; uint32_t v___x_40_; uint32_t v___y_42_; 
+143: v___x_29_ = lean_unsigned_to_nat(24u);
+144: v___x_38_ = lean_uint32_of_nat(v_remainder_27_);
+145: v___x_39_ = 1;
+146: v___x_40_ = lean_uint32_shift_left(v___x_38_, v___x_39_);
+147: if (v_bit_28_ == 0)
+148: {
+149: uint32_t v___x_49_; 
+150: v___x_49_ = 0;
+151: v___y_42_ = v___x_49_;
+152: goto v___jp_41_;
+153: }
+154: else
+155: {
+156: v___y_42_ = v___x_39_;
+157: goto v___jp_41_;
+158: }
+159: v___jp_30_:
+160: {
+161: uint32_t v___x_33_; uint32_t v___x_34_; uint32_t v___x_35_; lean_object* v___x_36_; lean_object* v___x_37_; 
+162: v___x_33_ = lean_uint32_xor(v___y_31_, v___y_32_);
+163: v___x_34_ = 16777215;
+164: v___x_35_ = lean_uint32_land(v___x_33_, v___x_34_);
+165: v___x_36_ = lean_uint32_to_nat(v___x_35_);
+166: v___x_37_ = l_BitVec_ofNat(v___x_29_, v___x_36_);
+167: lean_dec(v___x_36_);
+168: return v___x_37_;
+169: }
+170: v___jp_41_:
+171: {
+172: uint32_t v_shifted_43_; uint32_t v___x_44_; uint32_t v___x_45_; uint32_t v___x_46_; uint8_t v___x_47_; 
+173: v_shifted_43_ = lean_uint32_lor(v___x_40_, v___y_42_);
+174: v___x_44_ = 8388608;
+175: v___x_45_ = lean_uint32_land(v___x_38_, v___x_44_);
+176: v___x_46_ = 0;
+177: v___x_47_ = lean_uint32_dec_eq(v___x_45_, v___x_46_);
+178: if (v___x_47_ == 0)
+179: {
+180: uint32_t v___x_48_; 
+181: v___x_48_ = 33551369;
+182: v___y_31_ = v_shifted_43_;
+183: v___y_32_ = v___x_48_;
+184: goto v___jp_30_;
+185: }
+186: else
+187: {
+188: v___y_31_ = v_shifted_43_;
+189: v___y_32_ = v___x_46_;
+190: goto v___jp_30_;
+191: }
+192: }
+193: }
+194: }

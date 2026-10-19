@@ -1,11 +1,19 @@
 # Verified score optimization order
 
-Generation 10 reached 1.16895× rs1090 decode throughput with the software model
-and zero trusted primitives. The user subsequently authorized continued
-optimization toward **1.50× headline decode throughput**. Stop for review when
-that target is reached. Generation 13 subsequently measured 1.49276× decode
-and 0.92663× CPR; [bench/GEN13.md](../bench/GEN13.md) retains the complete
-measurement. The policy below governs the resumed work.
+The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
+Stop for review only when both measured ratios reach it. Generation 19 reached
+1.79542× decode and 1.43283× with CPR; [its report](../bench/GEN19.md) retains
+all samples and conditions. No project-specific trusted primitive is authorized.
+
+CPR changes must remain inside the proved boundary. Moving work into tested-only
+Float callbacks, including haversine, or adding tested-only Float code requires
+explicit user approval. The benchmark harness and interleaver remain frozen.
+Each future generation report includes signed CPR overhead for both decoders:
+`1e6 / cpr_msg_s - 1e6 / decode_msg_s`, in microseconds per message. Compute it
+from exact integer median durations before division. It is a difference between
+mode medians, includes measurement noise, and does not isolate CPR execution.
+[The historical supplement](../bench/CPR-OVERHEAD.md) preserves negative values
+and leaves every sealed generation report unchanged.
 
 The user specified this order after reviewing the BDS50 baseline of about
 0.24× rs1090 throughput. The baseline is evidence of a performance gap, not

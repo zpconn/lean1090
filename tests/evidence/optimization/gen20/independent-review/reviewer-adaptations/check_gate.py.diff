@@ -1,0 +1,159 @@
+--- tests/evidence/optimization/gen19/independent-review/check_gate.py
++++ tests/evidence/optimization/gen20/independent-review/check_gate.py
+@@ -10,7 +10,7 @@
+ import archive_generation_gate as archive_api
+ import archive_generation_benchmark_target as reporting
+ 
+-B = Path('tests/evidence/optimization/gen19')
++B = Path('tests/evidence/optimization/gen20')
+ F = B
+ OUT = B / 'independent-review/gate-review.json'
+ 
+@@ -32,10 +32,10 @@
+     gate = load(B / 'gate-evidence.json')
+     archive = load(B / 'gate-archive.json')
+     verified = provenance.verify_gate_evidence(gate, sha(B / 'gate-full.log'), current)
+-    assert len(current) == 192 and archive['status'] == 'passed' and archive['generation'] == 19
+-    previous = load('tests/evidence/optimization/gen18/gate-evidence.json')['input_hashes_after']
+-    assert set(current) - set(previous) == {'Proofs/BitExtraction.lean', 'Proofs/PayloadIntegerShift.lean'} and not set(previous) - set(current)
+-    assert {p for p in previous if previous[p] != current[p]} == {'Impl/Altitude.lean', 'Impl/Frame.lean', 'Impl/PayloadBits.lean', 'Proofs/AffineValue.lean', 'Proofs/Decoder.lean', 'Proofs/CommBTables.lean'}
++    assert len(current) == 195 and archive['status'] == 'passed' and archive['generation'] == 20
++    previous = load('tests/evidence/optimization/gen19/gate-evidence.json')['input_hashes_after']
++    assert set(current) - set(previous) == {'Proofs/FoldBlocks.lean', 'Proofs/ParityByte.lean', 'Proofs/ParityByteBits.lean'} and not set(previous) - set(current)
++    assert {p for p in previous if previous[p] != current[p]} == {'Impl/Parity.lean', 'Proofs/ParityWord.lean'}
+     assert archive['gate_evidence_sha256'] == sha(B / 'gate-evidence.json')
+     assert archive['gate_log_sha256'] == sha(B / 'gate-full.log')
+     assert archive['helper_sha256'] == sha('review/diagnostics/archive_generation_gate.py')
+@@ -174,7 +174,7 @@
+     assert len(retained_fresh) == 33
+     for name, row in retained_fresh.items():
+         assert sha(name) == row['sha256'] and Path(name).stat().st_size == row['bytes']
+-    assert completion['source_count'] == 117 and completion['binary_count'] == 3 and completion['retained_members'] == 33
++    assert completion['source_count'] == 120 and completion['binary_count'] == 3 and completion['retained_members'] == 33
+     for summary in [summaries['message'], fresh]:
+         assert summary['status'] == 'PASS' and summary['generated_messages'] == 10000000
+         counts = summary['message']['counts']
+@@ -190,19 +190,19 @@
+     prepared_review = load(B / 'benchmark-preparation/independent-preparation-review.json')
+     assert prepared_review['status'] == 'passed_independent_preparation_source_review' and not prepared_review['findings']
+     assert prepared_review['source_sha256'] == sha(B / 'benchmark-preparation/prepare.py')
+-    assert prepared_review['prior_source_sha256'] == sha('tests/evidence/optimization/gen18/benchmark-preparation/prepare.py')
++    assert prepared_review['prior_source_sha256'] == sha('tests/evidence/optimization/gen19/benchmark-preparation/prepare.py')
+     assert prepared_review['diff_sha256'] == sha(B / 'benchmark-preparation/reviewed-preparation.diff')
+     assert prep['status'] == 'passed' and prep['plan_sha256'] == sha(B / 'benchmark-preparation/plan.json')
+     assert prep['fresh_verification_sha256'] == sha(F / 'fresh-final-verification.json')
+     assert prep['gate_evidence_sha256'] == sha(B / 'gate-evidence.json')
+     assert prep['helper_sha256'] == sha('review/diagnostics/archive_generation_benchmark_target.py')
+-    assert prep['helper_independent_review_sha256'] == sha('tests/evidence/optimization/dual-target-reporting/independent-review.json')
++    assert prep['helper_independent_review_sha256'] == sha('tests/evidence/optimization/cpr-overhead-reporting/independent-review.json')
+     prior = Path(plan['prior_csv_snapshot']).read_bytes()
+     assert prior == Path('bench/results.csv').read_bytes() == subprocess.check_output(['git', 'show', 'HEAD:bench/results.csv'])
+-    assert len(reporting.parse_prior_csv(prior, 19)) == plan['prior_csv_rows'] == 38
++    assert len(reporting.parse_prior_csv(prior, 20)) == plan['prior_csv_rows'] == 40
+     assert hashlib.sha256(prior).hexdigest() == plan['prior_csv_sha256'] == prep['prior_csv_sha256']
+     assert all(reporting.target_ratio(plan, mode) == (2, 1) for mode in ['decode', 'cpr'])
+-    assert not prep['measurement_started'] and not Path('bench/runs/gen19').exists()
++    assert not prep['measurement_started'] and not Path('bench/runs/gen20').exists()
+     integration = load(B / 'integration/targeted-build.json')
+     assert integration['status'] == 'passed' and integration['exit_code'] == 0
+     assert integration['all_inputs_before'] == integration['all_inputs_after'] == current
+@@ -211,7 +211,7 @@
+     assert integration['inventory_tool_sha256'] == sha('review/diagnostics/run_generation_benchmark.py')
+     assert integration['log_sha256'] == sha(B / 'integration/targeted-build.log')
+     assert integration['inputs_before'] == integration['inputs_after']
+-    assert set(integration['inputs_after']) == {'Impl/Altitude.lean', 'Impl/Frame.lean', 'Impl/PayloadBits.lean', 'Proofs/BitExtraction.lean', 'Proofs/PayloadIntegerShift.lean', 'Proofs/AffineValue.lean', 'Proofs/CommBTables.lean', 'Proofs/Decoder.lean'}
++    assert set(integration['inputs_after']) == {'Impl/Parity.lean', 'Proofs/ParityByteBits.lean', 'Proofs/FoldBlocks.lean', 'Proofs/ParityByte.lean', 'Proofs/ParityWord.lean'}
+     for name, digest in integration['inputs_after'].items():
+         assert current[name] == digest == sha(B / 'integration/sources' / name)
+     for name, digest in integration['binary_hashes'].items():
+@@ -222,6 +222,10 @@
+     assert native_inputs['integration_record_sha256'] == sha(B / 'integration/targeted-build.json')
+     assert sha(native_inputs['worker']) == native_inputs['worker_sha256']
+     assert native['status'] == 'passed' and native['findings'] == []
++    assessment = load(B / 'independent-review/native-assessment-review.json')
++    assert assessment['status'] == 'passed' and not assessment['findings']
++    for name, digest in assessment['bindings'].items():
++        assert sha(name) == digest
+     for name, digest in native_inputs['held_inputs'].items():
+         assert sha(name) == digest
+     for name, digest in native['bindings'].items():
+@@ -232,8 +236,8 @@
+         assert sha(name) == digest
+     history = load(F / 'preparation.json')
+     pending_history = {
+-        'tests/evidence/diagnostics/gen18/independent-review/independent-review.json',
+-        'tests/evidence/diagnostics/gen18-cpr/independent-review/independent-review.json',
++        'tests/evidence/diagnostics/gen19/independent-review/independent-review.json',
++        'tests/evidence/diagnostics/gen19-cpr/independent-review/independent-review.json',
+     }
+     history_committed, history_pending = {}, {}
+     for name, digest in history['history_bindings'].items():
+@@ -249,31 +253,37 @@
+             history_pending[name] = digest
+     assert set(history_pending) == pending_history
+     source_review = load(B / 'independent-review/source-proof-review.json')
+-    assert source_review['status'] == 'passed' and not source_review['findings']
++    assert source_review['status'] == 'passed_independent_source_and_build_evidence_review' and not source_review['findings']
+     for name, digest in source_review['bindings'].items():
+         assert sha(name) == digest
+-    root_bit = load(B / 'independent-review/bit-proof-review.json')
+-    assert root_bit['status'] == 'passed_independent_source_and_build_evidence_review' and not root_bit['findings']
+-    assert root_bit['source_sha256'] == current['Proofs/BitExtraction.lean']
+-    assert root_bit['summary_sha256'] == sha(B / 'bit-proof/summary.json')
+-    assert root_bit['build_log_sha256'] == sha(B / 'bit-proof/attempt-02/build.log')
+-    assert root_bit['proof_facts'] == 15 and root_bit['kernel_witnesses'] == 9
+-    assert native['systematic_bit_extraction_verified'] and native['linked_native_sets'] == 22
++    root_bit = load(B / 'independent-review/byte-bit-proof-review.json')
++    assert root_bit['status'] == 'passed' and not root_bit['findings']
++    assert root_bit['source_sha256'] == current['Proofs/ParityByteBits.lean']
++    assert root_bit['runtime_sha256'] == current['Impl/Parity.lean']
++    assert root_bit['summary_sha256'] == sha(B / 'byte-bits-proof/summary.json')
++    helper = load(B / 'byte-bits-proof/summary.json')
++    assert helper['status'] == 'passed'
++    assert helper['build_log_sha256'] == sha(B / 'byte-bits-proof/attempt-02/build.log')
++    assert len(helper['facts']) == 9 and all(
++        set(axioms) <= {'propext', 'Classical.choice', 'Quot.sound'}
++        for axioms in helper['facts'].values())
++    assert len(source_review['fold_facts']) == 3 and len(source_review['composition_and_existing_facts']) == 17
++    assert native['byte_crc_live_path_verified'] and native['linked_native_sets'] == 22
+     assert current['.gitignore'] == previous['.gitignore']
+     preflight = load(F / 'fresh-preflight.json')
+-    assert len(preflight['source_sha256']) == 117 and len(preflight['binary_sha256']) == 3
++    assert len(preflight['source_sha256']) == 120 and len(preflight['binary_sha256']) == 3
+     assert all(current[name] == digest for name, digest in preflight['source_sha256'].items())
+     assert len(Path('spec.lock').read_text().splitlines()) == 104
+     assert provenance.gate_input_hashes() == current
+     result = {'status': 'passed', 'reviewed_utc': datetime.now(timezone.utc).isoformat(), 'findings': [],
+-              'script_sha256': sha(__file__), 'gate_verification': verified, 'gate_inputs': 192,
+-              'central_proof_independence': 'This reviewer authored BitExtraction; root independently assessed it. PayloadIntegerShift and the AffineValue/Decoder bridges were independently assessed by this reviewer.',
++              'script_sha256': sha(__file__), 'gate_verification': verified, 'gate_inputs': 195,
++              'central_proof_independence': 'This reviewer authored ParityByte and its ParityWord integration; cost_analysis independently assessed them and FoldBlocks. Root independently assessed the ParityByteBits module authored by cost_analysis. This gate review binds those independent assessments without claiming self-review independence.',
+               'history_committed_at_review': history_committed, 'history_pending_current_commit': history_pending,
+               'contracts': 23, 'kernel_witnesses': 152, 'unit_assertions': 1011,
+               'components': names, 'retained_component_files': file_count,
+               'fixed_counts': summaries['message']['message']['counts'], 'fresh_counts': fresh['message']['counts'],
+               'fixed_seed': summaries['message']['seed'], 'fresh_seed': fresh['seed'], 'coverage_each': [32, 70, 14],
+-              'prior_csv_rows': 38, 'target_ratios': {'decode': [2, 1], 'cpr': [2, 1]},
++              'prior_csv_rows': 40, 'target_ratios': {'decode': [2, 1], 'cpr': [2, 1]},
+               'fresh_cleanup': {'files': 8, 'allocated_bytes': fresh_bytes,
+                                 'complete_retained_copies_rechecked': True},
+               'fixed_cleanup': {'roots': fixed_roots, 'files': 26, 'allocated_bytes': fixed_bytes,
+@@ -286,15 +296,15 @@
+                   'independent-review/fresh-completion.json', 'post-fresh-cleanup/result.json',
+                   'post-gate-archive-cleanup/result.json', 'post-gate-archive-cleanup/archive-flush.json',
+                   'benchmark-preparation/plan.json', 'benchmark-preparation/preparation-verification.json',
+-                  'independent-review/source-proof-review.json', 'independent-review/bit-proof-review.json',
++                  'independent-review/source-proof-review.json', 'independent-review/byte-bit-proof-review.json',
+                   'benchmark-preparation/independent-preparation-review.json', 'benchmark-preparation/reviewed-preparation.diff',
+                   'integration/targeted-build.json', 'integration/targeted-build.log',
+-                  'independent-review/check_gate-prepared.py', 'independent-review/gate-review-schema-update.json',
++                  'independent-review/native-assessment-review.json',
+                   'independent-review/check_gate.py',
+                   'independent-review/gate-review-preparation.json', 'preparation.json']},
+               'limits': 'Read-only review; prior generation evidence is bound through its sealed reviews and exact CSV prefix, without recopying historical files. Raw scratch cleanup is separately authorized and receipted after archival.'}
+     OUT.write_text(json.dumps(result, indent=2) + '\n')
+-    print(json.dumps({'status': 'passed', 'review_sha256': sha(OUT), 'gate_inputs': 192, 'components': 7}))
++    print(json.dumps({'status': 'passed', 'review_sha256': sha(OUT), 'gate_inputs': 195, 'components': 7}))
+ 
+ 
+ if __name__ == '__main__':

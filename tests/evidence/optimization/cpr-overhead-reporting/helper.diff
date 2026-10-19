@@ -1,0 +1,60 @@
+--- review/diagnostics/archive_generation_benchmark_target.py
++++ .cache/cpr-overhead-reporting-prep/archive_generation_benchmark_target.py
+@@ -222,8 +222,39 @@
+     return fields, all(decisions.values())
+ 
+ 
++def cpr_overhead(results):
++    """Signed difference of mode medians, not a separately timed CPR stage.
++
++    Subtract integer nanoseconds before conversion to avoid cancellation.
++    Keep the exact numerator and divisor alongside the displayed value.
++    """
++    by_mode = {result['mode']: result for result in results}
++    require(len(results) == len(by_mode) == 2 and set(by_mode) == {'decode', 'cpr'},
++            'overhead requires exactly one decode and one CPR result')
++    implementations = {}
++    for name in ('lean1090', 'rs1090'):
++        medians = {mode: by_mode[mode]['medians_nanoseconds'][name]
++                   for mode in ('decode', 'cpr')}
++        require(all(type(value) is int and value > 0 for value in medians.values()),
++                'overhead requires positive integer medians')
++        difference = medians['cpr'] - medians['decode']
++        implementations[name] = {
++            'median_nanoseconds': medians,
++            'difference_nanoseconds': difference,
++            'microseconds_per_message_divisor': COUNT * 1000,
++            'microseconds_per_message': difference / (COUNT * 1000),
++        }
++    return {
++        'messages_per_interval': COUNT,
++        'formula': '1e6 / cpr_messages_per_second - 1e6 / decode_messages_per_second',
++        'interpretation': 'Difference of independently measured mode medians; includes measurement noise. Signed values are retained without clamping.',
++        'implementations': implementations,
++    }
++
++
+ def report_text(plan, data, source, old_rows, fresh):
+     g = plan['generation']; s = data['summary']; results = data['results']; meta = data['metadata']['decode']
++    overhead = cpr_overhead(results)['implementations']
+     decisions = target_decisions(plan, results)
+     reached = all(decisions.values())
+     label = target_label(plan)
+@@ -258,6 +289,8 @@
+ | Mode | Lean median ms | rs1090 median ms | Lean msg/s | rs1090 msg/s | Lean / rs1090 |
+ | --- | ---: | ---: | ---: | ---: | ---: |
+ {rows}
++
++CPR overhead is **{overhead['lean1090']['microseconds_per_message']:.12f} µs/message for Lean** and **{overhead['rs1090']['microseconds_per_message']:.12f} µs/message for rs1090**. This is `1e6 / cpr_msg_s - 1e6 / decode_msg_s`, calculated from exact integer median durations before division. It is a difference between independently measured mode medians, includes measurement noise, and is not an isolated timing of CPR work. Negative differences are retained without clamping.
+ 
+ Each mode retains all 48 rows: three AB warmup pairs, then 21 measured AB pairs, A=rs1090/B=Lean, CPU 0. Every interval decodes all {COUNT:,} prepared messages. The headline calls exactly Impl.decode including complete model construction; CPR begins with empty state and resolves 11,347 positions on each side. No sample was dropped, adjusted or repeated. [Raw decode samples](runs/gen{g}/decode/samples.csv), [CPR samples](runs/gen{g}/cpr/samples.csv), [summary](runs/gen{g}/summary.json).
+ 
+@@ -312,7 +345,7 @@
+         writer.writerow([s['commit'],g,r['messages_per_second']['lean1090'],r['messages_per_second']['rs1090'],plan['row_note'],r['mode'],r['lean_over_rust']])
+     new_bytes = old_bytes + appended.getvalue().encode()
+     targets, reached = reporting_targets(plan, data['results'])
+-    verification = {'status':'passed','verified_utc':stamp(),'helper_sha256':sha(__file__),'plan_sha256':sha(args.plan),'commit':s['commit'],'results':data['results'],'clocks':data['clocks'],'wrapper_backsteps':data['wrapper_backsteps'],'fresh_verification_sha256':sha(fresh_path),'prior_csv_sha256':plan['prior_csv_sha256'],'prior_csv_bytes':len(old_bytes),'prior_rows_preserved':len(old_rows),'rows_appended':2,'csv_after_sha256':hashlib.sha256(new_bytes).hexdigest(),'report_sha256':hashlib.sha256(text.encode()).hexdigest(),**targets,'next':'Stop for user review.' if reached else 'Complete diagnostic and independent review before another optimization.'}
++    verification = {'status':'passed','verified_utc':stamp(),'helper_sha256':sha(__file__),'plan_sha256':sha(args.plan),'commit':s['commit'],'results':data['results'],'cpr_overhead':cpr_overhead(data['results']),'clocks':data['clocks'],'wrapper_backsteps':data['wrapper_backsteps'],'fresh_verification_sha256':sha(fresh_path),'prior_csv_sha256':plan['prior_csv_sha256'],'prior_csv_bytes':len(old_bytes),'prior_rows_preserved':len(old_rows),'rows_appended':2,'csv_after_sha256':hashlib.sha256(new_bytes).hexdigest(),'report_sha256':hashlib.sha256(text.encode()).hexdigest(),**targets,'next':'Stop for user review.' if reached else 'Complete diagnostic and independent review before another optimization.'}
+     require(inventory(source) == data['source_files'], 'source evidence changed during validation')
+     shutil.copytree(source,destination)
+     require(inventory(destination) == data['source_files'], 'archive copy differs')
