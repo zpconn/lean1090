@@ -1,0 +1,57 @@
+{
+  "status": "passed_independent_native_binding_review",
+  "reviewed_utc": "2026-10-19T04:09:22.803030+00:00",
+  "findings": [],
+  "native_review_sha256": "070ee05e729f6ac730f8e94d7de86a4bd022797832306c9119478d4f627be329",
+  "native_inspection_sha256": "f8327965703ac2bd0ef3329949feee868247ae705c5ef6ffa2a653551e1a552f",
+  "integration_review_sha256": "c24b5b1a0ae797e33a9e00230f5a1f3b35d70a116d20f0ab056061ad06c382ab",
+  "independent_source_proof_review_sha256": "b07af730de2e5dda2726ddf6760d913c1ae318dee863c46333c61d6abdc19333",
+  "independent_integration_proof_review_sha256": "ba4f92599b53a8a85e0e54274fe2da2744508ae106797426fd85a6bab5a9bf49",
+  "native_checks": 31,
+  "native_inputs": 143,
+  "native_files": 439,
+  "exact_native_evidence_membership": 442,
+  "bds60_ratio_enclosure_live_path_verified": true,
+  "independent_cfg": {
+    "instruction_count": 776,
+    "reachable_instructions": 776,
+    "event_sites": {
+      "0xb81677": "software_round",
+      "0xb8169e": "rounded_Rat_compare",
+      "0xb816da": "rounded_Rat_compare"
+    },
+    "normal_exits": [
+      {
+        "events": [],
+        "target": "ret"
+      },
+      {
+        "events": [
+          "software_round",
+          "rounded_Rat_compare"
+        ],
+        "target": "ret"
+      },
+      {
+        "events": [
+          "software_round",
+          "rounded_Rat_compare",
+          "rounded_Rat_compare"
+        ],
+        "target": "l_Rat_blt"
+      }
+    ]
+  },
+  "ratio_native_cfg_sha256": "933fe4c352d13e38a062287773cca71c68a088b67393e852d1ec2e7095dc65d5",
+  "other_unchanged_native_sets": 19,
+  "execution_log_bindings": {
+    "tests/evidence/optimization/gen14/native-review/validate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen14/native-review/validate.stdout": "84bc12cbd80db31ed89d047b011b4868dfc909ea2819f60e7ba732a3fbea2c19"
+  },
+  "review_script_sha256": "64b79e5bd4d63e853eb27d74e571d3dd8a367537aa12b279156fb20e0ded0872",
+  "limits": [
+    "Read-only replay of retained independent source/proof/native evidence. No compiler or decoder execution.",
+    "Conservative CFG includes all branch choices and treats calls as returning. No runtime frequency or zero callee-allocation inference.",
+    "Exact Rat division remains in the BDS60 caller; the uncertain helper branch invokes the original software round and comparisons. Both integer arithmetic allocation and conditional lazy scalar initialization remain. The inspected binary is the integrated CLI, not the future fresh timed worker."
+  ]
+}

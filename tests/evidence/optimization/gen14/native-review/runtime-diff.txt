@@ -1,0 +1,38 @@
+diff --git a/Impl/CommB.lean b/Impl/CommB.lean
+index b635013..82f3b95 100644
+--- a/Impl/CommB.lean
++++ b/Impl/CommB.lean
+@@ -383,6 +383,23 @@ def cbWindPenalty50 (word : Nat) : Rat :=
+       change gs < 1024 at hg
+       omega)
+ 
++/-- Exact decision for a software-binary64 rounded ratio outside [250,800].
++The integer enclosure represents error at most (abs(q)+1)/2^51. Only an
++interval touching a threshold evaluates the original rounded comparison. -/
++def cbRatioOutside250800 (q : Rat) : Bool :=
++  let n := q.num
++  let d : Int := q.den
++  let k : Int := 2251799813685248
++  let e : Int := (q.num.natAbs : Int) + d
++  let c := k * n
++  let lower := 250 * k * d
++  let upper := 800 * k * d
++  if c + e < lower || upper < c - e then true
++  else if lower ≤ c - e && c + e ≤ upper then false
++  else
++    let rounded := Binary64.round q
++    rounded < 250 || rounded > 800
++
+ -- Initial algorithm: Spec/CommB.lean:409.
+ /-- rs1090-derived penalty.rs: BDS50 wind and opposite-sign turn penalties,
+ BDS60 IAS/Mach-ratio penalty; source operation order is preserved. -/
+@@ -401,8 +418,7 @@ def cbPenalty (register word : Nat) : Rat :=
+     | some ias, some _ =>
+       let mach := cbMach64 word
+       if mach > 0 then
+-        let ratio := Binary64.div ias mach
+-        if ratio < 250 || ratio > 800 then -3 else 0
++        if cbRatioOutside250800 (ias / mach) then -3 else 0
+       else 0
+     | _, _ => 0
+   | _ => 0

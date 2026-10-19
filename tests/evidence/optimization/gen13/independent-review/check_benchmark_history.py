@@ -23,6 +23,18 @@ proc.stdin.close();assert proc.wait()==0
 records={}
 for g in range(13):
  p=Path(f'tests/evidence/diagnostics/gen{g}/perf/capture.json');cap=json.loads(p.read_text());raw=cap['raw_data'];assert sha(raw['path'])==raw['sha256'] and Path(raw['path']).stat().st_size==raw['bytes'];records[str(p)]=raw['sha256']
+historical_manifest=Path('tests/evidence/diagnostics/gen12/historical-inputs.json')
+old=json.loads(historical_manifest.read_text())
+assert len(old['files'])==9286
+for path,item in old['files'].items():
+ if path=='bench/results.csv':
+  prefix=E/'results-prefix-before-gen13.csv'
+  assert sha(prefix)==item['sha256'] and prefix.stat().st_size==item['bytes']
+  assert Path(path).read_bytes().startswith(prefix.read_bytes())
+ else:assert sha(path)==item['sha256'] and Path(path).stat().st_size==item['bytes'],path
+recovery=json.loads((E/'historical-bytecode-recovery/recovery.json').read_text())
+assert sha(recovery['target'])==recovery['original_sha256']
+x['historical_manifest_recheck']={'manifest':str(historical_manifest),'sha256':sha(historical_manifest),'all_recorded_files':len(old['files']),'including_restored_ignored_bytecode':True,'authorized_results_append':'Historical bench/results.csv is verified as the exact retained 26-row byte prefix; the primary review verifies precisely the two appended rows.','retained_failed_attempt':{'script_sha256':sha(E/'check_benchmark_history-attempt-01.py'),'log_sha256':sha(E/'benchmark-history-01.log'),'reason':'The original additional history check compared the historical results snapshot to the intentionally appended current CSV; no producer artifact changed.'}}
 x['historical_artifact_review']={'status':'passed','checked_utc':datetime.now(timezone.utc).isoformat(),'committed_files':count,'committed_bytes':total,'roots':roots,'exact_bytes_equal_timed_commit':True,'tracked_and_untracked_membership_unchanged':True,'prior_raw_perf_hashes':records,'checker':str(Path(__file__)),'checker_sha256':sha(__file__)}
 review.write_text(json.dumps(x,indent=2)+'\n')
 print(json.dumps({'historical_files':count,'historical_bytes':total,'prior_raw_perf_files':len(records),'results_review_sha256':sha(review)},indent=2))

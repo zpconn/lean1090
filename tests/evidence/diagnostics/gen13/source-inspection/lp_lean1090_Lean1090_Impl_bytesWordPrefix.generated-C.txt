@@ -1,0 +1,53 @@
+{
+_start:
+{
+lean_object* v_zero_27_; uint8_t v_isZero_28_; 
+v_zero_27_ = lean_unsigned_to_nat(0u);
+v_isZero_28_ = lean_nat_dec_eq(v_x_24_, v_zero_27_);
+if (v_isZero_28_ == 1)
+{
+lean_object* v___x_29_; lean_object* v___x_30_; 
+lean_dec(v_x_24_);
+v___x_29_ = lean_box_uint64(v_x_26_);
+v___x_30_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v___x_30_, 0, v___x_29_);
+lean_ctor_set(v___x_30_, 1, v_x_25_);
+return v___x_30_;
+}
+else
+{
+if (lean_obj_tag(v_x_25_) == 0)
+{
+lean_object* v___x_31_; lean_object* v___x_32_; 
+lean_dec(v_x_24_);
+v___x_31_ = lean_box_uint64(v_x_26_);
+v___x_32_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v___x_32_, 0, v___x_31_);
+lean_ctor_set(v___x_32_, 1, v_x_25_);
+return v___x_32_;
+}
+else
+{
+lean_object* v_head_33_; lean_object* v_tail_34_; lean_object* v_one_35_; lean_object* v_n_36_; uint64_t v___x_37_; uint64_t v___x_38_; uint8_t v___x_39_; uint64_t v___x_40_; uint64_t v___x_41_; 
+v_head_33_ = lean_ctor_get(v_x_25_, 0);
+lean_inc(v_head_33_);
+v_tail_34_ = lean_ctor_get(v_x_25_, 1);
+lean_inc(v_tail_34_);
+lean_dec_ref_known(v_x_25_, 2);
+v_one_35_ = lean_unsigned_to_nat(1u);
+v_n_36_ = lean_nat_sub(v_x_24_, v_one_35_);
+lean_dec(v_x_24_);
+v___x_37_ = 8ULL;
+v___x_38_ = lean_uint64_shift_left(v_x_26_, v___x_37_);
+v___x_39_ = lean_unbox(v_head_33_);
+lean_dec(v_head_33_);
+v___x_40_ = lean_uint8_to_uint64(v___x_39_);
+v___x_41_ = lean_uint64_add(v___x_38_, v___x_40_);
+v_x_24_ = v_n_36_;
+v_x_25_ = v_tail_34_;
+v_x_26_ = v___x_41_;
+goto _start;
+}
+}
+}
+}

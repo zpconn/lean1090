@@ -1,0 +1,348 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b8b550 <initialize_lean1090_Impl_CommB>:
+  b8b550:	push   %rbx
+  b8b551:	cmpb   $0x0,0x3ff46b0(%rip)        # 4b7fc08 <_G_initialized>
+  b8b558:	je     b8b57a <initialize_lean1090_Impl_CommB+0x2a>
+  b8b55a:	mov    $0x10,%edi
+  b8b55f:	call   490aee0 <lean_alloc_small_object_core>
+  b8b564:	movl   $0x1,(%rax)
+  b8b56a:	movw   $0x1,0x6(%rax)
+  b8b570:	movq   $0x1,0x8(%rax)
+  b8b578:	pop    %rbx
+  b8b579:	ret
+  b8b57a:	mov    %edi,%ebx
+  b8b57c:	movb   $0x1,0x3ff4685(%rip)        # 4b7fc08 <_G_initialized>
+  b8b583:	xor    %eax,%eax
+  b8b585:	call   48c2470 <lean_initialize_runtime_module>
+  b8b58a:	movzbl %bl,%ebx
+  b8b58d:	mov    %ebx,%edi
+  b8b58f:	call   48357f0 <initialize_Init>
+  b8b594:	movzbl 0x7(%rax),%ecx
+  b8b598:	shl    $0x18,%ecx
+  b8b59b:	cmp    $0x1000000,%ecx
+  b8b5a1:	je     b8b664 <initialize_lean1090_Impl_CommB+0x114>
+  b8b5a7:	mov    (%rax),%ecx
+  b8b5a9:	cmp    $0x2,%ecx
+  b8b5ac:	jl     b8b8ef <initialize_lean1090_Impl_CommB+0x39f>
+  b8b5b2:	dec    %ecx
+  b8b5b4:	mov    %ecx,(%rax)
+  b8b5b6:	mov    %ebx,%edi
+  b8b5b8:	call   48357f0 <initialize_Init>
+  b8b5bd:	movzbl 0x7(%rax),%ecx
+  b8b5c1:	shl    $0x18,%ecx
+  b8b5c4:	cmp    $0x1000000,%ecx
+  b8b5ca:	je     b8b664 <initialize_lean1090_Impl_CommB+0x114>
+  b8b5d0:	mov    (%rax),%ecx
+  b8b5d2:	cmp    $0x2,%ecx
+  b8b5d5:	jl     b8b904 <initialize_lean1090_Impl_CommB+0x3b4>
+  b8b5db:	dec    %ecx
+  b8b5dd:	mov    %ecx,(%rax)
+  b8b5df:	mov    %ebx,%edi
+  b8b5e1:	call   b57a90 <initialize_lean1090_Impl_CommBLayouts>
+  b8b5e6:	movzbl 0x7(%rax),%ecx
+  b8b5ea:	shl    $0x18,%ecx
+  b8b5ed:	cmp    $0x1000000,%ecx
+  b8b5f3:	je     b8b664 <initialize_lean1090_Impl_CommB+0x114>
+  b8b5f5:	mov    (%rax),%ecx
+  b8b5f7:	cmp    $0x2,%ecx
+  b8b5fa:	jl     b8b919 <initialize_lean1090_Impl_CommB+0x3c9>
+  b8b600:	dec    %ecx
+  b8b602:	mov    %ecx,(%rax)
+  b8b604:	mov    %ebx,%edi
+  b8b606:	call   b77240 <initialize_lean1090_Impl_ADSB>
+  b8b60b:	movzbl 0x7(%rax),%ecx
+  b8b60f:	shl    $0x18,%ecx
+  b8b612:	cmp    $0x1000000,%ecx
+  b8b618:	je     b8b664 <initialize_lean1090_Impl_CommB+0x114>
+  b8b61a:	mov    (%rax),%ecx
+  b8b61c:	cmp    $0x2,%ecx
+  b8b61f:	jl     b8b92e <initialize_lean1090_Impl_CommB+0x3de>
+  b8b625:	dec    %ecx
+  b8b627:	mov    %ecx,(%rax)
+  b8b629:	mov    %ebx,%edi
+  b8b62b:	call   b7eeb0 <initialize_lean1090_Impl_Binary64>
+  b8b630:	movzbl 0x7(%rax),%ecx
+  b8b634:	shl    $0x18,%ecx
+  b8b637:	cmp    $0x1000000,%ecx
+  b8b63d:	je     b8b664 <initialize_lean1090_Impl_CommB+0x114>
+  b8b63f:	mov    (%rax),%ecx
+  b8b641:	cmp    $0x2,%ecx
+  b8b644:	jl     b8b943 <initialize_lean1090_Impl_CommB+0x3f3>
+  b8b64a:	dec    %ecx
+  b8b64c:	mov    %ecx,(%rax)
+  b8b64e:	mov    %ebx,%edi
+  b8b650:	call   b811d0 <initialize_lean1090_Impl_ScoreGate>
+  b8b655:	movzbl 0x7(%rax),%ecx
+  b8b659:	shl    $0x18,%ecx
+  b8b65c:	cmp    $0x1000000,%ecx
+  b8b662:	jne    b8b666 <initialize_lean1090_Impl_CommB+0x116>
+  b8b664:	pop    %rbx
+  b8b665:	ret
+  b8b666:	mov    (%rax),%ecx
+  b8b668:	cmp    $0x2,%ecx
+  b8b66b:	jl     b8b958 <initialize_lean1090_Impl_CommB+0x408>
+  b8b671:	dec    %ecx
+  b8b673:	mov    %ecx,(%rax)
+  b8b675:	mov    0x3ff46ed(%rip),%eax        # 4b7fd68 <lp_lean1090_Lean1090_Impl_cbQNHValueTable___closed__1_once>
+  b8b67b:	cmp    $0x1,%eax
+  b8b67e:	jne    b8b96d <initialize_lean1090_Impl_CommB+0x41d>
+  b8b684:	mov    0x3ff46d5(%rip),%rdi        # 4b7fd60 <lp_lean1090_Lean1090_Impl_cbQNHValueTable___closed__1>
+  b8b68b:	lea    0x3ff41be(%rip),%rax        # 4b7f850 <lp_lean1090_Lean1090_Impl_cbQNHValueTable>
+  b8b692:	mov    %rdi,(%rax)
+  b8b695:	call   48a1bf0 <lean_mark_persistent>
+  b8b69a:	mov    0x3ff46d8(%rip),%eax        # 4b7fd78 <lp_lean1090_Lean1090_Impl_cbMachValueTable___closed__1_once>
+  b8b6a0:	cmp    $0x1,%eax
+  b8b6a3:	jne    b8b98f <initialize_lean1090_Impl_CommB+0x43f>
+  b8b6a9:	mov    0x3ff46c0(%rip),%rdi        # 4b7fd70 <lp_lean1090_Lean1090_Impl_cbMachValueTable___closed__1>
+  b8b6b0:	lea    0x3ff41c1(%rip),%rax        # 4b7f878 <lp_lean1090_Lean1090_Impl_cbMachValueTable>
+  b8b6b7:	mov    %rdi,(%rax)
+  b8b6ba:	call   48a1bf0 <lean_mark_persistent>
+  b8b6bf:	mov    0x3ff46c3(%rip),%eax        # 4b7fd88 <lp_lean1090_Lean1090_Impl_cbWindPenaltyTable___closed__1_once>
+  b8b6c5:	cmp    $0x1,%eax
+  b8b6c8:	jne    b8b9b1 <initialize_lean1090_Impl_CommB+0x461>
+  b8b6ce:	mov    0x3ff46ab(%rip),%rdi        # 4b7fd80 <lp_lean1090_Lean1090_Impl_cbWindPenaltyTable___closed__1>
+  b8b6d5:	lea    0x3ff4444(%rip),%rax        # 4b7fb20 <lp_lean1090_Lean1090_Impl_cbWindPenaltyTable>
+  b8b6dc:	mov    %rdi,(%rax)
+  b8b6df:	call   48a1bf0 <lean_mark_persistent>
+  b8b6e4:	mov    0x3ff46ae(%rip),%eax        # 4b7fd98 <lp_lean1090_Lean1090_Impl_cbQNHScoreTable___closed__1_once>
+  b8b6ea:	cmp    $0x1,%eax
+  b8b6ed:	jne    b8b9d3 <initialize_lean1090_Impl_CommB+0x483>
+  b8b6f3:	mov    0x3ff4696(%rip),%rdi        # 4b7fd90 <lp_lean1090_Lean1090_Impl_cbQNHScoreTable___closed__1>
+  b8b6fa:	lea    0x3ff44ef(%rip),%rax        # 4b7fbf0 <lp_lean1090_Lean1090_Impl_cbQNHScoreTable>
+  b8b701:	mov    %rdi,(%rax)
+  b8b704:	call   48a1bf0 <lean_mark_persistent>
+  b8b709:	mov    0x3ff4699(%rip),%eax        # 4b7fda8 <lp_lean1090_Lean1090_Impl_cbSelectedScoreTable___closed__1_once>
+  b8b70f:	cmp    $0x1,%eax
+  b8b712:	jne    b8b9f5 <initialize_lean1090_Impl_CommB+0x4a5>
+  b8b718:	mov    0x3ff4681(%rip),%rdi        # 4b7fda0 <lp_lean1090_Lean1090_Impl_cbSelectedScoreTable___closed__1>
+  b8b71f:	lea    0x3ff44d2(%rip),%rax        # 4b7fbf8 <lp_lean1090_Lean1090_Impl_cbSelectedScoreTable>
+  b8b726:	mov    %rdi,(%rax)
+  b8b729:	call   48a1bf0 <lean_mark_persistent>
+  b8b72e:	mov    0x3ff4684(%rip),%eax        # 4b7fdb8 <lp_lean1090_Lean1090_Impl_cbRollScoreTable___closed__1_once>
+  b8b734:	cmp    $0x1,%eax
+  b8b737:	jne    b8ba17 <initialize_lean1090_Impl_CommB+0x4c7>
+  b8b73d:	mov    0x3ff466c(%rip),%rdi        # 4b7fdb0 <lp_lean1090_Lean1090_Impl_cbRollScoreTable___closed__1>
+  b8b744:	lea    0x3ff4485(%rip),%rax        # 4b7fbd0 <lp_lean1090_Lean1090_Impl_cbRollScoreTable>
+  b8b74b:	mov    %rdi,(%rax)
+  b8b74e:	call   48a1bf0 <lean_mark_persistent>
+  b8b753:	mov    0x3ff466f(%rip),%eax        # 4b7fdc8 <lp_lean1090_Lean1090_Impl_cbRateScoreTable___closed__1_once>
+  b8b759:	cmp    $0x1,%eax
+  b8b75c:	jne    b8ba39 <initialize_lean1090_Impl_CommB+0x4e9>
+  b8b762:	mov    0x3ff4657(%rip),%rdi        # 4b7fdc0 <lp_lean1090_Lean1090_Impl_cbRateScoreTable___closed__1>
+  b8b769:	lea    0x3ff4478(%rip),%rax        # 4b7fbe8 <lp_lean1090_Lean1090_Impl_cbRateScoreTable>
+  b8b770:	mov    %rdi,(%rax)
+  b8b773:	call   48a1bf0 <lean_mark_persistent>
+  b8b778:	mov    0x3ff465a(%rip),%eax        # 4b7fdd8 <lp_lean1090_Lean1090_Impl_cbTASScoreTable___closed__1_once>
+  b8b77e:	cmp    $0x1,%eax
+  b8b781:	jne    b8ba5b <initialize_lean1090_Impl_CommB+0x50b>
+  b8b787:	mov    0x3ff4642(%rip),%rdi        # 4b7fdd0 <lp_lean1090_Lean1090_Impl_cbTASScoreTable___closed__1>
+  b8b78e:	lea    0x3ff444b(%rip),%rax        # 4b7fbe0 <lp_lean1090_Lean1090_Impl_cbTASScoreTable>
+  b8b795:	mov    %rdi,(%rax)
+  b8b798:	call   48a1bf0 <lean_mark_persistent>
+  b8b79d:	mov    0x3ff4645(%rip),%eax        # 4b7fde8 <lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable___closed__1_once>
+  b8b7a3:	cmp    $0x1,%eax
+  b8b7a6:	jne    b8ba7d <initialize_lean1090_Impl_CommB+0x52d>
+  b8b7ac:	mov    0x3ff462d(%rip),%rdi        # 4b7fde0 <lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable___closed__1>
+  b8b7b3:	lea    0x3ff441e(%rip),%rax        # 4b7fbd8 <lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable>
+  b8b7ba:	mov    %rdi,(%rax)
+  b8b7bd:	call   48a1bf0 <lean_mark_persistent>
+  b8b7c2:	mov    0x3ff4630(%rip),%eax        # 4b7fdf8 <lp_lean1090_Lean1090_Impl_cbIASScoreTable___closed__1_once>
+  b8b7c8:	cmp    $0x1,%eax
+  b8b7cb:	jne    b8ba9f <initialize_lean1090_Impl_CommB+0x54f>
+  b8b7d1:	mov    0x3ff4618(%rip),%rdi        # 4b7fdf0 <lp_lean1090_Lean1090_Impl_cbIASScoreTable___closed__1>
+  b8b7d8:	lea    0x3ff43d9(%rip),%rax        # 4b7fbb8 <lp_lean1090_Lean1090_Impl_cbIASScoreTable>
+  b8b7df:	mov    %rdi,(%rax)
+  b8b7e2:	call   48a1bf0 <lean_mark_persistent>
+  b8b7e7:	mov    0x3ff461b(%rip),%eax        # 4b7fe08 <lp_lean1090_Lean1090_Impl_cbMachScoreTable___closed__1_once>
+  b8b7ed:	cmp    $0x1,%eax
+  b8b7f0:	jne    b8bac1 <initialize_lean1090_Impl_CommB+0x571>
+  b8b7f6:	mov    0x3ff4603(%rip),%rdi        # 4b7fe00 <lp_lean1090_Lean1090_Impl_cbMachScoreTable___closed__1>
+  b8b7fd:	lea    0x3ff43c4(%rip),%rax        # 4b7fbc8 <lp_lean1090_Lean1090_Impl_cbMachScoreTable>
+  b8b804:	mov    %rdi,(%rax)
+  b8b807:	call   48a1bf0 <lean_mark_persistent>
+  b8b80c:	mov    0x3ff4606(%rip),%eax        # 4b7fe18 <lp_lean1090_Lean1090_Impl_cbVerticalScoreTable___closed__1_once>
+  b8b812:	cmp    $0x1,%eax
+  b8b815:	jne    b8bae3 <initialize_lean1090_Impl_CommB+0x593>
+  b8b81b:	mov    0x3ff45ee(%rip),%rdi        # 4b7fe10 <lp_lean1090_Lean1090_Impl_cbVerticalScoreTable___closed__1>
+  b8b822:	lea    0x3ff4397(%rip),%rax        # 4b7fbc0 <lp_lean1090_Lean1090_Impl_cbVerticalScoreTable>
+  b8b829:	mov    %rdi,(%rax)
+  b8b82c:	call   48a1bf0 <lean_mark_persistent>
+  b8b831:	mov    0x3ff45f1(%rip),%eax        # 4b7fe28 <lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable___closed__1_once>
+  b8b837:	cmp    $0x1,%eax
+  b8b83a:	jne    b8bb05 <initialize_lean1090_Impl_CommB+0x5b5>
+  b8b840:	mov    0x3ff45d9(%rip),%rdi        # 4b7fe20 <lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable___closed__1>
+  b8b847:	lea    0x3ff435a(%rip),%rax        # 4b7fba8 <lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable>
+  b8b84e:	mov    %rdi,(%rax)
+  b8b851:	call   48a1bf0 <lean_mark_persistent>
+  b8b856:	mov    0x3ff45dc(%rip),%eax        # 4b7fe38 <lp_lean1090_Lean1090_Impl_cbWindScoreTable___closed__1_once>
+  b8b85c:	cmp    $0x1,%eax
+  b8b85f:	jne    b8bb27 <initialize_lean1090_Impl_CommB+0x5d7>
+  b8b865:	mov    0x3ff45c4(%rip),%rdi        # 4b7fe30 <lp_lean1090_Lean1090_Impl_cbWindScoreTable___closed__1>
+  b8b86c:	lea    0x3ff433d(%rip),%rax        # 4b7fbb0 <lp_lean1090_Lean1090_Impl_cbWindScoreTable>
+  b8b873:	mov    %rdi,(%rax)
+  b8b876:	call   48a1bf0 <lean_mark_persistent>
+  b8b87b:	mov    0x3ff45c7(%rip),%eax        # 4b7fe48 <lp_lean1090_Lean1090_Impl_cbPressureScoreTable___closed__1_once>
+  b8b881:	cmp    $0x1,%eax
+  b8b884:	jne    b8bb49 <initialize_lean1090_Impl_CommB+0x5f9>
+  b8b88a:	mov    0x3ff45af(%rip),%rdi        # 4b7fe40 <lp_lean1090_Lean1090_Impl_cbPressureScoreTable___closed__1>
+  b8b891:	lea    0x3ff4308(%rip),%rax        # 4b7fba0 <lp_lean1090_Lean1090_Impl_cbPressureScoreTable>
+  b8b898:	mov    %rdi,(%rax)
+  b8b89b:	call   48a1bf0 <lean_mark_persistent>
+  b8b8a0:	mov    0x3ff45b2(%rip),%eax        # 4b7fe58 <lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable___closed__1_once>
+  b8b8a6:	cmp    $0x1,%eax
+  b8b8a9:	jne    b8bb6b <initialize_lean1090_Impl_CommB+0x61b>
+  b8b8af:	mov    0x3ff459a(%rip),%rdi        # 4b7fe50 <lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable___closed__1>
+  b8b8b6:	lea    0x3ff42db(%rip),%rax        # 4b7fb98 <lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable>
+  b8b8bd:	mov    %rdi,(%rax)
+  b8b8c0:	call   48a1bf0 <lean_mark_persistent>
+  b8b8c5:	mov    0x3ff459d(%rip),%eax        # 4b7fe68 <lp_lean1090_Lean1090_Impl_commBRegisters___closed__2_once>
+  b8b8cb:	cmp    $0x1,%eax
+  b8b8ce:	jne    b8bb8d <initialize_lean1090_Impl_CommB+0x63d>
+  b8b8d4:	mov    0x3ff4585(%rip),%rdi        # 4b7fe60 <lp_lean1090_Lean1090_Impl_commBRegisters___closed__2>
+  b8b8db:	lea    0x3ff431e(%rip),%rax        # 4b7fc00 <lp_lean1090_Lean1090_Impl_commBRegisters>
+  b8b8e2:	mov    %rdi,(%rax)
+  b8b8e5:	call   48a1bf0 <lean_mark_persistent>
+  b8b8ea:	jmp    b8b55a <initialize_lean1090_Impl_CommB+0xa>
+  b8b8ef:	test   %ecx,%ecx
+  b8b8f1:	je     b8b5b6 <initialize_lean1090_Impl_CommB+0x66>
+  b8b8f7:	mov    %rax,%rdi
+  b8b8fa:	call   48a18b0 <lean_dec_ref_cold>
+  b8b8ff:	jmp    b8b5b6 <initialize_lean1090_Impl_CommB+0x66>
+  b8b904:	test   %ecx,%ecx
+  b8b906:	je     b8b5df <initialize_lean1090_Impl_CommB+0x8f>
+  b8b90c:	mov    %rax,%rdi
+  b8b90f:	call   48a18b0 <lean_dec_ref_cold>
+  b8b914:	jmp    b8b5df <initialize_lean1090_Impl_CommB+0x8f>
+  b8b919:	test   %ecx,%ecx
+  b8b91b:	je     b8b604 <initialize_lean1090_Impl_CommB+0xb4>
+  b8b921:	mov    %rax,%rdi
+  b8b924:	call   48a18b0 <lean_dec_ref_cold>
+  b8b929:	jmp    b8b604 <initialize_lean1090_Impl_CommB+0xb4>
+  b8b92e:	test   %ecx,%ecx
+  b8b930:	je     b8b629 <initialize_lean1090_Impl_CommB+0xd9>
+  b8b936:	mov    %rax,%rdi
+  b8b939:	call   48a18b0 <lean_dec_ref_cold>
+  b8b93e:	jmp    b8b629 <initialize_lean1090_Impl_CommB+0xd9>
+  b8b943:	test   %ecx,%ecx
+  b8b945:	je     b8b64e <initialize_lean1090_Impl_CommB+0xfe>
+  b8b94b:	mov    %rax,%rdi
+  b8b94e:	call   48a18b0 <lean_dec_ref_cold>
+  b8b953:	jmp    b8b64e <initialize_lean1090_Impl_CommB+0xfe>
+  b8b958:	test   %ecx,%ecx
+  b8b95a:	je     b8b675 <initialize_lean1090_Impl_CommB+0x125>
+  b8b960:	mov    %rax,%rdi
+  b8b963:	call   48a18b0 <lean_dec_ref_cold>
+  b8b968:	jmp    b8b675 <initialize_lean1090_Impl_CommB+0x125>
+  b8b96d:	lea    0x3ff43ec(%rip),%rdi        # 4b7fd60 <lp_lean1090_Lean1090_Impl_cbQNHValueTable___closed__1>
+  b8b974:	lea    0x3ff43ed(%rip),%rsi        # 4b7fd68 <lp_lean1090_Lean1090_Impl_cbQNHValueTable___closed__1_once>
+  b8b97b:	lea    0x59e(%rip),%rdx        # b8bf20 <_init_lp_lean1090_Lean1090_Impl_cbQNHValueTable___closed__1>
+  b8b982:	call   48aadc0 <lean_obj_once_cold>
+  b8b987:	mov    %rax,%rdi
+  b8b98a:	jmp    b8b68b <initialize_lean1090_Impl_CommB+0x13b>
+  b8b98f:	lea    0x3ff43da(%rip),%rdi        # 4b7fd70 <lp_lean1090_Lean1090_Impl_cbMachValueTable___closed__1>
+  b8b996:	lea    0x3ff43db(%rip),%rsi        # 4b7fd78 <lp_lean1090_Lean1090_Impl_cbMachValueTable___closed__1_once>
+  b8b99d:	lea    0x59c(%rip),%rdx        # b8bf40 <_init_lp_lean1090_Lean1090_Impl_cbMachValueTable___closed__1>
+  b8b9a4:	call   48aadc0 <lean_obj_once_cold>
+  b8b9a9:	mov    %rax,%rdi
+  b8b9ac:	jmp    b8b6b0 <initialize_lean1090_Impl_CommB+0x160>
+  b8b9b1:	lea    0x3ff43c8(%rip),%rdi        # 4b7fd80 <lp_lean1090_Lean1090_Impl_cbWindPenaltyTable___closed__1>
+  b8b9b8:	lea    0x3ff43c9(%rip),%rsi        # 4b7fd88 <lp_lean1090_Lean1090_Impl_cbWindPenaltyTable___closed__1_once>
+  b8b9bf:	lea    0x59a(%rip),%rdx        # b8bf60 <_init_lp_lean1090_Lean1090_Impl_cbWindPenaltyTable___closed__1>
+  b8b9c6:	call   48aadc0 <lean_obj_once_cold>
+  b8b9cb:	mov    %rax,%rdi
+  b8b9ce:	jmp    b8b6d5 <initialize_lean1090_Impl_CommB+0x185>
+  b8b9d3:	lea    0x3ff43b6(%rip),%rdi        # 4b7fd90 <lp_lean1090_Lean1090_Impl_cbQNHScoreTable___closed__1>
+  b8b9da:	lea    0x3ff43b7(%rip),%rsi        # 4b7fd98 <lp_lean1090_Lean1090_Impl_cbQNHScoreTable___closed__1_once>
+  b8b9e1:	lea    0x598(%rip),%rdx        # b8bf80 <_init_lp_lean1090_Lean1090_Impl_cbQNHScoreTable___closed__1>
+  b8b9e8:	call   48aadc0 <lean_obj_once_cold>
+  b8b9ed:	mov    %rax,%rdi
+  b8b9f0:	jmp    b8b6fa <initialize_lean1090_Impl_CommB+0x1aa>
+  b8b9f5:	lea    0x3ff43a4(%rip),%rdi        # 4b7fda0 <lp_lean1090_Lean1090_Impl_cbSelectedScoreTable___closed__1>
+  b8b9fc:	lea    0x3ff43a5(%rip),%rsi        # 4b7fda8 <lp_lean1090_Lean1090_Impl_cbSelectedScoreTable___closed__1_once>
+  b8ba03:	lea    0x596(%rip),%rdx        # b8bfa0 <_init_lp_lean1090_Lean1090_Impl_cbSelectedScoreTable___closed__1>
+  b8ba0a:	call   48aadc0 <lean_obj_once_cold>
+  b8ba0f:	mov    %rax,%rdi
+  b8ba12:	jmp    b8b71f <initialize_lean1090_Impl_CommB+0x1cf>
+  b8ba17:	lea    0x3ff4392(%rip),%rdi        # 4b7fdb0 <lp_lean1090_Lean1090_Impl_cbRollScoreTable___closed__1>
+  b8ba1e:	lea    0x3ff4393(%rip),%rsi        # 4b7fdb8 <lp_lean1090_Lean1090_Impl_cbRollScoreTable___closed__1_once>
+  b8ba25:	lea    0x594(%rip),%rdx        # b8bfc0 <_init_lp_lean1090_Lean1090_Impl_cbRollScoreTable___closed__1>
+  b8ba2c:	call   48aadc0 <lean_obj_once_cold>
+  b8ba31:	mov    %rax,%rdi
+  b8ba34:	jmp    b8b744 <initialize_lean1090_Impl_CommB+0x1f4>
+  b8ba39:	lea    0x3ff4380(%rip),%rdi        # 4b7fdc0 <lp_lean1090_Lean1090_Impl_cbRateScoreTable___closed__1>
+  b8ba40:	lea    0x3ff4381(%rip),%rsi        # 4b7fdc8 <lp_lean1090_Lean1090_Impl_cbRateScoreTable___closed__1_once>
+  b8ba47:	lea    0x592(%rip),%rdx        # b8bfe0 <_init_lp_lean1090_Lean1090_Impl_cbRateScoreTable___closed__1>
+  b8ba4e:	call   48aadc0 <lean_obj_once_cold>
+  b8ba53:	mov    %rax,%rdi
+  b8ba56:	jmp    b8b769 <initialize_lean1090_Impl_CommB+0x219>
+  b8ba5b:	lea    0x3ff436e(%rip),%rdi        # 4b7fdd0 <lp_lean1090_Lean1090_Impl_cbTASScoreTable___closed__1>
+  b8ba62:	lea    0x3ff436f(%rip),%rsi        # 4b7fdd8 <lp_lean1090_Lean1090_Impl_cbTASScoreTable___closed__1_once>
+  b8ba69:	lea    0x590(%rip),%rdx        # b8c000 <_init_lp_lean1090_Lean1090_Impl_cbTASScoreTable___closed__1>
+  b8ba70:	call   48aadc0 <lean_obj_once_cold>
+  b8ba75:	mov    %rax,%rdi
+  b8ba78:	jmp    b8b78e <initialize_lean1090_Impl_CommB+0x23e>
+  b8ba7d:	lea    0x3ff435c(%rip),%rdi        # 4b7fde0 <lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable___closed__1>
+  b8ba84:	lea    0x3ff435d(%rip),%rsi        # 4b7fde8 <lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable___closed__1_once>
+  b8ba8b:	lea    0x58e(%rip),%rdx        # b8c020 <_init_lp_lean1090_Lean1090_Impl_cbGroundSpeedScoreTable___closed__1>
+  b8ba92:	call   48aadc0 <lean_obj_once_cold>
+  b8ba97:	mov    %rax,%rdi
+  b8ba9a:	jmp    b8b7b3 <initialize_lean1090_Impl_CommB+0x263>
+  b8ba9f:	lea    0x3ff434a(%rip),%rdi        # 4b7fdf0 <lp_lean1090_Lean1090_Impl_cbIASScoreTable___closed__1>
+  b8baa6:	lea    0x3ff434b(%rip),%rsi        # 4b7fdf8 <lp_lean1090_Lean1090_Impl_cbIASScoreTable___closed__1_once>
+  b8baad:	lea    0x58c(%rip),%rdx        # b8c040 <_init_lp_lean1090_Lean1090_Impl_cbIASScoreTable___closed__1>
+  b8bab4:	call   48aadc0 <lean_obj_once_cold>
+  b8bab9:	mov    %rax,%rdi
+  b8babc:	jmp    b8b7d8 <initialize_lean1090_Impl_CommB+0x288>
+  b8bac1:	lea    0x3ff4338(%rip),%rdi        # 4b7fe00 <lp_lean1090_Lean1090_Impl_cbMachScoreTable___closed__1>
+  b8bac8:	lea    0x3ff4339(%rip),%rsi        # 4b7fe08 <lp_lean1090_Lean1090_Impl_cbMachScoreTable___closed__1_once>
+  b8bacf:	lea    0x58a(%rip),%rdx        # b8c060 <_init_lp_lean1090_Lean1090_Impl_cbMachScoreTable___closed__1>
+  b8bad6:	call   48aadc0 <lean_obj_once_cold>
+  b8badb:	mov    %rax,%rdi
+  b8bade:	jmp    b8b7fd <initialize_lean1090_Impl_CommB+0x2ad>
+  b8bae3:	lea    0x3ff4326(%rip),%rdi        # 4b7fe10 <lp_lean1090_Lean1090_Impl_cbVerticalScoreTable___closed__1>
+  b8baea:	lea    0x3ff4327(%rip),%rsi        # 4b7fe18 <lp_lean1090_Lean1090_Impl_cbVerticalScoreTable___closed__1_once>
+  b8baf1:	lea    0x588(%rip),%rdx        # b8c080 <_init_lp_lean1090_Lean1090_Impl_cbVerticalScoreTable___closed__1>
+  b8baf8:	call   48aadc0 <lean_obj_once_cold>
+  b8bafd:	mov    %rax,%rdi
+  b8bb00:	jmp    b8b822 <initialize_lean1090_Impl_CommB+0x2d2>
+  b8bb05:	lea    0x3ff4314(%rip),%rdi        # 4b7fe20 <lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable___closed__1>
+  b8bb0c:	lea    0x3ff4315(%rip),%rsi        # 4b7fe28 <lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable___closed__1_once>
+  b8bb13:	lea    0x586(%rip),%rdx        # b8c0a0 <_init_lp_lean1090_Lean1090_Impl_cbTemperature44ScoreTable___closed__1>
+  b8bb1a:	call   48aadc0 <lean_obj_once_cold>
+  b8bb1f:	mov    %rax,%rdi
+  b8bb22:	jmp    b8b847 <initialize_lean1090_Impl_CommB+0x2f7>
+  b8bb27:	lea    0x3ff4302(%rip),%rdi        # 4b7fe30 <lp_lean1090_Lean1090_Impl_cbWindScoreTable___closed__1>
+  b8bb2e:	lea    0x3ff4303(%rip),%rsi        # 4b7fe38 <lp_lean1090_Lean1090_Impl_cbWindScoreTable___closed__1_once>
+  b8bb35:	lea    0x584(%rip),%rdx        # b8c0c0 <_init_lp_lean1090_Lean1090_Impl_cbWindScoreTable___closed__1>
+  b8bb3c:	call   48aadc0 <lean_obj_once_cold>
+  b8bb41:	mov    %rax,%rdi
+  b8bb44:	jmp    b8b86c <initialize_lean1090_Impl_CommB+0x31c>
+  b8bb49:	lea    0x3ff42f0(%rip),%rdi        # 4b7fe40 <lp_lean1090_Lean1090_Impl_cbPressureScoreTable___closed__1>
+  b8bb50:	lea    0x3ff42f1(%rip),%rsi        # 4b7fe48 <lp_lean1090_Lean1090_Impl_cbPressureScoreTable___closed__1_once>
+  b8bb57:	lea    0x582(%rip),%rdx        # b8c0e0 <_init_lp_lean1090_Lean1090_Impl_cbPressureScoreTable___closed__1>
+  b8bb5e:	call   48aadc0 <lean_obj_once_cold>
+  b8bb63:	mov    %rax,%rdi
+  b8bb66:	jmp    b8b891 <initialize_lean1090_Impl_CommB+0x341>
+  b8bb6b:	lea    0x3ff42de(%rip),%rdi        # 4b7fe50 <lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable___closed__1>
+  b8bb72:	lea    0x3ff42df(%rip),%rsi        # 4b7fe58 <lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable___closed__1_once>
+  b8bb79:	lea    0x580(%rip),%rdx        # b8c100 <_init_lp_lean1090_Lean1090_Impl_cbTemperature45ScoreTable___closed__1>
+  b8bb80:	call   48aadc0 <lean_obj_once_cold>
+  b8bb85:	mov    %rax,%rdi
+  b8bb88:	jmp    b8b8b6 <initialize_lean1090_Impl_CommB+0x366>
+  b8bb8d:	lea    0x3ff42cc(%rip),%rdi        # 4b7fe60 <lp_lean1090_Lean1090_Impl_commBRegisters___closed__2>
+  b8bb94:	lea    0x3ff42cd(%rip),%rsi        # 4b7fe68 <lp_lean1090_Lean1090_Impl_commBRegisters___closed__2_once>
+  b8bb9b:	lea    0x57e(%rip),%rdx        # b8c120 <_init_lp_lean1090_Lean1090_Impl_commBRegisters___closed__2>
+  b8bba2:	call   48aadc0 <lean_obj_once_cold>
+  b8bba7:	mov    %rax,%rdi
+  b8bbaa:	jmp    b8b8db <initialize_lean1090_Impl_CommB+0x38b>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

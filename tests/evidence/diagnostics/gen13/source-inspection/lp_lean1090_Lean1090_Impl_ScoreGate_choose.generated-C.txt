@@ -1,0 +1,104 @@
+{
+_start:
+{
+lean_object* v_num_213_; lean_object* v_den_214_; lean_object* v_denominator_215_; lean_object* v_totals_216_; lean_object* v___x_217_; lean_object* v___x_218_; lean_object* v_p_219_; lean_object* v___y_221_; lean_object* v___x_246_; lean_object* v___x_247_; uint8_t v___x_248_; 
+v_num_213_ = lean_ctor_get(v_penalty_211_, 0);
+lean_inc(v_num_213_);
+v_den_214_ = lean_ctor_get(v_penalty_211_, 1);
+lean_inc(v_den_214_);
+lean_inc(v_terms_210_);
+v_denominator_215_ = lp_lean1090_Lean1090_Impl_ScoreGate_commonDenominator(v_terms_210_, v_penalty_211_);
+v_totals_216_ = lp_lean1090_Lean1090_Impl_ScoreGate_scaledTotals(v_denominator_215_, v_terms_210_);
+v___x_217_ = lean_nat_div(v_denominator_215_, v_den_214_);
+lean_dec(v_den_214_);
+v___x_218_ = lean_nat_to_int(v___x_217_);
+v_p_219_ = lean_int_mul(v_num_213_, v___x_218_);
+lean_dec(v___x_218_);
+lean_dec(v_num_213_);
+v___x_246_ = l_List_lengthTR___redArg(v_terms_210_);
+lean_dec(v_terms_210_);
+v___x_247_ = lean_unsigned_to_nat(1u);
+v___x_248_ = lean_nat_dec_le(v___x_246_, v___x_247_);
+if (v___x_248_ == 0)
+{
+v___y_221_ = v___x_246_;
+goto v___jp_220_;
+}
+else
+{
+lean_dec(v___x_246_);
+v___y_221_ = v___x_247_;
+goto v___jp_220_;
+}
+v___jp_220_:
+{
+lean_object* v_fst_222_; lean_object* v_snd_223_; lean_object* v_n_224_; lean_object* v___x_225_; lean_object* v_c_226_; lean_object* v___x_227_; lean_object* v___x_228_; lean_object* v___x_229_; lean_object* v___x_230_; lean_object* v_e_231_; lean_object* v___x_232_; lean_object* v_scaledCenter_233_; lean_object* v_scaledError_234_; lean_object* v___x_235_; lean_object* v___x_236_; lean_object* v___x_237_; lean_object* v_threshold_238_; lean_object* v___x_239_; uint8_t v___x_240_; 
+v_fst_222_ = lean_ctor_get(v_totals_216_, 0);
+lean_inc(v_fst_222_);
+v_snd_223_ = lean_ctor_get(v_totals_216_, 1);
+lean_inc(v_snd_223_);
+lean_dec_ref(v_totals_216_);
+v_n_224_ = lean_nat_to_int(v___y_221_);
+v___x_225_ = lean_int_mul(v_n_224_, v_p_219_);
+v_c_226_ = lean_int_add(v_fst_222_, v___x_225_);
+lean_dec(v___x_225_);
+lean_dec(v_fst_222_);
+v___x_227_ = lean_nat_abs(v_p_219_);
+lean_dec(v_p_219_);
+v___x_228_ = lean_nat_to_int(v___x_227_);
+v___x_229_ = lean_int_add(v_snd_223_, v___x_228_);
+lean_dec(v___x_228_);
+lean_dec(v_snd_223_);
+v___x_230_ = lean_nat_to_int(v_denominator_215_);
+v_e_231_ = lean_int_add(v___x_229_, v___x_230_);
+lean_dec(v___x_229_);
+v___x_232_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0, &lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0_once, _init_lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__0);
+v_scaledCenter_233_ = lean_int_mul(v___x_232_, v_c_226_);
+lean_dec(v_c_226_);
+v_scaledError_234_ = lean_int_mul(v_n_224_, v_e_231_);
+lean_dec(v_e_231_);
+v___x_235_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2, &lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2_once, _init_lp_lean1090_Lean1090_Impl_ScoreGate_choose___closed__2);
+v___x_236_ = lean_int_mul(v___x_235_, v_n_224_);
+lean_dec(v_n_224_);
+v___x_237_ = lean_int_mul(v___x_236_, v___x_230_);
+lean_dec(v___x_230_);
+lean_dec(v___x_236_);
+v_threshold_238_ = lean_int_mul(v___x_237_, v___x_232_);
+lean_dec(v___x_237_);
+v___x_239_ = lean_int_sub(v_scaledCenter_233_, v_scaledError_234_);
+v___x_240_ = lean_int_dec_le(v_threshold_238_, v___x_239_);
+lean_dec(v___x_239_);
+if (v___x_240_ == 0)
+{
+lean_object* v___x_241_; uint8_t v___x_242_; 
+v___x_241_ = lean_int_add(v_scaledCenter_233_, v_scaledError_234_);
+lean_dec(v_scaledError_234_);
+lean_dec(v_scaledCenter_233_);
+v___x_242_ = lean_int_dec_lt(v___x_241_, v_threshold_238_);
+lean_dec(v_threshold_238_);
+lean_dec(v___x_241_);
+if (v___x_242_ == 0)
+{
+lean_object* v___x_243_; lean_object* v___x_244_; uint8_t v___x_245_; 
+v___x_243_ = lean_box(0);
+v___x_244_ = lean_apply_1(v_fallback_212_, v___x_243_);
+v___x_245_ = lean_unbox(v___x_244_);
+return v___x_245_;
+}
+else
+{
+lean_dec_ref(v_fallback_212_);
+return v___x_240_;
+}
+}
+else
+{
+lean_dec(v_threshold_238_);
+lean_dec(v_scaledError_234_);
+lean_dec(v_scaledCenter_233_);
+lean_dec_ref(v_fallback_212_);
+return v___x_240_;
+}
+}
+}
+}

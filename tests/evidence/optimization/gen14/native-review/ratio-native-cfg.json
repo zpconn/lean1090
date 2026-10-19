@@ -1,0 +1,31 @@
+{
+  "instruction_count": 776,
+  "reachable_instructions": 776,
+  "event_sites": {
+    "0xb81677": "software_round",
+    "0xb8169e": "rounded_Rat_compare",
+    "0xb816da": "rounded_Rat_compare"
+  },
+  "normal_exits": [
+    {
+      "events": [],
+      "target": "ret"
+    },
+    {
+      "events": [
+        "software_round",
+        "rounded_Rat_compare"
+      ],
+      "target": "ret"
+    },
+    {
+      "events": [
+        "software_round",
+        "rounded_Rat_compare",
+        "rounded_Rat_compare"
+      ],
+      "target": "l_Rat_blt"
+    }
+  ],
+  "limits": "Static normal-return CFG traversal treats external calls as returning and follows both unknown successors. It distinguishes zero-round shortcut paths from one-round fallback paths, not their runtime frequencies. Exact Rat division in the caller, arbitrary-precision Int operations, allocations and lazy scalar constants remain; no speed claim is made."
+}
