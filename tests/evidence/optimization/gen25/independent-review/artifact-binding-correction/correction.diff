@@ -1,0 +1,31 @@
+--- tests/evidence/optimization/gen25/independent-review/artifact-binding-correction/check_artifact_commit_inputs.py
++++ tests/evidence/optimization/gen25/independent-review/check_artifact_commit_inputs.py
+@@ -72,12 +72,14 @@
+         assert sha(BENCH / (name + '-git.json')) == digest
+         checkpoint = load(BENCH / (name + '-git.json'))
+         assert checkpoint['commit'] == commit and checkpoint['clean'] and not checkpoint['stdout']
+-    precommit = load(BASE / 'precommit-verification.json')
+-    assert precommit['status'] == 'passed' and precommit['correctness_inputs'] == 202
+-    assert precommit['gate_evidence_sha256'] == sha(BASE / 'gate-evidence.json')
++    precommit = load(BASE / 'source-precommit-verification.json')
++    assert precommit['status'] == 'passed' and precommit['correctness_inputs_current_and_staged'] == 202
++    assert precommit['gate_sha256'] == sha(BASE / 'gate-evidence.json')
++    assert precommit['no_frozen_change'] and precommit['no_unstaged_change'] and precommit['no_staged_file_above_25_MiB']
++    assert precommit['author'] == 'zpconn <zpconn@gmail.com>'
+     assert precommit['gate_review_sha256'] == sha(OUT / 'gate-review.json')
+-    assert precommit['current_head'] == git('rev-parse', commit + '^').decode().strip()
+-    assert sha(BASE / 'precommit-verification.json') == hashlib.sha256(git('cat-file', 'blob', commit + ':' + str((BASE / 'precommit-verification.json').relative_to(ROOT)))).hexdigest()
++    assert precommit['parent_commit'] == git('rev-parse', commit + '^').decode().strip()
++    assert sha(BASE / 'source-precommit-verification.json') == hashlib.sha256(git('cat-file', 'blob', commit + ':' + str((BASE / 'source-precommit-verification.json').relative_to(ROOT)))).hexdigest()
+     archive = load(BENCH / 'archive-verification.json')
+     assert archive['status'] == 'passed' and archive['file_count'] == 48
+     assert archive['source'] == '.cache/bench-runs/gen25-' + commit[:7]
+@@ -93,7 +95,7 @@
+     paths += [ROOT / 'bench/GEN25.md', ROOT / 'bench/results.csv']
+     paths += [BASE / 'independent-review/fresh-completion.json', BASE / 'benchmark-preparation/plan.json']
+     paths += [OUT / 'benchmark-result-review-preparation.json', OUT / 'benchmark-result-reviewer.diff', OUT / 'artifact-binding-preparation.json']
+-    paths += [BASE / 'precommit-verification.json', BASE / 'benchmark-preparation/execution-protocol.json']
++    paths += [BASE / 'source-precommit-verification.json', BASE / 'benchmark-preparation/execution-protocol.json']
+     assert all(p.is_file() for p in paths)
+     files = {str(p.relative_to(ROOT)): {'sha256': sha(p), 'bytes': p.stat().st_size} for p in paths}
+     status = git('status', '--porcelain=v1', '--untracked-files=all').decode()

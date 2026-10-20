@@ -1,0 +1,84 @@
+--- tests/evidence/diagnostics/gen24/run_prepared.py
++++ tests/evidence/diagnostics/gen25/run_prepared.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Guarded reuse of the existing gen24 decode build/campaign tools.
++"""Guarded reuse of the existing gen25 decode build/campaign tools.
+ 
+ Preparation only until the parent releases work after both benchmark modes.
+ Default is validation and command display; --execute performs the selected
+@@ -18,9 +18,9 @@
+ import subprocess
+ 
+ ROOT = Path(__file__).resolve().parents[4]
+-E = ROOT / 'tests/evidence/diagnostics/gen24'
+-B = ROOT / 'bench/runs/gen24'
+-C = ROOT / '.cache/gen24-costs'
++E = ROOT / 'tests/evidence/diagnostics/gen25'
++B = ROOT / 'bench/runs/gen25'
++C = ROOT / '.cache/gen25-costs'
+ os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
+ os.environ['GIT_OPTIONAL_LOCKS'] = '0'
+ 
+@@ -36,8 +36,8 @@
+ def guard():
+     summary, review, built = (read(B / name) for name in
+                               ('summary.json', 'results-review.json', 'binary-built.json'))
+-    assert summary['status'] == 'complete' and summary['generation'] == 24
+-    assert review['status'] == 'passed' and review['generation'] == 24 and not review['findings']
++    assert summary['status'] == 'complete' and summary['generation'] == 25
++    assert review['status'] == 'passed' and review['generation'] == 25 and not review['findings']
+     assert review['commit'] == built['commit'] == summary['commit']
+     assert review['binary_sha256'] == built['sha256'] == summary['binary_sha256']
+     assert review['results'] == summary['results']
+@@ -57,7 +57,7 @@
+         assert sha(ROOT / name) == digest, name
+     subprocess.run(['git', 'merge-base', '--is-ancestor', summary['commit'], 'HEAD'], cwd=ROOT, check=True)
+     spec = importlib.util.spec_from_file_location(
+-        'gen24_inventory', ROOT / 'review/diagnostics/run_generation_benchmark.py')
++        'gen25_inventory', ROOT / 'review/diagnostics/run_generation_benchmark.py')
+     tool = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(tool)
+     correctness = read(B / 'correctness-inputs.json')
+@@ -112,7 +112,7 @@
+                       '--correctness-inputs', rel(B / 'correctness-inputs.json'),
+                       '--output', rel(E / 'benchmark-source-binding.json')], 'source-binding')]
+     else:
+-        complete = read(ROOT / 'tests/evidence/diagnostics/gen24-cpr/isolated-perf-completion.json')
++        complete = read(ROOT / 'tests/evidence/diagnostics/gen25-cpr/isolated-perf-completion.json')
+         assert complete['status'] == 'passed' and complete['all_jobs_stopped']
+         assert complete['sequential_modes'] == ['decode', 'cpr']
+         assert [r['mode'] for r in complete['results']] == ['decode', 'cpr']
+--- tests/evidence/diagnostics/gen24/snapshot_history.py
++++ tests/evidence/diagnostics/gen25/snapshot_history.py
+@@ -5,10 +5,10 @@
+ from datetime import datetime, timezone
+ import hashlib,json,os,subprocess
+ from pathlib import Path
+-E=Path('tests/evidence/diagnostics/gen24')
++E=Path('tests/evidence/diagnostics/gen25')
+ ROOTS=['tests/evidence','bench','docs']
+-EXCLUDED=('tests/evidence/diagnostics/gen24/','tests/evidence/diagnostics/gen24-cpr/')
+-NEW_REPORTS={'docs/GEN24-COST-BREAKDOWN.md','docs/GEN24-CPR-COST-BREAKDOWN.md'}
++EXCLUDED=('tests/evidence/diagnostics/gen25/','tests/evidence/diagnostics/gen25-cpr/')
++NEW_REPORTS={'docs/GEN25-COST-BREAKDOWN.md','docs/GEN25-CPR-COST-BREAKDOWN.md'}
+ os.environ['GIT_OPTIONAL_LOCKS']='0'
+ def git(*args): return subprocess.check_output(['git',*args])
+ def identity(p):
+@@ -23,7 +23,7 @@
+  identities={str(p):identity(p) for p in sorted(paths) if p.is_file()}
+  assert all(not p.is_symlink() for p in paths)
+  perf_paths=sorted(Path('.cache').glob('**/perf.data'))
+- perf={str(p):identity(p) for p in perf_paths if 'gen24' not in str(p)}
++ perf={str(p):identity(p) for p in perf_paths if 'gen25' not in str(p)}
+  return {'commit':commit,'roots':ROOTS,'git_tree':git('rev-parse',commit+'^{tree}').decode().strip(),
+   'committed_inventory_sha256':hashlib.sha256(inventory).hexdigest(),'committed_file_count':len(inventory.split(b'\0'))-1,
+   'untracked_and_ignored_file_identities':identities,'retained_historical_perf_identities':perf}
+@@ -36,6 +36,6 @@
+  data={'kind':'compact_committed_history_and_retained_identity_binding','captured_utc':datetime.now(timezone.utc).isoformat(),
+  'binding':inspect(),'limits':['Committed historical bytes are checked by git diff against the bound tree and inventory, without duplicating old artifacts.',
+  'Ignored/untracked compressed transcripts and raw perf are held by exact filesystem identity, size and times during this campaign; their entire contents are not freshly rehashed here. Earlier sealed integrity reviews remain authoritative.',
+- 'Only the two concurrently created gen24 diagnostic evidence directories and exact new docs/GEN24-COST-BREAKDOWN.md and docs/GEN24-CPR-COST-BREAKDOWN.md reports are excluded from untracked membership; current authorization prose outside these roots is not measured evidence.']}
++ 'Only the two concurrently created gen25 diagnostic evidence directories and exact new docs/GEN25-COST-BREAKDOWN.md and docs/GEN25-CPR-COST-BREAKDOWN.md reports are excluded from untracked membership; current authorization prose outside these roots is not measured evidence.']}
+  out.write_text(json.dumps(data,indent=2)+'\n')
+  print(json.dumps({'status':'passed','committed_files':data['binding']['committed_file_count'],'ignored_or_untracked_files':len(data['binding']['untracked_and_ignored_file_identities']),'raw_perf_files':len(data['binding']['retained_historical_perf_identities']),'sha256':hashlib.sha256(out.read_bytes()).hexdigest()}))

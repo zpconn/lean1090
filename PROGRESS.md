@@ -2,84 +2,81 @@
 
 ## Status and current authorization
 
-**Current state: optimization resumed toward 2.00× rs1090 in both modes.**
-The user set a new stretch goal of **2.00× headline decode and 2.00×
-decode-plus-CPR throughput**, superseding the generation 15 review stop.
-**Latest measurement: generation 24 reached 2.719659888260× decode and
-1.988905566484× with CPR.** The CPR target remains unmet; do not round it up
-or repeat the measurement to seek a passing sample. Timed source:
-`cc337104e8d756f2acaef134096c4d593b888f5f`, authored and committed by
-`zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are 287.971006/783.183194 ms
-for decode and 395.982363/787.571526 ms for CPR. Lean throughput increased
-13.18% and 8.26% versus generation 23. Signed CPR overhead is
-0.626399722789 µs/message for Lean and 0.025449638118 for rs1090, calculated
-from separate mode medians and including noise. All 96 samples, six clean-tree
-and lock checks, 22 fresh native sets and four Ultimate Performance power-plan
-captures are retained. Actual timed worker SHA-256:
-`2af19ab4d11000ae0fe849e7c54221d1ad0dfd8b027990135536d7b574a3dedc`.
-No UTC backsteps occurred; UTC-minus-monotonic differences were +4.546 µs
-(decode) and −2.025 µs (CPR), retained without adjustment. Worker monotonic
-durations determine the result. Environment: Intel Core Ultra 9 285K / WSL2,
-CPU 0, with host-observation limitations retained. The canonical archive and
-reporting checks passed on their first execution; all 48 original files are
-byte-identical and both CSV rows preserve the 48-row historical prefix.
-[Report and raw samples](bench/GEN24.md). Archive SHA-256:
-`e94dd48256a5be2c8f6e547c2e49e0cf55e4c8ec347d7cff5e6da7752bb4b4a8`.
+**Current state: optimization continues toward 2.00× rs1090 in both modes.**
+Generation 25 measured **2.649719962329× decode** and **1.947699046086×
+decode plus CPR**. The CPR target remains unmet. Both ratios are lower than
+generation 24; retain the result without repeating the benchmark. Lean absolute
+throughput changed by −7.09% and −6.91%; rs1090 also slowed, so the timing
+change is not a causal decomposition of the source edit.
+
+Timed source: `eaa7b36225b0d3ae29720a319295b0fac34e995b`, authored and
+committed by `zpconn <zpconn@gmail.com>`. Lean/rs1090 medians are
+309.933123/821.235983 ms for decode and 425.358628/828.470594 ms for CPR.
+Signed CPR overhead is **0.669397240651 µs/message for Lean** and
+**0.041956313213 for rs1090**, from separate mode medians and including
+noise. All 96 samples, six clean-tree and lock checks, 22 fresh native sets
+and four Ultimate Performance captures are retained. Actual timed worker:
+`0383b0488863b837ebae02e78b00c86bba11eea96916ee0816b8db2dcb0ba189`.
+No UTC backsteps occurred; UTC-minus-monotonic differences are +2.940 µs
+(decode) and +3.738 µs (CPR), retained unadjusted. Environment: Intel Core
+Ultra 9 285K / WSL2, CPU 0, with host-observation limitations retained.
+[Report and raw samples](bench/GEN25.md). Canonical archive:
+`7ec59767a1a942fea973f5566873a4e9f656c9d2cb8a48bcc398748a4a2efbeb`.
 Independent result review passed all 731 checks on its first execution:
-`222ae998abbd12fd0dd2dcc1a06a6f58f49bb3b02e54826dacb24de26bf9949a`.
-Artifact/source binding also passed on its first execution, with all 202 inputs
-matching the full gate, timed commit and current tree:
-`510fb936238afea6995e1eb3f0334a2bae6cc547c52823a371d3eff5c88ed348`.
-Presentation refresh passed on its first execution: 50 CSV rows, 25 GIF
-frames, 1,300 plotted values, 95 links and all 23 capstones verbatim. Producer
-and root visual inspection passed. Independent presentation review passed
-1,461 checks; completion:
-`863bb28bca097bc162cad185f50717054232b8e766f79e65268ffe3bfb0e9f4c`.
-One reviewer-only diff-header path assumption was corrected and retained,
-with no producer rerender or changed evidence. The reviewer independently
-recomputed the added overhead history from 480 raw rows and 20 medians,
-preserving generations 0–19 exactly. Producer completion: `40e5bae8b4de0a47bc49a34da199ecd710d5ef31c92c23429f6e879cee647e04`.
-Generation 24 source and artifacts were pushed to private `main` as
-`d0f58661bba5e9903b9c939c83cb96ff3936f177`, under the user’s identity,
-with a clean tree at publication. Fresh diagnostics and both independent
-reviews passed: 5,805,983,682 decode instructions and 8,134,328,322 CPR
-instructions. All 172,432 tracking results, 11,347 positions and complete
-state agree. Review receipts:
-`da2acee306c4f02bb19007805c2ff385f95cdcf3e771aed677cd21845b4659f5`
-and `8d87a3b2ab3725c2431bedd945906178a805467231b44beacabc2e9f1197f97a`.
-Verified duplicate cleanup reclaimed 479,490,048 allocated bytes; unique
-perf captures and all retained evidence remain. The source/history hold is
-released. Generation 25 implemented an equal-denominator identity arm
-in the integer score gate. The unconditional equality proof and combined
-production build pass: 202 unchanged correctness inputs, 127 audited sources
-and 354 printed facts with permitted axioms. Two failed targeted proof builds
-are retained; the third targeted build and first combined build pass. Source/proof review and native review pass: all 19 prior theorem statements
-remain exact, the live equality branches are present in the linked worker,
-and 21 of 22 native sets are byte-identical to generation 24. The fresh campaign passed its whole-message comparison with seeds
-1,065,315,418 (messages) and 1,346,913,957 (Comm-B): 10,476,164 messages,
-9,542,528 exact matches and 933,636 documented D001 cases, with
-2,040,661 standard-view differences. All 101,244 direct cases match exactly.
-The full fixed gate passed on its first execution, from 00:06:39.041364
-to 00:22:10.069259 UTC on 2026-10-20, with all 202 inputs unchanged.
-Its 10,476,164 messages comprise 9,542,689 exact matches and 933,475
-documented D001 cases; all 101,244 direct cases match. All 1,011 unit
-checks, 23 contracts, 152 witness audits and mandatory strata pass. Fresh
-archive verification and independent replay passed on their first executions;
-cleanup reclaimed 5,359,431,680 allocated bytes of exact duplicate scratch.
-Fresh completion: `0cbef3e01ecc7cba4fca75f84314f86d3bf68dbb69c51ca302221cd2c078a513`.
-Fixed archival and cleanup passed on their first execution, retaining
-all seven components and 62 files. Combined fixed/fresh cleanup reclaimed
-11,092,762,624 allocated bytes, preserving all unique and historical evidence.
-Consolidated gate/archive/plan review passed on its first execution:
+`6f993c72943c8211b484ef406127e469958013ed43ae34fd50c698c856a71506`.
+
+The implementation adds only an equal-denominator identity arm in
+`scaledNumerator`, with an unconditional old-formula theorem. All 19 existing
+theorem statements are unchanged. The combined build passes with 202 unchanged
+correctness inputs, 127 audited sources and 354 permitted printed facts.
+Two targeted proof elaboration failures are retained; targeted attempt 3 and
+the first combined build pass. Source and native review pass: the live branches
+are verified, with 21 of 22 native sets byte-identical to generation 24.
+[Implementation evidence](docs/GEN25-SCORE-SCALING.md).
+
+The full fixed gate passed on its first execution, from 00:06:39.041364 to
+00:22:10.069259 UTC on 2026-10-20. Its 10,476,164 messages include
+9,542,689 exact matches and 933,475 documented D001 cases; all 101,244 direct
+cases match. All 23 contracts, 152 witness audits, 1,011 unit checks and seven
+mandatory strata pass. The separate fresh campaign passed with message seed
+1,065,315,418 and Comm-B seed 1,346,913,957: 9,542,528 exact matches,
+933,636 documented D001 cases, 2,040,661 standard-view differences and
+101,244 exact direct cases. Both campaigns cover all 32 DF attempts, 70 ADS-B
+branches and 14 registers, with no unclassified finding. Independent retention
+and replay passed. Fixed archival retains seven components and 62 files.
+Verified fixed/fresh cleanup reclaimed 11,092,762,624 allocated bytes of
+duplicate scratch, preserving unique and historical evidence. Consolidated
+review passed first execution:
 `396e5663a1503d7e71acd7f33e0fe235c89b1d31575fb0c918f632ca80976c7f`.
-All 202 staged/current correctness inputs match the passing gate. Plan:
-`4038c39766b3d23b0e5d734f7f054fe4a99f3b6b11d61c7b3be0c5bf1c0bce56`.
-All agent jobs are stopped. Next: commit, fresh clean-commit build and isolated
-frozen ABAB measurement in both modes. Comm-B inference is the largest decode stage
-(39.72% of collected instructions); the shortcut preserves the original
-formula for every input. No performance benefit is claimed before timing.
-All frozen files, Float callbacks and trusted-primitive restrictions remain
-unchanged.
+
+Artifact/source binding passes with all 202 inputs equal to the gate and timed
+commit: `6fe1c176555bf61896e26dca186d5d50625b216cf8ed19c43b762130654fb8d4`.
+One reviewer-only precommit filename/schema correction is retained; no producer
+or measurement changed. Presentation producer and independent review passed
+on their first executions: 52 CSV rows, 26 GIF frames, 1,404 plotted values,
+95 links and all 23 capstones verbatim. Root and reviewer inspected all four
+saved previews. The regression and unmet target are displayed explicitly.
+Overhead generations 0–24 are preserved, with generation 25 added from 96 raw
+samples and four independently recomputed medians. Presentation completion:
+`073124ee42946f5e85d18bf94e44d154e96dbaa9c8d6a1d14ae63ebc021e5cc0`.
+
+Fresh diagnostic preparation reviews pass: 27 decode checks and 77 CPR
+checks, with no build or profiling executed. Receipts:
+`00d1fa6aafa283bb4d703c87296fcc18a427e6b4a9cdd59488149e0529222b5e`
+and `c3ff3842f633f13d071b41d04a2850c6d12a9bb61935182634823840922b3328`.
+One decode-preparation reviewer substitution correction is retained; the
+producer is unchanged. Next: commit and push the measured artifacts, then
+complete fresh decode and CPR diagnostics before choosing generation 26.
+No new optimization is selected. No frozen file, tested-only
+Float callback or trusted primitive change is authorized.
+
+**Previous measurement: generation 24 reached 2.719659888260× decode and
+1.988905566484× CPR.** Its source and artifacts were pushed to private `main`
+as `d0f58661bba5e9903b9c939c83cb96ff3936f177`. [Retained report](bench/GEN24.md).
+Fresh diagnostics collected 5,805,983,682 decode instructions and 8,134,328,322
+CPR instructions, with all 172,432 tracking outputs, 11,347 positions and full
+state matching. Both independent diagnostic reviews passed; verified cleanup
+reclaimed 479,490,048 allocated bytes. These diagnostics preceded generation 25.
 
 **Previous measurement: generation 23 reached 2.410234595243× decode and
 1.835727795894× with CPR.** The CPR target remains unmet. Timed source:

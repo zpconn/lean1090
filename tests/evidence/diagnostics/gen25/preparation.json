@@ -1,0 +1,73 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-20T00:30:27.812974+00:00",
+  "files": {
+    "tests/evidence/diagnostics/gen25/run_prepared.py": {
+      "sha256": "4e8158b81a2f5fccd4776b2320fd0dfcdbf0f65887d62a031c2d942fc832d797",
+      "adapted_from": "tests/evidence/diagnostics/gen24/run_prepared.py",
+      "prior_sha256": "0fc2adfcfcf69839da254be5dc2884ffca9938103051158b7d686bf84d46da93"
+    },
+    "tests/evidence/diagnostics/gen25/snapshot_history.py": {
+      "sha256": "bc23ae0e908c5bff3b54a37a0d632ba874154bc3b3f80619c908005d114a15a5",
+      "adapted_from": "tests/evidence/diagnostics/gen24/snapshot_history.py",
+      "prior_sha256": "eaa537938a456673aa7015c4d3746182bc8cf6abaa1345826ff7c4499b0baa74"
+    }
+  },
+  "diff_sha256": "050198b131526d599ed9cc8e8b7e3a8e1107a16c00755d6ee443379c3bd1f34a",
+  "artifact_commit": null,
+  "timed_commit": "eaa7b36225b0d3ae29720a319295b0fac34e995b",
+  "worker_sha256": "0383b0488863b837ebae02e78b00c86bba11eea96916ee0816b8db2dcb0ba189",
+  "benchmark_summary_sha256": "3a762bd041e3231c18247fd2b281aacb3323c29f5537a826946d93107d8e7e56",
+  "benchmark_result_review_sha256": "6f993c72943c8211b484ef406127e469958013ed43ae34fd50c698c856a71506",
+  "expected_correctness_input_count": 202,
+  "expected_prior_csv_rows": 52,
+  "generic_helpers": {
+    "review/diagnostics/build_decode_costs.py": "107b85cba1ed3483b04dfcffb5b0826d16b33d100b1abbb0236c06ec5c66a42e",
+    "review/diagnostics/bind_benchmark_history.py": "fc72612cb7a12245265a722f331e88bfcdaf46df4c8dffd9616f2749c6394cf3",
+    "review/diagnostics/run_cost_campaign.py": "307818a1bd54d1083a8f8717950fc004787cab2e98b079f16b1743514d79e6e2",
+    "review/diagnostics/run_native_df.py": "311172bfe88d3ab8ee567c429d290cc91e9120e41496b3a2129b8acf0a15d8f7",
+    "review/diagnostics/profile_decode_costs.py": "19494d6c90c2733f50debeee4ad075e10adbb721f9b455c76d611e8ba1705bbe",
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/archive_cost_campaign.py": "513212241fd3997a8b4f1eec4f390b94f8bfb40e9f70880f342b7366cc56d93a",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "updated_committed_helpers": {
+    "review/diagnostics/analyze_callgrind.py": "1c51fc0a256c24490ce96e736186b0fe8137b38837df286e60794e3c9fb4bb05",
+    "review/diagnostics/write_cost_report.py": "83d45d5b083d29907ac1fd17ac39294f91c8e6f1096233c95f333901ee88775c",
+    "review/diagnostics/DecodeCosts.lean": "85575c65b9a33251dc2d46fe8381c28bafd0eacc80c4cfabac48fa5e9f11e512"
+  },
+  "diagnostic_tooling_validation": {
+    "path": "tests/evidence/optimization/gen22/diagnostic-tooling/validation.json",
+    "sha256": "3e8fbe78c716c1a9c6bfd3dac399a23ada1822491e788f725facc4d8d22821f2"
+  },
+  "adaptations": [
+    "Exact generation/path-only adaptation from finalized gen24, with unchanged 202-input inventory and every prior proof/source/native/output guard.",
+    "All nine shared helpers and collection/classification/output-validation algorithms are byte-identical.",
+    "Compact history changes only the current generation exclusions; no old archive copies, history snapshot or workload execution."
+  ],
+  "paths": {
+    "decode_cache": ".cache/gen25-costs",
+    "decode_evidence": "tests/evidence/diagnostics/gen25",
+    "cpr_evidence": "tests/evidence/diagnostics/gen25-cpr",
+    "isolated_completion": "tests/evidence/diagnostics/gen25-cpr/isolated-perf-completion.json",
+    "source_review": "tests/evidence/diagnostics/gen25/independent-review/source-review.json"
+  },
+  "commands_executed": "ast.parse and source/metadata hashing only; controllers not imported or executed; no build, history snapshot, native census, profiler, capture or cleanup.",
+  "release_conditions": [
+    "Exact root-supplied pushed artifact commit must equal HEAD, differ from and descend from the measured source, with all 202 current correctness inputs and current native artifacts equal to the measured inputs.",
+    "Independent preparation review and root release before build. Both diagnostic drivers finish before root sequential isolated actual-worker decode/CPR perf.",
+    "Compact history snapshot after root status-doc readiness; full census and 13 profiles only after both isolated captures complete and root releases collection.",
+    "Both complete diagnostic reports/archive reviews pass before exact duplicate cleanup; retain all unique perf, failures, unmatched scratch and compressed history."
+  ],
+  "native_obligations": [
+    "Establish score_scaling_identity_live_path_verified from fresh actual C/object/linked evidence. Only Impl.ScoreGate changed versus gen24 among 22 production sets; rebind actual 21 unchanged sibling sets.",
+    "Retain actual choose and both scaledTotals fold boundaries; scaledNumerator may be inlined. Verify generic Nat denominator equality, the equal-arm numerator return and the unchanged unequal old formula in every live context.",
+    "Recount actual entries and direct division/multiplication descendants by stage and scored-register profile. Do not infer equality-arm frequency from inclusive instructions, presume a benefit, or treat an inlined helper as a callable counter.",
+    "Preserve semantic scalar/expression-sharing anchors and actual callers, public commBValue elsewhere, validity tables and initialization, paired-parser/raw CRC, byte/bit wrappers/folds, affine normalization, software binary64 and bit extraction.",
+    "Retain all 13 profiles, every DF family, exclusive stages, each scored-register probe and complete output digests. Distinguish observed entries/direct calls from predicted iterations and overlapping inclusive costs.",
+    "Compare actual equal-denominator branch/fold/direct-child costs against retained gen24 evidence, reporting the measured gen25 regression honestly. Instruction counts do not establish timing causation or gains.",
+    "Both full diagnostic archives and independent seals precede bounded duplicate cleanup; preserve raw perf, every failure, unmatched files and all historical evidence."
+  ],
+  "finalization_status": "Evidence-local finalizer/extractors will adapt finalized gen24 after fresh source/native binding and collection release. No finalizer or workload executed."
+}

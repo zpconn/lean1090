@@ -1,11 +1,12 @@
 # Verified score optimization order
 
 The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 24 reached
-2.71966× decode and 1.98891× with CPR; [its report](../bench/GEN24.md) retains
-all samples and conditions. CPR remains below 2.00×; the result is retained
-without rounding up or repeating the benchmark. Fresh diagnostics precede
-the next change. No project-specific trusted primitive is authorized.
+Stop for review only when both measured ratios reach it. Generation 25 measured
+2.64972× decode and 1.94770× with CPR; [its report](../bench/GEN25.md) retains
+all samples and conditions. Both ratios are lower than generation 24. CPR
+remains below 2.00×; retain the result without repeating the benchmark. Fresh
+diagnostics precede the next change. No project-specific trusted primitive
+is authorized.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
 Float callbacks, including haversine, or adding tested-only Float code requires
