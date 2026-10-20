@@ -1,0 +1,51 @@
+262: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Binary64_nearestEven(lean_object* v_numerator_50_, lean_object* v_denominator_51_){
+263: _start:
+264: {
+265: lean_object* v_q_52_; lean_object* v_r_56_; lean_object* v___x_57_; lean_object* v___x_58_; uint8_t v___x_59_; 
+266: v_q_52_ = lean_nat_div(v_numerator_50_, v_denominator_51_);
+267: v_r_56_ = lean_nat_mod(v_numerator_50_, v_denominator_51_);
+268: v___x_57_ = lean_unsigned_to_nat(2u);
+269: v___x_58_ = lean_nat_mul(v___x_57_, v_r_56_);
+270: lean_dec(v_r_56_);
+271: v___x_59_ = lean_nat_dec_lt(v_denominator_51_, v___x_58_);
+272: if (v___x_59_ == 0)
+273: {
+274: uint8_t v___x_60_; 
+275: v___x_60_ = lean_nat_dec_eq(v___x_58_, v_denominator_51_);
+276: lean_dec(v___x_58_);
+277: if (v___x_60_ == 0)
+278: {
+279: return v_q_52_;
+280: }
+281: else
+282: {
+283: lean_object* v___x_61_; lean_object* v___x_62_; uint8_t v___x_63_; 
+284: v___x_61_ = lean_nat_mod(v_q_52_, v___x_57_);
+285: v___x_62_ = lean_unsigned_to_nat(1u);
+286: v___x_63_ = lean_nat_dec_eq(v___x_61_, v___x_62_);
+287: lean_dec(v___x_61_);
+288: if (v___x_63_ == 0)
+289: {
+290: return v_q_52_;
+291: }
+292: else
+293: {
+294: goto v___jp_53_;
+295: }
+296: }
+297: }
+298: else
+299: {
+300: lean_dec(v___x_58_);
+301: goto v___jp_53_;
+302: }
+303: v___jp_53_:
+304: {
+305: lean_object* v___x_54_; lean_object* v___x_55_; 
+306: v___x_54_ = lean_unsigned_to_nat(1u);
+307: v___x_55_ = lean_nat_add(v_q_52_, v___x_54_);
+308: lean_dec(v_q_52_);
+309: return v___x_55_;
+310: }
+311: }
+312: }

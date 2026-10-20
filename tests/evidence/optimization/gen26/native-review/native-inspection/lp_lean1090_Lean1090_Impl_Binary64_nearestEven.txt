@@ -1,0 +1,248 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b7e490 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven>:
+  b7e490:	push   %rbp
+  b7e491:	push   %r15
+  b7e493:	push   %r14
+  b7e495:	push   %r12
+  b7e497:	push   %rbx
+  b7e498:	mov    %rsi,%r14
+  b7e49b:	test   $0x1,%dil
+  b7e49f:	je     b7e5c5 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x135>
+  b7e4a5:	test   $0x1,%r14b
+  b7e4a9:	je     b7e5c5 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x135>
+  b7e4af:	mov    %r14,%rcx
+  b7e4b2:	shr    $1,%rcx
+  b7e4b5:	movabs $0x7fffffff00000000,%rsi
+  b7e4bf:	je     b7e4e6 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x56>
+  b7e4c1:	mov    %rdi,%rax
+  b7e4c4:	shr    $1,%rax
+  b7e4c7:	mov    %rax,%rdx
+  b7e4ca:	or     %rcx,%rdx
+  b7e4cd:	test   %rsi,%rdx
+  b7e4d0:	je     b7e4f2 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x62>
+  b7e4d2:	xor    %edx,%edx
+  b7e4d4:	div    %rcx
+  b7e4d7:	lea    0x1(,%rax,2),%rbx
+  b7e4df:	test   %rcx,%rcx
+  b7e4e2:	jne    b7e503 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x73>
+  b7e4e4:	jmp    b7e563 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xd3>
+  b7e4e6:	mov    $0x1,%ebx
+  b7e4eb:	test   %rcx,%rcx
+  b7e4ee:	jne    b7e503 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x73>
+  b7e4f0:	jmp    b7e563 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xd3>
+  b7e4f2:	xor    %edx,%edx
+  b7e4f4:	div    %ecx
+  b7e4f6:	lea    0x1(,%rax,2),%rbx
+  b7e4fe:	test   %rcx,%rcx
+  b7e501:	je     b7e563 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xd3>
+  b7e503:	shr    $1,%rdi
+  b7e506:	mov    %rdi,%rax
+  b7e509:	or     %rcx,%rax
+  b7e50c:	test   %rsi,%rax
+  b7e50f:	je     b7e555 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xc5>
+  b7e511:	mov    %rdi,%rax
+  b7e514:	xor    %edx,%edx
+  b7e516:	div    %rcx
+  b7e519:	lea    0x1(,%rdx,2),%rdi
+  b7e521:	test   $0x1,%dil
+  b7e525:	jne    b7e569 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xd9>
+  b7e527:	mov    %rdi,%r15
+  b7e52a:	mov    $0x5,%edi
+  b7e52f:	mov    %r15,%rsi
+  b7e532:	call   48a7ff0 <lean_nat_big_mul>
+  b7e537:	mov    (%r15),%edx
+  b7e53a:	cmp    $0x2,%edx
+  b7e53d:	jl     b7e601 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x171>
+  b7e543:	dec    %edx
+  b7e545:	mov    %edx,(%r15)
+  b7e548:	mov    %eax,%ecx
+  b7e54a:	test   $0x1,%r14b
+  b7e54e:	jne    b7e59f <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x10f>
+  b7e550:	jmp    b7e61b <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x18b>
+  b7e555:	mov    %edi,%eax
+  b7e557:	xor    %edx,%edx
+  b7e559:	div    %ecx
+  b7e55b:	lea    0x1(,%rdx,2),%rdi
+  b7e563:	test   $0x1,%dil
+  b7e567:	je     b7e527 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x97>
+  b7e569:	test   %rdi,%rdi
+  b7e56c:	js     b7e587 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xf7>
+  b7e56e:	and    $0xfffffffffffffffe,%rdi
+  b7e572:	lea    0x1(,%rdi,2),%rax
+  b7e57a:	mov    %eax,%ecx
+  b7e57c:	test   $0x1,%r14b
+  b7e580:	jne    b7e59f <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x10f>
+  b7e582:	jmp    b7e61b <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x18b>
+  b7e587:	shr    $1,%rdi
+  b7e58a:	mov    %rdi,%rsi
+  b7e58d:	mov    $0x2,%edi
+  b7e592:	call   48a8260 <lean_nat_overflow_mul>
+  b7e597:	mov    %eax,%ecx
+  b7e599:	test   $0x1,%r14b
+  b7e59d:	je     b7e61b <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x18b>
+  b7e59f:	test   $0x1,%cl
+  b7e5a2:	je     b7e622 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x192>
+  b7e5a4:	cmp    %rax,%r14
+  b7e5a7:	jae    b7e63d <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1ad>
+  b7e5ad:	test   $0x1,%al
+  b7e5af:	jne    b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e5b5:	mov    (%rax),%ecx
+  b7e5b7:	cmp    $0x2,%ecx
+  b7e5ba:	jl     b7e5ec <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x15c>
+  b7e5bc:	dec    %ecx
+  b7e5be:	mov    %ecx,(%rax)
+  b7e5c0:	jmp    b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e5c5:	mov    %rdi,%r15
+  b7e5c8:	mov    %r14,%rsi
+  b7e5cb:	call   48a8370 <lean_nat_big_div>
+  b7e5d0:	mov    %rax,%rbx
+  b7e5d3:	mov    %r15,%rdi
+  b7e5d6:	mov    %r14,%rsi
+  b7e5d9:	call   48a8710 <lean_nat_big_mod>
+  b7e5de:	mov    %rax,%rdi
+  b7e5e1:	test   $0x1,%dil
+  b7e5e5:	jne    b7e569 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0xd9>
+  b7e5e7:	jmp    b7e527 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x97>
+  b7e5ec:	test   %ecx,%ecx
+  b7e5ee:	je     b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e5f4:	mov    %rax,%rdi
+  b7e5f7:	call   48a54f0 <lean_dec_ref_cold>
+  b7e5fc:	jmp    b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e601:	mov    %rax,%r12
+  b7e604:	test   %edx,%edx
+  b7e606:	je     b7e610 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x180>
+  b7e608:	mov    %r15,%rdi
+  b7e60b:	call   48a54f0 <lean_dec_ref_cold>
+  b7e610:	mov    %r12,%rax
+  b7e613:	mov    %eax,%ecx
+  b7e615:	test   $0x1,%r14b
+  b7e619:	jne    b7e59f <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x10f>
+  b7e61b:	xor    %ecx,%ecx
+  b7e61d:	test   $0x1,%cl
+  b7e620:	jne    b7e5a4 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x114>
+  b7e622:	mov    %r14,%rdi
+  b7e625:	mov    %rax,%rsi
+  b7e628:	mov    %rax,%r15
+  b7e62b:	call   48a89a0 <lean_nat_big_lt>
+  b7e630:	mov    %eax,%ecx
+  b7e632:	mov    %r15,%rax
+  b7e635:	test   %cl,%cl
+  b7e637:	jne    b7e5ad <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x11d>
+  b7e63d:	test   $0x1,%al
+  b7e63f:	je     b7e66c <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1dc>
+  b7e641:	test   $0x1,%r14b
+  b7e645:	je     b7e691 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x201>
+  b7e647:	cmp    %r14,%rax
+  b7e64a:	jne    b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e64c:	test   $0x1,%bl
+  b7e64f:	je     b7e6a2 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x212>
+  b7e651:	mov    %ebx,%r14d
+  b7e654:	and    $0x3,%r14d
+  b7e658:	test   $0x1,%r14b
+  b7e65c:	je     b7e6b8 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x228>
+  b7e65e:	cmp    $0x3,%r14
+  b7e662:	je     b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e664:	mov    %rbx,%rax
+  b7e667:	jmp    b7e6ef <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x25f>
+  b7e66c:	mov    %rax,%rdi
+  b7e66f:	mov    %r14,%rsi
+  b7e672:	mov    %rax,%r14
+  b7e675:	call   48a8940 <lean_nat_big_eq>
+  b7e67a:	mov    (%r14),%ecx
+  b7e67d:	cmp    $0x2,%ecx
+  b7e680:	jl     b7e73d <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x2ad>
+  b7e686:	dec    %ecx
+  b7e688:	mov    %ecx,(%r14)
+  b7e68b:	test   %al,%al
+  b7e68d:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e68f:	jmp    b7e64c <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1bc>
+  b7e691:	mov    %rax,%rdi
+  b7e694:	mov    %r14,%rsi
+  b7e697:	call   48a8940 <lean_nat_big_eq>
+  b7e69c:	test   %al,%al
+  b7e69e:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e6a0:	jmp    b7e64c <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1bc>
+  b7e6a2:	mov    $0x5,%esi
+  b7e6a7:	mov    %rbx,%rdi
+  b7e6aa:	call   48a8710 <lean_nat_big_mod>
+  b7e6af:	mov    %rax,%r14
+  b7e6b2:	test   $0x1,%r14b
+  b7e6b6:	jne    b7e65e <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1ce>
+  b7e6b8:	mov    $0x3,%esi
+  b7e6bd:	mov    %r14,%rdi
+  b7e6c0:	call   48a8940 <lean_nat_big_eq>
+  b7e6c5:	mov    (%r14),%ecx
+  b7e6c8:	cmp    $0x2,%ecx
+  b7e6cb:	jl     b7e759 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x2c9>
+  b7e6d1:	dec    %ecx
+  b7e6d3:	mov    %ecx,(%r14)
+  b7e6d6:	test   %al,%al
+  b7e6d8:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e6da:	test   $0x1,%bl
+  b7e6dd:	je     b7e6f8 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x268>
+  b7e6df:	shr    $1,%rbx
+  b7e6e2:	inc    %rbx
+  b7e6e5:	js     b7e712 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x282>
+  b7e6e7:	lea    0x1(,%rbx,2),%rax
+  b7e6ef:	pop    %rbx
+  b7e6f0:	pop    %r12
+  b7e6f2:	pop    %r14
+  b7e6f4:	pop    %r15
+  b7e6f6:	pop    %rbp
+  b7e6f7:	ret
+  b7e6f8:	mov    $0x3,%esi
+  b7e6fd:	mov    %rbx,%rdi
+  b7e700:	call   48a7bb0 <lean_nat_big_add>
+  b7e705:	mov    (%rbx),%ecx
+  b7e707:	cmp    $0x2,%ecx
+  b7e70a:	jl     b7e729 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x299>
+  b7e70c:	dec    %ecx
+  b7e70e:	mov    %ecx,(%rbx)
+  b7e710:	jmp    b7e6ef <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x25f>
+  b7e712:	movabs $0x8000000000000000,%rdi
+  b7e71c:	pop    %rbx
+  b7e71d:	pop    %r12
+  b7e71f:	pop    %r14
+  b7e721:	pop    %r15
+  b7e723:	pop    %rbp
+  b7e724:	jmp    48a7a10 <lean_big_usize_to_nat>
+  b7e729:	mov    %rax,%r14
+  b7e72c:	test   %ecx,%ecx
+  b7e72e:	je     b7e738 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x2a8>
+  b7e730:	mov    %rbx,%rdi
+  b7e733:	call   48a54f0 <lean_dec_ref_cold>
+  b7e738:	mov    %r14,%rax
+  b7e73b:	jmp    b7e6ef <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x25f>
+  b7e73d:	mov    %eax,%ebp
+  b7e73f:	test   %ecx,%ecx
+  b7e741:	je     b7e775 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x2e5>
+  b7e743:	mov    %r14,%rdi
+  b7e746:	call   48a54f0 <lean_dec_ref_cold>
+  b7e74b:	test   %bpl,%bpl
+  b7e74e:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e754:	jmp    b7e64c <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1bc>
+  b7e759:	mov    %eax,%ebp
+  b7e75b:	test   %ecx,%ecx
+  b7e75d:	je     b7e783 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x2f3>
+  b7e75f:	mov    %r14,%rdi
+  b7e762:	call   48a54f0 <lean_dec_ref_cold>
+  b7e767:	test   %bpl,%bpl
+  b7e76a:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e770:	jmp    b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+  b7e775:	test   %bpl,%bpl
+  b7e778:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e77e:	jmp    b7e64c <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1bc>
+  b7e783:	test   %bpl,%bpl
+  b7e786:	je     b7e664 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x1d4>
+  b7e78c:	jmp    b7e6da <lp_lean1090_Lean1090_Impl_Binary64_nearestEven+0x24a>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

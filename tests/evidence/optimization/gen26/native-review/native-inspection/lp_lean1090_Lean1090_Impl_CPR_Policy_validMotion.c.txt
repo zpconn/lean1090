@@ -1,0 +1,114 @@
+879: LEAN_EXPORT uint8_t lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion(lean_object* v_geo_221_, lean_object* v_state_222_, lean_object* v_timestamp_223_, lean_object* v_candidate_224_){
+880: _start:
+881: {
+882: uint8_t v___y_226_; uint8_t v___y_227_; lean_object* v_position_230_; 
+883: v_position_230_ = lean_ctor_get(v_state_222_, 1);
+884: lean_inc(v_position_230_);
+885: if (lean_obj_tag(v_position_230_) == 0)
+886: {
+887: uint8_t v___x_231_; 
+888: lean_dec_ref(v_candidate_224_);
+889: lean_dec_ref(v_timestamp_223_);
+890: lean_dec_ref(v_state_222_);
+891: lean_dec_ref(v_geo_221_);
+892: v___x_231_ = 1;
+893: return v___x_231_;
+894: }
+895: else
+896: {
+897: lean_object* v_timestamp_232_; lean_object* v_val_233_; lean_object* v_distanceKm_234_; lean_object* v_distance_235_; lean_object* v___x_236_; lean_object* v_dt_237_; uint8_t v___y_239_; lean_object* v___x_244_; lean_object* v_hours_245_; uint8_t v___y_247_; lean_object* v___x_250_; uint8_t v___x_251_; 
+898: v_timestamp_232_ = lean_ctor_get(v_state_222_, 0);
+899: lean_inc_ref(v_timestamp_232_);
+900: lean_dec_ref(v_state_222_);
+901: v_val_233_ = lean_ctor_get(v_position_230_, 0);
+902: lean_inc(v_val_233_);
+903: lean_dec_ref_known(v_position_230_, 1);
+904: v_distanceKm_234_ = lean_ctor_get(v_geo_221_, 0);
+905: lean_inc_ref(v_distanceKm_234_);
+906: lean_dec_ref(v_geo_221_);
+907: v_distance_235_ = lean_apply_2(v_distanceKm_234_, v_candidate_224_, v_val_233_);
+908: v___x_236_ = lp_lean1090_Lean1090_Impl_Binary64_sub(v_timestamp_223_, v_timestamp_232_);
+909: v_dt_237_ = lp_lean1090_Lean1090_Impl_CPR_absQ(v___x_236_);
+910: v___x_244_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__2, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__2_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__2);
+911: v_hours_245_ = lp_lean1090_Lean1090_Impl_Binary64_div(v_dt_237_, v___x_244_);
+912: v___x_250_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__4, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__4_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__4);
+913: lean_inc_ref(v_dt_237_);
+914: v___x_251_ = l_Rat_blt(v_dt_237_, v___x_250_);
+915: if (v___x_251_ == 0)
+916: {
+917: v___y_247_ = v___x_251_;
+918: goto v___jp_246_;
+919: }
+920: else
+921: {
+922: lean_object* v___x_252_; uint8_t v___x_253_; 
+923: v___x_252_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5);
+924: lean_inc_ref(v_hours_245_);
+925: v___x_253_ = l_Rat_blt(v___x_252_, v_hours_245_);
+926: v___y_247_ = v___x_253_;
+927: goto v___jp_246_;
+928: }
+929: v___jp_238_:
+930: {
+931: lean_object* v___x_240_; uint8_t v___x_241_; 
+932: v___x_240_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__0, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__0_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__0);
+933: v___x_241_ = lp_lean1090_Lean1090_Impl_CPR_Policy_distanceGT(v_distance_235_, v___x_240_);
+934: if (v___x_241_ == 0)
+935: {
+936: lean_dec_ref(v_dt_237_);
+937: v___y_226_ = v___y_239_;
+938: v___y_227_ = v___x_241_;
+939: goto v___jp_225_;
+940: }
+941: else
+942: {
+943: lean_object* v___x_242_; uint8_t v___x_243_; 
+944: v___x_242_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1);
+945: v___x_243_ = l_Rat_blt(v_dt_237_, v___x_242_);
+946: v___y_226_ = v___y_239_;
+947: v___y_227_ = v___x_243_;
+948: goto v___jp_225_;
+949: }
+950: }
+951: v___jp_246_:
+952: {
+953: if (v___y_247_ == 0)
+954: {
+955: lean_dec_ref(v_hours_245_);
+956: v___y_239_ = v___y_247_;
+957: goto v___jp_238_;
+958: }
+959: else
+960: {
+961: lean_object* v___x_248_; uint8_t v___x_249_; 
+962: v___x_248_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__3, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__3_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__3);
+963: v___x_249_ = lp_lean1090_Lean1090_Impl_CPR_Policy_speedGT(v_distance_235_, v_hours_245_, v___x_248_);
+964: v___y_239_ = v___x_249_;
+965: goto v___jp_238_;
+966: }
+967: }
+968: }
+969: v___jp_225_:
+970: {
+971: if (v___y_226_ == 0)
+972: {
+973: if (v___y_227_ == 0)
+974: {
+975: uint8_t v___x_228_; 
+976: v___x_228_ = 1;
+977: return v___x_228_;
+978: }
+979: else
+980: {
+981: return v___y_226_;
+982: }
+983: }
+984: else
+985: {
+986: uint8_t v___x_229_; 
+987: v___x_229_ = 0;
+988: return v___x_229_;
+989: }
+990: }
+991: }
+992: }

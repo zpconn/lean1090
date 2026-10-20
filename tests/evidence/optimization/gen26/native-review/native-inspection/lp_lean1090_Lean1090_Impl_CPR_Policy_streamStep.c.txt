@@ -1,0 +1,101 @@
+2485: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_CPR_Policy_streamStep(lean_object* v_geo_641_, lean_object* v_updateReference_642_, lean_object* v_stream_643_, lean_object* v_report_644_){
+2486: _start:
+2487: {
+2488: lean_object* v_aircraft_645_; lean_object* v_reference_646_; lean_object* v___x_648_; uint8_t v_isShared_649_; uint8_t v_isSharedCheck_672_; 
+2489: v_aircraft_645_ = lean_ctor_get(v_stream_643_, 0);
+2490: v_reference_646_ = lean_ctor_get(v_stream_643_, 1);
+2491: v_isSharedCheck_672_ = !lean_is_exclusive(v_stream_643_);
+2492: if (v_isSharedCheck_672_ == 0)
+2493: {
+2494: v___x_648_ = v_stream_643_;
+2495: v_isShared_649_ = v_isSharedCheck_672_;
+2496: goto v_resetjp_647_;
+2497: }
+2498: else
+2499: {
+2500: lean_inc(v_reference_646_);
+2501: lean_inc(v_aircraft_645_);
+2502: lean_dec(v_stream_643_);
+2503: v___x_648_ = lean_box(0);
+2504: v_isShared_649_ = v_isSharedCheck_672_;
+2505: goto v_resetjp_647_;
+2506: }
+2507: v_resetjp_647_:
+2508: {
+2509: lean_object* v___y_651_; lean_object* v___x_667_; 
+2510: v___x_667_ = lp_lean1090_List_find_x3f___at___00Lean1090_Impl_CPR_Policy_streamStep_spec__1(v_report_644_, v_aircraft_645_);
+2511: if (lean_obj_tag(v___x_667_) == 0)
+2512: {
+2513: lean_object* v_timestamp_668_; lean_object* v___x_669_; 
+2514: v_timestamp_668_ = lean_ctor_get(v_report_644_, 1);
+2515: lean_inc_ref(v_timestamp_668_);
+2516: v___x_669_ = lp_lean1090_Lean1090_Impl_CPR_Policy_initial(v_timestamp_668_);
+2517: v___y_651_ = v___x_669_;
+2518: goto v___jp_650_;
+2519: }
+2520: else
+2521: {
+2522: lean_object* v_val_670_; lean_object* v_snd_671_; 
+2523: v_val_670_ = lean_ctor_get(v___x_667_, 0);
+2524: lean_inc(v_val_670_);
+2525: lean_dec_ref_known(v___x_667_, 1);
+2526: v_snd_671_ = lean_ctor_get(v_val_670_, 1);
+2527: lean_inc(v_snd_671_);
+2528: lean_dec(v_val_670_);
+2529: v___y_651_ = v_snd_671_;
+2530: goto v___jp_650_;
+2531: }
+2532: v___jp_650_:
+2533: {
+2534: lean_object* v_address_652_; lean_object* v_timestamp_653_; lean_object* v_message_654_; lean_object* v_result_655_; lean_object* v_state_656_; lean_object* v_reference_657_; lean_object* v_resolved_658_; lean_object* v___x_659_; lean_object* v_remaining_660_; lean_object* v___x_661_; lean_object* v___x_662_; lean_object* v___x_664_; 
+2535: v_address_652_ = lean_ctor_get(v_report_644_, 0);
+2536: lean_inc(v_address_652_);
+2537: v_timestamp_653_ = lean_ctor_get(v_report_644_, 1);
+2538: v_message_654_ = lean_ctor_get(v_report_644_, 2);
+2539: lean_inc_ref(v_message_654_);
+2540: lean_inc_ref(v_timestamp_653_);
+2541: v_result_655_ = lp_lean1090_Lean1090_Impl_CPR_Policy_step(v_geo_641_, v_updateReference_642_, v___y_651_, v_reference_646_, v_timestamp_653_, v_message_654_);
+2542: v_state_656_ = lean_ctor_get(v_result_655_, 0);
+2543: lean_inc_ref(v_state_656_);
+2544: v_reference_657_ = lean_ctor_get(v_result_655_, 1);
+2545: lean_inc(v_reference_657_);
+2546: v_resolved_658_ = lean_ctor_get(v_result_655_, 2);
+2547: lean_inc(v_resolved_658_);
+2548: lean_dec_ref(v_result_655_);
+2549: v___x_659_ = lean_box(0);
+2550: v_remaining_660_ = lp_lean1090_List_filterTR_loop___at___00Lean1090_Impl_CPR_Policy_streamStep_spec__0(v_report_644_, v_aircraft_645_, v___x_659_);
+2551: lean_dec_ref(v_report_644_);
+2552: v___x_661_ = lean_alloc_ctor(0, 2, 0);
+2553: lean_ctor_set(v___x_661_, 0, v_address_652_);
+2554: lean_ctor_set(v___x_661_, 1, v_state_656_);
+2555: v___x_662_ = lean_alloc_ctor(1, 2, 0);
+2556: lean_ctor_set(v___x_662_, 0, v___x_661_);
+2557: lean_ctor_set(v___x_662_, 1, v_remaining_660_);
+2558: if (v_isShared_649_ == 0)
+2559: {
+2560: lean_ctor_set(v___x_648_, 1, v_reference_657_);
+2561: lean_ctor_set(v___x_648_, 0, v___x_662_);
+2562: v___x_664_ = v___x_648_;
+2563: goto v_reusejp_663_;
+2564: }
+2565: else
+2566: {
+2567: lean_object* v_reuseFailAlloc_666_; 
+2568: v_reuseFailAlloc_666_ = lean_alloc_ctor(0, 2, 0);
+2569: lean_ctor_set(v_reuseFailAlloc_666_, 0, v___x_662_);
+2570: lean_ctor_set(v_reuseFailAlloc_666_, 1, v_reference_657_);
+2571: v___x_664_ = v_reuseFailAlloc_666_;
+2572: goto v_reusejp_663_;
+2573: }
+2574: v_reusejp_663_:
+2575: {
+2576: lean_object* v___x_665_; 
+2577: v___x_665_ = lean_alloc_ctor(0, 2, 0);
+2578: lean_ctor_set(v___x_665_, 0, v___x_664_);
+2579: lean_ctor_set(v___x_665_, 1, v_resolved_658_);
+2580: return v___x_665_;
+2581: }
+2582: }
+2583: }
+2584: }
+2585: }

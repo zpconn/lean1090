@@ -1,0 +1,45 @@
+3118: LEAN_EXPORT lean_object* lp_lean1090___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_runDecodeOnce_spec__0(lean_object* v_as_821_, size_t v_sz_822_, size_t v_i_823_, lean_object* v_b_824_){
+3119: _start:
+3120: {
+3121: uint8_t v___x_826_; 
+3122: v___x_826_ = lean_usize_dec_lt(v_i_823_, v_sz_822_);
+3123: if (v___x_826_ == 0)
+3124: {
+3125: lean_object* v___x_827_; 
+3126: v___x_827_ = lean_alloc_ctor(0, 1, 0);
+3127: lean_ctor_set(v___x_827_, 0, v_b_824_);
+3128: return v___x_827_;
+3129: }
+3130: else
+3131: {
+3132: lean_object* v_a_828_; lean_object* v_bytes_829_; lean_object* v___x_830_; 
+3133: v_a_828_ = lean_array_uget_borrowed(v_as_821_, v_i_823_);
+3134: v_bytes_829_ = lean_ctor_get(v_a_828_, 1);
+3135: lean_inc(v_bytes_829_);
+3136: v___x_830_ = lp_lean1090_Lean1090_Impl_decode(v_bytes_829_);
+3137: if (lean_obj_tag(v___x_830_) == 1)
+3138: {
+3139: lean_object* v_val_831_; lean_object* v___x_832_; size_t v___x_833_; size_t v___x_834_; 
+3140: v_val_831_ = lean_ctor_get(v___x_830_, 0);
+3141: lean_inc(v_val_831_);
+3142: lean_dec_ref_known(v___x_830_, 1);
+3143: v___x_832_ = lean_array_push(v_b_824_, v_val_831_);
+3144: v___x_833_ = ((size_t)1ULL);
+3145: v___x_834_ = lean_usize_add(v_i_823_, v___x_833_);
+3146: v_i_823_ = v___x_834_;
+3147: v_b_824_ = v___x_832_;
+3148: goto _start;
+3149: }
+3150: else
+3151: {
+3152: lean_object* v___x_836_; lean_object* v___x_837_; 
+3153: lean_dec(v___x_830_);
+3154: lean_dec_ref(v_b_824_);
+3155: v___x_836_ = ((lean_object*)(lp_lean1090___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Bench_WholeDecoder_0__Lean1090_Bench_WholeDecoder_runDecodeOnce_spec__0___closed__1));
+3156: v___x_837_ = lean_alloc_ctor(1, 1, 0);
+3157: lean_ctor_set(v___x_837_, 0, v___x_836_);
+3158: return v___x_837_;
+3159: }
+3160: }
+3161: }
+3162: }

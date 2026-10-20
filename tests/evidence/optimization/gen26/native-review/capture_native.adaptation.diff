@@ -1,0 +1,34 @@
+--- tests/evidence/optimization/gen25/native-review/capture_native.py
++++ tests/evidence/optimization/gen26/native-review/capture_native.py
+@@ -1,11 +1,11 @@
+ #!/usr/bin/env python3
+-"""Bounded static capture of linked gen25 equal-denominator score paths; never runs a decoder."""
++"""Bounded static capture of linked gen26 small-dyadic rounding paths; never runs a decoder."""
+ import sys
+ sys.dont_write_bytecode=True
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import hashlib,json,re,shlex,subprocess
+-ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen25/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
++ROOT=Path.cwd();R=Path('tests/evidence/optimization/gen26/native-review');O=R/'native-inspection';assert not O.exists();O.mkdir()
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ read=lambda p:json.loads(Path(p).read_text())
+ b=read(R.parent/'integration/targeted-build.json');assert b['status']=='passed' and b['exit_code']==0
+@@ -34,12 +34,11 @@
+  if filtered:text='\n'.join(x for x in text.splitlines() if filtered(x))+'\n'
+  path=O/(label+'.txt');assert not path.exists();path.write_text(text);commands.append({'argv':argv,'exit_code':run.returncode,'output':str(path),'sha256':sha(path),'stderr':run.stderr});return text
+ P='lp_lean1090_Lean1090_Impl_'
+-requested=[P+name for name in ['ScoreGate_choose','ScoreGate_commonDenominator','ScoreGate_scaledNumerator','ScoreGate_scaledTotals','cbScorePasses','cbScorePasses___lam__0','commBCoreEligible','inferCommB','frameCommB','decode']]
+-requested += ['main','initialize_lean1090_Bench_WholeDecoder']
+-# Retain every actual specialized scaling fold, including both specialized loop bodies.
+-text=Path('.lake/build/ir/Impl/ScoreGate.c').read_text()
+-definitions=re.findall(r'^(?:LEAN_EXPORT |static )[^;\n]+?\b([A-Za-z_][A-Za-z_0-9]*)\([^;\n]*\)\s*\{',text,re.M)
+-requested += [n for n in definitions if 'ScoreGate_scaledTotals' in n and not n.endswith('___boxed') and not n.startswith('_init_')]
++requested=[P+name for name in ['Binary64_round','Binary64_roundFallback','Binary64_exponent','Binary64_nearestEven','Binary64_powerTwo','Binary64_literal','Binary64_add','Binary64_sub','Binary64_mul','Binary64_div','CPR_Policy_validMotion','CPR_Policy_stepAirborne','CPR_Policy_streamStep','CPR_Policy_toFloatFallback','cbCombinedScore','cbPenalty','cbScorePasses','decode','reportWithSyndrome']]
++requested += ['main','initialize_lean1090_Bench_WholeDecoder','initialize_lean1090_Impl_Binary64']
++# Historical caller records select names only; every capture below uses current C and worker.
++previous_callers=read('tests/evidence/optimization/gen25/native-review/caller-bindings.json')
++requested += [r['symbol'] for r in previous_callers['benchmark_callers']]
+ requested=list(dict.fromkeys(requested))
+ selected=set(requested)
+ syms=cmd(['nm','--defined-only',str(worker)],'selected-symbols',lambda line:line.split() and (line.split()[-1] in selected ))

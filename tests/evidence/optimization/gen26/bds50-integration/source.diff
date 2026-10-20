@@ -1,0 +1,21 @@
+--- before/Proofs/BDS50.lean
++++ Proofs/BDS50.lean
+@@ -12,15 +12,18 @@
+ @[simp] theorem roll_eq (w : Nat) : Impl.BDS50.roll w = Spec.commBValue 0x50 w "roll" := by
+   simp [Impl.BDS50.roll, Impl.BDS50.value, Spec.commBValue, Spec.commBLayout, Spec.bds50Layout,
+     Spec.cbColumn, Spec.payloadValue, Spec.payloadInteger, Impl.BDS50.signed]
++  norm_num
+ @[simp] theorem track_eq (w : Nat) : Impl.BDS50.track w = Spec.commBValue 0x50 w "track" := by
+   simp [Impl.BDS50.track, Impl.BDS50.value, Spec.commBValue, Spec.commBLayout, Spec.bds50Layout,
+     Spec.cbColumn, Spec.payloadValue, Spec.payloadInteger, Impl.BDS50.signed, Spec.cbWrapAngle]
++  norm_num
+ @[simp] theorem groundSpeed_eq (w : Nat) : Impl.BDS50.groundSpeed w = Spec.commBValue 0x50 w "groundspeed" := by
+   simp [Impl.BDS50.groundSpeed, Impl.BDS50.value, Spec.commBValue, Spec.commBLayout, Spec.bds50Layout,
+     Spec.cbColumn, Spec.payloadValue, Spec.payloadInteger]
+ @[simp] theorem rate_eq (w : Nat) : Impl.BDS50.rate w = Spec.commBValue 0x50 w "track_rate" := by
+   simp [Impl.BDS50.rate, Impl.BDS50.value, Spec.commBValue, Spec.commBLayout, Spec.bds50Layout,
+     Spec.cbColumn, Spec.payloadValue, Spec.payloadInteger, Impl.BDS50.signed]
++  norm_num
+ @[simp] theorem tas_eq (w : Nat) : Impl.BDS50.trueAirspeed w = Spec.commBValue 0x50 w "TAS" := by
+   simp [Impl.BDS50.trueAirspeed, Impl.BDS50.value, Spec.commBValue, Spec.commBLayout, Spec.bds50Layout,
+     Spec.cbColumn, Spec.payloadValue, Spec.payloadInteger]

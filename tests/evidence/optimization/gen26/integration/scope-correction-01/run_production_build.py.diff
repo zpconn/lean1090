@@ -1,0 +1,13 @@
+--- tests/evidence/optimization/gen26/integration/scope-correction-01/before/integration/run_production_build.py
++++ tests/evidence/optimization/gen26/integration/run_production_build.py
+@@ -14,8 +14,8 @@
+ 
+ ROOT = Path(__file__).resolve().parents[5]
+ OUT = Path(__file__).resolve().parent
+-SOURCES = ['Impl/Binary64.lean', 'Proofs/Binary64Runtime.lean']
+-COMMAND = ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'lean1090',
++SOURCES = ['Impl/Binary64.lean', 'Proofs/Binary64Runtime.lean', 'Proofs/BDS50.lean']
++COMMAND = ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'Proofs.BDS50', 'lean1090',
+            'messageGenerator', 'commbDifferential', 'lean1090-bench']
+ BINARIES = ('lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench')
+ 

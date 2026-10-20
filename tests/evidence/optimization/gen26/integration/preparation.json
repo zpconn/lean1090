@@ -1,0 +1,75 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-20T00:55:04.898712+00:00",
+  "adaptations": {
+    "integration/run_production_build.py": {
+      "path": "tests/evidence/optimization/gen26/integration/run_production_build.py",
+      "sha256": "0a15e09cbbda5d0b94f7098dc40ce4487a79e96ebb52805d2166cda0f49eb3f1",
+      "prior_path": "tests/evidence/optimization/gen26/integration/scope-correction-01/before/integration/run_production_build.py",
+      "prior_sha256": "873a0d7e810f267cc206b8e7aa620ddd6aff8ee7c2f39930493846286f20f106",
+      "diff_path": "tests/evidence/optimization/gen26/integration/scope-correction-01/run_production_build.py.diff",
+      "diff_sha256": "747d2261cbf78faaf38bc46672b100d4de3858e5188b701228a8f6705d2edc4e",
+      "syntax": "ast.parse passed; no script imported or launched"
+    },
+    "integration/validate_build.py": {
+      "path": "tests/evidence/optimization/gen26/integration/validate_build.py",
+      "sha256": "17785cf867299c632d232d77951e90e7c5c7dfa65fb6cbada9f3a7f284d3539c",
+      "prior_path": "tests/evidence/optimization/gen26/integration/scope-correction-01/before/integration/validate_build.py",
+      "prior_sha256": "9e3e63a895637f8b2fcebb8900448a41c816b09f547e449c6fc745bbdac48147",
+      "diff_path": "tests/evidence/optimization/gen26/integration/scope-correction-01/validate_build.py.diff",
+      "diff_sha256": "62515af96511e7b2f6d4c99789caa7a2e4c957f7d3ab3effaf08798ed5266683",
+      "syntax": "ast.parse passed; no script imported or launched"
+    }
+  },
+  "sources": [
+    "Impl/Binary64.lean",
+    "Proofs/Binary64Runtime.lean",
+    "Proofs/BDS50.lean"
+  ],
+  "new_modules": [],
+  "expected_correctness_inputs": 202,
+  "expected_audited_sources": 127,
+  "expected_native_sets": 22,
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Decoder",
+    "Proofs.CPRTracking",
+    "Proofs.BDS50",
+    "lean1090",
+    "messageGenerator",
+    "commbDifferential",
+    "lean1090-bench"
+  ],
+  "expected_binaries": [
+    "lean1090",
+    "messageGenerator",
+    "commbDifferential",
+    "lean1090-bench"
+  ],
+  "required_facts": [
+    "Lean1090.Proofs.Refinement",
+    "Lean1090.Proofs.CPRTrackingRefinement",
+    "Lean1090.Proofs.Binary64Runtime.round_eq",
+    "Lean1090.Proofs.Binary64Runtime.round_function_eq",
+    "Lean1090.Proofs.Binary64Runtime.roundFallback_eq",
+    "Lean1090.Proofs.Binary64Runtime.round_small_dyadic",
+    "Lean1090.Proofs.BDS50.refinement",
+    "Lean1090.Proofs.BDS50.pilot_nonvacuous",
+    "Lean1090.Proofs.BDS50.exact_threshold_nonvacuous"
+  ],
+  "proof_api_status": "Existing round equality statements preserved; two new names coordinated with implementation owner, confirm actual definitions before production execution.",
+  "validator_method": "Complete multiline/axiom-free announcement counting, allowed-axiom enforcement and negative parser controls unchanged. Sources/current gate inventory/binaries/both full refinements must match actual completed attempt.",
+  "previous_gate": "tests/evidence/optimization/gen25/gate-evidence.json",
+  "previous_fresh_source_inventory": "tests/evidence/optimization/gen25/fresh-message-run.json",
+  "generic_helpers": {
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac"
+  },
+  "launch_condition": "Root explicit release after implementation and targeted proof pass. Append-only source snapshots/command/log/result for each production attempt; preserve every failure.",
+  "no_build_or_native_execution": true,
+  "prior_preparation": {
+    "retained": "tests/evidence/optimization/gen26/integration/scope-correction-01/before/integration/preparation.json",
+    "sha256": "b3fff383cfcc2d3e7ec078296d6982ab617c24f0045f32628683a6d25585fd82"
+  },
+  "scope_correction": "Root-authorized proof-body-only BDS50 simplification bridge after retained full-gate failure; explicit BDS50 target and facts added. Counts and runtime scope unchanged."
+}

@@ -1,0 +1,114 @@
+239: LEAN_EXPORT double lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback(lean_object* v_value_18_){
+240: _start:
+241: {
+242: lean_object* v___y_20_; lean_object* v_rounded_23_; lean_object* v___x_24_; lean_object* v___x_25_; lean_object* v___y_27_; uint8_t v___x_55_; 
+243: v_rounded_23_ = lp_lean1090_Lean1090_Impl_Binary64_round(v_value_18_);
+244: v___x_24_ = lean_unsigned_to_nat(0u);
+245: v___x_25_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__0);
+246: lean_inc_ref(v_rounded_23_);
+247: v___x_55_ = l_Rat_blt(v_rounded_23_, v___x_25_);
+248: if (v___x_55_ == 0)
+249: {
+250: v___y_27_ = v___x_24_;
+251: goto v___jp_26_;
+252: }
+253: else
+254: {
+255: lean_object* v___x_56_; 
+256: v___x_56_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__8);
+257: v___y_27_ = v___x_56_;
+258: goto v___jp_26_;
+259: }
+260: v___jp_19_:
+261: {
+262: uint64_t v___x_21_; double v___x_22_; 
+263: v___x_21_ = lean_uint64_of_nat(v___y_20_);
+264: lean_dec(v___y_20_);
+265: v___x_22_ = lean_float_of_bits(v___x_21_);
+266: return v___x_22_;
+267: }
+268: v___jp_26_:
+269: {
+270: lean_object* v_magnitude_28_; uint8_t v___x_29_; 
+271: v_magnitude_28_ = l_Rat_abs(v_rounded_23_);
+272: v___x_29_ = l_instDecidableEqRat_decEq(v_magnitude_28_, v___x_25_);
+273: if (v___x_29_ == 0)
+274: {
+275: lean_object* v_exponent_30_; lean_object* v___x_31_; uint8_t v___x_32_; 
+276: lean_inc_ref(v_magnitude_28_);
+277: v_exponent_30_ = lp_lean1090_Lean1090_Impl_Binary64_exponent(v_magnitude_28_);
+278: v___x_31_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__1);
+279: v___x_32_ = lean_int_dec_lt(v___x_31_, v_exponent_30_);
+280: if (v___x_32_ == 0)
+281: {
+282: lean_object* v___x_33_; uint8_t v___x_34_; 
+283: v___x_33_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__3);
+284: v___x_34_ = lean_int_dec_lt(v_exponent_30_, v___x_33_);
+285: if (v___x_34_ == 0)
+286: {
+287: lean_object* v___x_35_; lean_object* v___x_36_; lean_object* v___x_37_; lean_object* v___x_38_; lean_object* v___x_39_; lean_object* v___x_40_; lean_object* v___x_41_; lean_object* v___x_42_; lean_object* v___x_43_; lean_object* v___x_44_; lean_object* v___x_45_; lean_object* v___x_46_; lean_object* v___x_47_; 
+288: v___x_35_ = lean_int_add(v_exponent_30_, v___x_31_);
+289: v___x_36_ = l_Int_toNat(v___x_35_);
+290: lean_dec(v___x_35_);
+291: v___x_37_ = lean_cstr_to_nat("4503599627370496");
+292: v___x_38_ = lean_nat_mul(v___x_36_, v___x_37_);
+293: lean_dec(v___x_36_);
+294: v___x_39_ = lean_nat_add(v___y_27_, v___x_38_);
+295: lean_dec(v___x_38_);
+296: lean_dec(v___y_27_);
+297: v___x_40_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__4);
+298: v___x_41_ = lean_int_sub(v_exponent_30_, v___x_40_);
+299: lean_dec(v_exponent_30_);
+300: v___x_42_ = lp_lean1090_Lean1090_Impl_Binary64_powerTwo(v___x_41_);
+301: lean_dec(v___x_41_);
+302: v___x_43_ = l_Rat_div(v_magnitude_28_, v___x_42_);
+303: lean_dec_ref(v_magnitude_28_);
+304: v___x_44_ = l_Rat_floor(v___x_43_);
+305: v___x_45_ = l_Int_toNat(v___x_44_);
+306: lean_dec(v___x_44_);
+307: v___x_46_ = lean_nat_add(v___x_39_, v___x_45_);
+308: lean_dec(v___x_45_);
+309: lean_dec(v___x_39_);
+310: v___x_47_ = lean_nat_sub(v___x_46_, v___x_37_);
+311: lean_dec(v___x_46_);
+312: v___y_20_ = v___x_47_;
+313: goto v___jp_19_;
+314: }
+315: else
+316: {
+317: lean_object* v___x_48_; lean_object* v___x_49_; lean_object* v___x_50_; lean_object* v___x_51_; lean_object* v___x_52_; 
+318: lean_dec(v_exponent_30_);
+319: v___x_48_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7, &lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_toFloatFallback___closed__7);
+320: v___x_49_ = l_Rat_div(v_magnitude_28_, v___x_48_);
+321: lean_dec_ref(v_magnitude_28_);
+322: v___x_50_ = l_Rat_floor(v___x_49_);
+323: v___x_51_ = l_Int_toNat(v___x_50_);
+324: lean_dec(v___x_50_);
+325: v___x_52_ = lean_nat_add(v___y_27_, v___x_51_);
+326: lean_dec(v___x_51_);
+327: lean_dec(v___y_27_);
+328: v___y_20_ = v___x_52_;
+329: goto v___jp_19_;
+330: }
+331: }
+332: else
+333: {
+334: lean_object* v___x_53_; lean_object* v___x_54_; 
+335: lean_dec(v_exponent_30_);
+336: lean_dec_ref(v_magnitude_28_);
+337: v___x_53_ = lean_cstr_to_nat("9218868437227405312");
+338: v___x_54_ = lean_nat_add(v___y_27_, v___x_53_);
+339: lean_dec(v___y_27_);
+340: v___y_20_ = v___x_54_;
+341: goto v___jp_19_;
+342: }
+343: }
+344: else
+345: {
+346: lean_dec_ref(v_magnitude_28_);
+347: v___y_20_ = v___y_27_;
+348: goto v___jp_19_;
+349: }
+350: }
+351: }
+352: }

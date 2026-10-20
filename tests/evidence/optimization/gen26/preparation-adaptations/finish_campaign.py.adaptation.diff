@@ -1,0 +1,20 @@
+--- tests/evidence/optimization/gen25/finish_campaign.py
++++ tests/evidence/optimization/gen26/finish_campaign.py
+@@ -6,7 +6,7 @@
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import hashlib,json,subprocess
+-G=Path('tests/evidence/optimization/gen25');B=G;R=B/'independent-review';Q=B/'fresh-message'
++G=Path('tests/evidence/optimization/gen26');B=G;R=B/'independent-review';Q=B/'fresh-message'
+ sha=lambda p:hashlib.file_digest(Path(p).open('rb'),'sha256').hexdigest()
+ load=lambda p:json.loads(Path(p).read_text())
+ now=lambda:datetime.now(timezone.utc).isoformat()
+@@ -18,7 +18,7 @@
+ execution=load(B/'fresh-execution.json');replay=load(R/'comparison-replay.json');independent=load(R/'fresh-retention-review.json');manifest=load(B/'fresh-retained-hashes.json');pre=load(B/'fresh-preflight.json');summary=load(Q/'summary.json');native=load(G/'native-review/native-inputs.json');prep=load(B/'preparation.json')
+ native_review=load(G/'native-review/review.json')
+ assert native_review['status']=='passed' and not native_review['findings']
+-assert native_review['score_scaling_identity_live_path_verified'] and native_review['linked_native_sets']==22
++assert native_review['binary64_round_identity_live_path_verified'] and native_review['linked_native_sets']==22
+ assert all(x['status']=='passed' for x in [execution,replay,independent,manifest])
+ assert execution['exit_code']==0 and replay['temporary_duplicate_outputs_removed'] and not independent['findings']
+ # Bind the completed generic reviewer execution and both logs before any unlink.

@@ -1,0 +1,58 @@
+{
+_start:
+{
+lean_object* v___x_143_; 
+v___x_143_ = lp_lean1090_Lean1090_Impl_decodeFrameWithWord(v_bytes_142_);
+if (lean_obj_tag(v___x_143_) == 0)
+{
+lean_object* v___x_144_; 
+v___x_144_ = lean_box(0);
+return v___x_144_;
+}
+else
+{
+lean_object* v_val_145_; lean_object* v___x_147_; uint8_t v_isShared_148_; uint8_t v_isSharedCheck_153_; 
+v_val_145_ = lean_ctor_get(v___x_143_, 0);
+v_isSharedCheck_153_ = !lean_is_exclusive(v___x_143_);
+if (v_isSharedCheck_153_ == 0)
+{
+v___x_147_ = v___x_143_;
+v_isShared_148_ = v_isSharedCheck_153_;
+goto v_resetjp_146_;
+}
+else
+{
+lean_inc(v_val_145_);
+lean_dec(v___x_143_);
+v___x_147_ = lean_box(0);
+v_isShared_148_ = v_isSharedCheck_153_;
+goto v_resetjp_146_;
+}
+v_resetjp_146_:
+{
+lean_object* v_fst_149_; lean_object* v___x_151_; 
+v_fst_149_ = lean_ctor_get(v_val_145_, 0);
+lean_inc(v_fst_149_);
+lean_dec(v_val_145_);
+if (v_isShared_148_ == 0)
+{
+lean_ctor_set(v___x_147_, 0, v_fst_149_);
+v___x_151_ = v___x_147_;
+goto v_reusejp_150_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_152_; 
+v_reuseFailAlloc_152_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v_reuseFailAlloc_152_, 0, v_fst_149_);
+v___x_151_ = v_reuseFailAlloc_152_;
+goto v_reusejp_150_;
+}
+v_reusejp_150_:
+{
+return v___x_151_;
+}
+}
+}
+}
+}

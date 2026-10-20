@@ -1,0 +1,20 @@
+--- tests/evidence/optimization/gen25/fresh-orchestrate.py
++++ tests/evidence/optimization/gen26/fresh-orchestrate.py
+@@ -3,7 +3,7 @@
+ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+ from pathlib import Path
+ import datetime,hashlib,json,subprocess,sys,time,traceback
+-p=Path('tests/evidence/optimization/gen25')
++p=Path('tests/evidence/optimization/gen26')
+ sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()
+ now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+ EXPECTED_RETENTION = ['fresh-commb-check.log', 'fresh-commb-coverage.json', 'fresh-commb-generate.log', 'fresh-commb-run.json', 'fresh-commb.csv.coverage.csv.gz', 'fresh-commb.csv.gz', 'fresh-execution.json', 'fresh-final-verification.json', 'fresh-message-run.json', 'fresh-message.log', 'fresh-message/commands.log', 'fresh-message/direct-input.txt.gz', 'fresh-message/direct-lean.jsonl.gz', 'fresh-message/direct-mismatches.jsonl.gz', 'fresh-message/direct-oracle.jsonl.gz', 'fresh-message/fresh-commb.csv.gz', 'fresh-message/generated.tsv.gz', 'fresh-message/input.hex.gz', 'fresh-message/lean.jsonl.gz', 'fresh-message/metadata.jsonl.gz', 'fresh-message/mismatches.jsonl.gz', 'fresh-message/oracle.jsonl.gz', 'fresh-message/standard-differences.jsonl.gz', 'fresh-message/summary.json', 'fresh-orchestrate.py', 'fresh-orchestration.log', 'fresh-preflight.json', 'fresh-retained-hashes.py', 'fresh-retention-execution.json', 'fresh-run-campaign.py', 'fresh-seeds.json', 'fresh-verification.log', 'fresh-verify.py']
+@@ -24,7 +24,7 @@
+ assert not (p/'fresh-execution.json').exists(), 'Refuse to overwrite a campaign.'
+ assert not (p/'fresh-commb-run.json').exists() and not (p/'fresh-message-run.json').exists()
+ assert not any((p/'fresh-message').glob('*'))
+-cache=Path('.cache/gen25-gate')
++cache=Path('.cache/gen26-gate')
+ assert cache.is_dir(), 'Prepared cache directory is required before generation.'
+ assert not any((cache/name).exists() for name in ['fresh-commb.csv','fresh-commb.csv.coverage.csv']), 'Refuse to overwrite previous fixture artifacts.'
+ r={'status':'running','started_utc':now(),'started_monotonic_ns':time.monotonic_ns(),'preflight_sha256':sha(p/'fresh-preflight.json'),'seed_record_sha256':sha(p/'fresh-seeds.json'),'orchestrator_sha256':sha(__file__),'commands':[]}

@@ -57,12 +57,23 @@ def exponent (value : Rat) : Int :=
 /-- Rust f64 arithmetic: nearest representable finite significand with 53
 bits, including the fixed 2^-1074 subnormal quantum. For overflow this remains
 a mathematical extension; callers must prove `inRange` for every result. -/
-def round (value : Rat) : Rat :=
+def roundFallback (value : Rat) : Rat :=
   if value == 0 then 0 else
     let quantum := powerTwo (max (-1074) (exponent value - 52))
     let scaled := value.abs / quantum
     let rounded := (nearestEven scaled.num.natAbs scaled.den : Rat) * quantum
     if value < 0 then -rounded else rounded
+
+/-- Small dyadics are already exact binary64 values. Check the numerator bound
+before computing the denominator exponent; all other rationals retain the
+original total rounding formula, including its overflow extension. -/
+def round (value : Rat) : Rat :=
+  if value.num.natAbs < 2^53 then
+    let denominatorExponent := value.den.log2
+    if denominatorExponent ≤ 1074 ∧ value.den = 1 <<< denominatorExponent then
+      value
+    else roundFallback value
+  else roundFallback value
 
 /-- Rust f64 `MAX`: largest finite positive binary64 value. -/
 def maxFinite : Rat := ((2^53 - 1 : Nat) : Rat) * powerTwo 971

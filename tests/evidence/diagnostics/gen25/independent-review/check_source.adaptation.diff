@@ -1,0 +1,213 @@
+--- tests/evidence/diagnostics/gen24/independent-review/check_source.py
++++ tests/evidence/diagnostics/gen25/independent-review/check_source.py
+@@ -6,7 +6,7 @@
+ from collections import deque
+ import hashlib, importlib.util, json, re, subprocess
+ 
+-E = Path('tests/evidence/diagnostics/gen24')
++E = Path('tests/evidence/diagnostics/gen25')
+ D = E / 'independent-review/source-inspection'
+ D.mkdir(parents=True,exist_ok=True)
+ P = 'lp_lean1090_Lean1090_Impl_'
+@@ -28,10 +28,10 @@
+         if depth==0: return text[start:end+1], text[:start].count('\n')+1
+     raise AssertionError(name)
+ 
+-build_path=Path('.cache/gen24-costs/driver/driver-build.json')
+-build=read(build_path); bench=read('bench/runs/gen24/summary.json')
+-native_path=Path('bench/runs/gen24/fresh-native-inputs.json'); native=read(native_path)
+-oldpath=Path('tests/evidence/diagnostics/gen23/independent-review/source-review.json'); old=read(oldpath)
++build_path=Path('.cache/gen25-costs/driver/driver-build.json')
++build=read(build_path); bench=read('bench/runs/gen25/summary.json')
++native_path=Path('bench/runs/gen25/fresh-native-inputs.json'); native=read(native_path)
++oldpath=Path('tests/evidence/diagnostics/gen24/independent-review/source-review.json'); old=read(oldpath)
+ assert build['status']=='passed' and len(native)==22
+ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==build['commit']
+ assert sha(WORKER)==bench['binary_sha256']
+@@ -56,20 +56,20 @@
+ sys.path.insert(0,str(Path('review/diagnostics').resolve()))
+ import bind_benchmark_history
+ binding_path=E/'benchmark-source-binding.json'
+-assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen24/summary.json'),None,
+-    Path('bench/runs/gen24/correctness-inputs.json'))==read(binding_path)
+-
+-old_native={r['source']:r for r in read('bench/runs/gen23/fresh-native-inputs.json')}
++assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen25/summary.json'),None,
++    Path('bench/runs/gen25/correctness-inputs.json'))==read(binding_path)
++
++old_native={r['source']:r for r in read('bench/runs/gen24/fresh-native-inputs.json')}
+ unchanged=[]
+ for row in native:
+-    if row['source'] in {'Impl/CommB.lean','Impl/Semantics.lean'}:continue
++    if row['source'] in {'Impl/ScoreGate.lean'}:continue
+     before=old_native[row['source']]
+     assert row['source_sha256']==before['source_sha256'],row['source']
+     assert {p:r['sha256'] for p,r in row['artifacts'].items()}=={p:r['sha256'] for p,r in before['artifacts'].items()},row['source']
+     unchanged.append(row['source'])
+-assert len(unchanged)==20
++assert len(unchanged)==21
+ # CPRFloat source and native artifacts are unchanged since generation18.
+-oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen23/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
++oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen24/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
+ assert oldfloat==Path('Impl/CPRFloat.lean').read_text()
+ floatpath=Path('.lake/build/ir/Impl/CPRFloat.c');floatc=floatpath.read_text()
+ T=P+'CPR_Policy_toFloat';F=T+'Fallback';Z='_init_'+T+'___closed__1';FI='initialize_lean1090_Impl_CPRFloat'
+@@ -201,6 +201,16 @@
+ reportmap=M+'reportWithSyndrome_spec__0'
+ semantic_target_names.add(reportmap);semantic_targets.append((reportmap,message_path,message))
+ 
++# Current score helper/choose/two folds selected before the single symbol capture.
++score_path=Path('.lake/build/ir/Impl/ScoreGate.c');score_c=score_path.read_text()
++score_choose=P+'ScoreGate_choose'
++score_fold='lp_lean1090_List_foldl___at___00Lean1090_Impl_ScoreGate_scaledTotals_spec__0'
++score_inner='lp_lean1090_List_foldl___at___00List_foldl___at___00Lean1090_Impl_ScoreGate_scaledTotals_spec__0_spec__0'
++score_absent={P+'ScoreGate_scaledNumerator',P+'ScoreGate_scaledTotals'}
++score_targets=[(n,score_path,score_c) for n in [score_choose,score_fold,score_inner,*sorted(score_absent)]]
++score_targets.extend((n,commb_path,commb_c) for n in [P+'cbScorePasses',P+'cbScorePasses___lam__0',P+'cbScorePasses___lam__0___boxed'])
++score_absent.add(P+'cbScorePasses___lam__0')
++
+ anchors={old[k] for k in old if k.endswith('_anchor') and k!='parity_fold_anchor' and old[k] is not None}
+ anchors.update(old['integer_score_gate_anchors'].values())
+ anchors.update([bytefold,bitfold,P+'Parity_syndromeBytes',P+'Parity_syndromeBits'])
+@@ -209,6 +219,7 @@
+ anchors.update([bit,gray,grayfold,identity,integer,T,F,Z,FI,fold,P+'packFields',P+'decode',P+'frameSyndrome',S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init])
+ anchors.update(validity_target_names)
+ anchors.update(semantic_target_names)
++anchors.update(n for n,_,_ in score_targets)
+ symbol_rows=[]
+ proc=subprocess.Popen(['nm','--defined-only',WORKER],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+ for line in proc.stdout:
+@@ -216,17 +227,17 @@
+ assert proc.wait()==0 and not proc.stderr.read()
+ present={line.split()[-1] for line in symbol_rows}
+ removed_main_boundaries={fold,P+'packFields',P+'frameSyndrome',P+'Parity_checksum',P+'frameParts',P+'decodeFrame'}
+-assert anchors-removed_main_boundaries-validity_target_names-semantic_absent-{old['byte_word_fallback_anchor']}<=present,anchors-present
++assert anchors-removed_main_boundaries-validity_target_names-semantic_absent-score_absent-{old['byte_word_fallback_anchor']}<=present,anchors-present
+ assert not (removed_main_boundaries & present),removed_main_boundaries & present
+ symbols=D/'selected-symbols-complete.txt';retain(symbols,''.join(symbol_rows).encode())
+ commands=[];excerpts={};assemblies={}
+-for name,path,text in [*semantic_targets,*validity_targets,*raw_targets,*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
++for name,path,text in [*score_targets,*semantic_targets,*validity_targets,*raw_targets,*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
+                        (P+'frameSyndrome',message_path,message),(P+'decode',message_path,message),
+                        *[(name,binarycpath,binaryc) for name in [S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init]],
+                        *[(name,floatpath,floatc) for name in [T,F,Z,FI,P+'CPR_Policy_haversineFloat',P+'CPR_Policy_decodeLocalFloat',P+'CPR_Policy_decodeGlobalFloat']]]:
+     value,line=body(text,name);p=D/(name+'.generated-C.txt');retain(p,(value+'\n').encode())
+     excerpts[name]={'source':str(path),'source_sha256':sha(path),'first_body_line':line,'path':str(p),'sha256':sha(p)}
+-    if name in removed_main_boundaries or name in semantic_absent or (name in validity_target_names and name not in present):continue  # Explicit current symbol absence is retained; C bodies still captured.
++    if name in removed_main_boundaries or name in semantic_absent or name in score_absent or (name in validity_target_names and name not in present):continue  # Explicit current symbol absence is retained; C bodies still captured.
+     target=D/(name+'.assembly.txt');argv=['objdump','-d','--no-show-raw-insn','--disassemble='+name,WORKER]
+     r=subprocess.run(argv,capture_output=True);assert r.returncode==0 and not r.stderr
+     retain(target,r.stdout);assemblies[name]=r.stdout.decode()
+@@ -337,7 +348,7 @@
+     'common_constructor':P+'Semantics_commB','scalar_map':scalar,'table_value_map':table,
+     'numeric_replacement_map':num,'scalar_direct_calls':sorted(set(scalls)),
+     'numeric_direct_calls':sorted(set(ncalls)),'constructor_direct_calls':sorted(set(calls)),
+-    'inlined_wrappers':sorted(semantic_absent),'source_native_delta':['Impl/CommB.lean','Impl/Semantics.lean'],
++    'inlined_wrappers':sorted(semantic_absent),'verified_semantic_sources':['Impl/CommB.lean','Impl/Semantics.lean'],
+     'limit':'Positive shared pointer/map control flow; no invocation count, avoided-cost sum, hit-rate, allocation-free or timing claim. Public commBValue remains live elsewhere; Float evaluation boundary unchanged.'}
+ semantic_context_path=E/'independent-review/semantic-sharing-native-context.json'
+ save(semantic_context_path,semantic_context)
+@@ -409,13 +420,62 @@
+ assert '<l_Array_ofFn___redArg>' in assemblies[ctor]
+ assert assemblies[init].index('<'+S+'powerTwoTable>')<assemblies[init].index('<lean_mark_persistent>')<assemblies[init].index('<'+S+'maxFinite___closed__3_once>')
+ assert '<'+ctor+'>' in assemblies[init] and '<lean_obj_once_cold>' in assemblies[init]
+-implementation=Path('tests/evidence/optimization/gen24/native-review/review.json')
+-ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['commb_semantic_reuse_live_path_verified']
+-ni=read('tests/evidence/optimization/gen24/native-review/native-inputs.json')
++implementation=Path('tests/evidence/optimization/gen25/native-review/review.json')
++ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['score_scaling_identity_live_path_verified']
++ni=read('tests/evidence/optimization/gen25/native-review/native-inputs.json')
+ assert ni['worker_sha256']==sha(WORKER)==bench['binary_sha256']
+ for name,digest in ni['held_inputs'].items():assert sha(name)==digest,name
+ for name,digest in ir['bindings'].items():assert sha(name)==digest,name
+ for name,row in ir['files'].items():assert sha(name)==row['sha256'] and Path(name).stat().st_size==row['bytes']
++
++score_checks=[]
++def check(ok,label):
++    assert ok,label
++    score_checks.append(label)
++def score_body(symbol):return Path(excerpts[symbol]['path']).read_text()
++def targets(text):return re.findall(r'(?:call|jmp)\s+[^<]*<([^>+]+)>',text)
++assert not (score_absent & present)
++for symbol in [P+'ScoreGate_scaledNumerator',P+'ScoreGate_choose',score_fold,score_inner]:
++ text=score_body(symbol)
++ m=re.search(r'(v_\w+_) = lean_nat_dec_eq\((v_\w+_), (v_\w+_)\);\nif \(\1 == 0\)\n\{(.*?)\n\}\nelse\n\{(.*?)\n\}',text,re.S)
++ check(m is not None,'Exact generic Nat equality branch in C '+symbol)
++ unequal,equal=m[4],m[5]
++ check(f'lean_nat_div({m[2]}, {m[3]})' in unequal and 'lean_nat_to_int(' in unequal and 'lean_int_mul(' in unequal,'Unequal branch retains total divide/cast/multiply '+symbol)
++ check(not any(x in equal for x in ['lean_nat_div','lean_nat_to_int','lean_int_mul']) and re.search(r'(?:return|=) v_num_\d+_;',equal),'Equal C branch reuses existing numerator '+symbol)
++ check(not re.search(r'Float|toFloat|Numeric_eval',text),'No Float/evaluator move in '+symbol)
++# Check every local control-flow alternative from the known equal branch to
++# its merge. Reference-count cold paths are retained; none does scaling work.
++arms=[]
++for symbol,eqoffset,mergeoffset,numerator in [(P+'ScoreGate_choose',0x189,0x1a0,'%rbp,%r12'),(score_fold,0x229,0x243,'%r15,%r12'),(score_inner,0x260,0x27a,'%r14,%r12')]:
++ text=assemblies[symbol];instructions={int(m[1],16):(m[2],m[3]) for m in re.finditer(r'^\s*([0-9a-f]+):\s+(\S+)\s*(.*?)\s*$',text,re.M)}
++ addresses=sorted(instructions);base=addresses[0];following={a:b for a,b in zip(addresses,addresses[1:])};start=base+eqoffset;merge=base+mergeoffset
++ check(start in instructions and merge in instructions,'Identified equal/merge offsets '+symbol)
++ seen=set();pending=[start];reaches=False
++ while pending:
++  addr=pending.pop()
++  if addr==merge:reaches=True;continue
++  if addr in seen:continue
++  seen.add(addr);op,args=instructions[addr]
++  check(not re.search(r'^(?:i?div|i?mul)',op) and not any(x in args for x in ['lean_nat_big_div','lean_int_big_mul','lean_big_size_t_to_int']),'Identity CFG avoids scaling arithmetic '+symbol+'+'+hex(addr-base))
++  check(op not in ['ret','ud2'],'Identity CFG returns to common continuation '+symbol)
++  if op.startswith('j'):
++   target=int(re.match(r'([0-9a-f]+)',args)[1],16);check(target in instructions,'Local identity branch target '+symbol);pending.append(target)
++   if op=='jmp':continue
++  pending.append(following[addr])
++ check(reaches and any(op=='mov' and args==numerator for a,(op,args) in instructions.items() if a in seen),'Linked equal arm passes original numerator into common continuation '+symbol)
++ calls=targets(text)
++ check(all(x in calls for x in ['lean_nat_big_eq','lean_nat_big_div','lean_int_big_mul']) and re.search(r'\bdiv\s',text),'Generic large-Nat equality and small/large unequal arithmetic remain live '+symbol)
++ check(re.search(r'cmp\s+[^\n]+\n\s*[0-9a-f]+:\s+je\s+'+format(start,'x')+r'\b',text),'Small-Nat equality jumps directly to identity arm '+symbol)
++ before=text[:text.index(format(start,'x')+':')]
++ check('lean_nat_big_eq' in before and re.search(r'test\s+%al,%al\n\s*[0-9a-f]+:\s+je\s+',before),'Big-Nat equality result branches before the same identity arm '+symbol)
++ arms.append(dict(symbol=symbol,equal_offset=eqoffset,merge_offset=mergeoffset,identity_cfg_instruction_count=len(seen),numerator_transfer=numerator,arithmetic_bypassed_only_in_equal_arm=True))
++choose=score_body(P+'ScoreGate_choose');check(choose.count('lean_apply_1(')==1 and 'lean_apply_1' in targets(assemblies[P+'ScoreGate_choose']),'Original uncertain decision retains one lazy fallback application')
++fallback_calls=targets(assemblies[P+'cbScorePasses___lam__0___boxed'])
++check(P+'cbScorePasses___lam__0___boxed' in score_body(P+'cbScorePasses') and P+'cbCombinedScore(' in score_body(P+'cbScorePasses___lam__0') and {P+'cbDensity',P+'cbPenalty',P+'Binary64_add'} <= set(fallback_calls),'Unchanged complete software score C formula inlines into actual boxed thunk with live density, penalty and Binary64 arithmetic')
++
++score_context_path=E/'independent-review/score-scaling-native-context.json'
++score_context={'status':'passed','identity_arms':arms,'checks':score_checks,'callable_anchors':{'choose':score_choose,'totals_entry':score_fold,'inner_fold':score_inner},'inlined_boundaries':sorted(score_absent),'source_delta':['Impl/ScoreGate.lean'],'unchanged_native_sets':21,'optimization_review_sha256':sha(implementation),'limits':['Static branches do not measure equal-denominator frequency or predicted throughput.','Unequal arithmetic, other score multiplications, allocation and reference management remain.','The diagnostic driver reuses these exact production objects; it has a separate diagnostic root.']}
++save(score_context_path,score_context)
+ 
+ # Independently enumerate the linked wrapper's finite control graph. External
+ # tails are terminal; internal conditional branches keep both possible outcomes.
+@@ -463,7 +523,7 @@
+     benchmark_source_binding_sha256=sha(binding_path),fresh_native_inputs=str(native_path),
+     fresh_native_inputs_sha256=sha(native_path),fresh_project_modules_verified=22,
+     source_C_object_trace_bindings=bindings,driver_build_manifest=str(build_path),
+-    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen24-costs/driver/decode-costs'),
++    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen25-costs/driver/decode-costs'),
+     reused_production_objects_verified=21,unchanged_driver_input_hashes_verified=len(held),
+     eager_table_initializers=old['eager_table_initializers'],
+     live_generated_C={path:sha(path) for path in set(old['live_generated_C'])|{str(semantic_path)}},
+@@ -475,7 +535,7 @@
+     symbol_inventory={'path':str(symbols),'sha256':sha(symbols),'filtered':True},
+     unchanged_native_modules=unchanged,
+     previous_source_review={'path':str(oldpath),'sha256':sha(oldpath),
+-        'basis':'All 20 sibling source/C/object/trace sets match generation 23 byte-for-byte. CommB and Semantics change; actual shared scalar/numeric-map control flow is inspected from current C and linked worker, while all previous validity/parser/arithmetic/CRC/conversion paths are rebound.'},
++        'basis':'All 21 sibling source/C/object/trace sets match generation 24 byte-for-byte. Only ScoreGate changes; actual equal-denominator branches are inspected from current C and linked worker, while previous semantic/validity/parser/arithmetic/CRC/conversion paths are rebound.'},
+     implementation_native_review={'path':str(implementation),'sha256':sha(implementation)},
+     byte_crc_live_path_verified=True,parity_fold_anchor=bytefold,parity_byte_fold_anchor=bytefold,parity_bit_fold_anchor=bitfold,
+     parity_byte_wrapper_anchor=P+'Parity_syndromeBytes',parity_bit_wrapper_anchor=P+'Parity_syndromeBits',
+@@ -484,6 +544,10 @@
+     dyadic_to_float_live_path_verified=True,dyadic_to_float_anchor=T,dyadic_to_float_fallback_anchor=F,
+     dyadic_to_float_at_most_one_fallback_per_entry=True,dyadic_to_float_zero_case_verified=True,
+     dyadic_to_float_control_flow={'path':str(E/'independent-review/tofloat-control-flow.json'),'sha256':sha(E/'independent-review/tofloat-control-flow.json')},
++    score_scaling_identity_live_path_verified=True,
++    score_scaling_anchors={'choose':score_choose,'totals_entry':score_fold,'inner_fold':score_inner},
++    score_scaling_context={'path':str(score_context_path),'sha256':sha(score_context_path)},
++    score_scaling_limit='Static identity/fallback branches only; current raw caller/direct-child costs are needed, and neither hit rate nor timing benefit is inferred.',
+     commb_semantic_reuse_live_path_verified=True,
+     commb_semantic_constructor_anchor=P+'Semantics_commB',
+     commb_semantic_table_values_anchor=table,
+@@ -510,7 +574,7 @@
+         'The prior complete initialization-chain disassembly is rebound to the same actual worker hash; no timing, exponent distribution or table hit rate is inferred.',
+         'The current bit/Gray/identity/signed-field bodies have no direct power/division calls; arbitrary-size Nat fallbacks and unchanged caller routing remain. Inlined identity-lambda work is not treated as zero work.',
+         'The current main calls the paired parser once and uses its returned full Nat word for CRC, with no reread or reconstruction. Public decodeFrame remains a projection in its object; standalone reconstruction definitions remain available but are absent from the timed linked symbols. Absence alone is not an inlining claim.',
+-        'Only CommB and Semantics changed among the 22 linked sets; all 20 siblings, including Frame, Message, PayloadBits, Parity and CPRFloat, remain byte-identical to generation 23.',
++        'Only ScoreGate changed among the 22 linked sets; all 21 siblings, including CommB, Semantics, Frame, Message, PayloadBits, Parity and CPRFloat, remain byte-identical to generation 24.',
+         'toFloat packs exact bits on accepted dyadics, delegates at most once to the unchanged fallback on rejection, and returns cached or lazily initialized positive zero on zero input.',
+         'payloadValue retains one exact numerator-product/gcd normalization site in the nonunit branch, with no Rat.mul call; unit scale and zero offset still bypass their identity operations.',
+         'smallDyadicBits is inlined. The wrapper retains decimal parsing and generic Nat/Int allocation; no allocation-free or measured fast-path-frequency claim is made.'],

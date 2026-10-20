@@ -1,0 +1,361 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b7eab0 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback>:
+  b7eab0:	push   %rbp
+  b7eab1:	push   %r15
+  b7eab3:	push   %r14
+  b7eab5:	push   %r13
+  b7eab7:	push   %r12
+  b7eab9:	push   %rbx
+  b7eaba:	push   %rax
+  b7eabb:	mov    %rdi,%rbx
+  b7eabe:	mov    0x40048d4(%rip),%eax        # 4b83398 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__0_once>
+  b7eac4:	cmp    $0x1,%eax
+  b7eac7:	jne    b7ed61 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x2b1>
+  b7eacd:	mov    0x40048bc(%rip),%r14        # 4b83390 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__0>
+  b7ead4:	mov    %rbx,%rdi
+  b7ead7:	mov    %r14,%rsi
+  b7eada:	call   47752c0 <l_instDecidableEqRat_decEq>
+  b7eadf:	test   %al,%al
+  b7eae1:	je     b7eb04 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x54>
+  b7eae3:	mov    (%rbx),%eax
+  b7eae5:	cmp    $0x2,%eax
+  b7eae8:	jl     b7ed9b <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x2eb>
+  b7eaee:	dec    %eax
+  b7eaf0:	mov    %eax,(%rbx)
+  b7eaf2:	mov    %r14,%rax
+  b7eaf5:	add    $0x8,%rsp
+  b7eaf9:	pop    %rbx
+  b7eafa:	pop    %r12
+  b7eafc:	pop    %r13
+  b7eafe:	pop    %r14
+  b7eb00:	pop    %r15
+  b7eb02:	pop    %rbp
+  b7eb03:	ret
+  b7eb04:	mov    0x4004856(%rip),%eax        # 4b83360 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo___closed__0_once>
+  b7eb0a:	cmp    $0x1,%eax
+  b7eb0d:	jne    b7edb0 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x300>
+  b7eb13:	mov    0x400483e(%rip),%r15        # 4b83358 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo___closed__0>
+  b7eb1a:	mov    (%rbx),%eax
+  b7eb1c:	test   %eax,%eax
+  b7eb1e:	jle    b7edd7 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x327>
+  b7eb24:	inc    %eax
+  b7eb26:	mov    %eax,(%rbx)
+  b7eb28:	mov    %rbx,%rdi
+  b7eb2b:	call   b7e7a0 <lp_lean1090_Lean1090_Impl_Binary64_exponent>
+  b7eb30:	mov    0x4004872(%rip),%ecx        # 4b833a8 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__1_once>
+  b7eb36:	cmp    $0x1,%ecx
+  b7eb39:	jne    b7edea <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x33a>
+  b7eb3f:	mov    0x400485a(%rip),%rsi        # 4b833a0 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__1>
+  b7eb46:	test   $0x1,%al
+  b7eb48:	je     b7ee15 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x365>
+  b7eb4e:	test   $0x1,%sil
+  b7eb52:	je     b7eec9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x419>
+  b7eb58:	shr    $1,%rax
+  b7eb5b:	movslq %eax,%rdi
+  b7eb5e:	shr    $1,%rsi
+  b7eb61:	movslq %esi,%rax
+  b7eb64:	sub    %rax,%rdi
+  b7eb67:	movslq %edi,%rax
+  b7eb6a:	cmp    %rdi,%rax
+  b7eb6d:	jne    b7eed9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x429>
+  b7eb73:	mov    %edi,%eax
+  b7eb75:	lea    0x1(,%rax,2),%r12
+  b7eb7d:	test   $0x1,%r15b
+  b7eb81:	je     b7ed83 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x2d3>
+  b7eb87:	test   $0x1,%r12b
+  b7eb8b:	je     b7ed83 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x2d3>
+  b7eb91:	mov    %r15,%rax
+  b7eb94:	shr    $1,%rax
+  b7eb97:	mov    %r12,%rcx
+  b7eb9a:	shr    $1,%rcx
+  b7eb9d:	cmp    %ecx,%eax
+  b7eb9f:	jle    b7ebbd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x10d>
+  b7eba1:	test   $0x1,%r12b
+  b7eba5:	jne    b7ebba <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x10a>
+  b7eba7:	mov    (%r12),%eax
+  b7ebab:	cmp    $0x2,%eax
+  b7ebae:	jl     b7ef9f <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4ef>
+  b7ebb4:	dec    %eax
+  b7ebb6:	mov    %eax,(%r12)
+  b7ebba:	mov    %r15,%r12
+  b7ebbd:	mov    %r12,%rdi
+  b7ebc0:	call   b7e1d0 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo>
+  b7ebc5:	mov    %rax,%r15
+  b7ebc8:	test   $0x1,%r12b
+  b7ebcc:	jne    b7ebe1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x131>
+  b7ebce:	mov    (%r12),%eax
+  b7ebd2:	cmp    $0x2,%eax
+  b7ebd5:	jl     b7eee6 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x436>
+  b7ebdb:	dec    %eax
+  b7ebdd:	mov    %eax,(%r12)
+  b7ebe1:	mov    (%rbx),%eax
+  b7ebe3:	test   %eax,%eax
+  b7ebe5:	jle    b7ee3b <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x38b>
+  b7ebeb:	inc    %eax
+  b7ebed:	mov    %eax,(%rbx)
+  b7ebef:	mov    %rbx,%rdi
+  b7ebf2:	call   4779650 <l_Rat_abs>
+  b7ebf7:	mov    %rax,%r12
+  b7ebfa:	mov    (%r15),%eax
+  b7ebfd:	test   %eax,%eax
+  b7ebff:	jle    b7ee4e <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x39e>
+  b7ec05:	inc    %eax
+  b7ec07:	mov    %eax,(%r15)
+  b7ec0a:	mov    %r12,%rdi
+  b7ec0d:	mov    %r15,%rsi
+  b7ec10:	call   4777280 <l_Rat_div>
+  b7ec15:	mov    (%r12),%ecx
+  b7ec19:	cmp    $0x2,%ecx
+  b7ec1c:	jl     b7ee62 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x3b2>
+  b7ec22:	dec    %ecx
+  b7ec24:	mov    %ecx,(%r12)
+  b7ec28:	mov    0x8(%rax),%r13
+  b7ec2c:	test   $0x1,%r13b
+  b7ec30:	jne    b7ec44 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x194>
+  b7ec32:	mov    0x0(%r13),%ecx
+  b7ec36:	test   %ecx,%ecx
+  b7ec38:	jle    b7eefb <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x44b>
+  b7ec3e:	inc    %ecx
+  b7ec40:	mov    %ecx,0x0(%r13)
+  b7ec44:	mov    0x10(%rax),%r12
+  b7ec48:	test   $0x1,%r12b
+  b7ec4c:	jne    b7ec60 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1b0>
+  b7ec4e:	mov    (%r12),%ecx
+  b7ec52:	test   %ecx,%ecx
+  b7ec54:	jle    b7ef11 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x461>
+  b7ec5a:	inc    %ecx
+  b7ec5c:	mov    %ecx,(%r12)
+  b7ec60:	mov    (%rax),%ecx
+  b7ec62:	cmp    $0x2,%ecx
+  b7ec65:	jl     b7ee7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x3cd>
+  b7ec6b:	dec    %ecx
+  b7ec6d:	mov    %ecx,(%rax)
+  b7ec6f:	test   $0x1,%r13b
+  b7ec73:	je     b7ee92 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x3e2>
+  b7ec79:	bt     $0x20,%r13
+  b7ec7e:	jb     b7ec85 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1d5>
+  b7ec80:	mov    %r13,%rbp
+  b7ec83:	jmp    b7eccd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x21d>
+  b7ec85:	mov    %r13,%rax
+  b7ec88:	shr    $1,%rax
+  b7ec8b:	cltq
+  b7ec8d:	mov    %rax,%rdi
+  b7ec90:	neg    %rdi
+  b7ec93:	neg    %eax
+  b7ec95:	jo     b7ef73 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4c3>
+  b7ec9b:	lea    0x1(,%rdi,2),%rbp
+  b7eca3:	test   $0x1,%bpl
+  b7eca7:	jne    b7ecb4 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x204>
+  b7eca9:	mov    %rbp,%rdi
+  b7ecac:	call   48a9b60 <lean_big_int_to_nat>
+  b7ecb1:	mov    %rax,%rbp
+  b7ecb4:	test   $0x1,%r13b
+  b7ecb8:	jne    b7eccd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x21d>
+  b7ecba:	mov    0x0(%r13),%eax
+  b7ecbe:	cmp    $0x2,%eax
+  b7ecc1:	jl     b7ef8a <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4da>
+  b7ecc7:	dec    %eax
+  b7ecc9:	mov    %eax,0x0(%r13)
+  b7eccd:	mov    %rbp,%rdi
+  b7ecd0:	mov    %r12,%rsi
+  b7ecd3:	call   b7e490 <lp_lean1090_Lean1090_Impl_Binary64_nearestEven>
+  b7ecd8:	test   $0x1,%r12b
+  b7ecdc:	jne    b7ecf1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x241>
+  b7ecde:	mov    (%r12),%ecx
+  b7ece2:	cmp    $0x2,%ecx
+  b7ece5:	jl     b7ef27 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x477>
+  b7eceb:	dec    %ecx
+  b7eced:	mov    %ecx,(%r12)
+  b7ecf1:	test   $0x1,%bpl
+  b7ecf5:	jne    b7ed08 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x258>
+  b7ecf7:	mov    0x0(%rbp),%ecx
+  b7ecfa:	cmp    $0x2,%ecx
+  b7ecfd:	jl     b7ef42 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x492>
+  b7ed03:	dec    %ecx
+  b7ed05:	mov    %ecx,0x0(%rbp)
+  b7ed08:	mov    %rax,%rdi
+  b7ed0b:	call   46ed200 <l_Nat_cast___at___00Std_Http_Internal_Test_defaultConfig_spec__0>
+  b7ed10:	mov    %rax,%r12
+  b7ed13:	mov    %rax,%rdi
+  b7ed16:	mov    %r15,%rsi
+  b7ed19:	call   4775f90 <l_Rat_mul>
+  b7ed1e:	mov    %rax,%r15
+  b7ed21:	mov    (%r12),%eax
+  b7ed25:	cmp    $0x2,%eax
+  b7ed28:	jl     b7eeb4 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x404>
+  b7ed2e:	dec    %eax
+  b7ed30:	mov    %eax,(%r12)
+  b7ed34:	mov    %rbx,%rdi
+  b7ed37:	mov    %r14,%rsi
+  b7ed3a:	call   4775840 <l_Rat_blt>
+  b7ed3f:	test   %al,%al
+  b7ed41:	je     b7ed59 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x2a9>
+  b7ed43:	mov    %r15,%rdi
+  b7ed46:	add    $0x8,%rsp
+  b7ed4a:	pop    %rbx
+  b7ed4b:	pop    %r12
+  b7ed4d:	pop    %r13
+  b7ed4f:	pop    %r14
+  b7ed51:	pop    %r15
+  b7ed53:	pop    %rbp
+  b7ed54:	jmp    4778170 <l_Rat_neg>
+  b7ed59:	mov    %r15,%r14
+  b7ed5c:	jmp    b7eaf2 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x42>
+  b7ed61:	lea    0x4004628(%rip),%rdi        # 4b83390 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__0>
+  b7ed68:	lea    0x4004629(%rip),%rsi        # 4b83398 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__0_once>
+  b7ed6f:	lea    0x26a(%rip),%rdx        # b7efe0 <_init_lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__0>
+  b7ed76:	call   48aea00 <lean_obj_once_cold>
+  b7ed7b:	mov    %rax,%r14
+  b7ed7e:	jmp    b7ead4 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x24>
+  b7ed83:	mov    %r15,%rdi
+  b7ed86:	mov    %r12,%rsi
+  b7ed89:	call   48ab400 <lean_int_big_le>
+  b7ed8e:	test   %al,%al
+  b7ed90:	je     b7eba1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xf1>
+  b7ed96:	jmp    b7ebbd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x10d>
+  b7ed9b:	test   %eax,%eax
+  b7ed9d:	je     b7eaf2 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x42>
+  b7eda3:	mov    %rbx,%rdi
+  b7eda6:	call   48a54f0 <lean_dec_ref_cold>
+  b7edab:	jmp    b7eaf2 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x42>
+  b7edb0:	lea    0x40045a1(%rip),%rdi        # 4b83358 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo___closed__0>
+  b7edb7:	lea    0x40045a2(%rip),%rsi        # 4b83360 <lp_lean1090_Lean1090_Impl_Binary64_powerTwo___closed__0_once>
+  b7edbe:	lea    -0x9a5(%rip),%rdx        # b7e420 <_init_lp_lean1090_Lean1090_Impl_Binary64_powerTwo___closed__0>
+  b7edc5:	call   48aea00 <lean_obj_once_cold>
+  b7edca:	mov    %rax,%r15
+  b7edcd:	mov    (%rbx),%eax
+  b7edcf:	test   %eax,%eax
+  b7edd1:	jg     b7eb24 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x74>
+  b7edd7:	cmp    $0x90000001,%eax
+  b7eddc:	jb     b7eb28 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x78>
+  b7ede2:	lock decl (%rbx)
+  b7ede5:	jmp    b7eb28 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x78>
+  b7edea:	lea    0x40045af(%rip),%rdi        # 4b833a0 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__1>
+  b7edf1:	lea    0x40045b0(%rip),%rsi        # 4b833a8 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__1_once>
+  b7edf8:	lea    0x1f1(%rip),%rdx        # b7eff0 <_init_lp_lean1090_Lean1090_Impl_Binary64_roundFallback___closed__1>
+  b7edff:	mov    %rax,%r12
+  b7ee02:	call   48aea00 <lean_obj_once_cold>
+  b7ee07:	mov    %rax,%rsi
+  b7ee0a:	mov    %r12,%rax
+  b7ee0d:	test   $0x1,%al
+  b7ee0f:	jne    b7eb4e <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x9e>
+  b7ee15:	mov    %rax,%rdi
+  b7ee18:	mov    %rax,%r13
+  b7ee1b:	call   48aa1c0 <lean_int_big_sub>
+  b7ee20:	mov    %rax,%r12
+  b7ee23:	mov    0x0(%r13),%eax
+  b7ee27:	cmp    $0x2,%eax
+  b7ee2a:	jl     b7efb4 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x504>
+  b7ee30:	dec    %eax
+  b7ee32:	mov    %eax,0x0(%r13)
+  b7ee36:	jmp    b7eb7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xcd>
+  b7ee3b:	cmp    $0x90000001,%eax
+  b7ee40:	jb     b7ebef <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x13f>
+  b7ee46:	lock decl (%rbx)
+  b7ee49:	jmp    b7ebef <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x13f>
+  b7ee4e:	cmp    $0x90000001,%eax
+  b7ee53:	jb     b7ec0a <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x15a>
+  b7ee59:	lock decl (%r15)
+  b7ee5d:	jmp    b7ec0a <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x15a>
+  b7ee62:	test   %ecx,%ecx
+  b7ee64:	je     b7ec28 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x178>
+  b7ee6a:	mov    %r12,%rdi
+  b7ee6d:	mov    %rax,%r12
+  b7ee70:	call   48a54f0 <lean_dec_ref_cold>
+  b7ee75:	mov    %r12,%rax
+  b7ee78:	jmp    b7ec28 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x178>
+  b7ee7d:	test   %ecx,%ecx
+  b7ee7f:	je     b7ec6f <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1bf>
+  b7ee85:	mov    %rax,%rdi
+  b7ee88:	call   48a54f0 <lean_dec_ref_cold>
+  b7ee8d:	jmp    b7ec6f <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1bf>
+  b7ee92:	mov    $0x1,%esi
+  b7ee97:	mov    %r13,%rdi
+  b7ee9a:	call   48ab450 <lean_int_big_lt>
+  b7ee9f:	test   %al,%al
+  b7eea1:	je     b7ef5d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4ad>
+  b7eea7:	mov    %r13,%rdi
+  b7eeaa:	call   48a9e20 <lean_int_big_neg>
+  b7eeaf:	jmp    b7ef78 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4c8>
+  b7eeb4:	test   %eax,%eax
+  b7eeb6:	je     b7ed34 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x284>
+  b7eebc:	mov    %r12,%rdi
+  b7eebf:	call   48a54f0 <lean_dec_ref_cold>
+  b7eec4:	jmp    b7ed34 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x284>
+  b7eec9:	mov    %rax,%rdi
+  b7eecc:	call   48aa1c0 <lean_int_big_sub>
+  b7eed1:	mov    %rax,%r12
+  b7eed4:	jmp    b7eb7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xcd>
+  b7eed9:	call   48a9dc0 <lean_big_int64_to_int>
+  b7eede:	mov    %rax,%r12
+  b7eee1:	jmp    b7eb7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xcd>
+  b7eee6:	test   %eax,%eax
+  b7eee8:	je     b7ebe1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x131>
+  b7eeee:	mov    %r12,%rdi
+  b7eef1:	call   48a54f0 <lean_dec_ref_cold>
+  b7eef6:	jmp    b7ebe1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x131>
+  b7eefb:	cmp    $0x90000001,%ecx
+  b7ef01:	jb     b7ec44 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x194>
+  b7ef07:	lock decl 0x0(%r13)
+  b7ef0c:	jmp    b7ec44 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x194>
+  b7ef11:	cmp    $0x90000001,%ecx
+  b7ef17:	jb     b7ec60 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1b0>
+  b7ef1d:	lock decl (%r12)
+  b7ef22:	jmp    b7ec60 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1b0>
+  b7ef27:	test   %ecx,%ecx
+  b7ef29:	je     b7ecf1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x241>
+  b7ef2f:	mov    %r12,%rdi
+  b7ef32:	mov    %rax,%r12
+  b7ef35:	call   48a54f0 <lean_dec_ref_cold>
+  b7ef3a:	mov    %r12,%rax
+  b7ef3d:	jmp    b7ecf1 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x241>
+  b7ef42:	test   %ecx,%ecx
+  b7ef44:	je     b7ed08 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x258>
+  b7ef4a:	mov    %rbp,%rdi
+  b7ef4d:	mov    %rax,%r12
+  b7ef50:	call   48a54f0 <lean_dec_ref_cold>
+  b7ef55:	mov    %r12,%rax
+  b7ef58:	jmp    b7ed08 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x258>
+  b7ef5d:	mov    0x0(%r13),%eax
+  b7ef61:	test   %eax,%eax
+  b7ef63:	jle    b7efc9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x519>
+  b7ef65:	inc    %eax
+  b7ef67:	mov    %eax,0x0(%r13)
+  b7ef6b:	mov    %r13,%rbp
+  b7ef6e:	jmp    b7eca9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1f9>
+  b7ef73:	call   48a9dc0 <lean_big_int64_to_int>
+  b7ef78:	mov    %rax,%rbp
+  b7ef7b:	test   $0x1,%bpl
+  b7ef7f:	je     b7eca9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1f9>
+  b7ef85:	jmp    b7ecb4 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x204>
+  b7ef8a:	test   %eax,%eax
+  b7ef8c:	je     b7eccd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x21d>
+  b7ef92:	mov    %r13,%rdi
+  b7ef95:	call   48a54f0 <lean_dec_ref_cold>
+  b7ef9a:	jmp    b7eccd <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x21d>
+  b7ef9f:	test   %eax,%eax
+  b7efa1:	je     b7ebba <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x10a>
+  b7efa7:	mov    %r12,%rdi
+  b7efaa:	call   48a54f0 <lean_dec_ref_cold>
+  b7efaf:	jmp    b7ebba <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x10a>
+  b7efb4:	test   %eax,%eax
+  b7efb6:	je     b7eb7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xcd>
+  b7efbc:	mov    %r13,%rdi
+  b7efbf:	call   48a54f0 <lean_dec_ref_cold>
+  b7efc4:	jmp    b7eb7d <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0xcd>
+  b7efc9:	mov    %r13,%rbp
+  b7efcc:	cmp    $0x90000001,%eax
+  b7efd1:	jb     b7eca9 <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x1f9>
+  b7efd7:	lock decl 0x0(%r13)
+  b7efdc:	jmp    b7ef6b <lp_lean1090_Lean1090_Impl_Binary64_roundFallback+0x4bb>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

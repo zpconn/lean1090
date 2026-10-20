@@ -1,0 +1,32 @@
+--- tests/evidence/optimization/gen26/integration/scope-correction-01/before/integration/validate_build.py
++++ tests/evidence/optimization/gen26/integration/validate_build.py
+@@ -14,7 +14,7 @@
+ ROOT = Path(__file__).resolve().parents[5]
+ OUT = Path(__file__).resolve().parent
+ ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
+-SOURCES = {'Impl/Binary64.lean', 'Proofs/Binary64Runtime.lean'}
++SOURCES = {'Impl/Binary64.lean', 'Proofs/Binary64Runtime.lean', 'Proofs/BDS50.lean'}
+ NEW = set()
+ BINARIES = {'lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench'}
+ 
+@@ -72,7 +72,7 @@
+     record_path, log_path = OUT / 'targeted-build.json', OUT / 'targeted-build.log'
+     record = load(record_path)
+     assert record['status'] == 'passed' and record['exit_code'] == 0
+-    assert record['command'] == ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking',
++    assert record['command'] == ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'Proofs.BDS50',
+                                  'lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench']
+     assert record['log_sha256'] == sha(log_path)
+     attempt = OUT / record['attempt']
+@@ -113,7 +113,10 @@
+                 'Lean1090.Proofs.Binary64Runtime.round_eq',
+                 'Lean1090.Proofs.Binary64Runtime.round_function_eq',
+                 'Lean1090.Proofs.Binary64Runtime.roundFallback_eq',
+-                'Lean1090.Proofs.Binary64Runtime.round_small_dyadic'}
++                'Lean1090.Proofs.Binary64Runtime.round_small_dyadic',
++                'Lean1090.Proofs.BDS50.refinement',
++                'Lean1090.Proofs.BDS50.pilot_nonvacuous',
++                'Lean1090.Proofs.BDS50.exact_threshold_nonvacuous'}
+     assert required <= {row['name'] for row in facts}, required - {row['name'] for row in facts}
+     return {'status': 'passed', 'checked_utc': datetime.now(timezone.utc).isoformat(),
+             'build_record_sha256': sha(record_path), 'build_log_sha256': sha(log_path),

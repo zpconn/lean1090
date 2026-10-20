@@ -1,0 +1,65 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-20T00:46:37.054485+00:00",
+  "adaptations": {
+    "integration/run_production_build.py": {
+      "path": "tests/evidence/optimization/gen26/integration/run_production_build.py",
+      "sha256": "873a0d7e810f267cc206b8e7aa620ddd6aff8ee7c2f39930493846286f20f106",
+      "prior_path": "tests/evidence/optimization/gen25/integration/run_production_build.py",
+      "prior_sha256": "177422ed1ec51fdf92475430833b507b2fcc850d1f12d606ce86d96ef384259e",
+      "diff_path": "tests/evidence/optimization/gen26/preparation-adaptations/run_production_build.py.adaptation.diff",
+      "diff_sha256": "6402bfd3d7d3a99d6ea8b3b19015706115d47c12664c451d1ded88284eb82cc6",
+      "syntax": "ast.parse passed; no script imported or launched"
+    },
+    "integration/validate_build.py": {
+      "path": "tests/evidence/optimization/gen26/integration/validate_build.py",
+      "sha256": "9e3e63a895637f8b2fcebb8900448a41c816b09f547e449c6fc745bbdac48147",
+      "prior_path": "tests/evidence/optimization/gen25/integration/validate_build.py",
+      "prior_sha256": "d86f8bcee2861f7289433d8fb5aaa1a52f7d524224e92735ef33aa5afdebbc99",
+      "diff_path": "tests/evidence/optimization/gen26/preparation-adaptations/validate_build.py.adaptation.diff",
+      "diff_sha256": "c6ba2010adda14eded4b291f55306969ee4dfa3bde7b3d1f1f490a214f96ef92",
+      "syntax": "ast.parse passed; no script imported or launched"
+    }
+  },
+  "sources": [
+    "Impl/Binary64.lean",
+    "Proofs/Binary64Runtime.lean"
+  ],
+  "new_modules": [],
+  "expected_correctness_inputs": 202,
+  "expected_audited_sources": 127,
+  "expected_native_sets": 22,
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Decoder",
+    "Proofs.CPRTracking",
+    "lean1090",
+    "messageGenerator",
+    "commbDifferential",
+    "lean1090-bench"
+  ],
+  "expected_binaries": [
+    "lean1090",
+    "messageGenerator",
+    "commbDifferential",
+    "lean1090-bench"
+  ],
+  "required_facts": [
+    "Lean1090.Proofs.Refinement",
+    "Lean1090.Proofs.CPRTrackingRefinement",
+    "Lean1090.Proofs.Binary64Runtime.round_eq",
+    "Lean1090.Proofs.Binary64Runtime.round_function_eq",
+    "Lean1090.Proofs.Binary64Runtime.roundFallback_eq",
+    "Lean1090.Proofs.Binary64Runtime.round_small_dyadic"
+  ],
+  "proof_api_status": "Existing round equality statements preserved; two new names coordinated with implementation owner, confirm actual definitions before production execution.",
+  "validator_method": "Complete multiline/axiom-free announcement counting, allowed-axiom enforcement and negative parser controls unchanged. Sources/current gate inventory/binaries/both full refinements must match actual completed attempt.",
+  "previous_gate": "tests/evidence/optimization/gen25/gate-evidence.json",
+  "previous_fresh_source_inventory": "tests/evidence/optimization/gen25/fresh-message-run.json",
+  "generic_helpers": {
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac"
+  },
+  "launch_condition": "Root explicit release after implementation and targeted proof pass. Append-only source snapshots/command/log/result for each production attempt; preserve every failure.",
+  "no_build_or_native_execution": true
+}

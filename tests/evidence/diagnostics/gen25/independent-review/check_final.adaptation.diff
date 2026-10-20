@@ -1,0 +1,256 @@
+--- tests/evidence/diagnostics/gen24/independent-review/check_final.py
++++ tests/evidence/diagnostics/gen25/independent-review/check_final.py
+@@ -1,12 +1,12 @@
+ #!/usr/bin/env python3
+-"""Read-only independent gen24 evidence checks; writes only its scratch result."""
++"""Read-only independent gen25 evidence checks; writes only its scratch result."""
+ from pathlib import Path
+ from collections import Counter
+ from datetime import datetime, timezone
+ import gzip, hashlib, json, re, subprocess, sys
+ sys.dont_write_bytecode=True
+ 
+-BASE = Path('tests/evidence/diagnostics/gen24')
++BASE = Path('tests/evidence/diagnostics/gen25')
+ def read(p): return json.loads(Path(p).read_text())
+ def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def rows(p): return [json.loads(x) for x in Path(p).read_text().splitlines() if x]
+@@ -34,8 +34,9 @@
+ crc_record=read(BASE/'crc-byte-contexts.json')
+ crc_selected={P+n for n in ['decodeFrameWithWord','decodeFrame','frameSyndrome','Parity_checksum','packFields','Parity_syndrome','Parity_syndromeBytes','Parity_syndromeBits','Parity_step','Parity_byteStep','Parity_cachedByte']}
+ assert priority_source['commb_semantic_reuse_live_path_verified']
++assert priority_source['score_scaling_identity_live_path_verified']
+ assert priority_source['commb_validity_tables_live_path_verified'] and priority_source['integer_affine_normalization_live_path_verified'] and priority_source['raw_word_syndrome_live_path_verified']
+-for source in [priority_source,read('tests/evidence/diagnostics/gen23/independent-review/source-review.json')]:
++for source in [priority_source,read('tests/evidence/diagnostics/gen24/independent-review/source-review.json')]:
+     crc_selected.update(v for k,v in source.items() if k.startswith('parity_') and k.endswith('_anchor'))
+ assert validation['status']==campaign['status']==build['status']=='passed'
+ assert len(manifest['files'])==manifest['file_count']==validation['archive_files']
+@@ -255,7 +256,7 @@
+ assert sum(x['loop_small_allocations'] for x in native_df['per_df'])==native_df['sum_separate_df_loop_small_allocations']
+ assert all_result['loop_small_allocations']==native_df['complete_corpus_loop_small_allocations']
+ 
+-benchmark=read('bench/runs/gen24/summary.json')
++benchmark=read('bench/runs/gen25/summary.json')
+ assert campaign['commit']==build['commit']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+ source_binding=read(BASE/'benchmark-source-binding.json')
+ assert source_binding['diagnostic_commit']==build['commit'] and source_binding['timed_original_commit']==benchmark['commit']
+@@ -265,7 +266,7 @@
+ for name,digest in source_binding['all_audited_lean_sources'].items():
+     assert sha(name)==digest
+     for commit in (benchmark['commit'],build['commit']):assert hashlib.sha256(subprocess.check_output(['git','cat-file','blob',commit+':'+name])).hexdigest()==digest
+-assert source_binding['fresh_native_inputs_sha256']==sha('bench/runs/gen24/fresh-native-inputs.json')
++assert source_binding['fresh_native_inputs_sha256']==sha('bench/runs/gen25/fresh-native-inputs.json')
+ assert sha(BASE/'benchmark-source-binding.json')==validation['benchmark_source_binding_sha256']
+ assert campaign['build_manifest_sha256']==sha(BASE/'driver/driver-build.json')
+ assert campaign['driver_binary_sha256']==build['artifacts'][campaign['driver_binary']]==sha(campaign['driver_binary'])
+@@ -273,7 +274,7 @@
+ assert benchmark['binary_sha256']==campaign['protected_inputs']['.lake/build/bin/lean1090-bench']
+ fresh=read(BASE/'driver/fresh-native-inputs.json')
+ assert len(fresh)==22 and build['reused_production_object_count']==21
+-assert sha(BASE/'driver/fresh-native-inputs.json')==build['fresh_benchmark_native_binding']['sha256']==sha('bench/runs/gen24/fresh-native-inputs.json')
++assert sha(BASE/'driver/fresh-native-inputs.json')==build['fresh_benchmark_native_binding']['sha256']==sha('bench/runs/gen25/fresh-native-inputs.json')
+ for record in fresh:
+     assert sha(record['source'])==record['source_sha256']==build['linked_project_inventory']['sources'][record['source']]
+     blob=subprocess.check_output(['git','cat-file','blob',campaign['commit']+':'+record['source']])
+@@ -283,12 +284,12 @@
+ # Compact history uses committed Git inventory and exact held identities for
+ # already-sealed ignored raw files; no claim of freshly rehashing old large raws.
+ import importlib.util
+-hs=importlib.util.spec_from_file_location('gen24_review_history',BASE/'snapshot_history.py')
++hs=importlib.util.spec_from_file_location('gen25_review_history',BASE/'snapshot_history.py')
+ hm=importlib.util.module_from_spec(hs);hs.loader.exec_module(hm)
+ history=read(BASE/'historical-inputs.json')
+ historical_count=hm.verify(history)
+ assert historical_count==validation['historical_file_count']
+-report=Path('docs/GEN24-COST-BREAKDOWN.md').read_text()
++report=Path('docs/GEN25-COST-BREAKDOWN.md').read_text()
+ labels={'frame_crc':'Frame / CRC','commb_inference':'Comm-B candidate inference / raw records',
+         'semantic_oracle_values':'Semantic / oracle value construction','adsb_fields':'ADS-B fields / checks',
+         'output_model_control':'Output-model construction / residual control'}
+@@ -296,7 +297,7 @@
+ for mode,p in analysis['families'].items():
+     n=p['root_incoming_calls'];ir=p['total_events']['Ir']
+     assert f'| {mode} | {n:,} | {ir:,} | {ir/n:,.1f} | {100*ir/grand:.2f}% |' in report
+-previous=read('tests/evidence/diagnostics/gen23/analysis/analysis.json')
++previous=read('tests/evidence/diagnostics/gen24/analysis/analysis.json')
+ for key,label in labels.items():
+     family=[analysis['families'][m]['exclusive_stage_events'][key]['Ir'] for m in ('adsb','commb','other')]
+     total=sum(family)
+@@ -308,7 +309,7 @@
+         n=row['messages'];a=row['loop_small_allocations']
+         assert f"| {row['df']} | {n:,} | {a:,} | {a/n:.2f} | Yes |" in report
+ for name,digest in re.findall(r'\| `([^`]+)` \| `([0-9a-f]{64})` \|',report): assert sha(name)==digest,name
+-assert sha('docs/GEN24-COST-BREAKDOWN.md')==validation['report_sha256']
++assert sha('docs/GEN25-COST-BREAKDOWN.md')==validation['report_sha256']
+ assert sha(BASE/'analysis/analysis.json')==validation['analysis_sha256']
+ assert sha(BASE/'archive-manifest.json')==validation['archive_manifest_sha256']
+ perf=read(BASE/'perf/analysis.json')
+@@ -369,13 +370,13 @@
+ raw_perf=capture['raw_data']
+ assert sha(raw_perf['path'])==raw_perf['sha256'] and Path(raw_perf['path']).stat().st_size==raw_perf['bytes']
+ 
+-bench_archive=read('bench/runs/gen24/archive-verification.json')
++bench_archive=read('bench/runs/gen25/archive-verification.json')
+ for name,item in bench_archive['files'].items():
+-    assert sha(Path('bench/runs/gen24')/name)==item['sha256']==sha(Path(bench_archive['source'])/name),name
+-    assert (Path('bench/runs/gen24')/name).stat().st_size==item['bytes']
++    assert sha(Path('bench/runs/gen25')/name)==item['sha256']==sha(Path(bench_archive['source'])/name),name
++    assert (Path('bench/runs/gen25')/name).stat().st_size==item['bytes']
+ helper_comparison=read(BASE/'helper-comparison.json')
+ assert helper_comparison['analysis_sha256']==sha(BASE/'analysis/analysis.json')
+-assert helper_comparison['previous_analysis_sha256']==sha('tests/evidence/diagnostics/gen23/analysis/analysis.json')
++assert helper_comparison['previous_analysis_sha256']==sha('tests/evidence/diagnostics/gen24/analysis/analysis.json')
+ old_groups={};old_contexts={}
+ for mode,profile in previous['families'].items():
+     contexts={};_,_,_,groups,_=recount(Path(profile['path']),profile['root'],contexts);old_contexts[mode]=contexts
+@@ -384,7 +385,7 @@
+ for mode in analysis['families']:
+     for key,item in grouped_all[mode].items():new_groups.setdefault(key,Counter()).update(item)
+ for row in helper_comparison['rows']:
+-    for generation,groups in [('gen23',old_groups),('gen24',new_groups)]:
++    for generation,groups in [('gen24',old_groups),('gen25',new_groups)]:
+         item=groups.get((row['stage'],row['symbol']),Counter())
+         expected={'contexts':0} if not item else {'contexts':item['contexts'],'native_entries':item['entries'],'self_ir':item['self'],'inclusive_ir':item['inclusive']}
+         assert row[generation]==expected,(row,expected)
+@@ -537,11 +538,11 @@
+ assert ratio_record['source_review_sha256']==sha(BASE/'independent-review/source-review.json')
+ assert ratio_record['parser_sha256']==sha('review/diagnostics/analyze_callgrind.py')
+ assert ratio_record['analysis_sha256']==sha(BASE/'analysis/analysis.json')
+-assert ratio_record['previous_analysis_sha256']==sha('tests/evidence/diagnostics/gen23/analysis/analysis.json')
++assert ratio_record['previous_analysis_sha256']==sha('tests/evidence/diagnostics/gen24/analysis/analysis.json')
+ ratio_rows=[];ratio_direct=[]
+ ratio_modes=['adsb','commb','other']+[kind+r for kind in ('candidate','score') for r in ('40','44','45','50','60')]
+ previous_profiles={**previous['families'],**{'score'+k:v for k,v in previous['non_additive_register_score_probes'].items()},**{'candidate'+k:v for k,v in previous['non_additive_register_candidate_probes'].items()}}
+-for generation, profs, retained_contexts in [(23,previous_profiles,old_contexts),(24,profiles,mach_contexts)]:
++for generation, profs, retained_contexts in [(24,previous_profiles,old_contexts),(25,profiles,mach_contexts)]:
+     for mode in ratio_modes:
+         info=profs[mode];path=Path(info['path'])
+         if mode not in retained_contexts:
+@@ -569,7 +570,7 @@
+         if mode not in ['commb','candidate60','score60']:assert stats['ratio']['native_entries']==fb==0
+         row={'generation':generation,'profile':mode,**stats,'ratio_round_fallback_entries':fb,'ratio_round_fallback_inclusive_ir_non_additive':fb_ir,'ratio_shortcut_entries':stats['ratio']['native_entries']-fb}
+         ratio_rows.append(row)
+-        if generation==24:
++        if generation==25:
+             r=row['ratio']
+             assert f"| {mode} | {r['native_entries']:,} | {row['ratio_shortcut_entries']:,} | {fb:,} | {r['self_ir']:,} | {r['incoming_inclusive_ir_non_additive']:,} | {fb_ir:,} |" in report
+ assert ratio_rows==ratio_record['rows'] and len(ratio_rows)==26
+@@ -582,7 +583,7 @@
+ assert constant_record['source_review_sha256']==sha(BASE/'independent-review/source-review.json')
+ assert constant_record['parser_sha256']==sha('review/diagnostics/analyze_callgrind.py')
+ constant_rows=[];constant_contexts=[];old_guard_counts={}
+-for generation, profs, context_sets in [(23,previous_profiles,old_contexts),(24,profiles,mach_contexts)]:
++for generation, profs, context_sets in [(24,previous_profiles,old_contexts),(25,profiles,mach_contexts)]:
+     for mode in ratio_modes:
+         ctx=context_sets[mode];totals=Counter(native_entries=0,self_ir=0,inclusive_ir_non_additive=0,direct_parser_calls=0,direct_parser_ir_non_additive=0)
+         for name,item in sorted(ctx.items()):
+@@ -591,7 +592,7 @@
+             outgoing=[{'callee':callee,'symbol':callee.split("'")[0],'native_entries':edge['calls'],'inclusive_ir_non_additive':edge['inclusive_events']['Ir']} for callee,edge in sorted(item['outgoing'].items())]
+             constant_contexts.append({'generation':generation,'profile':mode,'context':name,'self_ir':item['self_events']['Ir'],'incoming':incoming,'outgoing':outgoing})
+             totals.update(native_entries=sum(x['native_entries'] for x in incoming),self_ir=item['self_events']['Ir'],inclusive_ir_non_additive=sum(x['inclusive_ir_non_additive'] for x in incoming),direct_parser_calls=sum(x['native_entries'] for x in outgoing if x['symbol']=='lean_cstr_to_nat'),direct_parser_ir_non_additive=sum(x['inclusive_ir_non_additive'] for x in outgoing if x['symbol']=='lean_cstr_to_nat'))
+-        if generation==23:old_guard_counts[mode]=totals['native_entries']
++        if generation==24:old_guard_counts[mode]=totals['native_entries']
+         else:assert totals['native_entries']==old_guard_counts[mode] and totals['direct_parser_calls']==0
+         constant_rows.append({'generation':generation,'profile':mode,**totals,'profile_sha256':sha(profs[mode]['path'])})
+ assert constant_rows==constant_record['rows']
+@@ -605,7 +606,7 @@
+ pack_record=read(BASE/'pack-fields-direct-costs.json')
+ pack_symbol='lp_lean1090_List_foldl___at___00Lean1090_Impl_packFields_spec__0'
+ pack_results=[]
+-for pack_generation,pack_context_sets in [(23,old_contexts),(24,mach_contexts)]:
++for pack_generation,pack_context_sets in [(24,old_contexts),(25,mach_contexts)]:
+  pack_rows=[];pack_total=Counter(entry_calls=0,self_ir=0,incoming_inclusive_ir=0);pack_children={}
+  for family in ('adsb','commb','other'):
+      children={};contexts=[];totals=Counter(entry_calls=0,self_ir=0,incoming_inclusive_ir=0)
+@@ -644,7 +645,7 @@
+ assert source_review['power_two_table_live_path_verified']
+ assert power_anchors=={k:source_review['power_two_'+k+'_anchor'] for k in ['lookup','formula','table_entry','table_initializer','module_initializer']}
+ power_rows=[];power_contexts=[]
+-for generation,profs,context_sets,group_sets in [(23,previous_profiles,old_contexts,None),(24,profiles,mach_contexts,grouped_all)]:
++for generation,profs,context_sets,group_sets in [(24,previous_profiles,old_contexts,None),(25,profiles,mach_contexts,grouped_all)]:
+  for mode in ratio_modes:
+   ctx=context_sets[mode];row={'generation':generation,'profile':mode,'profile_sha256':sha(profs[mode]['path']),'direct_lookup_formula_calls':0,'direct_lookup_formula_inclusive_ir_non_additive':0}
+   for label,symbol in power_anchors.items():
+@@ -660,12 +661,12 @@
+      row['direct_lookup_formula_calls']+=sum(e['native_entries'] for e in direct)
+      row['direct_lookup_formula_inclusive_ir_non_additive']+=sum(e['inclusive_ir_non_additive'] for e in direct)
+    row[label]=dict(total)
+-   if generation==24:
++   if generation==25:
+     grouped=Counter()
+     for (stage,base),item in group_sets[mode].items():
+      if base==symbol:grouped.update(item)
+     assert (total['native_entries'],total['self_ir'],total['incoming_inclusive_ir_non_additive'])==(grouped['entries'],grouped['self'],grouped['inclusive'])
+-  if generation==24:
++  if generation==25:
+    assert 0<=row['direct_lookup_formula_calls']<=row['lookup']['native_entries']
+    for label in ['table_entry','table_initializer','module_initializer']:assert row[label]['native_entries']==row[label]['self_ir']==0
+   power_rows.append(row)
+@@ -725,8 +726,8 @@
+ # Independently recount the generation comparison and shared-map supplement
+ # from this review's raw context parser; no reuse of producer grouping logic.
+ semantic_generation_rows=[]
+-assert [g['generation'] for g in semantic['generations']]==[23,24]
+-for gen, context_sets, raw_groups, gen_analysis in [(23,old_contexts,old_groups,previous),(24,mach_contexts,new_groups,analysis)]:
++assert [g['generation'] for g in semantic['generations']]==[24,25]
++for gen, context_sets, raw_groups, gen_analysis in [(24,old_contexts,old_groups,previous),(25,mach_contexts,new_groups,analysis)]:
+  record=next(g for g in semantic['generations'] if g['generation']==gen)
+  contexts=[];direct={};commb_children={}
+  for family in gen_analysis['families']:
+@@ -772,7 +773,7 @@
+ assert bit_record['parser_sha256']==sha('review/diagnostics/analyze_callgrind.py')
+ assert bit_record['extractor_sha256']==sha(BASE/'extract_bit_contexts.py')
+ bit_results=[]
+-for generation, context_sets in [(23,old_contexts),(24,mach_contexts)]:
++for generation, context_sets in [(24,old_contexts),(25,mach_contexts)]:
+  record=next(g for g in bit_record['generations'] if g['generation']==generation)
+  root=Path(f'tests/evidence/diagnostics/gen{generation}')
+  assert record['analysis_sha256']==sha(root/'analysis/analysis.json')
+@@ -810,7 +811,7 @@
+ assert affine_record['parser_sha256']==sha('review/diagnostics/analyze_callgrind.py')
+ assert affine_record['extractor_sha256']==sha(BASE/'extract_affine_contexts.py')
+ affine_results=[]
+-for generation, context_sets in [(23,old_contexts),(24,mach_contexts)]:
++for generation, context_sets in [(24,old_contexts),(25,mach_contexts)]:
+  record=next(g for g in affine_record['generations'] if g['generation']==generation)
+  root=Path(f'tests/evidence/diagnostics/gen{generation}')
+  assert record['analysis_sha256']==sha(root/'analysis/analysis.json')
+@@ -844,16 +845,16 @@
+ for generation in affine_record['generations']:
+  payload_rows=[row for row in generation['rows'] if row['symbol']==P+'payloadValue']
+  payload_entries.append({row['stage']:row['native_entries'] for row in payload_rows})
+- if generation['generation']==24:assert not any(child['calls'] for row in payload_rows for child in row['direct_children'] if child['symbol']=='l_Rat_mul')
++ if generation['generation']==25:assert not any(child['calls'] for row in payload_rows for child in row['direct_children'] if child['symbol']=='l_Rat_mul')
+ assert affine_record['same_payload_value_entries_by_stage'] is (payload_entries[0]==payload_entries[1])
+-assert affine_record['payload_value_entries_by_stage']=={'gen23':payload_entries[0],'gen24':payload_entries[1]}
++assert affine_record['payload_value_entries_by_stage']=={'gen24':payload_entries[0],'gen25':payload_entries[1]}
+ assert sha(BASE/'affine-native-contexts.json')==validation['affine_native_contexts_sha256']
+ crc_record=read(BASE/'crc-byte-contexts.json')
+ assert crc_record['selected_symbols']==sorted(crc_selected)
+ assert crc_record['parser_sha256']==sha('review/diagnostics/analyze_callgrind.py')
+ assert crc_record['extractor_sha256']==sha(BASE/'extract_crc_contexts.py')
+ crc_results=[]
+-for generation, context_sets in [(23,old_contexts),(24,mach_contexts)]:
++for generation, context_sets in [(24,old_contexts),(25,mach_contexts)]:
+  record=next(g for g in crc_record['generations'] if g['generation']==generation)
+  root=Path(f'tests/evidence/diagnostics/gen{generation}')
+  assert record['analysis_sha256']==sha(root/'analysis/analysis.json')
+@@ -903,7 +904,7 @@
+ completion=read(BASE/'perf/completion.json')
+ assert completion['samples']==len(blocks) and completion['included_decode_stacks']==len(included)
+ assert len(capture['before_hashes'])==295 and all(sha(p)==h for p,h in capture['before_hashes'].items())
+-sequence=read('tests/evidence/diagnostics/gen24-cpr/isolated-perf-completion.json')
++sequence=read('tests/evidence/diagnostics/gen25-cpr/isolated-perf-completion.json')
+ assert sequence['status']=='passed' and sequence['sequential_modes']==['decode','cpr']
+ assert sequence['finished_utc']<min(x['started_utc'] for x in campaign['native_runs'])
+ unknown_leaves=sum(row['leaf']=='[unknown]' for row in sample_records)
+@@ -931,7 +932,7 @@
+  'power_rows_independently_recounted':power_rows,'power_contexts_recounted':len(power_contexts),'pack_comparisons':pack_results,'wind_rows':wind_rows,'byte_counts':byte_counts,
+  'perf_raw_samples':len(blocks),'perf_visible_decoder_samples':len(included),'perf_unknown_frame_samples':unknown,'perf_included_unknown_leaves':unknown_leaves,
+  'semantic_supplement_sha256':sha(BASE/'semantic-caller-contexts.json'),'semantic_direct_caller_rows':semantic_rows,'semantic_generation_comparison':semantic_generation_rows,'shared_map_rows_recounted':len(maprows),'shared_map_contexts_recounted':len(mapcontexts),'commb_validity_tables_live_path_verified':True,'commb_semantic_reuse_live_path_verified':True,
+- 'report_sha256':sha('docs/GEN24-COST-BREAKDOWN.md'),'analysis_sha256':sha(BASE/'analysis/analysis.json'),
++ 'report_sha256':sha('docs/GEN25-COST-BREAKDOWN.md'),'analysis_sha256':sha(BASE/'analysis/analysis.json'),
+  'manifest_sha256':sha(BASE/'archive-manifest.json'),'validation_sha256':sha(BASE/'validation.json'),
+  'source_review_sha256':sha(BASE/'independent-review/source-review.json'),'checker_sha256':sha(__file__)}
+ assert not (BASE/'independent-review/final-checks.json').exists()

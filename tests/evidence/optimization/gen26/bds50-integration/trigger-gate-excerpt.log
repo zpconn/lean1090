@@ -1,0 +1,46 @@
+✖ [2955/2976] Building Proofs.BDS50 (2.1s)
+trace: .> LEAN_PATH=/home/zpconn/code/lean1090/.lake/packages/Cli/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/batteries/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/Qq/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/aesop/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/importGraph/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/plausible/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/packages/mathlib/.lake/build/lib/lean:/home/zpconn/code/lean1090/.lake/build/lib/lean /home/zpconn/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lean /home/zpconn/code/lean1090/Proofs/BDS50.lean -o /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/BDS50.olean -i /home/zpconn/code/lean1090/.lake/build/lib/lean/Proofs/BDS50.ilean -c /home/zpconn/code/lean1090/.lake/build/ir/Proofs/BDS50.c --setup /home/zpconn/code/lean1090/.lake/build/ir/Proofs/BDS50.setup.json --json
+error: Proofs/BDS50.lean:12:89: unsolved goals
+w : ℕ
+⊢ (if Spec.payloadBits w 1 1 = 0 then none
+    else
+      some
+        (if 512 ≤ Spec.payloadBits w 2 10 then (↑(Spec.payloadBits w 2 10) - 1024) * (45 / 256)
+        else ↑(Spec.payloadBits w 2 10) * (45 / 256))) =
+    if Spec.payloadBits w 1 1 = 0 then none
+    else
+      some
+        (if 512 ≤ Spec.payloadBits w 2 10 then (↑(Spec.payloadBits w 2 10) - 2 ^ 10) * (45 / 256)
+        else ↑(Spec.payloadBits w 2 10) * (45 / 256))
+error: Proofs/BDS50.lean:15:92: unsolved goals
+w : ℕ
+⊢ ((if Spec.payloadBits w 12 1 = 0 then none
+        else
+          some
+            (if 1024 ≤ Spec.payloadBits w 13 11 then (↑(Spec.payloadBits w 13 11) - 2048) * (90 / 512)
+            else ↑(Spec.payloadBits w 13 11) * (90 / 512))).bind
+      fun x => some (if x < 0 then x + 360 else x)) =
+    (if Spec.payloadBits w 12 1 = 0 then none
+        else
+          some
+            (if 1024 ≤ Spec.payloadBits w 13 11 then (↑(Spec.payloadBits w 13 11) - 2 ^ 11) * (90 / 512)
+            else ↑(Spec.payloadBits w 13 11) * (90 / 512))).bind
+      fun x => some (if x < 0 then x + 360 else x)
+error: Proofs/BDS50.lean:21:95: unsolved goals
+w : ℕ
+⊢ ((if Spec.payloadBits w 35 1 = 0 then none
+        else
+          some
+            (if 512 ≤ Spec.payloadBits w 36 10 then (↑(Spec.payloadBits w 36 10) - 1024) * (8 / 256)
+            else ↑(Spec.payloadBits w 36 10) * (8 / 256))).bind
+      fun x => if Spec.payloadBits w 37 9 = 511 then none else some x) =
+    (if Spec.payloadBits w 35 1 = 0 then none
+        else
+          some
+            (if 512 ≤ Spec.payloadBits w 36 10 then (↑(Spec.payloadBits w 36 10) - 2 ^ 10) * (8 / 256)
+            else ↑(Spec.payloadBits w 36 10) * (8 / 256))).bind
+      fun x => if Spec.payloadBits w 37 9 = 511 then none else some x
+info: Proofs/BDS50.lean:84:0: 'Lean1090.Proofs.BDS50.refinement' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/BDS50.lean:85:0: 'Lean1090.Proofs.BDS50.pilot_nonvacuous' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/BDS50.lean:86:0: 'Lean1090.Proofs.BDS50.exact_threshold_nonvacuous' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+✔ [2956/2976] Built Spec.StandardExamples (3.3s)

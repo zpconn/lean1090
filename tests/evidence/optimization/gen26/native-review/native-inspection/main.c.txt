@@ -1,0 +1,25 @@
+6139: int main(int argc, char ** argv) {
+6140: #if defined(WIN32) || defined(_WIN32)
+6141:   SetErrorMode(SEM_FAILCRITICALERRORS);
+6142:   SetConsoleOutputCP(CP_UTF8);
+6143: #endif
+6144:   lean_object* res;
+6145:   argv = lean_setup_args(argc, argv);
+6146:   res = initialize_lean1090_Bench_WholeDecoder(1 /* builtin */);
+6147:   lean_io_mark_end_initialization();
+6148:   if (lean_io_result_is_ok(res)) {
+6149:     lean_dec_ref(res);
+6150:     lean_init_task_manager();
+6151:     res = lean_run_main(&run_main, argc, argv);
+6152:   }
+6153:   lean_finalize_task_manager();
+6154:   if (lean_io_result_is_ok(res)) {
+6155:     int ret = lean_unbox_uint32(lean_io_result_get_value(res));
+6156:     lean_dec_ref(res);
+6157:     return ret;
+6158:   } else {
+6159:     lean_io_result_show_error(res);
+6160:     lean_dec_ref(res);
+6161:     return 1;
+6162:   }
+6163: }

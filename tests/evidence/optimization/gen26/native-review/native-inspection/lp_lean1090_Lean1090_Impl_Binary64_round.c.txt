@@ -1,0 +1,51 @@
+452: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_Binary64_round(lean_object* v_value_108_){
+453: _start:
+454: {
+455: lean_object* v_num_109_; lean_object* v_den_110_; lean_object* v___x_111_; lean_object* v___x_112_; uint8_t v___x_113_; 
+456: v_num_109_ = lean_ctor_get(v_value_108_, 0);
+457: v_den_110_ = lean_ctor_get(v_value_108_, 1);
+458: v___x_111_ = lean_nat_abs(v_num_109_);
+459: v___x_112_ = lean_cstr_to_nat("9007199254740992");
+460: v___x_113_ = lean_nat_dec_lt(v___x_111_, v___x_112_);
+461: lean_dec(v___x_111_);
+462: if (v___x_113_ == 0)
+463: {
+464: lean_object* v___x_114_; 
+465: v___x_114_ = lp_lean1090_Lean1090_Impl_Binary64_roundFallback(v_value_108_);
+466: return v___x_114_;
+467: }
+468: else
+469: {
+470: lean_object* v_denominatorExponent_115_; lean_object* v___x_116_; uint8_t v___x_117_; 
+471: v_denominatorExponent_115_ = lean_nat_log2(v_den_110_);
+472: v___x_116_ = lean_unsigned_to_nat(1074u);
+473: v___x_117_ = lean_nat_dec_le(v_denominatorExponent_115_, v___x_116_);
+474: if (v___x_117_ == 0)
+475: {
+476: lean_object* v___x_118_; 
+477: lean_dec(v_denominatorExponent_115_);
+478: v___x_118_ = lp_lean1090_Lean1090_Impl_Binary64_roundFallback(v_value_108_);
+479: return v___x_118_;
+480: }
+481: else
+482: {
+483: lean_object* v___x_119_; lean_object* v___x_120_; uint8_t v___x_121_; 
+484: v___x_119_ = lean_unsigned_to_nat(1u);
+485: v___x_120_ = lean_nat_shiftl(v___x_119_, v_denominatorExponent_115_);
+486: lean_dec(v_denominatorExponent_115_);
+487: v___x_121_ = lean_nat_dec_eq(v_den_110_, v___x_120_);
+488: lean_dec(v___x_120_);
+489: if (v___x_121_ == 0)
+490: {
+491: lean_object* v___x_122_; 
+492: v___x_122_ = lp_lean1090_Lean1090_Impl_Binary64_roundFallback(v_value_108_);
+493: return v___x_122_;
+494: }
+495: else
+496: {
+497: return v_value_108_;
+498: }
+499: }
+500: }
+501: }
+502: }

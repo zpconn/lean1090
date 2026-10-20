@@ -1,0 +1,36 @@
+--- tests/evidence/diagnostics/gen24/independent-review/check_score_scale.py
++++ tests/evidence/diagnostics/gen25/independent-review/check_score_scale.py
+@@ -6,7 +6,7 @@
+ from pathlib import Path
+ from collections import Counter,defaultdict
+ from datetime import datetime,timezone
+-B=Path('tests/evidence/diagnostics/gen24');R=B/'independent-review'
++B=Path('tests/evidence/diagnostics/gen25');R=B/'independent-review'
+ def read(p):return json.loads(Path(p).read_text())
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ record=read(B/'score-scale-contexts.json');analysis=read(B/'analysis/analysis.json')
+@@ -51,15 +51,22 @@
+ assert len(record['contexts'])==len(contexts)
+ for ctx in record['contexts']:assert normalized(ctx)==normalized(contexts[ctx['family'],ctx['context']])
+ rows=[{'stage':stage,'symbol':symbol,**g['values'],'direct_children':[{'symbol':child,**values} for child,values in sorted(g['children'].items())]} for (stage,symbol),g in sorted(groups.items())]
+-assert rows==record['rows'] and len(rows)==5
++assert rows==record['rows'] and rows
+ priority=read(B/'priority-helper-contexts.json')
+ for row in rows:
+  match=next((r for r in priority['rows'] if (r['stage'],r['symbol'])==(row['stage'],row['symbol'])),None)
+  if match:
+   assert all(match[k]==row[k] for k in ['contexts','native_entries','self_ir','incoming_inclusive_ir_non_additive'])
+   assert sorted(match['direct_children'],key=lambda r:r['symbol'])==row['direct_children']
++previous=Path('tests/evidence/diagnostics/gen24/score-scale-contexts.json')
++assert [g['generation'] for g in record['generations']]==[24,25]
++assert record['generations'][0]=={'generation':24,'rows':read(previous)['rows'],'source':str(previous),'source_sha256':sha(previous)}
++assert record['generations'][1]=={'generation':25,'rows':rows}
++prior_review=Path('tests/evidence/diagnostics/gen24/independent-review/score-scale-review.json')
++assert read(prior_review)['status']=='passed' and read(prior_review)['supplement_sha256']==sha(previous)
++assert read(B/'independent-review/source-review.json')['score_scaling_identity_live_path_verified']
+ assert 'denominator-equality frequency' in ' '.join(record['limits'])
+ assert 'no timing or removable-cost prediction' in ' '.join(record['limits'])
+-out={'status':'passed','reviewed_utc':datetime.now(timezone.utc).isoformat(),'checker_sha256':sha(__file__),'independent_parser_sha256':sha(parser),'supplement_sha256':sha(B/'score-scale-contexts.json'),'profile_bindings':profile_bindings,'raw_contexts':len(contexts),'rows':rows,'findings':[],'limits':record['limits']}
++out={'status':'passed','reviewed_utc':datetime.now(timezone.utc).isoformat(),'checker_sha256':sha(__file__),'independent_parser_sha256':sha(parser),'supplement_sha256':sha(B/'score-scale-contexts.json'),'profile_bindings':profile_bindings,'raw_contexts':len(contexts),'rows':rows,'generations':record['generations'],'prior_independent_review_sha256':sha(prior_review),'findings':[],'limits':record['limits']}
+ p=R/'score-scale-review.json';assert not p.exists();p.write_text(json.dumps(out,indent=2)+'\n')
+ print(json.dumps({'status':'passed','sha256':sha(p),'rows':len(rows),'contexts':len(contexts)}))

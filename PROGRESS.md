@@ -60,15 +60,66 @@ Overhead generations 0–24 are preserved, with generation 25 added from 96 raw
 samples and four independently recomputed medians. Presentation completion:
 `073124ee42946f5e85d18bf94e44d154e96dbaa9c8d6a1d14ae63ebc021e5cc0`.
 
-Fresh diagnostic preparation reviews pass: 27 decode checks and 77 CPR
-checks, with no build or profiling executed. Receipts:
-`00d1fa6aafa283bb4d703c87296fcc18a427e6b4a9cdd59488149e0529222b5e`
-and `c3ff3842f633f13d071b41d04a2850c6d12a9bb61935182634823840922b3328`.
-One decode-preparation reviewer substitution correction is retained; the
-producer is unchanged. Next: commit and push the measured artifacts, then
-complete fresh decode and CPR diagnostics before choosing generation 26.
-No new optimization is selected. No frozen file, tested-only
-Float callback or trusted primitive change is authorized.
+The measured generation 25 source and artifacts are committed and pushed to
+private main as `240cc329f5334e8557687eddc56a854edd2720bc`, under the user's
+GitHub identity. Fresh diagnostics completed against that source-equivalent
+commit. Decode collected 5,748,262,724 instructions and CPR collected
+8,076,647,012; all 172,432 tracking outputs, 11,347 positions and complete
+final state match. Both final independent reviews pass:
+`25deaaa37376320ce9c2718a2f5e97ab0229fa030cee78d0aa053409f52ba13b`
+and `58413f66740a599d029c0edca09905b58d4ac46211837ebe194432e663901e11`.
+Reviewer-only preparation/source-hash corrections remain recorded; no producer
+measurement repeated. Sequential verified cleanup reclaimed 479,670,272
+allocated bytes, preserving unique perf and retained evidence. The source and
+history hold is released.
+
+**Generation 26 is in progress:** return already representable small dyadic
+rationals directly from the pure software rounding function, with the complete
+old algorithm as a live fallback. Current motion/pairing profiles contain
+726,978,321 inclusive instructions at that rounding boundary; guard eligibility
+and any speedup remain unmeasured. Reuse the existing exact dyadic theorem to
+preserve unconditional refinement. The targeted proof build passed first
+execution (2,042 jobs), as did the combined production/refinement build
+(3,549 jobs, 202 unchanged inputs). Independent source/proof review passed
+231 checks, including all 32 prior theorem types and the complete original
+fallback body. Forty target facts and six boundary witness groups pass.
+The combined validator confirms 362 permitted printed facts and 127 audited
+sources. The first full gate failed before tests in three BDS50 proof bodies:
+the new transitive Mathlib import leaves rational powers opposite reduced
+numerals. Three explicit `norm_num` steps fix the goals, with all 26 BDS50
+statement types and all runtime bytes unchanged. The targeted repair build
+passes (2,044 jobs); the failed gate and initial combined build are retained.
+The amended combined build explicitly includes `Proofs.BDS50` and passes
+(3,551 jobs, 365 permitted printed facts); all four binaries are unchanged.
+The second full fixed gate passed from 00:56:42.703055 to 01:12:48.883078
+UTC on 2026-10-20. All 202 correctness inputs are unchanged. Its 10,476,164
+messages include 9,542,689 exact matches and 933,475 documented D001 cases;
+all 101,244 direct cases match. All 23 capstone contracts, 152 witness audits,
+1,011 unit checks and seven mandatory differential strata pass. The separate
+fresh campaign passed
+all 10,476,164 messages: 9,543,358 exact matches and 932,806 documented
+D001 cases, with 101,244 exact direct cases and full 32/70/14 coverage.
+Independent retained-byte and comparison-replay reviews also passed. Fresh
+cleanup reclaimed 5,359,734,784 allocated bytes, retaining all 33 archived
+members. Fixed archival retains seven components and 62 files, and its
+verified cleanup reclaimed another 5,733,335,040 allocated bytes. Together
+these cleanups reclaimed 11,093,069,824 bytes of duplicate scratch. Historical
+evidence and every failed attempt remain. The first consolidated review
+stopped at its final index check because the three source files were not yet
+staged. After staging those exact bytes, the unchanged checker passes on
+attempt 2, with the first attempt retained. Consolidated review receipt:
+`41409e98b8bb0371adebc846b9fa703cfac9b05624d20c624c7f0433ad21c1b8`.
+The reviewed benchmark plan is ready; all producer and reviewer jobs are stopped. Fresh
+message/Comm-B seeds remain 748,317,927 and 713,274,074, with the current
+127 sources, three binaries and 202 correctness inputs verified before launch.
+The amended current proof review and native review pass. Native review checks
+763 conditions and 22 sets (21 unchanged siblings); the actual guard/fallback
+and CPR callers are live. The restarted gate has passed all 23 capstone
+contracts and dependency audits. Next: source commit, then the unchanged clean-commit
+benchmark protocol in both modes. See
+[the selection and proof evidence](docs/GEN26-ROUND-IDENTITY.md).
+No frozen file, tested-only Float callback or trusted primitive change is
+authorized.
 
 **Previous measurement: generation 24 reached 2.719659888260× decode and
 1.988905566484× CPR.** Its source and artifacts were pushed to private `main`

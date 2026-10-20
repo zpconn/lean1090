@@ -1,0 +1,534 @@
+1011: LEAN_EXPORT lean_object* lp_lean1090_Lean1090_Impl_CPR_Policy_stepAirborne(lean_object* v_geo_262_, lean_object* v_updateReference_263_, lean_object* v_state_264_, lean_object* v_reference_265_, lean_object* v_timestamp_266_, lean_object* v_code_267_, lean_object* v_altitude_268_, lean_object* v_metadata_269_){
+1012: _start:
+1013: {
+1014: uint8_t v_odd_270_; lean_object* v___y_272_; uint8_t v___y_273_; lean_object* v_fst_274_; lean_object* v_snd_275_; uint8_t v___y_317_; lean_object* v___y_318_; lean_object* v_val_319_; uint8_t v___y_347_; lean_object* v___y_348_; lean_object* v___y_351_; uint8_t v___y_352_; uint8_t v___y_364_; lean_object* v___y_365_; uint8_t v___x_367_; lean_object* v___y_369_; lean_object* v___y_370_; lean_object* v___y_390_; 
+1015: v_odd_270_ = lean_ctor_get_uint8(v_code_267_, sizeof(void*)*2);
+1016: v___x_367_ = 1;
+1017: if (v_odd_270_ == 0)
+1018: {
+1019: lean_object* v_oddTimestamp_393_; 
+1020: v_oddTimestamp_393_ = lean_ctor_get(v_state_264_, 7);
+1021: lean_inc_ref(v_oddTimestamp_393_);
+1022: v___y_390_ = v_oddTimestamp_393_;
+1023: goto v___jp_389_;
+1024: }
+1025: else
+1026: {
+1027: lean_object* v_evenTimestamp_394_; 
+1028: v_evenTimestamp_394_ = lean_ctor_get(v_state_264_, 9);
+1029: lean_inc_ref(v_evenTimestamp_394_);
+1030: v___y_390_ = v_evenTimestamp_394_;
+1031: goto v___jp_389_;
+1032: }
+1033: v___jp_271_:
+1034: {
+1035: if (v_odd_270_ == 0)
+1036: {
+1037: lean_object* v_timestamp_276_; lean_object* v_position_277_; lean_object* v_lastAltitude_278_; lean_object* v_airport_279_; lean_object* v_seenBDS_280_; lean_object* v_supportedBDS_281_; lean_object* v_bds17Count_282_; lean_object* v_oddTimestamp_283_; lean_object* v_oddMessage_284_; lean_object* v___x_286_; uint8_t v_isShared_287_; uint8_t v_isSharedCheck_293_; 
+1038: v_timestamp_276_ = lean_ctor_get(v_fst_274_, 0);
+1039: v_position_277_ = lean_ctor_get(v_fst_274_, 1);
+1040: v_lastAltitude_278_ = lean_ctor_get(v_fst_274_, 2);
+1041: v_airport_279_ = lean_ctor_get(v_fst_274_, 3);
+1042: v_seenBDS_280_ = lean_ctor_get(v_fst_274_, 4);
+1043: v_supportedBDS_281_ = lean_ctor_get(v_fst_274_, 5);
+1044: v_bds17Count_282_ = lean_ctor_get(v_fst_274_, 6);
+1045: v_oddTimestamp_283_ = lean_ctor_get(v_fst_274_, 7);
+1046: v_oddMessage_284_ = lean_ctor_get(v_fst_274_, 8);
+1047: v_isSharedCheck_293_ = !lean_is_exclusive(v_fst_274_);
+1048: if (v_isSharedCheck_293_ == 0)
+1049: {
+1050: lean_object* v_unused_294_; lean_object* v_unused_295_; 
+1051: v_unused_294_ = lean_ctor_get(v_fst_274_, 10);
+1052: lean_dec(v_unused_294_);
+1053: v_unused_295_ = lean_ctor_get(v_fst_274_, 9);
+1054: lean_dec(v_unused_295_);
+1055: v___x_286_ = v_fst_274_;
+1056: v_isShared_287_ = v_isSharedCheck_293_;
+1057: goto v_resetjp_285_;
+1058: }
+1059: else
+1060: {
+1061: lean_inc(v_oddMessage_284_);
+1062: lean_inc(v_oddTimestamp_283_);
+1063: lean_inc(v_bds17Count_282_);
+1064: lean_inc(v_supportedBDS_281_);
+1065: lean_inc(v_seenBDS_280_);
+1066: lean_inc(v_airport_279_);
+1067: lean_inc(v_lastAltitude_278_);
+1068: lean_inc(v_position_277_);
+1069: lean_inc(v_timestamp_276_);
+1070: lean_dec(v_fst_274_);
+1071: v___x_286_ = lean_box(0);
+1072: v_isShared_287_ = v_isSharedCheck_293_;
+1073: goto v_resetjp_285_;
+1074: }
+1075: v_resetjp_285_:
+1076: {
+1077: lean_object* v___x_288_; lean_object* v___x_290_; 
+1078: v___x_288_ = lean_alloc_ctor(1, 1, 0);
+1079: lean_ctor_set(v___x_288_, 0, v_code_267_);
+1080: if (v_isShared_287_ == 0)
+1081: {
+1082: lean_ctor_set(v___x_286_, 10, v___x_288_);
+1083: lean_ctor_set(v___x_286_, 9, v_timestamp_266_);
+1084: v___x_290_ = v___x_286_;
+1085: goto v_reusejp_289_;
+1086: }
+1087: else
+1088: {
+1089: lean_object* v_reuseFailAlloc_292_; 
+1090: v_reuseFailAlloc_292_ = lean_alloc_ctor(0, 11, 0);
+1091: lean_ctor_set(v_reuseFailAlloc_292_, 0, v_timestamp_276_);
+1092: lean_ctor_set(v_reuseFailAlloc_292_, 1, v_position_277_);
+1093: lean_ctor_set(v_reuseFailAlloc_292_, 2, v_lastAltitude_278_);
+1094: lean_ctor_set(v_reuseFailAlloc_292_, 3, v_airport_279_);
+1095: lean_ctor_set(v_reuseFailAlloc_292_, 4, v_seenBDS_280_);
+1096: lean_ctor_set(v_reuseFailAlloc_292_, 5, v_supportedBDS_281_);
+1097: lean_ctor_set(v_reuseFailAlloc_292_, 6, v_bds17Count_282_);
+1098: lean_ctor_set(v_reuseFailAlloc_292_, 7, v_oddTimestamp_283_);
+1099: lean_ctor_set(v_reuseFailAlloc_292_, 8, v_oddMessage_284_);
+1100: lean_ctor_set(v_reuseFailAlloc_292_, 9, v_timestamp_266_);
+1101: lean_ctor_set(v_reuseFailAlloc_292_, 10, v___x_288_);
+1102: v___x_290_ = v_reuseFailAlloc_292_;
+1103: goto v_reusejp_289_;
+1104: }
+1105: v_reusejp_289_:
+1106: {
+1107: lean_object* v___x_291_; 
+1108: v___x_291_ = lean_alloc_ctor(0, 3, 1);
+1109: lean_ctor_set(v___x_291_, 0, v___x_290_);
+1110: lean_ctor_set(v___x_291_, 1, v_snd_275_);
+1111: lean_ctor_set(v___x_291_, 2, v___y_272_);
+1112: lean_ctor_set_uint8(v___x_291_, sizeof(void*)*3, v___y_273_);
+1113: return v___x_291_;
+1114: }
+1115: }
+1116: }
+1117: else
+1118: {
+1119: lean_object* v_timestamp_296_; lean_object* v_position_297_; lean_object* v_lastAltitude_298_; lean_object* v_airport_299_; lean_object* v_seenBDS_300_; lean_object* v_supportedBDS_301_; lean_object* v_bds17Count_302_; lean_object* v_evenTimestamp_303_; lean_object* v_evenMessage_304_; lean_object* v___x_306_; uint8_t v_isShared_307_; uint8_t v_isSharedCheck_313_; 
+1120: v_timestamp_296_ = lean_ctor_get(v_fst_274_, 0);
+1121: v_position_297_ = lean_ctor_get(v_fst_274_, 1);
+1122: v_lastAltitude_298_ = lean_ctor_get(v_fst_274_, 2);
+1123: v_airport_299_ = lean_ctor_get(v_fst_274_, 3);
+1124: v_seenBDS_300_ = lean_ctor_get(v_fst_274_, 4);
+1125: v_supportedBDS_301_ = lean_ctor_get(v_fst_274_, 5);
+1126: v_bds17Count_302_ = lean_ctor_get(v_fst_274_, 6);
+1127: v_evenTimestamp_303_ = lean_ctor_get(v_fst_274_, 9);
+1128: v_evenMessage_304_ = lean_ctor_get(v_fst_274_, 10);
+1129: v_isSharedCheck_313_ = !lean_is_exclusive(v_fst_274_);
+1130: if (v_isSharedCheck_313_ == 0)
+1131: {
+1132: lean_object* v_unused_314_; lean_object* v_unused_315_; 
+1133: v_unused_314_ = lean_ctor_get(v_fst_274_, 8);
+1134: lean_dec(v_unused_314_);
+1135: v_unused_315_ = lean_ctor_get(v_fst_274_, 7);
+1136: lean_dec(v_unused_315_);
+1137: v___x_306_ = v_fst_274_;
+1138: v_isShared_307_ = v_isSharedCheck_313_;
+1139: goto v_resetjp_305_;
+1140: }
+1141: else
+1142: {
+1143: lean_inc(v_evenMessage_304_);
+1144: lean_inc(v_evenTimestamp_303_);
+1145: lean_inc(v_bds17Count_302_);
+1146: lean_inc(v_supportedBDS_301_);
+1147: lean_inc(v_seenBDS_300_);
+1148: lean_inc(v_airport_299_);
+1149: lean_inc(v_lastAltitude_298_);
+1150: lean_inc(v_position_297_);
+1151: lean_inc(v_timestamp_296_);
+1152: lean_dec(v_fst_274_);
+1153: v___x_306_ = lean_box(0);
+1154: v_isShared_307_ = v_isSharedCheck_313_;
+1155: goto v_resetjp_305_;
+1156: }
+1157: v_resetjp_305_:
+1158: {
+1159: lean_object* v___x_308_; lean_object* v___x_310_; 
+1160: v___x_308_ = lean_alloc_ctor(1, 1, 0);
+1161: lean_ctor_set(v___x_308_, 0, v_code_267_);
+1162: if (v_isShared_307_ == 0)
+1163: {
+1164: lean_ctor_set(v___x_306_, 8, v___x_308_);
+1165: lean_ctor_set(v___x_306_, 7, v_timestamp_266_);
+1166: v___x_310_ = v___x_306_;
+1167: goto v_reusejp_309_;
+1168: }
+1169: else
+1170: {
+1171: lean_object* v_reuseFailAlloc_312_; 
+1172: v_reuseFailAlloc_312_ = lean_alloc_ctor(0, 11, 0);
+1173: lean_ctor_set(v_reuseFailAlloc_312_, 0, v_timestamp_296_);
+1174: lean_ctor_set(v_reuseFailAlloc_312_, 1, v_position_297_);
+1175: lean_ctor_set(v_reuseFailAlloc_312_, 2, v_lastAltitude_298_);
+1176: lean_ctor_set(v_reuseFailAlloc_312_, 3, v_airport_299_);
+1177: lean_ctor_set(v_reuseFailAlloc_312_, 4, v_seenBDS_300_);
+1178: lean_ctor_set(v_reuseFailAlloc_312_, 5, v_supportedBDS_301_);
+1179: lean_ctor_set(v_reuseFailAlloc_312_, 6, v_bds17Count_302_);
+1180: lean_ctor_set(v_reuseFailAlloc_312_, 7, v_timestamp_266_);
+1181: lean_ctor_set(v_reuseFailAlloc_312_, 8, v___x_308_);
+1182: lean_ctor_set(v_reuseFailAlloc_312_, 9, v_evenTimestamp_303_);
+1183: lean_ctor_set(v_reuseFailAlloc_312_, 10, v_evenMessage_304_);
+1184: v___x_310_ = v_reuseFailAlloc_312_;
+1185: goto v_reusejp_309_;
+1186: }
+1187: v_reusejp_309_:
+1188: {
+1189: lean_object* v___x_311_; 
+1190: v___x_311_ = lean_alloc_ctor(0, 3, 1);
+1191: lean_ctor_set(v___x_311_, 0, v___x_310_);
+1192: lean_ctor_set(v___x_311_, 1, v_snd_275_);
+1193: lean_ctor_set(v___x_311_, 2, v___y_272_);
+1194: lean_ctor_set_uint8(v___x_311_, sizeof(void*)*3, v___y_273_);
+1195: return v___x_311_;
+1196: }
+1197: }
+1198: }
+1199: }
+1200: v___jp_316_:
+1201: {
+1202: uint8_t v___x_320_; 
+1203: lean_inc_ref(v_val_319_);
+1204: lean_inc_ref(v_timestamp_266_);
+1205: lean_inc_ref(v_state_264_);
+1206: v___x_320_ = lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion(v_geo_262_, v_state_264_, v_timestamp_266_, v_val_319_);
+1207: if (v___x_320_ == 0)
+1208: {
+1209: lean_object* v___x_321_; 
+1210: lean_dec_ref(v_val_319_);
+1211: lean_dec(v___y_318_);
+1212: lean_dec_ref(v_metadata_269_);
+1213: lean_dec(v_altitude_268_);
+1214: lean_dec_ref(v_updateReference_263_);
+1215: v___x_321_ = lean_box(0);
+1216: v___y_272_ = v___x_321_;
+1217: v___y_273_ = v___y_317_;
+1218: v_fst_274_ = v_state_264_;
+1219: v_snd_275_ = v_reference_265_;
+1220: goto v___jp_271_;
+1221: }
+1222: else
+1223: {
+1224: lean_object* v_seenBDS_322_; lean_object* v_supportedBDS_323_; lean_object* v_bds17Count_324_; lean_object* v_oddTimestamp_325_; lean_object* v_oddMessage_326_; lean_object* v_evenTimestamp_327_; lean_object* v_evenMessage_328_; lean_object* v___x_330_; uint8_t v_isShared_331_; uint8_t v_isSharedCheck_341_; 
+1225: v_seenBDS_322_ = lean_ctor_get(v_state_264_, 4);
+1226: v_supportedBDS_323_ = lean_ctor_get(v_state_264_, 5);
+1227: v_bds17Count_324_ = lean_ctor_get(v_state_264_, 6);
+1228: v_oddTimestamp_325_ = lean_ctor_get(v_state_264_, 7);
+1229: v_oddMessage_326_ = lean_ctor_get(v_state_264_, 8);
+1230: v_evenTimestamp_327_ = lean_ctor_get(v_state_264_, 9);
+1231: v_evenMessage_328_ = lean_ctor_get(v_state_264_, 10);
+1232: v_isSharedCheck_341_ = !lean_is_exclusive(v_state_264_);
+1233: if (v_isSharedCheck_341_ == 0)
+1234: {
+1235: lean_object* v_unused_342_; lean_object* v_unused_343_; lean_object* v_unused_344_; lean_object* v_unused_345_; 
+1236: v_unused_342_ = lean_ctor_get(v_state_264_, 3);
+1237: lean_dec(v_unused_342_);
+1238: v_unused_343_ = lean_ctor_get(v_state_264_, 2);
+1239: lean_dec(v_unused_343_);
+1240: v_unused_344_ = lean_ctor_get(v_state_264_, 1);
+1241: lean_dec(v_unused_344_);
+1242: v_unused_345_ = lean_ctor_get(v_state_264_, 0);
+1243: lean_dec(v_unused_345_);
+1244: v___x_330_ = v_state_264_;
+1245: v_isShared_331_ = v_isSharedCheck_341_;
+1246: goto v_resetjp_329_;
+1247: }
+1248: else
+1249: {
+1250: lean_inc(v_evenMessage_328_);
+1251: lean_inc(v_evenTimestamp_327_);
+1252: lean_inc(v_oddMessage_326_);
+1253: lean_inc(v_oddTimestamp_325_);
+1254: lean_inc(v_bds17Count_324_);
+1255: lean_inc(v_supportedBDS_323_);
+1256: lean_inc(v_seenBDS_322_);
+1257: lean_dec(v_state_264_);
+1258: v___x_330_ = lean_box(0);
+1259: v_isShared_331_ = v_isSharedCheck_341_;
+1260: goto v_resetjp_329_;
+1261: }
+1262: v_resetjp_329_:
+1263: {
+1264: lean_object* v___x_332_; lean_object* v___x_333_; lean_object* v___x_334_; lean_object* v___x_336_; 
+1265: v___x_332_ = lean_box(0);
+1266: v___x_333_ = lean_unsigned_to_nat(5u);
+1267: v___x_334_ = lp_lean1090_Lean1090_Impl_CPR_Policy_insertCode(v___x_333_, v_seenBDS_322_);
+1268: lean_inc(v_altitude_268_);
+1269: lean_inc(v___y_318_);
+1270: lean_inc_ref(v_timestamp_266_);
+1271: if (v_isShared_331_ == 0)
+1272: {
+1273: lean_ctor_set(v___x_330_, 4, v___x_334_);
+1274: lean_ctor_set(v___x_330_, 3, v___x_332_);
+1275: lean_ctor_set(v___x_330_, 2, v_altitude_268_);
+1276: lean_ctor_set(v___x_330_, 1, v___y_318_);
+1277: lean_ctor_set(v___x_330_, 0, v_timestamp_266_);
+1278: v___x_336_ = v___x_330_;
+1279: goto v_reusejp_335_;
+1280: }
+1281: else
+1282: {
+1283: lean_object* v_reuseFailAlloc_340_; 
+1284: v_reuseFailAlloc_340_ = lean_alloc_ctor(0, 11, 0);
+1285: lean_ctor_set(v_reuseFailAlloc_340_, 0, v_timestamp_266_);
+1286: lean_ctor_set(v_reuseFailAlloc_340_, 1, v___y_318_);
+1287: lean_ctor_set(v_reuseFailAlloc_340_, 2, v_altitude_268_);
+1288: lean_ctor_set(v_reuseFailAlloc_340_, 3, v___x_332_);
+1289: lean_ctor_set(v_reuseFailAlloc_340_, 4, v___x_334_);
+1290: lean_ctor_set(v_reuseFailAlloc_340_, 5, v_supportedBDS_323_);
+1291: lean_ctor_set(v_reuseFailAlloc_340_, 6, v_bds17Count_324_);
+1292: lean_ctor_set(v_reuseFailAlloc_340_, 7, v_oddTimestamp_325_);
+1293: lean_ctor_set(v_reuseFailAlloc_340_, 8, v_oddMessage_326_);
+1294: lean_ctor_set(v_reuseFailAlloc_340_, 9, v_evenTimestamp_327_);
+1295: lean_ctor_set(v_reuseFailAlloc_340_, 10, v_evenMessage_328_);
+1296: v___x_336_ = v_reuseFailAlloc_340_;
+1297: goto v_reusejp_335_;
+1298: }
+1299: v_reusejp_335_:
+1300: {
+1301: lean_object* v___x_337_; lean_object* v___x_338_; uint8_t v___x_339_; 
+1302: lean_inc_ref(v_code_267_);
+1303: v___x_337_ = lean_alloc_ctor(0, 4, 0);
+1304: lean_ctor_set(v___x_337_, 0, v_code_267_);
+1305: lean_ctor_set(v___x_337_, 1, v_altitude_268_);
+1306: lean_ctor_set(v___x_337_, 2, v_metadata_269_);
+1307: lean_ctor_set(v___x_337_, 3, v_val_319_);
+1308: v___x_338_ = lean_apply_1(v_updateReference_263_, v___x_337_);
+1309: v___x_339_ = lean_unbox(v___x_338_);
+1310: if (v___x_339_ == 0)
+1311: {
+1312: v___y_272_ = v___y_318_;
+1313: v___y_273_ = v___y_317_;
+1314: v_fst_274_ = v___x_336_;
+1315: v_snd_275_ = v_reference_265_;
+1316: goto v___jp_271_;
+1317: }
+1318: else
+1319: {
+1320: lean_dec(v_reference_265_);
+1321: lean_inc(v___y_318_);
+1322: v___y_272_ = v___y_318_;
+1323: v___y_273_ = v___y_317_;
+1324: v_fst_274_ = v___x_336_;
+1325: v_snd_275_ = v___y_318_;
+1326: goto v___jp_271_;
+1327: }
+1328: }
+1329: }
+1330: }
+1331: }
+1332: v___jp_346_:
+1333: {
+1334: if (lean_obj_tag(v___y_348_) == 0)
+1335: {
+1336: lean_dec_ref(v_metadata_269_);
+1337: lean_dec(v_altitude_268_);
+1338: lean_dec_ref(v_updateReference_263_);
+1339: lean_dec_ref(v_geo_262_);
+1340: v___y_272_ = v___y_348_;
+1341: v___y_273_ = v___y_347_;
+1342: v_fst_274_ = v_state_264_;
+1343: v_snd_275_ = v_reference_265_;
+1344: goto v___jp_271_;
+1345: }
+1346: else
+1347: {
+1348: lean_object* v_val_349_; 
+1349: v_val_349_ = lean_ctor_get(v___y_348_, 0);
+1350: lean_inc(v_val_349_);
+1351: v___y_317_ = v___y_347_;
+1352: v___y_318_ = v___y_348_;
+1353: v_val_319_ = v_val_349_;
+1354: goto v___jp_316_;
+1355: }
+1356: }
+1357: v___jp_350_:
+1358: {
+1359: lean_object* v_timestamp_353_; lean_object* v_position_354_; lean_object* v___x_355_; lean_object* v___x_356_; uint8_t v___x_357_; 
+1360: v_timestamp_353_ = lean_ctor_get(v_state_264_, 0);
+1361: v_position_354_ = lean_ctor_get(v_state_264_, 1);
+1362: lean_inc_ref(v_timestamp_353_);
+1363: lean_inc_ref(v_timestamp_266_);
+1364: v___x_355_ = lp_lean1090_Lean1090_Impl_Binary64_sub(v_timestamp_266_, v_timestamp_353_);
+1365: v___x_356_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_stepAirborne___closed__0, &lp_lean1090_Lean1090_Impl_CPR_Policy_stepAirborne___closed__0_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_stepAirborne___closed__0);
+1366: v___x_357_ = l_Rat_blt(v___x_355_, v___x_356_);
+1367: if (v___x_357_ == 0)
+1368: {
+1369: v___y_347_ = v___y_352_;
+1370: v___y_348_ = v___y_351_;
+1371: goto v___jp_346_;
+1372: }
+1373: else
+1374: {
+1375: lean_dec(v___y_351_);
+1376: if (lean_obj_tag(v_position_354_) == 0)
+1377: {
+1378: lean_inc(v_position_354_);
+1379: lean_dec_ref(v_metadata_269_);
+1380: lean_dec(v_altitude_268_);
+1381: lean_dec_ref(v_updateReference_263_);
+1382: lean_dec_ref(v_geo_262_);
+1383: v___y_272_ = v_position_354_;
+1384: v___y_273_ = v___y_352_;
+1385: v_fst_274_ = v_state_264_;
+1386: v_snd_275_ = v_reference_265_;
+1387: goto v___jp_271_;
+1388: }
+1389: else
+1390: {
+1391: lean_object* v_val_358_; lean_object* v_localPosition_359_; uint8_t v___x_360_; lean_object* v___x_361_; lean_object* v___x_362_; 
+1392: v_val_358_ = lean_ctor_get(v_position_354_, 0);
+1393: v_localPosition_359_ = lean_ctor_get(v_geo_262_, 2);
+1394: v___x_360_ = 0;
+1395: v___x_361_ = lean_box(v___x_360_);
+1396: lean_inc_ref(v_localPosition_359_);
+1397: lean_inc(v_val_358_);
+1398: lean_inc_ref(v_code_267_);
+1399: v___x_362_ = lean_apply_3(v_localPosition_359_, v___x_361_, v_code_267_, v_val_358_);
+1400: v___y_347_ = v___y_352_;
+1401: v___y_348_ = v___x_362_;
+1402: goto v___jp_346_;
+1403: }
+1404: }
+1405: }
+1406: v___jp_363_:
+1407: {
+1408: if (lean_obj_tag(v___y_365_) == 0)
+1409: {
+1410: v___y_351_ = v___y_365_;
+1411: v___y_352_ = v___y_364_;
+1412: goto v___jp_350_;
+1413: }
+1414: else
+1415: {
+1416: if (v___y_364_ == 0)
+1417: {
+1418: lean_object* v_val_366_; 
+1419: v_val_366_ = lean_ctor_get(v___y_365_, 0);
+1420: lean_inc(v_val_366_);
+1421: v___y_317_ = v___y_364_;
+1422: v___y_318_ = v___y_365_;
+1423: v_val_319_ = v_val_366_;
+1424: goto v___jp_316_;
+1425: }
+1426: else
+1427: {
+1428: v___y_351_ = v___y_365_;
+1429: v___y_352_ = v___y_364_;
+1430: goto v___jp_350_;
+1431: }
+1432: }
+1433: }
+1434: v___jp_368_:
+1435: {
+1436: lean_object* v_gap_371_; lean_object* v___x_372_; uint8_t v___x_373_; 
+1437: lean_inc_ref(v_timestamp_266_);
+1438: v_gap_371_ = lp_lean1090_Lean1090_Impl_Binary64_sub(v_timestamp_266_, v___y_369_);
+1439: v___x_372_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__5);
+1440: lean_inc_ref(v_gap_371_);
+1441: v___x_373_ = l_Rat_blt(v_gap_371_, v___x_372_);
+1442: if (v___x_373_ == 0)
+1443: {
+1444: lean_object* v___x_374_; lean_object* v___x_375_; uint8_t v___x_376_; 
+1445: v___x_374_ = lp_lean1090_Lean1090_Impl_CPR_absQ(v_gap_371_);
+1446: v___x_375_ = lean_obj_once(&lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1, &lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1_once, _init_lp_lean1090_Lean1090_Impl_CPR_Policy_validMotion___closed__1);
+1447: v___x_376_ = l_Rat_blt(v___x_374_, v___x_375_);
+1448: if (v___x_376_ == 0)
+1449: {
+1450: lean_object* v___x_377_; 
+1451: lean_dec(v___y_370_);
+1452: v___x_377_ = lean_box(0);
+1453: v___y_351_ = v___x_377_;
+1454: v___y_352_ = v___x_373_;
+1455: goto v___jp_350_;
+1456: }
+1457: else
+1458: {
+1459: if (lean_obj_tag(v___y_370_) == 0)
+1460: {
+1461: lean_object* v___x_378_; 
+1462: v___x_378_ = lean_box(0);
+1463: v___y_351_ = v___x_378_;
+1464: v___y_352_ = v___x_373_;
+1465: goto v___jp_350_;
+1466: }
+1467: else
+1468: {
+1469: if (v_odd_270_ == 0)
+1470: {
+1471: lean_object* v_val_379_; lean_object* v_globalPosition_380_; lean_object* v___x_381_; lean_object* v___x_382_; 
+1472: v_val_379_ = lean_ctor_get(v___y_370_, 0);
+1473: lean_inc(v_val_379_);
+1474: lean_dec_ref_known(v___y_370_, 1);
+1475: v_globalPosition_380_ = lean_ctor_get(v_geo_262_, 3);
+1476: v___x_381_ = lean_box(v_odd_270_);
+1477: lean_inc_ref(v_globalPosition_380_);
+1478: lean_inc_ref(v_code_267_);
+1479: v___x_382_ = lean_apply_3(v_globalPosition_380_, v_code_267_, v_val_379_, v___x_381_);
+1480: v___y_364_ = v___x_373_;
+1481: v___y_365_ = v___x_382_;
+1482: goto v___jp_363_;
+1483: }
+1484: else
+1485: {
+1486: lean_object* v_val_383_; lean_object* v_globalPosition_384_; lean_object* v___x_385_; lean_object* v___x_386_; 
+1487: v_val_383_ = lean_ctor_get(v___y_370_, 0);
+1488: lean_inc(v_val_383_);
+1489: lean_dec_ref_known(v___y_370_, 1);
+1490: v_globalPosition_384_ = lean_ctor_get(v_geo_262_, 3);
+1491: v___x_385_ = lean_box(v___x_367_);
+1492: lean_inc_ref(v_globalPosition_384_);
+1493: lean_inc_ref(v_code_267_);
+1494: v___x_386_ = lean_apply_3(v_globalPosition_384_, v_val_383_, v_code_267_, v___x_385_);
+1495: v___y_364_ = v___x_373_;
+1496: v___y_365_ = v___x_386_;
+1497: goto v___jp_363_;
+1498: }
+1499: }
+1500: }
+1501: }
+1502: else
+1503: {
+1504: lean_object* v___x_387_; lean_object* v___x_388_; 
+1505: lean_dec_ref(v_gap_371_);
+1506: lean_dec(v___y_370_);
+1507: lean_dec_ref(v_metadata_269_);
+1508: lean_dec(v_altitude_268_);
+1509: lean_dec_ref(v_code_267_);
+1510: lean_dec_ref(v_timestamp_266_);
+1511: lean_dec_ref(v_updateReference_263_);
+1512: lean_dec_ref(v_geo_262_);
+1513: v___x_387_ = lean_box(0);
+1514: v___x_388_ = lean_alloc_ctor(0, 3, 1);
+1515: lean_ctor_set(v___x_388_, 0, v_state_264_);
+1516: lean_ctor_set(v___x_388_, 1, v_reference_265_);
+1517: lean_ctor_set(v___x_388_, 2, v___x_387_);
+1518: lean_ctor_set_uint8(v___x_388_, sizeof(void*)*3, v___x_367_);
+1519: return v___x_388_;
+1520: }
+1521: }
+1522: v___jp_389_:
+1523: {
+1524: if (v_odd_270_ == 0)
+1525: {
+1526: lean_object* v_oddMessage_391_; 
+1527: v_oddMessage_391_ = lean_ctor_get(v_state_264_, 8);
+1528: lean_inc(v_oddMessage_391_);
+1529: v___y_369_ = v___y_390_;
+1530: v___y_370_ = v_oddMessage_391_;
+1531: goto v___jp_368_;
+1532: }
+1533: else
+1534: {
+1535: lean_object* v_evenMessage_392_; 
+1536: v_evenMessage_392_ = lean_ctor_get(v_state_264_, 10);
+1537: lean_inc(v_evenMessage_392_);
+1538: v___y_369_ = v___y_390_;
+1539: v___y_370_ = v_evenMessage_392_;
+1540: goto v___jp_368_;
+1541: }
+1542: }
+1543: }
+1544: }

@@ -1,0 +1,20 @@
+721: LEAN_EXPORT lean_object* initialize_lean1090_Impl_Binary64(uint8_t builtin) {
+722: lean_object * res;
+723: if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+724: _G_initialized = true;
+725: lean_initialize_runtime_module();
+726: res = initialize_Init(builtin);
+727: if (lean_io_result_is_error(res)) return res;
+728: lean_dec_ref(res);
+729: res = initialize_Init(builtin);
+730: if (lean_io_result_is_error(res)) return res;
+731: lean_dec_ref(res);
+732: res = initialize_Std(builtin);
+733: if (lean_io_result_is_error(res)) return res;
+734: lean_dec_ref(res);
+735: lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable = _init_lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable();
+736: lean_mark_persistent(lp_lean1090_Lean1090_Impl_Binary64_powerTwoTable);
+737: lp_lean1090_Lean1090_Impl_Binary64_maxFinite = _init_lp_lean1090_Lean1090_Impl_Binary64_maxFinite();
+738: lean_mark_persistent(lp_lean1090_Lean1090_Impl_Binary64_maxFinite);
+739: return lean_io_result_mk_ok(lean_box(0));
+740: }

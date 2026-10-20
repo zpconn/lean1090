@@ -47,10 +47,25 @@ Full fixed and fresh 10M campaigns pass with 202 unchanged correctness inputs;
 all 23 contracts remain proved. Verified cleanup reclaimed 11,092,762,624 bytes
 of duplicate campaign scratch. Canonical archival and 731 independent result
 checks pass. Artifact/source binding and presentation review pass (1,427 checks).
-Private artifact publication is next. Fresh decode/CPR preparations passed
-independent review (27 and 77 checks) without builds or profiling. Complete
-those diagnostics after publication before selecting generation 26. No frozen
-file, tested-only Float callback or trusted primitive change is authorized.
+The source/artifacts are pushed to private main as
+`240cc329f5334e8557687eddc56a854edd2720bc`. Fresh decode and CPR diagnostics
+and independent reviews pass; all tracking outputs and complete state match.
+Verified cleanup reclaimed 479,670,272 allocated bytes of duplicate scratch.
+Source/history hold is released. Generation 26 is implementing a pure
+`Binary64.round` identity guard for already representable small dyadics,
+reusing the existing theorem and retaining the complete live fallback.
+Its first full gate exposed three BDS50 simplification goals after the new
+transitive proof import; a minimal proof-body repair passes, with all theorem
+types unchanged. The amended integration including `Proofs.BDS50` passes;
+the second full fixed gate and separate fresh campaign pass with all 202
+correctness inputs unchanged, full coverage and no unclassified findings.
+Fresh independent replay, verified cleanup and consolidated archive review
+also pass. The initial consolidated check stopped on an unstaged-index
+precondition; after staging the same bytes, its unchanged rerun passes. Preserve
+the failed first gate and original build evidence. No generation 26 performance
+claim exists. See PROGRESS.md and
+`docs/GEN26-ROUND-IDENTITY.md`. No frozen file, tested-only Float callback
+or trusted primitive change is authorized.
 
 Generation 23 measured **2.410234595243× decode** and **1.835727795894×
 decode plus CPR**. Decode has reached 2.00×; CPR has not. Continue until both

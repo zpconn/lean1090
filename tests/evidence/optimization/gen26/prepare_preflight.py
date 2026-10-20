@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""After root release: bind the integrated build and the already recorded fresh seeds before launch."""
+import sys
+sys.dont_write_bytecode=True
+from pathlib import Path
+from datetime import datetime,timezone
+import argparse,hashlib,importlib.util,json,subprocess
+R=Path.cwd();P=Path('tests/evidence/optimization/gen26');C=Path('.cache/gen26-gate');OLD=Path('tests/evidence/optimization/gen25')
+def sha(p):
+ with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+load=lambda p:json.loads(Path(p).read_text())
+now=lambda:datetime.now(timezone.utc).isoformat()
+def write(p,row):
+ assert not p.exists();p.write_text(json.dumps(row,indent=2)+'\n')
+arg=argparse.ArgumentParser();arg.add_argument('--authorized-release',required=True,help='Exact root release description; never infer permission from elapsed time.');args=arg.parse_args()
+assert not(P/'fresh-preflight.json').exists() and not(P/'fresh-seeds.json').exists()
+assert not(P/'fresh-execution.json').exists() and not any((P/'fresh-message').glob('*'))
+build=load(P/'integration/targeted-build.json');assert build['status']=='passed' and build['exit_code']==0
+sp=importlib.util.spec_from_file_location('fresh_gate_inventory',R/'review/diagnostics/run_generation_benchmark.py');mod=importlib.util.module_from_spec(sp);sp.loader.exec_module(mod)
+gate=mod.gate_input_hashes();assert len(gate)==202 and gate==build['all_inputs_before']==build['all_inputs_after']
+prep=load(P/'preparation.json');review=load(P/'independent-review/preparation-review.json');assert review['status']=='passed_read_only_preparation_review' and not review['findings']
+for name,h in review['bindings'].items():assert sha(name)==h,name
+helpers={name:row['sha256'] for name,row in prep['helpers'].items()}
+for name,h in helpers.items():assert sha(name)==h,name
+assert sha(__file__)==prep['preflight_preparer_sha256']
+names=set(load(OLD/'fresh-message-run.json')['source_sha256_before'])
+for directory in ['Impl','Model','Spec','Proofs','CLI','Tests']:names.update(str(p) for p in Path(directory).rglob('*.lean'))
+names.update(['lakefile.toml','lake-manifest.json','lean-toolchain','Capstones.lean']);assert len(names)==127
+sources={name:sha(name) for name in sorted(names)}
+binaries={'.lake/build/bin/'+name:sha('.lake/build/bin/'+name) for name in ['lean1090','messageGenerator','commbDifferential']}
+for name,h in binaries.items():assert h==build['binary_hashes'][Path(name).name]
+subprocess.run(['git','check-ignore','-q',str(P/'fresh-message/input.hex.gz')],check=True)
+# No shared cache emptiness assumption: root may have started the fixed gate.
+# Only our two new fixture paths are eligible, neither may already exist.
+cache_existed=C.exists();assert not cache_existed or C.is_dir()
+for name in ['fresh-commb.csv','fresh-commb.csv.coverage.csv']:assert not(C/name).exists()
+cache_entries=sorted(p.name for p in C.iterdir()) if cache_existed else []
+prior=load(OLD/'fresh-seeds.json');paths=set(prior['historical_seed_records_sha256'])|{str(OLD/'fresh-seeds.json')};seen=set();bindings={}
+for name in sorted(paths):
+ row=load(name);bindings[name]=sha(name)
+ for key,value in row.items():
+  if 'seed' in key and isinstance(value,int):seen.add(value)
+historical_count=len(seen)
+selection=load(P/'seed-selection.json')
+assert sha(P/'seed-selection.json')==prep['seed_selection']['sha256']
+assert selection['status']=='recorded_before_generation'
+assert selection['historical_seed_records_sha256']==bindings
+assert selection['historical_seed_values_checked']==historical_count
+assert selection['generator_source_sha256']==prep['unchanged_generator_inputs']
+message_seed,commb_seed=selection['message_seed'],selection['commb_seed']
+assert type(message_seed) is int and type(commb_seed) is int
+assert 0<=message_seed<2**32 and 0<=commb_seed<2**32 and message_seed!=commb_seed
+assert message_seed not in seen and commb_seed not in seen
+C.mkdir(exist_ok=True)
+commands=[['lake','env','lean','--run','scripts/FuzzCommB.lean',str(C/'fresh-commb.csv'),'100000',str(commb_seed)],['python3','-B','scripts/check_commb_fuzz.py',str(C/'fresh-commb.csv'),str(P/'fresh-commb-coverage.json')],['python3','-B','scripts/check_message_differential.py','--corpus','--generated','10000000','--seed',str(message_seed),'--commb-boundaries',str(C/'fresh-commb.csv'),'--diagnostic','--output',str(P/'fresh-message')]]
+seed=dict(recorded_utc=now(),message_seed=message_seed,commb_seed=commb_seed,sampling=selection['sampling'],seed_selection_sha256=sha(P/'seed-selection.json'),seed_selected_utc=selection['recorded_utc'],historical_seed_values_checked=historical_count,historical_seed_records_sha256=bindings,generated_messages=10000000,random_commb_assignments=100000,additional_commb_strata=prior['additional_commb_strata'],head_before_run=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),source_sha256={name:sha(name) for name in prior['source_sha256']},commands=commands,authorization_note=args.authorized_release,cache_prepared_before_generation=dict(path=str(C),prepared_utc=now(),previously_absent=not cache_existed,initial_entries=cache_entries,selected_fresh_fixture_paths_absent=True),selected_scope=prep['selected_scope'])
+write(P/'fresh-seeds.json',seed)
+record=dict(status='passed',authorized_by='/root',authorization=args.authorized_release,recorded_utc=now(),seed_record_sha256=sha(P/'fresh-seeds.json'),source_count=len(sources),source_sha256=sources,binary_sha256=binaries,helpers=helpers,integrated_build_record_sha256=sha(P/'integration/targeted-build.json'),integrated_build_log_sha256=sha(P/'integration/targeted-build.log'),gate_input_count=len(gate),gate_inputs=gate,independent_preparation_review_sha256=sha(P/'independent-review/preparation-review.json'),preparation_sha256=sha(P/'preparation.json'),preparer_sha256=sha(__file__))
+write(P/'fresh-preflight.json',record);print(json.dumps(dict(status='passed',sources=len(sources),binaries=len(binaries),gate_inputs=len(gate),message_seed=message_seed,commb_seed=commb_seed,sha256=sha(P/'fresh-preflight.json'))))

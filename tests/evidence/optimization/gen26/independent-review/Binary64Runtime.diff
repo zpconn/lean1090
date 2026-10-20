@@ -1,0 +1,123 @@
+--- 240cc329f5334e8557687eddc56a854edd2720bc:Proofs/Binary64Runtime.lean
++++ Proofs/Binary64Runtime.lean
+@@ -1,5 +1,6 @@
+ import Impl.Binary64
+ import Spec.Binary64
++import Proofs.Binary64Dyadic
+ 
+ /-!
+ The runtime power table is indexed only by format exponents. Its constructor
+@@ -44,9 +45,29 @@
+ theorem exponent_eq (x : Rat) : Impl.Binary64.exponent x = Spec.Binary64.exponent x := by
+   simp only [Impl.Binary64.exponent, Spec.Binary64.exponent, powerTwo_eq]
+ 
++theorem roundFallback_eq (x : Rat) :
++    Impl.Binary64.roundFallback x = Spec.Binary64.round x := by
++  simp only [Impl.Binary64.roundFallback, Spec.Binary64.round, exponent_eq, powerTwo_eq,
++    nearestEven_eq]
++
+ theorem round_eq (x : Rat) : Impl.Binary64.round x = Spec.Binary64.round x := by
+-  simp only [Impl.Binary64.round, Spec.Binary64.round, exponent_eq, powerTwo_eq,
+-    nearestEven_eq]
++  unfold Impl.Binary64.round
++  split
++  next numeratorBound =>
++    dsimp only
++    split
++    next guard =>
++      have denominator : x.den = 2 ^ x.den.log2 := by
++        simpa only [Nat.shiftLeft_eq, one_mul] using guard.2
++      exact (Binary64Dyadic.round_eq x x.den.log2 denominator numeratorBound guard.1).symm
++    next => exact roundFallback_eq x
++  next => exact roundFallback_eq x
++
++theorem round_small_dyadic (x : Rat) (k : Nat) (hden : x.den = 2^k)
++    (hn : x.num.natAbs < 2^53) (hk : k ≤ 1074) :
++    Impl.Binary64.round x = x := by
++  rw [round_eq]
++  exact Binary64Dyadic.round_eq x k hden hn hk
+ 
+ theorem maxFinite_eq : Impl.Binary64.maxFinite = Spec.Binary64.maxFinite := by
+   simp only [Impl.Binary64.maxFinite, Spec.Binary64.maxFinite, powerTwo_eq]
+@@ -121,6 +142,59 @@
+   rw [powerTwo_eq]
+   decide +kernel
+ 
++/-- Evaluate the guard directly, without constructing the runtime power table. -/
++theorem round_guard_zero_sign_witness :
++    Impl.Binary64.round 0 = 0 ∧ Impl.Binary64.round (3/2 : Rat) = 3/2 ∧
++    Impl.Binary64.round (-3/2 : Rat) = -3/2 := by decide +kernel
++
++theorem round_guard_numerator_boundary_witness :
++    Impl.Binary64.round ((2^53 - 1 : Nat) : Rat) = ((2^53 - 1 : Nat) : Rat) ∧
++    Impl.Binary64.round (-((2^53 - 1 : Nat) : Rat)) = -((2^53 - 1 : Nat) : Rat) ∧
++    ¬((2^53 : Rat).num.natAbs < 2^53) := by decide +kernel
++
++theorem round_guard_min_subnormal_witness :
++    Impl.Binary64.round (1 / (2^1074 : Nat) : Rat) = (1 / (2^1074 : Nat) : Rat) ∧
++    Impl.Binary64.round (-1 / (2^1074 : Nat) : Rat) = (-1 / (2^1074 : Nat) : Rat) := by
++  decide +kernel
++
++/-- Rejected guards retain the callable fallback even for exactly representable
++values at the deliberately conservative numerator threshold. -/
++theorem round_guard_rejected_inputs_witness :
++    Impl.Binary64.round (2^53 : Rat) = Impl.Binary64.roundFallback (2^53 : Rat) ∧
++    Impl.Binary64.round (1 / (2^1075 : Nat) : Rat) =
++      Impl.Binary64.roundFallback (1 / (2^1075 : Nat) : Rat) ∧
++    Impl.Binary64.round (1/3 : Rat) = Impl.Binary64.roundFallback (1/3 : Rat) := by
++  constructor
++  · have hn : ¬((2^53 : Rat).num.natAbs < 2^53) := by decide +kernel
++    simp only [Impl.Binary64.round, hn, ↓reduceIte]
++  · constructor
++    · have hn : (1 / (2^1075 : Nat) : Rat).num.natAbs < 2^53 := by decide +kernel
++      have hd : ¬((1 / (2^1075 : Nat) : Rat).den.log2 ≤ 1074 ∧
++          (1 / (2^1075 : Nat) : Rat).den =
++            1 <<< (1 / (2^1075 : Nat) : Rat).den.log2) := by decide +kernel
++      simp only [Impl.Binary64.round, hn, hd, ↓reduceIte]
++    · have hn : (1/3 : Rat).num.natAbs < 2^53 := by decide +kernel
++      have hd : ¬((1/3 : Rat).den.log2 ≤ 1074 ∧
++          (1/3 : Rat).den = 1 <<< (1/3 : Rat).den.log2) := by decide +kernel
++      simp only [Impl.Binary64.round, hn, hd, ↓reduceIte]
++
++/-- Evaluate the frozen formula after refinement, avoiding table reduction. -/
++theorem round_guard_underflow_ties_witness :
++    Impl.Binary64.round (1 / (2^1075 : Nat) : Rat) = 0 ∧
++    Impl.Binary64.round (-1 / (2^1075 : Nat) : Rat) = 0 ∧
++    Impl.Binary64.round (3 / (2^1076 : Nat) : Rat) = 1 / (2^1074 : Nat) ∧
++    Impl.Binary64.round (-3 / (2^1076 : Nat) : Rat) = -1 / (2^1074 : Nat) := by
++  simp only [round_eq]
++  decide +kernel
++
++theorem round_guard_normal_ties_witness :
++    Impl.Binary64.round (1 + 1 / (2^53 : Nat) : Rat) = 1 ∧
++    Impl.Binary64.round (1 + 3 / (2^53 : Nat) : Rat) = 1 + 1 / (2^51 : Nat) ∧
++    Impl.Binary64.round (2^53 : Rat) = 2^53 ∧
++    Impl.Binary64.round (1/3 : Rat) = (6004799503160661 / (2^54 : Nat) : Rat) := by
++  simp only [round_eq]
++  decide +kernel
++
+ #print axioms powerTwoFormula_eq
+ #print axioms powerTwoTable_size
+ #print axioms powerTwoTable_get
+@@ -128,7 +202,9 @@
+ #print axioms powerTwo_fallback
+ #print axioms nearestEven_eq
+ #print axioms exponent_eq
++#print axioms roundFallback_eq
+ #print axioms round_eq
++#print axioms round_small_dyadic
+ #print axioms maxFinite_eq
+ #print axioms inRange_eq
+ #print axioms literal_eq
+@@ -153,5 +229,11 @@
+ #print axioms sign_and_zero_witness
+ #print axioms last_entry_witness
+ #print axioms above_table_witness
++#print axioms round_guard_zero_sign_witness
++#print axioms round_guard_numerator_boundary_witness
++#print axioms round_guard_min_subnormal_witness
++#print axioms round_guard_rejected_inputs_witness
++#print axioms round_guard_underflow_ties_witness
++#print axioms round_guard_normal_ties_witness
+ 
+ end Lean1090.Proofs.Binary64Runtime
