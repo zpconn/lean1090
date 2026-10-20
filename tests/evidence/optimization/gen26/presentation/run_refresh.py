@@ -170,4 +170,4 @@ except BaseException as error:
     record.update(status='failed', finished_utc=now(), error=repr(error), traceback=traceback.format_exc())
     save(E / 'execution.json', record)
     raise
-print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':24}))
+print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':26}))

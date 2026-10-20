@@ -1,0 +1,184 @@
+{
+  "status": "passed",
+  "generation": 26,
+  "completed_utc": "2026-10-20T01:20:21.847403+00:00",
+  "benchmark_review_sha256": "accd4fed8603d7f3f949e1af36e9ca6e03a1b419951bd20f460740811012b34c",
+  "timed_commit": "c1a28b1027a60d5579e0d1f8dc92ca07bb518ed8",
+  "csv_rows": 54,
+  "gif_frames": 27,
+  "exact_target_status": {
+    "target": {
+      "numerator": 2,
+      "denominator": 1
+    },
+    "mode_reached": {
+      "decode": true,
+      "cpr": true
+    },
+    "all_modes_reached": true,
+    "medians_nanoseconds": {
+      "decode": {
+        "rs1090": 809027578,
+        "lean1090": 302761535
+      },
+      "cpr": {
+        "rs1090": 808891221,
+        "lean1090": 401637128
+      }
+    },
+    "README_status_text": "both targets are reached."
+  },
+  "signed_cpr_overhead": {
+    "source_sha256": "430fcf53df41f5be84734f1be9f55f4ef2f21e7789e65f5fc5a0476bfef8287c",
+    "exact_inputs": {
+      "messages_per_interval": 172432,
+      "formula": "1e6 / cpr_messages_per_second - 1e6 / decode_messages_per_second",
+      "interpretation": "Difference of independently measured mode medians; includes measurement noise. Signed values are retained without clamping.",
+      "implementations": {
+        "lean1090": {
+          "median_nanoseconds": {
+            "decode": 302761535,
+            "cpr": 401637128
+          },
+          "difference_nanoseconds": 98875593,
+          "microseconds_per_message_divisor": 172432000,
+          "microseconds_per_message": 0.5734178864711886
+        },
+        "rs1090": {
+          "median_nanoseconds": {
+            "decode": 809027578,
+            "cpr": 808891221
+          },
+          "difference_nanoseconds": -136357,
+          "microseconds_per_message_divisor": 172432000,
+          "microseconds_per_message": -0.0007907870928829916
+        }
+      }
+    },
+    "displayed_microseconds_per_message": {
+      "lean1090": "+0.573417886471",
+      "rs1090": "-0.000790787093"
+    }
+  },
+  "csv_sha256": "2dd13d2aa70738936ac6421318d278387d63e3b1e829f8d5d7a7002ad1142167",
+  "csv_unchanged": true,
+  "commands": [
+    {
+      "label": "render",
+      "argv": [
+        ".cache/venv/bin/python",
+        "-B",
+        "review/presentation/render_throughput.py",
+        "--expected-generations",
+        "27"
+      ],
+      "started_utc": "2026-10-20T01:19:37.806086+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-20T01:19:42.226834+00:00",
+      "stdout_sha256": "8495c3a93a6f297ab3ba5463d6398fa4b27cc7ad32d09d8b552eb91ac16717bf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "verify",
+      "argv": [
+        ".cache/venv/bin/python",
+        "-B",
+        "review/presentation/verify_throughput.py",
+        "--expected-generations",
+        "27",
+        "--output",
+        "tests/evidence/optimization/gen26/presentation/verification.json",
+        "--preview-dir",
+        ".cache/presentation-gen26"
+      ],
+      "started_utc": "2026-10-20T01:19:42.265740+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-20T01:19:45.825174+00:00",
+      "stdout_sha256": "d51f1fadaa4604fdbbb950050a060371f7a03d2c6fb0c149cc842b2c8d958015",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "readme",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/evidence/optimization/gen26/presentation/check_presentation.py",
+        "--generation",
+        "26",
+        "--output",
+        "tests/evidence/optimization/gen26/presentation/readme-verification.json"
+      ],
+      "started_utc": "2026-10-20T01:19:45.863558+00:00",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "finished_utc": "2026-10-20T01:19:45.895176+00:00",
+      "stdout_sha256": "cfbbf8e136f6d293771328a2fc5aa4bbc7259e3758740cdafd9fa6787b5c4bda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "outputs": {
+    "README.md": "6c3e548649308899ecea8dd54c30bc8a6535fc202c5518d7411db3a07ac03cf2",
+    "docs/images/throughput-data.json": "dc7b5e7e59f688296aa1a6900a69eaf42c1842dd4b285866e35063186cbfecd7",
+    "docs/images/throughput.gif": "1bd039f00ecaf6ac608ea016424ef100a603de44aa6161a9470828bc7cb5af52",
+    "docs/images/throughput.png": "3741a52170674829bf21fbbdbcec0c841fdb89db4b96b2aee2c7ac13b8096aee",
+    "docs/images/throughput.svg": "07b117064c2e0f4fe4213c12d9a15f044a5f340a8e012505b71d619501cb6807",
+    "review/packaging/check_presentation.py": "d21b3ef563e88dd05dd85c50a879a94fa24368404c42e07803cf90c2bb0f188f",
+    "review/presentation/render_throughput.py": "8ae36a8cec232f20b29e540b7664aafa46655c5f1826cd91d5330c03b58d872b",
+    "review/presentation/verify_throughput.py": "4fb0c2bfdde70c6136e4c678501fa31e83dff5937fe71bd95630dc2e181eb7c8",
+    "tests/evidence/optimization/gen26/presentation/adapter-review.json": "58ca787aa082219ad22acd8b48bcd245df660b22967ddf62273eecfee5d43e10",
+    "tests/evidence/optimization/gen26/presentation/check_adapter_sources.py": "822aafc67ebaefe3f005a016a96cc50b7916be826b3488a093afa66c69225cfc",
+    "tests/evidence/optimization/gen26/presentation/check_adapter_sources.py.diff": "1ead7d319ae110d182070aacd681e541bf20fd48c264f948d35bf94fc5d38fba",
+    "tests/evidence/optimization/gen26/presentation/check_independent.py": "55770ffb58da870493cbbd0609c6a31a21ec85e0af3e403c022c959f3872bbe6",
+    "tests/evidence/optimization/gen26/presentation/check_presentation.py": "8791d43eec58eaa832391f024405d36d4b5a5f267d3b410e92de57a7a875bc32",
+    "tests/evidence/optimization/gen26/presentation/check_presentation.py.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/controller.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/controller.stdout": "90bf9319cc84a6d9ae57e64f461e1f8150667b1342a844d305eafb8a6d4f4b09",
+    "tests/evidence/optimization/gen26/presentation/execution.json": "2a5350a749575f2a7eebc26bcc70787afdc8a8e4605fedf89d2fa2afd680e638",
+    "tests/evidence/optimization/gen26/presentation/extend_overhead_history.py": "19ed47784db4e343355ad2e1926b2dc9e73fce57587fb9b53ca9f182757935ad",
+    "tests/evidence/optimization/gen26/presentation/extend_overhead_history.py.diff": "5531f6dce1448b43ddd448a7aa649cbe98bca2f283a41956f6d6ce15445e8109",
+    "tests/evidence/optimization/gen26/presentation/independent-checker.diff": "d11111719252c343e802d1a51c98aade7aa7b2bd00747afb5d5682620e36255e",
+    "tests/evidence/optimization/gen26/presentation/independent-reviewer-preparation.json": "2e93e9773ec0d2f96582060776f3e50ec773b1fa66c1e230ca7eaa36e525a492",
+    "tests/evidence/optimization/gen26/presentation/overhead-extension.json": "72ee61f7f37ff4abc4783dea513e19c895f5cc15352182dcfb484e44c9de9e07",
+    "tests/evidence/optimization/gen26/presentation/overhead.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/overhead.stdout": "f56e8dfdd95483d867b8a9d5519cc89b27d3665833709aad6fb7c3d81d1d9f1e",
+    "tests/evidence/optimization/gen26/presentation/preparation.json": "7f0f1d46ca4489aa700dfcde26cdfa3a48d95bb27c140b20535e2be2e56fc3f2",
+    "tests/evidence/optimization/gen26/presentation/readme-verification.json": "fbea86576b6959f20bd4a72818bb4029b79db9ba0b8e03620721f91fd4a27f87",
+    "tests/evidence/optimization/gen26/presentation/readme.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/readme.stdout": "cfbbf8e136f6d293771328a2fc5aa4bbc7259e3758740cdafd9fa6787b5c4bda",
+    "tests/evidence/optimization/gen26/presentation/render.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/render.stdout": "8495c3a93a6f297ab3ba5463d6398fa4b27cc7ad32d09d8b552eb91ac16717bf",
+    "tests/evidence/optimization/gen26/presentation/run_refresh.py": "65b27881cccb718292f1b441d5687357652a46e7681451ac45f80a24559bed03",
+    "tests/evidence/optimization/gen26/presentation/run_refresh.py.diff": "440d2b1932b335d70625073a8a47997d726bf79de30f71292c624d97fc54f6b7",
+    "tests/evidence/optimization/gen26/presentation/seal_presentation.py": "f3db2113ba5487fac9acd4b4fa2f1a902a165817fe7b468acb33ba4ce3b74f7f",
+    "tests/evidence/optimization/gen26/presentation/seal_presentation.py.diff": "5ff7347c1bd97a415d558d4bd18e3838b11e1c755204b470bb0ff8b904793355",
+    "tests/evidence/optimization/gen26/presentation/verification.json": "d51f1fadaa4604fdbbb950050a060371f7a03d2c6fb0c149cc842b2c8d958015",
+    "tests/evidence/optimization/gen26/presentation/verify.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/evidence/optimization/gen26/presentation/verify.stdout": "d51f1fadaa4604fdbbb950050a060371f7a03d2c6fb0c149cc842b2c8d958015",
+    "tests/evidence/optimization/gen26/presentation/visual-review.json": "c08a25897c03924d2d3aa8ec250c7e016e85b8e036f5d1083f1c37d5d5a02a56"
+  },
+  "checks": {
+    "source_artist_frame_values": 1512,
+    "README_checks": 32,
+    "local_links": 95,
+    "capstones_verbatim": true,
+    "correctness_inputs": 202,
+    "all_held_inputs_rehashed_at_completion": 282,
+    "all_correctness_and_measured_native_inputs_held": true
+  },
+  "prior_presentation_git_binding": "c1a28b1027a60d5579e0d1f8dc92ca07bb518ed8",
+  "producer_attempts": [
+    {
+      "attempt": 1,
+      "status": "passed"
+    }
+  ],
+  "limitations": "Presentation only. No benchmark, decoder, proof build or profiler executed. Original presentation remains in Git history; all benchmark CSV/report/archive bytes retained. Evidence-local checker adds exact per-mode and conjunctive target status plus signed CPR overhead from exact medians; generic checker and renderer are unchanged. Separate independent presentation review follows this producer seal."
+}

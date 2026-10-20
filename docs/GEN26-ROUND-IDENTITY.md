@@ -1,12 +1,14 @@
 # Generation 26: skip rounding already representable rationals
 
-**Targeted proof build passes; no generation 26 performance result exists.**
+**Generation 26 measured 2.672161039215× decode and 2.013985173701× CPR.**
+Both targets are reached; optimization is stopped for user review.
+[Measured report and complete raw samples](../bench/GEN26.md).
 
-Generation 25 remains the latest measurement: 2.649719962329× decode and
+Before this change, generation 25 measured 2.649719962329× decode and
 1.947699046086× decode plus CPR. Its signed CPR overhead is
 0.669397240651 µs/message for Lean and 0.041956313213 for rs1090, calculated
 from independent mode medians and including noise. The combined 2.00× target
-remains unmet.
+was unmet before generation 26.
 
 ## Measured reason for this change
 
@@ -116,6 +118,7 @@ and all three rejection conditions reaching the original fallback. The frozen
 CPR loop reaches the live policy, subtraction/division and rounding functions.
 No argument hit rate, allocation claim or timing result is inferred. Receipt:
 `84ca7ee8c29fa2c065240a9734a52e278cdbc91f30a5d1c530c686b2052cd356`.
-Both complete campaigns pass; isolated measurements remain pending. The
+Both complete campaigns and the isolated measurements pass. The results,
+including signed overhead and clock observations, are retained in the report. The
 pre-timing plan retains a reviewer-detected correction to one prior-generation
 filename guard; no benchmark or plan execution preceded that correction.

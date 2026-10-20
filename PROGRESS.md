@@ -2,7 +2,51 @@
 
 ## Status and current authorization
 
-**Current state: optimization continues toward 2.00× rs1090 in both modes.**
+**Current state: generation 26 reached both 2.00× targets; optimization is
+stopped for user review.** Decode measured **2.672161039215× rs1090** and
+decode plus CPR measured **2.013985173701×**. Lean/rs1090 medians are
+302.761535/809.027578 ms for decode and 401.637128/808.891221 ms for CPR.
+Signed CPR overhead is **+0.573417886471 µs/message for Lean** and
+**−0.000790787093 for rs1090**, from independent mode medians and including
+noise. The negative oracle difference is retained without clamping.
+
+Timed source: `c1a28b1027a60d5579e0d1f8dc92ca07bb518ed8`, authored and
+committed by `zpconn <zpconn@gmail.com>`. Actual fresh worker SHA-256:
+`37f8b00d9d49754a4afd27f21c16c585e4548cd8481ffe5cb83dc5949bf90370`.
+All 96 samples, six clean-tree/lock checks, 22 fresh native sets and four
+Ultimate Performance captures are retained. No sample was adjusted or repeated.
+There were no UTC backsteps; outer UTC-minus-monotonic differences are
++437332.268 µs (decode) and +411582.025 µs (CPR), retained unadjusted.
+Worker monotonic durations determine all results. Environment: Intel Core
+Ultra 9 285K / WSL2, CPU 0, with host-observation limits recorded.
+[Report and raw samples](bench/GEN26.md). Canonical archive:
+`5149ec6e4a572e90f8c003e3ff2ea9f77438147ace613862c31a192683a9c4f4`.
+Independent result review passed all 731 checks on its first execution:
+`accd4fed8603d7f3f949e1af36e9ca6e03a1b419951bd20f460740811012b34c`.
+Artifact/source binding also passed first execution, matching all 202 current,
+gate and timed-commit inputs:
+`8887b4f88063ac3818d2a9ce9c99f74f8def0c7f18728a96650f7ed8a66b2c7d`.
+Routine generation presentation passes: 54 CSV rows, 27 GIF frames, 1,512
+plotted values, 95 links and all 23 capstones verbatim. Root and reviewer viewed
+all four saved previews. The producer and independent checks pass on their
+first executions; a pre-execution stdout-only generation-number correction is
+retained. Presentation completion:
+`bdf83c8de46f0b8557880b2d822c17aaaaf6f92bde6fab02fc55bea24772e529`.
+Independent presentation review:
+`ab60ee6d66d401a4d7f7741f2d811d432eed0796c747a151d3899e041a0a65e0`.
+Overhead generations 0–25 are preserved and generation 26 is appended from
+all 96 raw samples and four recomputed medians. The source and reviewed
+artifacts are ready for the authorized private-repository publication under
+the user’s identity. No further optimization or final-run campaign is underway.
+
+All 23 contracts remain proved, with zero project-specific trusted primitives.
+The full fixed and separate fresh 10M campaigns pass with full coverage and
+all 202 correctness inputs unchanged; only documented differences remain.
+The software rounding guard has unrestricted refinement and a live complete
+fallback. Frozen files and Float callbacks are unchanged. Detailed validation,
+the retained failed first gate and minimal proof repair are recorded below.
+
+**Previous measurement: generation 25.**
 Generation 25 measured **2.649719962329× decode** and **1.947699046086×
 decode plus CPR**. The CPR target remains unmet. Both ratios are lower than
 generation 24; retain the result without repeating the benchmark. Lean absolute
@@ -73,11 +117,11 @@ measurement repeated. Sequential verified cleanup reclaimed 479,670,272
 allocated bytes, preserving unique perf and retained evidence. The source and
 history hold is released.
 
-**Generation 26 is in progress:** return already representable small dyadic
+**Generation 26 implementation and validation:** return already representable small dyadic
 rationals directly from the pure software rounding function, with the complete
 old algorithm as a live fallback. Current motion/pairing profiles contain
-726,978,321 inclusive instructions at that rounding boundary; guard eligibility
-and any speedup remain unmeasured. Reuse the existing exact dyadic theorem to
+726,978,321 inclusive instructions at that rounding boundary; guard eligibility was not inferred from that profile. The measured result is
+reported above. Reuse the existing exact dyadic theorem to
 preserve unconditional refinement. The targeted proof build passed first
 execution (2,042 jobs), as did the combined production/refinement build
 (3,549 jobs, 202 unchanged inputs). Independent source/proof review passed
@@ -115,8 +159,8 @@ message/Comm-B seeds remain 748,317,927 and 713,274,074, with the current
 The amended current proof review and native review pass. Native review checks
 763 conditions and 22 sets (21 unchanged siblings); the actual guard/fallback
 and CPR callers are live. The restarted gate has passed all 23 capstone
-contracts and dependency audits. Next: source commit, then the unchanged clean-commit
-benchmark protocol in both modes. See
+contracts and dependency audits. Source commit and the unchanged clean-commit benchmark protocol completed
+in both modes; results are above. See
 [the selection and proof evidence](docs/GEN26-ROUND-IDENTITY.md).
 No frozen file, tested-only Float callback or trusted primitive change is
 authorized.

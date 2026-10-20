@@ -32,5 +32,6 @@ For each implementation, overhead is `1e6 / cpr_msg_s - 1e6 / decode_msg_s`, in 
 | [23](GEN23.md) | 1.890177154 | 2.486225068 | 0.596047915 | 0.008262098 |
 | [24](GEN24.md) | 1.670055477 | 2.296455200 | 0.626399723 | 0.025449638 |
 | [25](GEN25.md) | 1.797422306 | 2.466819546 | 0.669397241 | 0.041956313 |
+| [26](GEN26.md) | 1.755831487 | 2.329249374 | 0.573417886 | -0.000790787 |
 
-All 104 implementation/mode medians were independently recomputed from 21 measured samples apiece, after the three warmups. Generations 0–24 retain the original reviewed values; generation 25 extends them from reviewed raw samples. [Structured values and exact integer differences](cpr-overhead.json) retain source hashes and the original recorded commit IDs. Historical attribution is documented in [the commit mapping](../docs/COMMIT-ATTRIBUTION.md).
+All 108 implementation/mode medians were independently recomputed from 21 measured samples apiece, after the three warmups. Generations 0–25 retain the original reviewed values; generation 26 extends them from reviewed raw samples. [Structured values and exact integer differences](cpr-overhead.json) retain source hashes and the original recorded commit IDs. Historical attribution is documented in [the commit mapping](../docs/COMMIT-ATTRIBUTION.md).

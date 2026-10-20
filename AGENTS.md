@@ -36,6 +36,22 @@ trusted primitives. The current lock has 104 entries and SHA-256
 
 ## Current optimization state
 
+Generation 26 reached **2.672161039215× decode** and **2.013985173701×
+decode plus CPR**. Both 2.00× targets are met. **Stop optimization for user
+review; do not start generation 27 or final-run work.** Timed source:
+`c1a28b1027a60d5579e0d1f8dc92ca07bb518ed8`, under the user's identity.
+Report and all samples: `bench/GEN26.md`, `bench/runs/gen26/`. Signed CPR
+overhead is +0.573417886471 µs/message for Lean and −0.000790787093 for
+rs1090, from independent medians and including noise. The full fixed/fresh
+campaigns and all 23 contracts pass, with 202 unchanged correctness inputs.
+The change stays inside proved software arithmetic; no frozen file, Float
+callback or trusted primitive changed. Independent result review and artifact
+source binding and presentation review pass. Source and reviewed generation
+artifacts are ready for the authorized private push. After publication, wait
+for user review; the 2.00× objective is achieved on this recorded workload.
+
+The following records retain the preceding generation and validation history.
+
 Generation 25 measured **2.649719962329× decode** and **1.947699046086×
 decode plus CPR**. Both ratios are below generation 24; retain the result
 without rerunning it. CPR remains below the 2.00× target. Timed source:
@@ -62,8 +78,7 @@ correctness inputs unchanged, full coverage and no unclassified findings.
 Fresh independent replay, verified cleanup and consolidated archive review
 also pass. The initial consolidated check stopped on an unstaged-index
 precondition; after staging the same bytes, its unchanged rerun passes. Preserve
-the failed first gate and original build evidence. No generation 26 performance
-claim exists. See PROGRESS.md and
+the failed first gate and original build evidence. Generation 26’s measured result is reported above. See PROGRESS.md and
 `docs/GEN26-ROUND-IDENTITY.md`. No frozen file, tested-only Float callback
 or trusted primitive change is authorized.
 

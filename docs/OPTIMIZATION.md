@@ -1,12 +1,13 @@
 # Verified score optimization order
 
-The current target is **2.00× rs1090 in both decode and decode-plus-CPR**.
-Stop for review only when both measured ratios reach it. Generation 25 measured
-2.64972× decode and 1.94770× with CPR; [its report](../bench/GEN25.md) retains
-all samples and conditions. Both ratios are lower than generation 24. CPR
-remains below 2.00×; retain the result without repeating the benchmark. Fresh
-diagnostics precede the next change. No project-specific trusted primitive
-is authorized.
+Generation 26 reached the **2.00× rs1090 target in both modes**:
+**2.672161039215× decode** and **2.013985173701× decode plus CPR**.
+[Its report](../bench/GEN26.md) retains every sample and the measurement
+conditions. Optimization is stopped for user review; no generation 27 or final
+validation campaign is underway. The improvement stays in the proved software
+rounding path, with zero project-specific trusted primitives. Signed CPR
+overhead is +0.573417886471 µs/message for Lean and −0.000790787093 for
+rs1090, from independent mode medians and including noise.
 
 CPR changes must remain inside the proved boundary. Moving work into tested-only
 Float callbacks, including haversine, or adding tested-only Float code requires
@@ -71,16 +72,14 @@ frozen, and the whole-decoder baseline was taken with the prescribed ABAB
 protocol before generation 1. Historical approvals and hashes remain in
 [FROZEN-CHANGES.md](FROZEN-CHANGES.md).
 
-## Unselected candidates after generation 22
+## Historical candidates after generation 22
 
-Generation 22 measured reuse of the parsed word for CRC. Later choices
-must follow fresh diagnostics of the resulting measured code; the following
-are possibilities, not implemented changes or predicted speedups.
+Generation 22 measured reuse of the parsed word for CRC. Any future work requires the user’s review release and fresh diagnostics;
+the following historical list is not an active implementation plan.
 
-- Exact dyadic inputs can bypass software rounding using the existing
-  `Binary64Dyadic.round_eq` theorem and a proved guard. Measure the admitted
-  population first: division results need not have power-of-two denominators,
-  so the current rounding call count is not a shortcut hit count.
+- Generation 26 implemented the exact small-dyadic rounding guard using
+  `Binary64Dyadic.round_eq`. Its all-input refinement and measured result are
+  retained. Call counts never established its guard-hit population.
 - The general rounding algorithm could compute its scaled quotient and
   nearest-even decision directly with integer shifts and division, avoiding
   intermediate rational normalization. This needs an all-input proof that

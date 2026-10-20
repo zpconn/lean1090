@@ -101,3 +101,9 @@
      for label, argv in commands:
          item = {'label': label, 'argv': argv, 'started_utc': now(), 'environment': {'PYTHONDONTWRITEBYTECODE': '1'}}
          with (E / (label + '.stdout')).open('x') as out, (E / (label + '.stderr')).open('x') as err:
+@@ -170,4 +170,4 @@
+     record.update(status='failed', finished_utc=now(), error=repr(error), traceback=traceback.format_exc())
+     save(E / 'execution.json', record)
+     raise
+-print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':24}))
++print(json.dumps({'status':'passed', 'execution_sha256':sha(E/'execution.json'), 'generation':26}))
