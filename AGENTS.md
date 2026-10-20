@@ -47,8 +47,11 @@ campaigns and all 23 contracts pass, with 202 unchanged correctness inputs.
 The change stays inside proved software arithmetic; no frozen file, Float
 callback or trusted primitive changed. Independent result review and artifact
 source binding and presentation review pass. Source and reviewed generation
-artifacts are ready for the authorized private push. After publication, wait
-for user review; the 2.00× objective is achieved on this recorded workload.
+artifacts are pushed to private `main` as
+`ad9b89c99f35055960d3235f7d1d798f2a12a10d`. Postcommit verification also
+confirms all 202 inputs equal both measured and artifact commits; its cosmetic
+check/schema corrections are retained in PROGRESS.md. Wait for user review;
+the 2.00× objective is achieved on this recorded workload.
 
 The following records retain the preceding generation and validation history.
 

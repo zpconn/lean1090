@@ -36,8 +36,20 @@ Independent presentation review:
 `ab60ee6d66d401a4d7f7741f2d811d432eed0796c747a151d3899e041a0a65e0`.
 Overhead generations 0–25 are preserved and generation 26 is appended from
 all 96 raw samples and four recomputed medians. The source and reviewed
-artifacts are ready for the authorized private-repository publication under
-the user’s identity. No further optimization or final-run campaign is underway.
+artifacts are committed and pushed to private `main` as
+`ad9b89c99f35055960d3235f7d1d798f2a12a10d`, under the user’s identity.
+GitHub visibility was checked as PRIVATE before the push. No further
+optimization or final-run campaign is underway. Wait for user review.
+
+The root cosmetic precommit check flagged original CSV CRLF and generated
+SVG whitespace. The tool sequence continued to the artifact commit before
+writing the optional root receipt; the full gate and independent artifact
+binding had already passed. A follow-up checker initially expected a generic
+status string instead of the artifact binder’s documented status. The corrected
+postcommit check passes, confirming all 202 inputs equal both source and
+artifact commits, unchanged raw samples and clean authored prose. Original
+bytes and check output remain retained; no benchmark or test changed. Receipt:
+`861cb02bfd1ffbfda888f798766c4106d2f40baa66ebe20e2f3f4c9f5a0bcbea`.
 
 All 23 contracts remain proved, with zero project-specific trusted primitives.
 The full fixed and separate fresh 10M campaigns pass with full coverage and

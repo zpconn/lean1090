@@ -1,0 +1,40 @@
+{
+  "status": "passed_after_commit",
+  "checked_utc": "2026-10-20T01:22:31.923371+00:00",
+  "artifact_commit": "ad9b89c99f35055960d3235f7d1d798f2a12a10d",
+  "source_commit": "c1a28b1027a60d5579e0d1f8dc92ca07bb518ed8",
+  "author": "zpconn <zpconn@gmail.com>",
+  "unchanged_correctness_inputs": 202,
+  "gate_sha256": "1b882756515921b1d3d518d981e5adc423bf06fdd4bc9ba9189e83a30ec3804f",
+  "review_sha256": {
+    "bench/runs/gen26/results-review.json": "accd4fed8603d7f3f949e1af36e9ca6e03a1b419951bd20f460740811012b34c",
+    "tests/evidence/optimization/gen26/independent-review/artifact-commit-source-binding.json": "8887b4f88063ac3818d2a9ce9c99f74f8def0c7f18728a96650f7ed8a66b2c7d",
+    "tests/evidence/optimization/gen26/presentation/completion.json": "bdf83c8de46f0b8557880b2d822c17aaaaf6f92bde6fab02fc55bea24772e529",
+    "tests/evidence/optimization/gen26/presentation/independent-review.json": "ab60ee6d66d401a4d7f7741f2d811d432eed0796c747a151d3899e041a0a65e0"
+  },
+  "review_statuses": {
+    "bench/runs/gen26/results-review.json": "passed",
+    "tests/evidence/optimization/gen26/independent-review/artifact-commit-source-binding.json": "passed_unchanged_gate_input_binding_for_artifact_commit",
+    "tests/evidence/optimization/gen26/presentation/completion.json": "passed",
+    "tests/evidence/optimization/gen26/presentation/independent-review.json": "passed"
+  },
+  "artifact_files": 112,
+  "no_frozen_change": true,
+  "no_correctness_input_change": true,
+  "no_file_above_25_MiB": true,
+  "initial_whitespace_check_exit": 2,
+  "original_whitespace_files": [
+    "bench/runs/gen26/cpr/samples.csv",
+    "bench/runs/gen26/decode/samples.csv",
+    "docs/images/throughput.svg"
+  ],
+  "authored_whitespace_check_exit": 0,
+  "original_sample_bytes_preserved": true,
+  "explanation": "Root cosmetic precommit git diff --check flagged original frozen-interleaver CSV CRLF and generated SVG path whitespace. The orchestration did not abort subsequent tools, so artifact commit occurred before the optional root receipt was written. Full-gate/source and independent result/artifact checks had already passed. The first postcommit verifier reached review statuses then rejected the artifact binder because it expected generic passed rather than its exact documented status. No existing receipt changed. This successful corrected check validates that exact status, all 202 inputs against both commits, original sample bytes and authored prose separately. No test, benchmark or frozen file changed.",
+  "logs": {
+    "original-whitespace-check.stdout": "1051dfe138dbe2724dce1ace56d7da6dc469fc49eed5a89f03df5d6d3897d94e",
+    "original-whitespace-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "authored-whitespace-check.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "authored-whitespace-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
