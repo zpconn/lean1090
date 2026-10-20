@@ -1,0 +1,23 @@
++ python3 scripts/check_lock.py
+Lock audit: 104 frozen files match SHA-256.
+exit_code=0
+
++ git -C vendor/rs1090 diff --exit-code HEAD -- crates/rs1090 Cargo.toml Cargo.lock
+exit_code=0
+
++ lake build Spec.Message Impl.Message
+⚠ [1418/1442] Replayed Spec.Parity
+warning: Spec/Parity.lean: imports `Mathlib.Algebra.Polynomial.Div` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Spec/Parity.lean: imports `Mathlib.Data.ZMod.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+Build completed successfully (1442 jobs).
+exit_code=0
+
++ lake env lean --run Tests/AltitudeDifferential.lean
+exit_code=0
+
++ cargo build --locked --offline --manifest-path differential/message-oracle/Cargo.toml --profile dist --bin lean1090-message-oracle
+    Finished `dist` profile [optimized] target(s) in 0.13s
+exit_code=0
+
++ /home/zpconn/code/lean1090/.cache/rs1090-target/dist/lean1090-message-oracle
+exit_code=0

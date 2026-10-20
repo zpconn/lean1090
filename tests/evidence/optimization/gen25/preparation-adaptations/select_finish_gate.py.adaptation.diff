@@ -1,0 +1,28 @@
+--- tests/evidence/optimization/gen24/select_finish_gate.py
++++ tests/evidence/optimization/gen25/select_finish_gate.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Select only completed gen24 scratch; archive/cleanup needs explicit --execute.
++"""Select only completed gen25 scratch; archive/cleanup needs explicit --execute.
+ 
+ The caller attests that fixed/fresh producers have stopped. Selection metadata
+ never authorizes deletion itself: the unchanged wrapper verifies retained bytes.
+@@ -94,15 +94,15 @@
+     assert all(len(paths) == 1 for paths in candidates.values()), candidates
+     selected = {name: paths[0] for name, paths in candidates.items()}
+     assert selected['message'] == fresh['fixed_gate_scratch_preserved']
+-    command = ['python3', '-B', 'review/diagnostics/finish_generation_gate.py', '--generation', '24',
++    command = ['python3', '-B', 'review/diagnostics/finish_generation_gate.py', '--generation', '25',
+                '--gate-evidence', rel(gate_path), '--gate-log', rel(log),
+                '--receipt', rel(BASE / 'post-gate-archive-cleanup'), '--apply', '--quiescent']
+     for name in PREFIXES:
+         command += ['--scratch', selected[name]]
+-    command += ['--archive-root', '.cache/gen24-gate/fixed-message-archive']
++    command += ['--archive-root', '.cache/gen25-gate/fixed-message-archive']
+     for name in PREFIXES:
+         if name != 'message':
+-            command += ['--archive-root', '.cache/gen24-gate/component-archives/' + name]
++            command += ['--archive-root', '.cache/gen25-gate/component-archives/' + name]
+     for path in protected_paths:
+         command += ['--protect', rel(path)]
+     record = dict(status='prepared_exact_selection_after_gate_pass', recorded_utc=datetime.now(timezone.utc).isoformat(),

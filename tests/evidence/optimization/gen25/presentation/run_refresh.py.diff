@@ -1,0 +1,103 @@
+--- tests/evidence/optimization/gen24/presentation/run_refresh.py
++++ tests/evidence/optimization/gen25/presentation/run_refresh.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Refresh presentation from the reviewed gen24 result; no native execution."""
++"""Refresh presentation from the reviewed gen25 result; no native execution."""
+ import sys
+ sys.dont_write_bytecode = True
+ import argparse
+@@ -43,19 +43,19 @@
+ args = parser.parse_args()
+ assert args.execute, 'Preparation only: execute after root release and independent result PASS.'
+ assert re.fullmatch('[0-9a-f]{64}', args.expected_review_sha256)
+-summary = load(ROOT / 'bench/runs/gen24/summary.json')
+-review = load(ROOT / 'bench/runs/gen24/results-review.json')
++summary = load(ROOT / 'bench/runs/gen25/summary.json')
++review = load(ROOT / 'bench/runs/gen25/results-review.json')
+ assert review['status'] == 'passed' and not review['findings']
+-assert review['generation'] == 24 and review['commit'] == summary['commit']
++assert review['generation'] == 25 and review['commit'] == summary['commit']
+ assert review['binary_sha256'] == summary['binary_sha256']
+-assert sha(ROOT / 'bench/runs/gen24/results-review.json') == args.expected_review_sha256
+-held = dict(load(ROOT / 'bench/runs/gen24/correctness-inputs.json'))
++assert sha(ROOT / 'bench/runs/gen25/results-review.json') == args.expected_review_sha256
++held = dict(load(ROOT / 'bench/runs/gen25/correctness-inputs.json'))
+ assert len(held) == 202
+-built = load(ROOT / 'bench/runs/gen24/binary-built.json')
++built = load(ROOT / 'bench/runs/gen25/binary-built.json')
+ held.update(built['native_hashes'])
+ held['.lake/build/bin/lean1090-bench'] = summary['binary_sha256']
+-for name in ['bench/results.csv', 'bench/GEN24.md', 'bench/runs/gen24/summary.json',
+-             'bench/runs/gen24/results-review.json', 'bench/runs/gen24/archive-verification.json', 'bench/runs/gen24/report-verification.json',
++for name in ['bench/results.csv', 'bench/GEN25.md', 'bench/runs/gen25/summary.json',
++             'bench/runs/gen25/results-review.json', 'bench/runs/gen25/archive-verification.json', 'bench/runs/gen25/report-verification.json',
+              'review/presentation/render_throughput.py', 'review/presentation/verify_throughput.py',
+              'review/packaging/check_presentation.py', 'bench/CPR-OVERHEAD.md', 'bench/cpr-overhead.json']:
+     held[name] = sha(ROOT / name)
+@@ -69,8 +69,8 @@
+     assert hashlib.sha256(blob).hexdigest() == sha(ROOT / name), name
+     prior[name] = {'sha256': sha(ROOT / name), 'git_blob': subprocess.check_output(
+         ['git', 'rev-parse', 'HEAD:' + name], cwd=ROOT, text=True).strip()}
+-record = {'status': 'running', 'started_utc': now(), 'generation': 24,
+-          'timed_commit': summary['commit'], 'review_sha256': sha(ROOT / 'bench/runs/gen24/results-review.json'),
++record = {'status': 'running', 'started_utc': now(), 'generation': 25,
++          'timed_commit': summary['commit'], 'review_sha256': sha(ROOT / 'bench/runs/gen25/results-review.json'),
+           'before_hashes': held, 'prior_presentation': prior,
+           'prior_presentation_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+           'controller_sha256': sha(__file__), 'commands': []}
+@@ -78,9 +78,9 @@
+ try:
+     with (ROOT / 'bench/results.csv').open(newline='') as f:
+         rows = list(csv.DictReader(f))
+-    assert len(rows) == 50
+-    latest = {row['mode']: row for row in rows if row['generation'] == '24'}
+-    previous = {row['mode']: row for row in rows if row['generation'] == '23'}
++    assert len(rows) == 52
++    latest = {row['mode']: row for row in rows if row['generation'] == '25'}
++    previous = {row['mode']: row for row in rows if row['generation'] == '24'}
+     assert set(latest) == {'decode', 'cpr'}
+     ratios = {mode: Decimal(row['lean1090_msg_s']) / Decimal(row['rs1090_msg_s'])
+               for mode, row in latest.items()}
+@@ -106,9 +106,9 @@
+     original = (ROOT / 'README.md').read_text()
+     assert '[CPR overhead history](bench/CPR-OVERHEAD.md)' in original
+     prefix, capstones = original.split('<!-- CAPSTONES:BEGIN -->', 1)
+-    prefix = prefix.replace('generation 23', 'generation 24').replace('Generation 23', 'Generation 24')
+-    prefix = prefix.replace('bench/GEN23.md', 'bench/GEN24.md').replace('bench/runs/gen23/', 'bench/runs/gen24/')
+-    prefix = prefix.replace(load(ROOT / 'bench/runs/gen23/summary.json')['commit'], summary['commit'])
++    prefix = prefix.replace('generation 24', 'generation 25').replace('Generation 24', 'Generation 25')
++    prefix = prefix.replace('bench/GEN24.md', 'bench/GEN25.md').replace('bench/runs/gen24/', 'bench/runs/gen25/')
++    prefix = prefix.replace(load(ROOT / 'bench/runs/gen24/summary.json')['commit'], summary['commit'])
+     previous_statuses = ('both targets are reached.',
+                          'decode has reached its target; CPR remains below target.',
+                          'CPR has reached its target; decode remains below target.',
+@@ -125,7 +125,7 @@
+                 f"{Decimal(row['rs1090_msg_s']):,.0f} msg/s | **{ratios[mode]:.5f}×** |")
+         prefix, count = re.subn(r'(?m)^\| ' + re.escape(label) + r' \|.*$', lambda _: line, prefix)
+         assert count == 1, label
+-    reporting = load(ROOT / 'bench/runs/gen24/report-verification.json')
++    reporting = load(ROOT / 'bench/runs/gen25/report-verification.json')
+     overhead = reporting['cpr_overhead']
+     assert overhead['messages_per_interval'] == 172432
+     displayed = {}
+@@ -145,15 +145,15 @@
+                  "and is not an isolated timing of CPR work.\n\n")
+     prefix, overhead_replacements = re.subn(r'(?m)^CPR overhead is \*\*[^\n]*\n\n', lambda _: paragraph, prefix)
+     assert overhead_replacements == 1
+-    record['signed_cpr_overhead'] = {'source_sha256': sha(ROOT / 'bench/runs/gen24/report-verification.json'),
++    record['signed_cpr_overhead'] = {'source_sha256': sha(ROOT / 'bench/runs/gen25/report-verification.json'),
+         'exact_inputs': overhead, 'displayed_microseconds_per_message': displayed}
+     (ROOT / 'README.md').write_text(prefix + '<!-- CAPSTONES:BEGIN -->' + capstones)
+     assert '[CPR overhead history](bench/CPR-OVERHEAD.md)' in (ROOT / 'README.md').read_text()
+     assert (ROOT / 'README.md').read_text().split('<!-- CAPSTONES:BEGIN -->', 1)[1] == capstones
+     commands = [
+-        ('render', ['.cache/venv/bin/python', '-B', 'review/presentation/render_throughput.py', '--expected-generations', '25']),
+-        ('verify', ['.cache/venv/bin/python', '-B', 'review/presentation/verify_throughput.py', '--expected-generations', '25', '--output', str((E/'verification.json').relative_to(ROOT)), '--preview-dir', '.cache/presentation-gen24']),
+-        ('readme', ['python3', '-B', str((E/'check_presentation.py').relative_to(ROOT)), '--generation', '24', '--output', str((E/'readme-verification.json').relative_to(ROOT))])]
++        ('render', ['.cache/venv/bin/python', '-B', 'review/presentation/render_throughput.py', '--expected-generations', '26']),
++        ('verify', ['.cache/venv/bin/python', '-B', 'review/presentation/verify_throughput.py', '--expected-generations', '26', '--output', str((E/'verification.json').relative_to(ROOT)), '--preview-dir', '.cache/presentation-gen25']),
++        ('readme', ['python3', '-B', str((E/'check_presentation.py').relative_to(ROOT)), '--generation', '25', '--output', str((E/'readme-verification.json').relative_to(ROOT))])]
+     for label, argv in commands:
+         item = {'label': label, 'argv': argv, 'started_utc': now(), 'environment': {'PYTHONDONTWRITEBYTECODE': '1'}}
+         with (E / (label + '.stdout')).open('x') as out, (E / (label + '.stderr')).open('x') as err:

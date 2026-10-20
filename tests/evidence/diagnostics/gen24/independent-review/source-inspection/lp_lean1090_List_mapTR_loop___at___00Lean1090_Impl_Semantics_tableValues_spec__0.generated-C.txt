@@ -1,0 +1,65 @@
+{
+_start:
+{
+if (lean_obj_tag(v_a_2_) == 0)
+{
+lean_object* v___x_4_; 
+v___x_4_ = l_List_reverse___redArg(v_a_3_);
+return v___x_4_;
+}
+else
+{
+lean_object* v_head_5_; lean_object* v_tail_6_; lean_object* v___x_8_; uint8_t v_isShared_9_; uint8_t v_isSharedCheck_17_; 
+v_head_5_ = lean_ctor_get(v_a_2_, 0);
+v_tail_6_ = lean_ctor_get(v_a_2_, 1);
+v_isSharedCheck_17_ = !lean_is_exclusive(v_a_2_);
+if (v_isSharedCheck_17_ == 0)
+{
+v___x_8_ = v_a_2_;
+v_isShared_9_ = v_isSharedCheck_17_;
+goto v_resetjp_7_;
+}
+else
+{
+lean_inc(v_tail_6_);
+lean_inc(v_head_5_);
+lean_dec(v_a_2_);
+v___x_8_ = lean_box(0);
+v_isShared_9_ = v_isSharedCheck_17_;
+goto v_resetjp_7_;
+}
+v_resetjp_7_:
+{
+lean_object* v_name_10_; lean_object* v___x_11_; lean_object* v___x_12_; lean_object* v___x_14_; 
+v_name_10_ = lean_ctor_get(v_head_5_, 0);
+lean_inc_ref(v_name_10_);
+v___x_11_ = lp_lean1090_Lean1090_Impl_payloadValue(v_head_5_, v_word_1_);
+v___x_12_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v___x_12_, 0, v_name_10_);
+lean_ctor_set(v___x_12_, 1, v___x_11_);
+if (v_isShared_9_ == 0)
+{
+lean_ctor_set(v___x_8_, 1, v_a_3_);
+lean_ctor_set(v___x_8_, 0, v___x_12_);
+v___x_14_ = v___x_8_;
+goto v_reusejp_13_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_16_; 
+v_reuseFailAlloc_16_ = lean_alloc_ctor(1, 2, 0);
+lean_ctor_set(v_reuseFailAlloc_16_, 0, v___x_12_);
+lean_ctor_set(v_reuseFailAlloc_16_, 1, v_a_3_);
+v___x_14_ = v_reuseFailAlloc_16_;
+goto v_reusejp_13_;
+}
+v_reusejp_13_:
+{
+v_a_2_ = v_tail_6_;
+v_a_3_ = v___x_14_;
+goto _start;
+}
+}
+}
+}
+}

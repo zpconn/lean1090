@@ -1,0 +1,52 @@
+--- tests/evidence/optimization/gen24/benchmark-preparation/prepare.py
++++ tests/evidence/optimization/gen25/benchmark-preparation/prepare.py
+@@ -25,17 +25,17 @@
+ 
+ 
+ pending = out / 'plan-pending.json'
+-assert sha(pending) == 'c630842cf75c288fef94e3466471a300c9b85089aba6fb42113253c1894c49d7'
++assert sha(pending) == '5237bbf0435e90934e847a728731d16a63f85f877dc716defec3ae53911965a9'
+ plan = read(pending)
+ assert plan['status'] == 'pending_validation_not_ready_for_timing'
+-assert plan['generation'] == 24
++assert plan['generation'] == 25
+ reporting = plan['reporting_helper']
+ assert sha(root / reporting['path']) == reporting['sha256']
+ assert sha(root / reporting['independent_review']) == reporting['independent_review_sha256']
+ raw = (root / 'bench/results.csv').read_bytes()
+ assert raw == (root / plan['prior_csv_snapshot']).read_bytes()
+ assert sha(root / 'bench/results.csv') == plan['prior_csv_sha256']
+-assert len(archive.parse_prior_csv(raw, 24)) == plan['prior_csv_rows'] == 48
++assert len(archive.parse_prior_csv(raw, 25)) == plan['prior_csv_rows'] == 50
+ requirements = plan['requirements']
+ gate = read(root / requirements['full_gate'])
+ fresh = read(root / plan['fresh_verification'])
+@@ -51,7 +51,7 @@
+ for name, digest in gate['input_hashes_after'].items():
+     assert sha(root / name) == digest, name
+ assert not native['findings'] and native['all_inputs_unchanged']
+-assert native['commb_semantic_reuse_live_path_verified']
++assert native['score_scaling_identity_live_path_verified']
+ assert native['linked_native_sets'] == requirements['native_sets'] == 22
+ assert native['integration_record_sha256'] == sha(root / requirements['combined_build'])
+ for name, digest in native['held_inputs'].items():
+@@ -64,8 +64,8 @@
+ assert completion['native_held_inputs_rechecked']
+ for name in ('plan.json', 'preparation-verification.json'):
+     assert not (out / name).exists(), 'Preserve prior preparation attempts.'
+-assert not (root / 'bench/runs/gen24').exists()
+-assert not (root / 'bench/GEN24.md').exists()
++assert not (root / 'bench/runs/gen25').exists()
++assert not (root / 'bench/GEN25.md').exists()
+ plan.update(status='prepared_validation_passed_not_measured',
+             prepared_utc=datetime.now(timezone.utc).isoformat(),
+             pending_plan_sha256=sha(pending),
+@@ -82,7 +82,7 @@
+                 'plan_sha256': sha(out / 'plan.json'), 'pending_plan_sha256': sha(pending),
+                 'helper_sha256': reporting['sha256'],
+                 'helper_independent_review_sha256': reporting['independent_review_sha256'],
+-                'prior_csv_sha256': plan['prior_csv_sha256'], 'prior_rows': 48,
++                'prior_csv_sha256': plan['prior_csv_sha256'], 'prior_rows': 50,
+                 'fresh_status': 'passed', 'fresh_verification_sha256': plan['fresh_verification_sha256'],
+                 'gate_evidence_sha256': sha(root / requirements['full_gate']),
+                 'validation_bindings': plan['validation_bindings'],

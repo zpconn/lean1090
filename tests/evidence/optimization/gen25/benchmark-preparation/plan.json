@@ -1,0 +1,79 @@
+{
+  "generation": 25,
+  "prepared_utc": "2026-10-20T00:23:15.740598+00:00",
+  "prior_csv_snapshot": "tests/evidence/optimization/gen25/benchmark-preparation/results-before.csv",
+  "prior_csv_sha256": "235382e28e27fd987deda7eb6c10cc5e5d6b0acbac3d72c54e449b701a067b63",
+  "prior_csv_rows": 50,
+  "fresh_verification": "tests/evidence/optimization/gen25/fresh-final-verification.json",
+  "fresh_verification_sha256": "32844501981dc0715bae4eab9ea41ea4148ea8ea4771f16fd8aec5ee470663fc",
+  "title": "reuse the numerator at an equal denominator",
+  "change_description": "An exact identity arm returns the existing numerator when the selected denominator equals the rational denominator; the unequal branch retains the original integer multiplication and natural division verbatim. Unconditional equality covers all natural denominators and rationals, including zero/non-divisible denominators and non-dyadic values. No other arithmetic, threshold or fallback behavior changes. [Implementation and proof evidence](../docs/GEN25-SCORE-SCALING.md).",
+  "row_note": "Proved equal-denominator numerator identity; full fixed/fresh 10M validation; clean fresh build; CPU 0; 3+21 ABAB",
+  "decode_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "cpr_target_ratio": {
+    "numerator": 2,
+    "denominator": 1
+  },
+  "review_threshold": "Both decode and CPR must independently reach 2/1; exact integer comparisons of measured medians; stop for user review only when both hold.",
+  "note": "Prepared after completed fixed/fresh/native validation and before timing. Contains no speculative measurement. The unchanged reviewed reporting helper archives only completed measurements.",
+  "status": "prepared_validation_passed_not_measured",
+  "reporting_helper": {
+    "path": "review/diagnostics/archive_generation_benchmark_target.py",
+    "sha256": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312",
+    "independent_review": "tests/evidence/optimization/cpr-overhead-reporting/independent-review.json",
+    "independent_review_sha256": "8318ed72d9250268730c26883efa711ac10a6b79d7faff173c30366ab558c231",
+    "cpr_overhead": "Report both implementations: signed difference of independent CPR/decode mode medians divided by the unchanged corpus count; retain noise and clock limitations."
+  },
+  "requirements": {
+    "correctness_inputs": 202,
+    "fixed_gate_command": [
+      "scripts/check_all.sh",
+      "--full"
+    ],
+    "fixed_generated_messages": 10000000,
+    "fresh_generated_messages": 10000000,
+    "fresh_retained_members": 33,
+    "fresh_source_count": 127,
+    "fresh_binary_count": 3,
+    "native_sets": 22,
+    "full_gate": "tests/evidence/optimization/gen25/gate-evidence.json",
+    "fresh_completion": "tests/evidence/optimization/gen25/independent-review/fresh-completion.json",
+    "native_review": "tests/evidence/optimization/gen25/native-review/review.json",
+    "combined_build": "tests/evidence/optimization/gen25/integration/targeted-build.json",
+    "pre_timing": "Full gate/fresh/native independent passes, clean source commit, all other jobs stopped, unchanged frozen ABAB interleaver in decode and CPR, fresh measured worker with all source/C/object/trace hashes, power-plan and monotonic/UTC evidence."
+  },
+  "output_protocol": {
+    "source_parent": ".cache/bench-runs",
+    "source_basename": "gen25-<actual committed HEAD first 7 hex characters>",
+    "commit_resolution": "Resolve only after the reviewed source commit and clean-tree verification. No guessed commit or worker hash.",
+    "expected_original_files": 48,
+    "mode_samples": {
+      "decode": 48,
+      "cpr": 48
+    },
+    "no_retry_or_relocation": "Construct the correct path before the single isolated run; preserve any failure and all original data.",
+    "archive_helper_exact_name_guard": true
+  },
+  "pending_plan_sha256": "5237bbf0435e90934e847a728731d16a63f85f877dc716defec3ae53911965a9",
+  "validation_bindings": {
+    "full_gate": {
+      "path": "tests/evidence/optimization/gen25/gate-evidence.json",
+      "sha256": "5eebf62bd5bbb1210d8b82d36c63f181064c63363109239d88b77110f60538aa"
+    },
+    "fresh_completion": {
+      "path": "tests/evidence/optimization/gen25/independent-review/fresh-completion.json",
+      "sha256": "0cbef3e01ecc7cba4fca75f84314f86d3bf68dbb69c51ca302221cd2c078a513"
+    },
+    "native_review": {
+      "path": "tests/evidence/optimization/gen25/native-review/review.json",
+      "sha256": "1a49bc484b0e4cd373b5f1774f014662b1f6092eba8b8c7046faf1d5eb090f10"
+    },
+    "combined_build": {
+      "path": "tests/evidence/optimization/gen25/integration/targeted-build.json",
+      "sha256": "1bef5d23fc70bec6fe97e4ee283cce1bed7ee487334aab185b132a44debe37b6"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+--- d0f58661bba5e9903b9c939c83cb96ff3936f177:Proofs/ScoreGateInteger.lean
++++ Proofs/ScoreGateInteger.lean
+@@ -52,11 +52,28 @@
+     exact Nat.dvd_of_mod_eq_zero (by simpa using remainder)
+   · exact List.dvd_prod member
+ 
++/-- The identity arm preserves the original formula for every denominator and
++rational, including zero and non-divisible denominators. -/
++theorem scaledNumerator_eq_old (denominator : Nat) (value : Rat) :
++    scaledNumerator denominator value = value.num * (denominator / value.den : Nat) := by
++  by_cases same : denominator = value.den
++  · subst denominator
++    simp [scaledNumerator, Nat.div_self value.den_pos]
++  · simp [scaledNumerator, same]
++
++/-- Function equality permits unchanged higher-order uses of numerator scaling. -/
++theorem scaledNumerator_function_eq :
++    scaledNumerator = fun (denominator : Nat) (value : Rat) =>
++      value.num * (denominator / value.den : Nat) := by
++  funext denominator value
++  exact scaledNumerator_eq_old denominator value
++
+ /-- Exact scaling of a numerator at any divisible common denominator. -/
+ theorem scaledNumerator_cast (denominator : Nat) (value : Rat)
+     (divides : value.den ∣ denominator) :
+     (scaledNumerator denominator value : Rat) = denominator * value := by
+-  simp only [scaledNumerator, Int.cast_mul, Int.cast_natCast]
++  rw [scaledNumerator_eq_old]
++  simp only [Int.cast_mul, Int.cast_natCast]
+   rw [Rat.natCast_div _ _ divides]
+   calc
+     (value.num : Rat) * (denominator / value.den) =
+@@ -224,6 +241,39 @@
+ theorem product_decision_witness : choose [1 / 3, 1 / 5] (1 / 7) (fun _ => false) = true := by
+   decide +kernel
+ 
++/-- Equal positive dyadic denominator takes the identity arm. -/
++theorem equal_denominator_witness : scaledNumerator 8 (13 / 8) = 13 := by
++  decide +kernel
++
++/-- Unequal divisible denominator retains the original scaling formula. -/
++theorem unequal_denominator_witness : scaledNumerator 24 (13 / 8) = 39 := by
++  decide +kernel
++
++/-- Zero denominator remains a valid arbitrary input to the original formula. -/
++theorem zero_denominator_witness : scaledNumerator 0 (5 / 7) = 0 := by
++  decide +kernel
++
++/-- Negative numerators preserve their sign in both branches. -/
++theorem negative_numerator_witness :
++    scaledNumerator 8 (-13 / 8) = -13 ∧ scaledNumerator 24 (-13 / 8) = -39 := by
++  decide +kernel
++
++/-- Non-dyadic denominators are included in the identity arm without restriction. -/
++theorem non_dyadic_equal_witness : scaledNumerator 7 (10 / 7) = 10 := by
++  decide +kernel
++
++/-- A non-divisible denominator keeps natural division, including truncation. -/
++theorem non_divisible_denominator_witness : scaledNumerator 19 (10 / 7) = 20 := by
++  decide +kernel
++
++#print axioms scaledNumerator_eq_old
++#print axioms scaledNumerator_function_eq
++#print axioms equal_denominator_witness
++#print axioms unequal_denominator_witness
++#print axioms zero_denominator_witness
++#print axioms negative_numerator_witness
++#print axioms non_dyadic_equal_witness
++#print axioms non_divisible_denominator_witness
+ #print axioms commonDenominator_pos
+ #print axioms denominator_dvd
+ #print axioms scaledNumerator_cast

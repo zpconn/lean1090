@@ -1,0 +1,20 @@
+--- tests/evidence/diagnostics/gen23-cpr/independent-review/check_raw.py
++++ tests/evidence/diagnostics/gen24-cpr/independent-review/check_raw.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from collections import Counter,defaultdict,deque
+ import gzip,hashlib,json,re
+-B=Path('tests/evidence/diagnostics/gen23-cpr');R=B/'independent-review'
++B=Path('tests/evidence/diagnostics/gen24-cpr');R=B/'independent-review'
+ ROOT='l_Lean1090_Diagnostics_CPRCosts_runCPR';P='lp_lean1090_Lean1090_Impl_';POL=P+'CPR_Policy_'
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def read(p):
+@@ -165,7 +165,7 @@
+ for k in ['parity_byte_fold_anchor','byte_wrapper','syndrome','parser']:assert crc_observed[k]==172432,(k,crc_observed)
+ for k in ['parity_bit_fold_anchor','bit_wrapper','checksum','frame','public_parser','packing']:assert crc_observed[k]==0
+ assert sum(calls[x] for x in tagged if base(full(x)) in {P+'Parity_byteStep',P+'Parity_wordStep',P+'Parity_step'})==0
+-census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen23/native/all.jsonl').read_text().splitlines() if x]
++census_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen24/native/all.jsonl').read_text().splitlines() if x]
+ crc_census=next(x for x in census_rows if x.get('kind')=='post_decode_crc_census')
+ assert sum(x['crc_call_predictions'] for x in crc_census['per_df'])==172432
+ predicted_bits=sum(x['crc_step_predictions'] for x in crc_census['per_df']);assert predicted_bits%8==0

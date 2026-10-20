@@ -1,0 +1,74 @@
+--- tests/evidence/diagnostics/gen23-cpr/independent-review/check_source.py
++++ tests/evidence/diagnostics/gen24-cpr/independent-review/check_source.py
+@@ -5,7 +5,7 @@
+ from datetime import datetime, timezone
+ import hashlib, json, re, shlex, subprocess
+ 
+-E=Path('tests/evidence/diagnostics/gen23-cpr');D=E/'independent-review/source-inspection'
++E=Path('tests/evidence/diagnostics/gen24-cpr');D=E/'independent-review/source-inspection'
+ D.mkdir(parents=True,exist_ok=True)
+ def read(p):return json.loads(Path(p).read_text())
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -20,12 +20,12 @@
+         if depth==0:return text[start:end+1],text[:start].count('\n')+1
+     raise AssertionError(name)
+ 
+-buildpath=Path('.cache/gen23-cpr-costs/driver-final/driver-build.json');build=read(buildpath)
++buildpath=Path('.cache/gen24-cpr-costs/driver-final/driver-build.json');build=read(buildpath)
+ sourcepath=Path('review/diagnostics/CPRCosts.lean');source=sourcepath.read_text()
+ frozenpath=Path('Bench/WholeDecoder.lean');frozen=frozenpath.read_text()
+-nativepath=Path('bench/runs/gen23/fresh-native-inputs.json');native=read(nativepath)
+-bench=read('bench/runs/gen23/summary.json');worker='.lake/build/bin/lean1090-bench'
+-binary='.cache/gen23-cpr-costs/driver-final/cpr-costs';cpath=Path('.cache/gen23-cpr-costs/driver-final/CPRCosts.c');c=cpath.read_text()
++nativepath=Path('bench/runs/gen24/fresh-native-inputs.json');native=read(nativepath)
++bench=read('bench/runs/gen24/summary.json');worker='.lake/build/bin/lean1090-bench'
++binary='.cache/gen24-cpr-costs/driver-final/cpr-costs';cpath=Path('.cache/gen24-cpr-costs/driver-final/CPRCosts.c');c=cpath.read_text()
+ assert build['status']=='passed' and sha(worker)==bench['binary_sha256']
+ assert len(native)==build['fresh_benchmark_native_binding']['linked_project_objects']==22
+ assert build['fresh_benchmark_native_binding']['sha256']==sha(nativepath)
+@@ -38,10 +38,10 @@
+         assert hashlib.sha256(subprocess.check_output(['git','cat-file','blob',commit+':'+row['source']])).hexdigest()==row['source_sha256']
+     for path,record in row['artifacts'].items():assert sha(path)==record['sha256']==held[path]
+ assert build['reused_production_object_count']==len(build['reused_production_objects'])==21
+-rsp=shlex.split(Path('.cache/gen23-cpr-costs/driver-final/cpr-costs.rsp').read_text())
++rsp=shlex.split(Path('.cache/gen24-cpr-costs/driver-final/cpr-costs.rsp').read_text())
+ original=shlex.split(Path('.lake/build/bin/lean1090-bench.rsp').read_text())
+ oldobject=str(Path('.lake/build/ir/Bench/WholeDecoder.c.o.export').resolve())
+-newobject=str(Path('.cache/gen23-cpr-costs/driver-final/CPRCosts.c.o').resolve())
++newobject=str(Path('.cache/gen24-cpr-costs/driver-final/CPRCosts.c.o').resolve())
+ assert original.count(oldobject)==1 and rsp==[newobject if s==oldobject else s for s in original]
+ compilecmd=next(x['argv'] for x in build['commands'] if x['label']=='driver-clang')
+ assert '-O3' in compilecmd and '-ffp-contract=off' in compilecmd
+@@ -108,12 +108,13 @@
+ assert sha(policy)==held[str(policy)] and sha(floatc)==held[str(floatc)]
+ for name,digest in held.items():assert sha(name)==digest,name
+ assert sha(worker)==bench['binary_sha256']
+-table_review_path=Path('tests/evidence/diagnostics/gen23/independent-review/source-review.json')
++table_review_path=Path('tests/evidence/diagnostics/gen24/independent-review/source-review.json')
+ table_review=read(table_review_path)
+ assert table_review['dyadic_to_float_live_path_verified'] and table_review['dyadic_to_float_at_most_one_fallback_per_entry']
+ assert table_review['systematic_bit_extraction_verified'] and table_review['byte_crc_live_path_verified'] and table_review['integer_affine_normalization_live_path_verified']
+ assert table_review['raw_word_syndrome_live_path_verified'] and table_review['decode_frame_with_word_anchor']
+ assert table_review['commb_validity_tables_live_path_verified']
++assert table_review['commb_semantic_reuse_live_path_verified']
+ assert table_review['power_two_table_live_path_verified'] and table_review['binary_sha256']==sha(worker)
+ for row in table_review['commands']:assert row['exit_code']==0 and sha(row['output'])==row['sha256']
+ for row in table_review['generated_C_excerpts'].values():assert sha(row['source'])==row['source_sha256'] and sha(row['path'])==row['sha256']
+@@ -127,13 +128,16 @@
+     'output_capacity_and_empty_state_before_root':True,'complete_outputs_and_state_retained':True,
+     'live_decode_then_immediate_streamStep':True,'post_collection_consumer_and_batch_audit':True,
+     'generated_C_excerpts':excerpts,'commands':commands,'findings':[],
+-    'workload_continuity':'Unchanged reviewed CPRCosts source; fresh gen23 native sets and generated loop are independently rebound.',
++    'workload_continuity':'Unchanged reviewed CPRCosts source; fresh gen24 native sets and generated loop are independently rebound.',
+     'limits':['This is static inspection only; the native corpus/input/airport audits and raw profile accounting remain separate checks.',
+         'The driver shares all 21 production/model objects but has its own noinline root and compiler-generated loop/result wrapper. Its instructions are diagnostic, not benchmark time.',
+         'The root includes diagnostic loop/result packaging overhead; capacity allocation, startup, clock/protocol traffic, audits and output consumption are outside collection.',
+         'The frozen worker projects final state in its audit. The additional exact whole-state check is against the live batch fold and occurs only after collection.',
+         'Any later implementation change must retain refinement for arbitrary geography/callback/input streams, beyond this corpus.'],
+     'power_two_table_review':{'path':str(table_review_path),'sha256':sha(table_review_path)},
++    'commb_semantic_reuse_live_path_verified':True,
++    'commb_semantic_reuse_anchors':{k:v for k,v in table_review.items() if k.startswith('commb_semantic_') and k.endswith('_anchor')},
++    'commb_semantic_reuse_context':table_review['commb_semantic_reuse_context'],
+     'commb_validity_tables_live_path_verified':True,
+     'commb_validity_anchors':table_review['commb_validity_anchors'],
+     'commb_validity_lookup_anchors':table_review['commb_validity_lookup_anchors'],

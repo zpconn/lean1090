@@ -1,0 +1,12 @@
+--- d0f58661bba5e9903b9c939c83cb96ff3936f177:Impl/ScoreGate.lean
++++ Impl/ScoreGate.lean
+@@ -35,7 +35,8 @@
+ 
+ /-- Numerator at a known common denominator, without constructing a new Rat. -/
+ @[inline] def scaledNumerator (denominator : Nat) (value : Rat) : Int :=
+-  value.num * (denominator / value.den : Nat)
++  if denominator == value.den then value.num
++  else value.num * (denominator / value.den : Nat)
+ 
+ /-- Accumulate signed and absolute numerators together using integer arithmetic.
+ The denominator's divisibility is established by `commonDenominator`. -/

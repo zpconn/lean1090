@@ -1,0 +1,60 @@
+--- tests/evidence/optimization/gen24/independent-review/check_artifact_commit_inputs.py
++++ tests/evidence/optimization/gen25/independent-review/check_artifact_commit_inputs.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Bind gen24 result artifacts to the passing gate; no commit or native work."""
++"""Bind gen25 result artifacts to the passing gate; no commit or native work."""
+ import sys
+ sys.dont_write_bytecode = True
+ import argparse
+@@ -14,9 +14,9 @@
+ sys.path.insert(0, str(ROOT / 'review/diagnostics'))
+ import run_generation_benchmark as provenance
+ 
+-BASE = ROOT / 'tests/evidence/optimization/gen24'
++BASE = ROOT / 'tests/evidence/optimization/gen25'
+ OUT = BASE / 'independent-review'
+-BENCH = ROOT / 'bench/runs/gen24'
++BENCH = ROOT / 'bench/runs/gen25'
+ 
+ 
+ def sha(path):
+@@ -65,7 +65,7 @@
+                  for r in review['results']}
+     assert decisions == {'decode': review['decode_threshold_reached'], 'cpr': review['cpr_threshold_reached']}
+     assert all(decisions.values()) == review['all_mode_thresholds_reached']
+-    assert sha(ROOT / 'bench/GEN24.md') == review['report_sha256']
++    assert sha(ROOT / 'bench/GEN25.md') == review['report_sha256']
+     assert sha(ROOT / 'bench/results.csv') == review['csv_after_sha256']
+     assert review['cpr_overhead'] == load(BENCH / 'report-verification.json')['cpr_overhead']
+     for name, digest in review['clean_checkpoint_sha256'].items():
+@@ -80,17 +80,17 @@
+     assert sha(BASE / 'precommit-verification.json') == hashlib.sha256(git('cat-file', 'blob', commit + ':' + str((BASE / 'precommit-verification.json').relative_to(ROOT)))).hexdigest()
+     archive = load(BENCH / 'archive-verification.json')
+     assert archive['status'] == 'passed' and archive['file_count'] == 48
+-    assert archive['source'] == '.cache/bench-runs/gen24-' + commit[:7]
++    assert archive['source'] == '.cache/bench-runs/gen25-' + commit[:7]
+     assert not (BASE / 'benchmark-archival/relocation.json').exists()
+     protocol = load(BASE / 'benchmark-preparation/execution-protocol.json')
+     assert protocol['output_resolution']['source_parent'] == '.cache/bench-runs'
+-    assert protocol['output_resolution']['source_basename'] == 'gen24-<actual committed HEAD first 7 hex characters>'
++    assert protocol['output_resolution']['source_basename'] == 'gen25-<actual committed HEAD first 7 hex characters>'
+     paths = [BENCH / name for name in ('results-review.json', 'archive-verification.json', 'report-verification.json',
+                                      'correctness-inputs.json', 'binary-built.json')]
+     paths += [BASE / name for name in ('gate-evidence.json', 'gate-full.log', 'gate-archive.json', 'fresh-final-verification.json')]
+     paths += [OUT / name for name in ('gate-review.json', 'check_benchmark_result.py',
+                                      'benchmark-result-review-01.log', 'check_artifact_commit_inputs.py')]
+-    paths += [ROOT / 'bench/GEN24.md', ROOT / 'bench/results.csv']
++    paths += [ROOT / 'bench/GEN25.md', ROOT / 'bench/results.csv']
+     paths += [BASE / 'independent-review/fresh-completion.json', BASE / 'benchmark-preparation/plan.json']
+     paths += [OUT / 'benchmark-result-review-preparation.json', OUT / 'benchmark-result-reviewer.diff', OUT / 'artifact-binding-preparation.json']
+     paths += [BASE / 'precommit-verification.json', BASE / 'benchmark-preparation/execution-protocol.json']
+@@ -103,7 +103,7 @@
+         'recorded_utc': datetime.now(timezone.utc).isoformat(), 'timed_commit': commit,
+         'correctness_input_count': len(inputs), 'gate_validation': gate_validation,
+         'all_inputs_match_passed_full_gate_current_tree_and_timed_commit': True,
+-        'correctness_inventory': 'bench/runs/gen24/correctness-inputs.json',
++        'correctness_inventory': 'bench/runs/gen25/correctness-inputs.json',
+         'correctness_inventory_sha256': sha(BENCH / 'correctness-inputs.json'),
+         'files': files, 'current_git_status': status,
+         'configured_identity': 'zpconn <zpconn@gmail.com>', 'target_ratio_each_mode': {'numerator': 2, 'denominator': 1},

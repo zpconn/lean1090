@@ -1,0 +1,20 @@
+--- tests/evidence/optimization/gen24/integration/run_production_build.py
++++ tests/evidence/optimization/gen25/integration/run_production_build.py
+@@ -14,7 +14,7 @@
+ 
+ ROOT = Path(__file__).resolve().parents[5]
+ OUT = Path(__file__).resolve().parent
+-SOURCES = ['Impl/CommB.lean', 'Impl/Semantics.lean', 'Proofs/CommBValueReuse.lean', 'Proofs/CommBSemanticReuse.lean', 'Proofs/CommBTables.lean', 'Proofs/CommBPenalty.lean', 'Proofs/Decoder.lean']
++SOURCES = ['Impl/ScoreGate.lean', 'Proofs/ScoreGateInteger.lean']
+ COMMAND = ['lake', 'build', 'Proofs.Decoder', 'Proofs.CPRTracking', 'lean1090',
+            'messageGenerator', 'commbDifferential', 'lean1090-bench']
+ BINARIES = ('lean1090', 'messageGenerator', 'commbDifferential', 'lean1090-bench')
+@@ -41,7 +41,7 @@
+     assert re.fullmatch(r'production-\d{2}', args.attempt), args.attempt
+     assert not (OUT / 'targeted-build.json').exists()
+     assert not (OUT / 'targeted-build.log').exists()
+-    spec = importlib.util.spec_from_file_location('gen24_build_inventory',
++    spec = importlib.util.spec_from_file_location('gen25_build_inventory',
+         ROOT / 'review/diagnostics/run_generation_benchmark.py')
+     inventory = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(inventory)

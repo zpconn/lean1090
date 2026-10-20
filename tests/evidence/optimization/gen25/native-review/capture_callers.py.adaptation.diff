@@ -1,0 +1,11 @@
+--- tests/evidence/optimization/gen24/native-review/capture_callers.py
++++ tests/evidence/optimization/gen25/native-review/capture_callers.py
+@@ -2,7 +2,7 @@
+ sys.dont_write_bytecode=True
+ from pathlib import Path
+ import hashlib,json,re,subprocess
+-R=Path('tests/evidence/optimization/gen24/native-review');O=R/'native-inspection';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
++R=Path('tests/evidence/optimization/gen25/native-review');O=R/'native-inspection';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ c=json.loads((R/'native-inputs.json').read_text());held=c['held_inputs'];worker=Path(c['worker']);out=[]
+ for p,h in held.items():assert sha(p)==h,p
+ source=Path('.lake/build/ir/Bench/WholeDecoder.c');text=source.read_text();lines=text.splitlines()

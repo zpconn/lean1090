@@ -1,0 +1,53 @@
+{
+  "status": "prepared_not_executed",
+  "generation": 25,
+  "required_release": "Root explicit isolated benchmark release after fixed/fresh/native/final review pass and clean source commit; all other jobs and review I/O stopped.",
+  "commit": null,
+  "worker_sha256": null,
+  "resolved_output": null,
+  "output_resolution": {
+    "source_parent": ".cache/bench-runs",
+    "source_basename": "gen25-<actual committed HEAD first 7 hex characters>",
+    "commit_resolution": "Resolve only after the reviewed source commit and clean-tree verification. No guessed commit or worker hash.",
+    "expected_original_files": 48,
+    "mode_samples": {
+      "decode": 48,
+      "cpr": 48
+    },
+    "no_retry_or_relocation": "Construct the correct path before the single isolated run; preserve any failure and all original data.",
+    "archive_helper_exact_name_guard": true
+  },
+  "benchmark_command_template": [
+    "python3",
+    "-B",
+    "review/diagnostics/run_generation_benchmark.py",
+    "--generation",
+    "25",
+    "--output",
+    ".cache/bench-runs/gen25-<ACTUAL_COMMIT_FIRST_7>",
+    "--gate-evidence",
+    "tests/evidence/optimization/gen25/gate-evidence.json",
+    "--gate-log",
+    "tests/evidence/optimization/gen25/gate-full.log",
+    "--cpu",
+    "0",
+    "--operator-note",
+    "<actual isolation statement>"
+  ],
+  "archive_command_template": [
+    "python3",
+    "-B",
+    "review/diagnostics/archive_generation_benchmark_target.py",
+    "--source",
+    ".cache/bench-runs/gen25-<ACTUAL_COMMIT_FIRST_7>",
+    "--plan",
+    "tests/evidence/optimization/gen25/benchmark-preparation/plan.json"
+  ],
+  "helpers": {
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac",
+    "review/diagnostics/archive_generation_benchmark_target.py": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312"
+  },
+  "no_measurement_or_build_executed": true,
+  "exact_signed_cpr_overhead": "(CPR median nanoseconds - decode median nanoseconds) / 172432 / 1000 microseconds per message, separately for Lean and rs1090, without clamping or noise correction.",
+  "target_decision": "For each mode Rust median >= 2 * Lean median; both must hold. No assumed outcome."
+}

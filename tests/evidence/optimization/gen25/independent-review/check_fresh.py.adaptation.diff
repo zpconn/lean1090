@@ -1,0 +1,31 @@
+--- tests/evidence/optimization/gen24/independent-review/check_fresh.py
++++ tests/evidence/optimization/gen25/independent-review/check_fresh.py
+@@ -6,7 +6,7 @@
+ from datetime import datetime, timezone
+ import gzip, hashlib, json
+ 
+-G = Path('tests/evidence/optimization/gen24')
++G = Path('tests/evidence/optimization/gen25')
+ B = G
+ O = B / 'independent-review/fresh-retention-review.json'
+ 
+@@ -85,8 +85,8 @@
+     assert selection['message_seed']==seeds['message_seed'] and selection['commb_seed']==seeds['commb_seed']
+     assert selection['historical_seed_records_sha256']==seeds['historical_seed_records_sha256']
+     assert seeds['recorded_utc'] < execution['started_utc']
+-    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 1799246425
+-    assert seeds['commb_seed'] == verify['commb_seed'] == 1314217890
++    assert seeds['message_seed'] == summary['seed'] == verify['message_seed'] == 1065315418
++    assert seeds['commb_seed'] == verify['commb_seed'] == 1346913957
+     for name, digest in seeds['historical_seed_records_sha256'].items():
+         assert sha(name) == digest
+         previous = load(name)
+@@ -123,7 +123,7 @@
+     assert native_inputs['integration_record_sha256'] == sha(G / 'integration/targeted-build.json')
+     assert sha(native_inputs['worker']) == native_inputs['worker_sha256']
+     assert native['status'] == 'passed' and not native['findings']
+-    assert native['commb_semantic_reuse_live_path_verified'] and native['linked_native_sets'] == 22
++    assert native['score_scaling_identity_live_path_verified'] and native['linked_native_sets'] == 22
+     for name, digest in native_inputs['held_inputs'].items():
+         assert sha(name) == digest
+     for name, digest in native['bindings'].items():

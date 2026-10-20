@@ -1,0 +1,74 @@
+{
+_start:
+{
+lean_object* v___x_1365_; 
+v___x_1365_ = lp_lean1090_Lean1090_Impl_bdsLayout(v_register_1363_, v_word_1364_);
+if (lean_obj_tag(v___x_1365_) == 0)
+{
+lean_object* v___x_1366_; 
+lean_dec(v_register_1363_);
+v___x_1366_ = lean_box(0);
+return v___x_1366_;
+}
+else
+{
+lean_object* v_val_1367_; lean_object* v___x_1369_; uint8_t v_isShared_1370_; uint8_t v_isSharedCheck_1378_; 
+v_val_1367_ = lean_ctor_get(v___x_1365_, 0);
+v_isSharedCheck_1378_ = !lean_is_exclusive(v___x_1365_);
+if (v_isSharedCheck_1378_ == 0)
+{
+v___x_1369_ = v___x_1365_;
+v_isShared_1370_ = v_isSharedCheck_1378_;
+goto v_resetjp_1368_;
+}
+else
+{
+lean_inc(v_val_1367_);
+lean_dec(v___x_1365_);
+v___x_1369_ = lean_box(0);
+v_isShared_1370_ = v_isSharedCheck_1378_;
+goto v_resetjp_1368_;
+}
+v_resetjp_1368_:
+{
+uint8_t v___x_1371_; 
+v___x_1371_ = lp_lean1090_Lean1090_Impl_bdsWireValid(v_register_1363_, v_word_1364_);
+if (v___x_1371_ == 0)
+{
+lean_object* v___x_1372_; 
+lean_del_object(v___x_1369_);
+lean_dec(v_val_1367_);
+lean_dec(v_register_1363_);
+v___x_1372_ = lean_box(0);
+return v___x_1372_;
+}
+else
+{
+lean_object* v___x_1373_; lean_object* v___x_1374_; lean_object* v___x_1376_; 
+v___x_1373_ = lp_lean1090_Lean1090_Impl_decodePayloadFields(v_val_1367_, v_word_1364_);
+v___x_1374_ = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(v___x_1374_, 0, v_register_1363_);
+lean_ctor_set(v___x_1374_, 1, v___x_1373_);
+if (v_isShared_1370_ == 0)
+{
+lean_ctor_set(v___x_1369_, 0, v___x_1374_);
+v___x_1376_ = v___x_1369_;
+goto v_reusejp_1375_;
+}
+else
+{
+lean_object* v_reuseFailAlloc_1377_; 
+v_reuseFailAlloc_1377_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v_reuseFailAlloc_1377_, 0, v___x_1374_);
+v___x_1376_ = v_reuseFailAlloc_1377_;
+goto v_reusejp_1375_;
+}
+v_reusejp_1375_:
+{
+return v___x_1376_;
+}
+}
+}
+}
+}
+}

@@ -1,0 +1,176 @@
+
+.lake/build/bin/lean1090-bench:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000b855c0 <lp_lean1090_Lean1090_Impl_cbValid40>:
+  b855c0:	push   %rbp
+  b855c1:	push   %r15
+  b855c3:	push   %r14
+  b855c5:	push   %rbx
+  b855c6:	push   %rax
+  b855c7:	mov    %rdi,%rbx
+  b855ca:	mov    $0x3,%esi
+  b855cf:	mov    $0x5,%edx
+  b855d4:	mov    $0x19,%ecx
+  b855d9:	call   b81910 <lp_lean1090_Lean1090_Impl_cbStatus>
+  b855de:	test   %al,%al
+  b855e0:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b855e2:	mov    $0x1d,%esi
+  b855e7:	mov    $0x1f,%edx
+  b855ec:	mov    $0x19,%ecx
+  b855f1:	mov    %rbx,%rdi
+  b855f4:	call   b81910 <lp_lean1090_Lean1090_Impl_cbStatus>
+  b855f9:	test   %al,%al
+  b855fb:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b855fd:	mov    $0x37,%esi
+  b85602:	mov    $0x39,%edx
+  b85607:	mov    $0x19,%ecx
+  b8560c:	mov    %rbx,%rdi
+  b8560f:	call   b81910 <lp_lean1090_Lean1090_Impl_cbStatus>
+  b85614:	test   %al,%al
+  b85616:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b85618:	mov    $0x51,%esi
+  b8561d:	mov    $0x11,%edx
+  b85622:	mov    %rbx,%rdi
+  b85625:	call   b51e80 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b8562a:	test   $0x1,%al
+  b8562c:	je     b8565d <lp_lean1090_Lean1090_Impl_cbValid40+0x9d>
+  b8562e:	cmp    $0x1,%rax
+  b85632:	jne    b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b85634:	mov    $0x69,%esi
+  b85639:	mov    $0x5,%edx
+  b8563e:	mov    %rbx,%rdi
+  b85641:	call   b51e80 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b85646:	test   $0x1,%al
+  b85648:	je     b85684 <lp_lean1090_Lean1090_Impl_cbValid40+0xc4>
+  b8564a:	cmp    $0x1,%rax
+  b8564e:	je     b856ae <lp_lean1090_Lean1090_Impl_cbValid40+0xee>
+  b85650:	xor    %eax,%eax
+  b85652:	add    $0x8,%rsp
+  b85656:	pop    %rbx
+  b85657:	pop    %r14
+  b85659:	pop    %r15
+  b8565b:	pop    %rbp
+  b8565c:	ret
+  b8565d:	mov    $0x1,%esi
+  b85662:	mov    %rax,%rdi
+  b85665:	mov    %rax,%r14
+  b85668:	call   48a8100 <lean_nat_big_eq>
+  b8566d:	mov    (%r14),%ecx
+  b85670:	cmp    $0x2,%ecx
+  b85673:	jl     b857a7 <lp_lean1090_Lean1090_Impl_cbValid40+0x1e7>
+  b85679:	dec    %ecx
+  b8567b:	mov    %ecx,(%r14)
+  b8567e:	test   %al,%al
+  b85680:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b85682:	jmp    b85634 <lp_lean1090_Lean1090_Impl_cbValid40+0x74>
+  b85684:	mov    $0x1,%esi
+  b85689:	mov    %rax,%rdi
+  b8568c:	mov    %rax,%r14
+  b8568f:	call   48a8100 <lean_nat_big_eq>
+  b85694:	mov    %eax,%ebp
+  b85696:	mov    %r14,%rdi
+  b85699:	mov    (%r14),%eax
+  b8569c:	cmp    $0x2,%eax
+  b8569f:	jl     b857c3 <lp_lean1090_Lean1090_Impl_cbValid40+0x203>
+  b856a5:	dec    %eax
+  b856a7:	mov    %eax,(%rdi)
+  b856a9:	test   %bpl,%bpl
+  b856ac:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b856ae:	lea    0x3ffd6c3(%rip),%r14        # 4b82d78 <lp_lean1090_Lean1090_Impl_cbSelectedValid40Table>
+  b856b5:	mov    (%r14),%r15
+  b856b8:	mov    $0x5,%esi
+  b856bd:	mov    $0x19,%edx
+  b856c2:	mov    %rbx,%rdi
+  b856c5:	call   b51e80 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b856ca:	mov    %rax,%rcx
+  b856cd:	and    $0xfffffffffffffffe,%rcx
+  b856d1:	mov    0x18(%r15,%rcx,4),%r15
+  b856d6:	test   $0x1,%al
+  b856d8:	jne    b856e9 <lp_lean1090_Lean1090_Impl_cbValid40+0x129>
+  b856da:	mov    (%rax),%ecx
+  b856dc:	cmp    $0x2,%ecx
+  b856df:	jl     b85773 <lp_lean1090_Lean1090_Impl_cbValid40+0x1b3>
+  b856e5:	dec    %ecx
+  b856e7:	mov    %ecx,(%rax)
+  b856e9:	test   $0x1fe,%r15d
+  b856f0:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b856f6:	mov    (%r14),%r14
+  b856f9:	mov    $0x1f,%esi
+  b856fe:	mov    $0x19,%edx
+  b85703:	mov    %rbx,%rdi
+  b85706:	call   b51e80 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b8570b:	mov    %rax,%rcx
+  b8570e:	and    $0xfffffffffffffffe,%rcx
+  b85712:	mov    0x18(%r14,%rcx,4),%r14
+  b85717:	test   $0x1,%al
+  b85719:	jne    b85726 <lp_lean1090_Lean1090_Impl_cbValid40+0x166>
+  b8571b:	mov    (%rax),%ecx
+  b8571d:	cmp    $0x2,%ecx
+  b85720:	jl     b85788 <lp_lean1090_Lean1090_Impl_cbValid40+0x1c8>
+  b85722:	dec    %ecx
+  b85724:	mov    %ecx,(%rax)
+  b85726:	test   $0x1fe,%r14d
+  b8572d:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b85733:	lea    0x3ffd656(%rip),%rax        # 4b82d90 <lp_lean1090_Lean1090_Impl_cbQNHValid40Table>
+  b8573a:	mov    (%rax),%r14
+  b8573d:	mov    $0x39,%esi
+  b85742:	mov    $0x19,%edx
+  b85747:	mov    %rbx,%rdi
+  b8574a:	call   b51e80 <lp_lean1090_Lean1090_Impl_payloadBits>
+  b8574f:	mov    %rax,%rdi
+  b85752:	and    $0xfffffffffffffffe,%rax
+  b85756:	mov    0x18(%r14,%rax,4),%rax
+  b8575b:	test   $0x1,%dil
+  b8575f:	jne    b8576c <lp_lean1090_Lean1090_Impl_cbValid40+0x1ac>
+  b85761:	mov    (%rdi),%ecx
+  b85763:	cmp    $0x2,%ecx
+  b85766:	jl     b85796 <lp_lean1090_Lean1090_Impl_cbValid40+0x1d6>
+  b85768:	dec    %ecx
+  b8576a:	mov    %ecx,(%rdi)
+  b8576c:	shr    $1,%eax
+  b8576e:	jmp    b85652 <lp_lean1090_Lean1090_Impl_cbValid40+0x92>
+  b85773:	test   %ecx,%ecx
+  b85775:	je     b856e9 <lp_lean1090_Lean1090_Impl_cbValid40+0x129>
+  b8577b:	mov    %rax,%rdi
+  b8577e:	call   48a4cb0 <lean_dec_ref_cold>
+  b85783:	jmp    b856e9 <lp_lean1090_Lean1090_Impl_cbValid40+0x129>
+  b85788:	test   %ecx,%ecx
+  b8578a:	je     b85726 <lp_lean1090_Lean1090_Impl_cbValid40+0x166>
+  b8578c:	mov    %rax,%rdi
+  b8578f:	call   48a4cb0 <lean_dec_ref_cold>
+  b85794:	jmp    b85726 <lp_lean1090_Lean1090_Impl_cbValid40+0x166>
+  b85796:	test   %ecx,%ecx
+  b85798:	je     b8576c <lp_lean1090_Lean1090_Impl_cbValid40+0x1ac>
+  b8579a:	mov    %rax,%rbx
+  b8579d:	call   48a4cb0 <lean_dec_ref_cold>
+  b857a2:	mov    %rbx,%rax
+  b857a5:	jmp    b8576c <lp_lean1090_Lean1090_Impl_cbValid40+0x1ac>
+  b857a7:	mov    %eax,%ebp
+  b857a9:	test   %ecx,%ecx
+  b857ab:	je     b857da <lp_lean1090_Lean1090_Impl_cbValid40+0x21a>
+  b857ad:	mov    %r14,%rdi
+  b857b0:	call   48a4cb0 <lean_dec_ref_cold>
+  b857b5:	test   %bpl,%bpl
+  b857b8:	jne    b85634 <lp_lean1090_Lean1090_Impl_cbValid40+0x74>
+  b857be:	jmp    b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b857c3:	test   %eax,%eax
+  b857c5:	je     b857e8 <lp_lean1090_Lean1090_Impl_cbValid40+0x228>
+  b857c7:	call   48a4cb0 <lean_dec_ref_cold>
+  b857cc:	test   %bpl,%bpl
+  b857cf:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b857d5:	jmp    b856ae <lp_lean1090_Lean1090_Impl_cbValid40+0xee>
+  b857da:	test   %bpl,%bpl
+  b857dd:	jne    b85634 <lp_lean1090_Lean1090_Impl_cbValid40+0x74>
+  b857e3:	jmp    b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b857e8:	test   %bpl,%bpl
+  b857eb:	je     b85650 <lp_lean1090_Lean1090_Impl_cbValid40+0x90>
+  b857f1:	jmp    b856ae <lp_lean1090_Lean1090_Impl_cbValid40+0xee>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

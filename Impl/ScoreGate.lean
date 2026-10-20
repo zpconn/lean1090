@@ -35,7 +35,8 @@ def commonDenominator (terms : List Rat) (penalty : Rat) : Nat :=
 
 /-- Numerator at a known common denominator, without constructing a new Rat. -/
 @[inline] def scaledNumerator (denominator : Nat) (value : Rat) : Int :=
-  value.num * (denominator / value.den : Nat)
+  if denominator == value.den then value.num
+  else value.num * (denominator / value.den : Nat)
 
 /-- Accumulate signed and absolute numerators together using integer arithmetic.
 The denominator's divisibility is established by `commonDenominator`. -/

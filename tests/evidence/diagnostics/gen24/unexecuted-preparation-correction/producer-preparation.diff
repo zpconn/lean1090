@@ -1,0 +1,750 @@
+--- tests/evidence/diagnostics/gen23/finalize.py
++++ tests/evidence/diagnostics/gen24/finalize.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Archive and report the completed gen23 instruction campaign; no native run."""
++"""Archive and report the completed gen24 instruction campaign; no native run."""
+ from collections import Counter
+ from datetime import datetime, timezone
+ import hashlib
+@@ -9,8 +9,8 @@
+ import sys
+ sys.dont_write_bytecode = True
+ 
+-E = Path('tests/evidence/diagnostics/gen23')
+-C = Path('.cache/gen23-costs')
++E = Path('tests/evidence/diagnostics/gen24')
++C = Path('.cache/gen24-costs')
+ P = 'lp_lean1090_Lean1090_Impl_'
+ 
+ 
+@@ -66,8 +66,8 @@
+     assert datetime.fromisoformat(capture['completed_utc']) < datetime.fromisoformat(campaign['started_utc'])
+     run([sys.executable, 'review/diagnostics/analyze_callgrind.py', '--self-test'], 'parser-fixtures')
+     archive_command = [sys.executable, 'review/diagnostics/archive_cost_campaign.py', '--cache', str(C), '--output', str(E),
+-                       '--perf-data', str(C / 'perf-gen23/perf.data')]
+-    for name in ['independent-review/source-review.json', 'independent-review/source-inspection', 'historical-inputs.json', 'snapshot_history.py', 'history-snapshot-01.stdout', 'history-snapshot-01.stderr', 'finalize.py', 'extract_constant_contexts.py', 'extract_pack_fields.py', 'extract_power_contexts.py', 'extract_priority_contexts.py', 'extract_bit_contexts.py', 'extract_crc_contexts.py', 'extract_affine_contexts.py', 'cleanup_cache.py', 'seal_perf.py', 'extract_ratio_contexts.py', 'perf/analyze_perf_gen23.py', 'benchmark-source-binding.json', 'perf-analysis.stdout', 'perf-analysis.stderr', 'perf-seal.stdout', 'perf-seal.stderr', 'parser-fixtures.stdout', 'parser-fixtures.stderr', 'driver-build.stdout', 'driver-build.stderr', 'driver-build-command.json', 'source-binding-command.json', 'source-binding.stdout', 'source-binding.stderr', 'run_prepared.py', 'preparation.json', 'preparation.diff', 'producer-preparation.json', 'producer-tooling.json', 'producer-preparation.diff', 'build-controller.stdout', 'build-controller.stderr']:
++                       '--perf-data', str(C / 'perf-gen24/perf.data')]
++    for name in ['independent-review/source-review.json', 'independent-review/source-inspection', 'historical-inputs.json', 'snapshot_history.py', 'history-snapshot.stdout', 'history-snapshot.stderr', 'finalize.py', 'extract_constant_contexts.py', 'extract_pack_fields.py', 'extract_power_contexts.py', 'extract_priority_contexts.py', 'extract_bit_contexts.py', 'extract_crc_contexts.py', 'extract_affine_contexts.py', 'extract_semantic_callers.py', 'cleanup_cache.py', 'seal_perf.py', 'extract_ratio_contexts.py', 'perf/analyze_perf_gen24.py', 'benchmark-source-binding.json', 'perf-analysis.stdout', 'perf-analysis.stderr', 'perf-seal.stdout', 'perf-seal.stderr', 'parser-fixtures.stdout', 'parser-fixtures.stderr', 'driver-build.stdout', 'driver-build.stderr', 'driver-build-command.json', 'source-binding-command.json', 'source-binding.stdout', 'source-binding.stderr', 'run_prepared.py', 'preparation.json', 'preparation.diff', 'producer-preparation.json', 'producer-tooling.json', 'producer-preparation.diff', 'build-controller.stdout', 'build-controller.stderr']:
+         archive_command.extend(['--extra-evidence', name])
+     run(archive_command, 'archive')
+     power_anchors = [value for key, value in source.items() if key.startswith('power_two_') and key.endswith('_anchor') and value]
+@@ -77,14 +77,18 @@
+     assert source['integer_affine_normalization_live_path_verified']
+     assert source['payload_value_anchor'] == P + 'payloadValue'
+     assert source['commb_validity_tables_live_path_verified']
++    assert source['commb_semantic_reuse_live_path_verified']
+     assert source['raw_word_syndrome_live_path_verified']
+     assert source['decode_frame_with_word_anchor'] == P + 'decodeFrameWithWord'
+     assert source['pack_fields_fold_anchor'] is None
+-    argv = [sys.executable, 'review/diagnostics/analyze_callgrind.py', '--generation', '23', '--output', str(E / 'analysis')]
++    argv = [sys.executable, 'review/diagnostics/analyze_callgrind.py', '--generation', '24', '--output', str(E / 'analysis')]
+     for symbol in (source['exact_fallback_anchor'], source['pack_fields_fold_anchor'], source['parity_fold_anchor'], source['parity_bit_fold_anchor'], source['parity_byte_wrapper_anchor'], source['parity_bit_wrapper_anchor'], source['byte_word_prefix_anchor'], source['byte_word_fallback_anchor'], source['wind_penalty_anchor'], source['wind_penalty_table_entry_anchor'], source['ratio_enclosure_anchor'], P + 'bdsWireValid', 'lean_cstr_to_nat', P + 'commBPayloadLimit', P + 'Binary64_round', P + 'Binary64_div', 'l_Rat_div', P + 'bytesWord', P + 'field', P + 'bytesValue', P + 'packFields', P + 'payloadBits', P + 'payloadValue', P + 'affineValue', P + 'integerScale', 'l_Rat_normalize', P + 'frameParts', P + 'acasParts', P + 'surveillanceParts', P + 'Semantics_tableValues', P + 'Semantics_commB', P + 'Semantics_adsb', P + 'reportWithSyndrome', P + 'CPR_Policy_toFloat', P + 'CPR_Policy_toFloatFallback', P + 'cbMach64', P + 'cbQNH64', P + 'cbValid40', P + 'cbDensityTerms', P + 'cbValid18', P + 'cbValid19', P + 'cbValid44', P + 'cbValid45', P + 'cbValid50', P + 'cbValid60', 'l_Rat_mul', 'l_Rat_add', *source['integer_score_gate_anchors'].values()):
+         if symbol:
+             argv.extend(['--extra-anchor', symbol])
+-    for symbol in [P + name for name in ('Semantics_commBStandardFloats', 'oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60')]:
++    for symbol in [P + name for name in ('Semantics_commBStandardFloats', 'Presentation_oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60')]:
++        argv.extend(['--extra-anchor', symbol])
++    semantic_anchors = [value for key, value in source.items() if key.startswith('commb_semantic_') and key.endswith('_anchor') and value]
++    for symbol in semantic_anchors:
+         argv.extend(['--extra-anchor', symbol])
+     bit_anchors = [source[key] for key in ('altitude_bit_anchor', 'altitude_gray_anchor', 'altitude_gray_fold_anchor', 'identity_code_anchor', 'payload_integer_anchor')]
+     bit_anchors.append(P + 'identityCode___lam__0')
+@@ -98,25 +102,26 @@
+             argv.extend(['--' + kind, f'{register}={E}/callgrind/{kind}{register}/callgrind.out.1.gz'])
+     run(argv, 'analyze')
+     analysis = read(E / 'analysis/analysis.json')
+-    previous = read('tests/evidence/diagnostics/gen22/analysis/analysis.json')
++    previous = read('tests/evidence/diagnostics/gen23/analysis/analysis.json')
+     comparison = []
+     symbols = [P + name for name in ('decodeFrameWithWord', 'decodeFrame', 'frameSyndrome', 'field', 'bytesValue', 'packFields', 'Parity_syndrome', 'Parity_checksum', 'payloadValue', 'affineValue', 'CPR_Policy_toFloat', 'CPR_Policy_toFloatFallback', 'ScoreGate_choose', 'ScoreGate_commonDenominator', 'ScoreGate_scaledNumerator', 'ScoreGate_scaledTotals', 'ScoreGate_mass', 'ScoreGate_center', 'ScoreGate_envelope', 'cbScorePasses', 'cbPenalty', 'cbQNH64', 'cbValid40', 'cbDensityTerms')]
+-    symbols.extend(P + name for name in ('cbValid50', 'cbValid60', 'Semantics_commBStandardFloats', 'oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60'))
++    symbols.extend(P + name for name in ('cbValid50', 'cbValid60', 'Semantics_commBStandardFloats', 'Presentation_oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60'))
++    symbols.extend(semantic_anchors)
+     symbols.extend(source['integer_score_gate_anchors'].values())
+     symbols.extend([source['byte_word_prefix_anchor'], source['byte_word_fallback_anchor'], P + 'bytesWord'])
+     symbols.extend([source['wind_penalty_anchor'], source['wind_penalty_table_entry_anchor'], source['ratio_enclosure_anchor'], P + 'bdsWireValid', 'lean_cstr_to_nat', P + 'commBPayloadLimit', P + 'Binary64_round', P + 'Binary64_div', 'l_Rat_div'])
+     symbols.extend((source['pack_fields_fold_anchor'], 'lean_nat_shiftl', 'lean_nat_big_shiftl', 'lean_nat_pow', 'l_BitVec_ofNat', 'lean_nat_big_shiftr', 'lean_uint64_of_big_nat'))
+-    symbols.extend([source['parity_fold_anchor'], read('tests/evidence/diagnostics/gen22/independent-review/source-review.json')['parity_fold_anchor']])
++    symbols.extend([source['parity_fold_anchor'], read('tests/evidence/diagnostics/gen23/independent-review/source-review.json')['parity_fold_anchor']])
+     symbols.extend([*power_anchors, *bit_anchors, source['parity_bit_fold_anchor'], source['parity_byte_wrapper_anchor'], source['parity_bit_wrapper_anchor']])
+     for symbol in dict.fromkeys(s for s in symbols if s):
+         for stage in analysis['stage_definitions']:
+             before, after = grouped(previous, symbol, stage), grouped(analysis, symbol, stage)
+             if before['contexts'] or after['contexts']:
+-                comparison.append({'symbol': symbol, 'stage': stage, 'gen22': before, 'gen23': after})
++                comparison.append({'symbol': symbol, 'stage': stage, 'gen23': before, 'gen24': after})
+     save(E / 'helper-comparison.json', {
+         'kind': 'non_additive_retained_native_boundary_comparison', 'rows': comparison,
+         'analysis_sha256': sha(E / 'analysis/analysis.json'),
+-        'previous_analysis_sha256': sha('tests/evidence/diagnostics/gen22/analysis/analysis.json'),
++        'previous_analysis_sha256': sha('tests/evidence/diagnostics/gen23/analysis/analysis.json'),
+         'limits': 'Only self events by unique stage are partitions. Incoming inclusive costs overlap. Integer helpers remain live; inline affine and scaled numerator work remains in callers. Missing symbols are not zero computations or measured savings.'})
+     assert source['pack_fields_shift_mask_verified']
+     assert source['shared_syndrome_decode_verified']
+@@ -193,18 +198,20 @@
+     crc_contexts = read(E / 'crc-byte-contexts.json')
+     run([sys.executable, str(E / 'extract_affine_contexts.py')], 'affine-contexts')
+     affine = read(E / 'affine-native-contexts.json')
++    run([sys.executable, str(E / 'extract_semantic_callers.py')], 'semantic-contexts')
++    semantic = read(E / 'semantic-caller-contexts.json')
+     perf = read(E / 'perf/analysis.json')
+     perf_completion = read(E / 'perf/completion.json')
+     assert perf_completion['samples'] == perf['total_samples']
+     assert perf_completion['included_decode_stacks'] == perf['decode_descendant_samples']
+     unknown_leaves = perf_completion['unknown_decode_leaf_samples']
+     notes = [
+-        'Generation 23 replaces five exact Comm-B field validity calculations with immutable Bool tables covering every field code. Existing status, sentinel and final validity guards remain live, with unconditional proofs preserving every natural input word and complete decoder refinement. [Current source/native review](../tests/evidence/diagnostics/gen23/independent-review/source-review.json) binds current BDS40/50/60 calls, inlined table accesses and initialization as well as the unchanged raw-word CRC and semantic paths. This report collects actual Impl.decode only; the separate CPR diagnostic covers tracking and numeric geography. Comparisons with generation 22 are instruction observations, not throughput predictions or inferred path distributions.', '',
+-        'The current checkout contains the committed generation-23 result artifacts after the timed source commit. The explicit benchmark-source binding verifies ancestry and equality of the complete audited Lean inventory, linked native sources/C/objects/traces, lock and actual timed worker. The two commit identities are recorded separately; this diagnostic is not a new benchmark.', '',
++        'Generation 24 shares common Comm-B scalar values and pure numeric-expression lists. The already decoded table values feed exact oracle adjustments, while standard numerical fields reuse the oracle expression list with the preserved register-30 empty case and register-44 temperature replacement. Unconditional proofs preserve all natural registers and words, absent statuses, correction branches and expression structure. [Current source/native review](../tests/evidence/diagnostics/gen24/independent-review/source-review.json) binds the surviving table/map boundaries and actual sharing. This report collects Impl.decode; the separate CPR diagnostic covers tracking and numeric geography. Comparisons with generation 23 are instruction observations, not throughput predictions.', '',
++        'The current checkout contains the committed generation-24 result artifacts after the timed source commit. The explicit benchmark-source binding verifies ancestry and equality of the complete audited Lean inventory, linked native sources/C/objects/traces, lock and actual timed worker. The two commit identities are recorded separately; this diagnostic is not a new benchmark.', '',
+         'The live UInt32 byte loop and generic bit-loop fallback, syndrome, paired parser, byte-value fold and frame field extractor are retained as explicit nested anchors. Historical checksum/frameSyndrome/packing boundaries are absent in the current timed worker; current source/native evidence establishes direct word use, rather than inferring absent work solely from symbols. The old standalone Parity.step boundary is absent because its update is inlined; absence is not zero work. The byte prefix and original arbitrary-precision byte-fold boundaries are explicit comparison rows. The latter is reachable only for input lists longer than sixteen bytes, outside the accepted 7/14-byte corpus. Incoming inclusive costs overlap each other and the exclusive stages; they are not additive subdivisions. Whole-message output construction, semantic affine guards, machine-word field extraction and exact integer score decisions remain live.', '',
+         'One syndrome is computed for each successfully parsed corpus frame and reused through acceptance, report and address recovery. The separate post-collection CRC census checks all 172,432 accepted corpus frames against retained outputs. Its bit-update count is a prediction from widths, not a native step-call measurement. The observed byte loop has one entry per syndrome in this accepted corpus. Its byte-iteration count is predicted from frame widths, and each byte performs eight inlined updates. The callable bit-loop fallback has no observed entries here; it remains live for other widths. This accepted corpus does not measure rejection paths or arbitrary huge widths; those may retain arbitrary-precision index operations and allocations. Rational center/envelope/mass remain reference APIs used by the post-collection score census. Integer choose/common-denominator/pair-fold and lazy fallback entries are reconciled with the separately checked register populations.', '',
+         'All immutable validity, density, Mach, QNH, wind-penalty and power-of-two tables initialize before main. The power constructor invokes the original formula directly, without calling its own lookup. Scalar lazy constants can initialize on early collected calls, and each process has its own allocator state; no unmeasured correction is applied. The persistent tables depend only on format/field codes, never messages or corpus contents. Missing standalone or inlined helper boundaries do not imply zero computation.', '',
+-        f"Native perf recording completed before any native census or Callgrind worker began. The decode family/probe campaign permits at most six overlapping workers and may overlap the separate CPR instruction diagnostic. Other agents performed read-only reviews; no host-wide isolation is claimed. Of {perf['total_samples']:,} samples, {perf['decode_descendant_samples']:,} have a visible decoder ancestor and {perf['excluded_samples']:,} are excluded; {perf['all_samples_with_unknown_frame']:,} stacks contain an unknown frame and {unknown_leaves:,} included leaves are unknown. These conditional observations cannot reliably allocate whole-decoder time. Capture conditions and loss counters are retained in [perf/README.md](../tests/evidence/diagnostics/gen23/perf/README.md).", '',
++        f"Native perf recording completed before any native census or Callgrind worker began. The decode family/probe campaign permits at most six overlapping workers and may overlap the separate CPR instruction diagnostic. Other agents performed read-only reviews; no host-wide isolation is claimed. Of {perf['total_samples']:,} samples, {perf['decode_descendant_samples']:,} have a visible decoder ancestor and {perf['excluded_samples']:,} are excluded; {perf['all_samples_with_unknown_frame']:,} stacks contain an unknown frame and {unknown_leaves:,} included leaves are unknown. These conditional observations cannot reliably allocate whole-decoder time. Capture conditions and loss counters are retained in [perf/README.md](../tests/evidence/diagnostics/gen24/perf/README.md).", '',
+         'The helper comparison retains actual per-stage native entries, self counts and incoming inclusive edge totals for both generations. Recursive/re-entrant calls can overlap within an inclusive row, and descendants can cross a later stage boundary. Only the exact self-event stage partition is additive. No instruction delta is interpreted as a predicted speedup. No production, proof or frozen source changed during collection.', '']
+     notes_path = E / 'context-notes.md'
+     notes.extend(['CRC wrapper and loop entries reconcile with the separately checked accepted-corpus census:', '',
+@@ -213,7 +220,7 @@
+     for row in crc_contexts['native_counts']:
+         observed = row['observed_native_entries']
+         notes.append(f"| {row['profile']} | {row['expected_crc_calls_from_checked_census']:,} | {observed['parity_byte_wrapper_anchor']:,} / {observed['parity_byte_fold_anchor']:,} | {observed['parity_bit_wrapper_anchor']:,} / {observed['parity_bit_fold_anchor']:,} | {row['predicted_byte_iterations_not_native_entries']:,} | {row['predicted_bit_updates_not_native_entries']:,} |")
+-    notes.extend(['', 'Observed entries are incoming native calls; iteration predictions are separate mathematical census data. All ten overlapping register probes are checked separately. The generic fallback remains callable and proved for arbitrary inputs; its zero accepted-corpus count does not remove its implementation or cost for unseen widths. Byte extraction and eight updates inline into the actual loop, which still contains natural-index and ownership work. [CRC boundary and direct-child evidence](../tests/evidence/diagnostics/gen23/crc-byte-contexts.json) compares both generations without copying old profiles or inferring elapsed time.', '',
++    notes.extend(['', 'Observed entries are incoming native calls; iteration predictions are separate mathematical census data. All ten overlapping register probes are checked separately. The generic fallback remains callable and proved for arbitrary inputs; its zero accepted-corpus count does not remove its implementation or cost for unseen widths. Byte extraction and eight updates inline into the actual loop, which still contains natural-index and ownership work. [CRC boundary and direct-child evidence](../tests/evidence/diagnostics/gen24/crc-byte-contexts.json) compares both generations without copying old profiles or inferring elapsed time.', '',
+                   '| Generation | CRC boundary | Native entries | Self Ir | Incoming inclusive Ir |',
+                   '|---|---|---:|---:|---:|'])
+     for generation in crc_contexts['generations']:
+@@ -225,34 +232,34 @@
+                   '|---|---:|---:|---:|---:|---:|'])
+     for row in byte_counts:
+         notes.append(f"| {row['family']} | {row['seven_byte_frames']:,} | {row['fourteen_byte_frames']:,} | {row['bytesValue_entries']:,} | {row['prefix_entries']:,} | {row['wide_fallback_entries']:,} |")
+-    notes.extend(['', 'These boundary counts do not measure the inlined byte-update iterations, which remain live inside bytesValue. The arbitrary-length fallback is outside this corpus, not removed. The exact count reconciliation is retained in [byte-native-counts.json](../tests/evidence/diagnostics/gen23/byte-native-counts.json).', ''])
++    notes.extend(['', 'These boundary counts do not measure the inlined byte-update iterations, which remain live inside bytesValue. The arbitrary-length fallback is outside this corpus, not removed. The exact count reconciliation is retained in [byte-native-counts.json](../tests/evidence/diagnostics/gen24/byte-native-counts.json).', ''])
+     notes.extend(['The live `cbPenalty` boundary in each supplemental register probe:', '',
+                   '| Probe | Probe entries | Penalty entries | Penalty self Ir | Penalty incoming inclusive Ir | Whole probe Ir |',
+                   '|---|---:|---:|---:|---:|---:|---:|'])
+     for row in penalty_rows:
+         notes.append(f"| {row['probe']} | {row['probe_entries']:,} | {row['native_entries']:,} | {row['self_ir']:,} | {row['incoming_inclusive_ir_non_additive']:,} | {row['probe_total_ir']:,} |")
+-    notes.extend(['', 'Candidate and score probes are overlapping views, not additive stages. Candidate probes include register hard checks and conditional scoring; score probes select the reached-score population before entering the collected root. Each inclusive penalty count includes its descendants and is not an additional cost to add to the whole probe or whole decoder. Exact rows are retained in [penalty-probe-costs.json](../tests/evidence/diagnostics/gen23/penalty-probe-costs.json).', ''])
++    notes.extend(['', 'Candidate and score probes are overlapping views, not additive stages. Candidate probes include register hard checks and conditional scoring; score probes select the reached-score population before entering the collected root. Each inclusive penalty count includes its descendants and is not an additional cost to add to the whole probe or whole decoder. Exact rows are retained in [penalty-probe-costs.json](../tests/evidence/diagnostics/gen24/penalty-probe-costs.json).', ''])
+     notes.extend(['The retained live wind lookup and eager table construction are distinguished explicitly:', '',
+         '| Profile | Expected lookup calls | Observed lookup calls | Lookup self Ir | Lookup incoming inclusive Ir | Entry construction inside root |',
+         '|---|---:|---:|---:|---:|---:|---:|'])
+     for row in wind_rows:
+         notes.append(f"| {row['profile']} | {row['expected_lookup_calls']:,} | {row['native_lookup_entries']:,} | {row['lookup_self_ir']:,} | {row['lookup_incoming_inclusive_ir_non_additive']:,} | {row['table_entry_constructor_calls_inside_collected_root']:,} |")
+-    notes.extend(['', 'The expected lookup population includes reached BDS50 scores and any lazy fallback calls, checked separately after collection. Construction happens before the measured decoder root; its zero observed root entries are not a zero startup-cost claim. Inclusive lookup costs overlap the penalty and whole-profile costs. Exact reconciliation is retained in [wind-native-counts.json](../tests/evidence/diagnostics/gen23/wind-native-counts.json).', ''])
++    notes.extend(['', 'The expected lookup population includes reached BDS50 scores and any lazy fallback calls, checked separately after collection. Construction happens before the measured decoder root; its zero observed root entries are not a zero startup-cost claim. Inclusive lookup costs overlap the penalty and whole-profile costs. Exact reconciliation is retained in [wind-native-counts.json](../tests/evidence/diagnostics/gen24/wind-native-counts.json).', ''])
+     notes.extend(['The BDS60 ratio enclosure and its observed software-round fallback:', '',
+         '| Profile | Ratio entries | Definite shortcuts | Software-round fallback entries | Ratio self Ir | Ratio incoming inclusive Ir | Fallback incoming inclusive Ir |',
+         '|---|---:|---:|---:|---:|---:|---:|'])
+     for row in ratio_contexts['rows']:
+-        if row['generation'] != 23:
++        if row['generation'] != 24:
+             continue
+         ratio = row['ratio']
+         notes.append(f"| {row['profile']} | {ratio['native_entries']:,} | {row['ratio_shortcut_entries']:,} | {row['ratio_round_fallback_entries']:,} | {ratio['self_ir']:,} | {ratio['incoming_inclusive_ir_non_additive']:,} | {row['ratio_round_fallback_inclusive_ir_non_additive']:,} |")
+-    notes.extend(['', 'These are actual incoming helper and direct helper-to-round call records. The retained native CFG proves a single conditional round site; the shortcut count is helper entries minus those observed round entries. It is not a prediction of unseen input populations. Candidate and score probes overlap each other and the family profiles; all inclusive columns are non-additive. The retained [ratio-native-contexts.json](../tests/evidence/diagnostics/gen23/ratio-native-contexts.json) also records generation 22 and 23 cbPenalty direct edges, including the unchanged exact Rat.div and enclosure. Do not add inclusive descendants twice or infer wall-clock effects.', ''])
++    notes.extend(['', 'These are actual incoming helper and direct helper-to-round call records. The retained native CFG proves a single conditional round site; the shortcut count is helper entries minus those observed round entries. It is not a prediction of unseen input populations. Candidate and score probes overlap each other and the family profiles; all inclusive columns are non-additive. The retained [ratio-native-contexts.json](../tests/evidence/diagnostics/gen24/ratio-native-contexts.json) also records generation 23 and 24 cbPenalty direct edges, including the unchanged exact Rat.div and enclosure. Do not add inclusive descendants twice or infer wall-clock effects.', ''])
+     notes.extend(['The live Comm-B guard and its direct decimal-parser calls:', '',
+         '| Generation | Profile | Guard calls | Guard self Ir | Guard inclusive Ir | Direct parser calls | Parser inclusive Ir |',
+         '|---|---|---:|---:|---:|---:|---:|'])
+     for row in constant_contexts['rows']:
+         notes.append(f"| {row['generation']} | {row['profile']} | {row['native_entries']:,} | {row['self_ir']:,} | {row['inclusive_ir_non_additive']:,} | {row['direct_parser_calls']:,} | {row['direct_parser_ir_non_additive']:,} |")
+-    notes.extend(['', 'These direct-edge observations refer only to the actual bdsWireValid context; other parser uses are separate. The same input populations are checked across generations. The persistent format constant initializes before message work, so zero direct calls inside this guard do not imply zero initialization work. Incoming inclusive columns overlap callers and other nested helpers; they are not additive stage totals. [Exact context evidence](../tests/evidence/diagnostics/gen23/constant-native-contexts.json).', ''])
++    notes.extend(['', 'These direct-edge observations refer only to the actual bdsWireValid context; other parser uses are separate. The same input populations are checked across generations. The persistent format constant initializes before message work, so zero direct calls inside this guard do not imply zero initialization work. Incoming inclusive columns overlap callers and other nested helpers; they are not additive stage totals. [Exact context evidence](../tests/evidence/diagnostics/gen24/constant-native-contexts.json).', ''])
+     notes.extend(['The retained generic packing fold has no collected entries in either generation:', '',
+         '| Generation | Fold entries | Fold self Ir | Fold inclusive Ir | Direct native callee | Calls | Direct inclusive Ir |',
+         '|---|---:|---:|---:|---|---:|---:|'])
+@@ -260,7 +267,7 @@
+         totals = item['total']
+         for symbol, values in sorted(item['direct_children_total'].items()):
+             notes.append(f"| {item['generation']} | {totals['entry_calls']:,} | {totals['self_ir']:,} | {totals['incoming_inclusive_ir']:,} | `{symbol}` | {values['calls']:,} | {values['inclusive_ir']:,} |")
+-    notes.extend(['', 'Direct children plus fold self cost reconcile to this nonrecursive loop boundary. They overlap whole-stage costs and other nested helpers. Native small-word shifts, masks and conversions may inline; missing helper symbols do not imply zero work. The standalone packing source and generated-C definition retain generic power/modulus behavior, while neither compared timed decoder links or calls that fold. The zero current incoming count is checked alongside the explicit raw-word path, not treated as an independent no-work proof. [Exact packing contexts](../tests/evidence/diagnostics/gen23/pack-fields-direct-costs.json).', ''])
++    notes.extend(['', 'Direct children plus fold self cost reconcile to this nonrecursive loop boundary. They overlap whole-stage costs and other nested helpers. Native small-word shifts, masks and conversions may inline; missing helper symbols do not imply zero work. The standalone packing source and generated-C definition retain generic power/modulus behavior, while neither compared timed decoder links or calls that fold. The zero current incoming count is checked alongside the explicit raw-word path, not treated as an independent no-work proof. [Exact packing contexts](../tests/evidence/diagnostics/gen24/pack-fields-direct-costs.json).', ''])
+     notes.extend(['The live power-of-two lookup, formula fallback and startup construction:', '',
+         '| Generation | Profile | Lookup calls | Lookup self Ir | Lookup incoming inclusive Ir | Direct formula calls | Formula direct inclusive Ir | Constructor calls inside root |',
+         '|---|---|---:|---:|---:|---:|---:|---:|'])
+@@ -268,7 +275,7 @@
+         lookup = row['lookup']
+         constructors = sum(row[key]['native_entries'] for key in ('table_entry', 'table_initializer', 'module_initializer'))
+         notes.append(f"| {row['generation']} | {row['profile']} | {lookup['native_entries']:,} | {lookup['self_ir']:,} | {lookup['incoming_inclusive_ir_non_additive']:,} | {row['direct_lookup_formula_calls']:,} | {row['direct_lookup_formula_inclusive_ir_non_additive']:,} | {constructors:,} |")
+-    notes.extend(['', 'These are actual retained incoming boundaries and direct lookup-to-formula edges. Both generations retain the same immutable format-exponent table. In the current worker, the two out-of-range call sites are mutually exclusive, with at most one dynamic formula invocation per lookup; the in-range path performs an indexed load. No frequency is inferred from inclusive instruction counts. The complete constructor is forced before main, outside these decode roots; its unobserved root calls do not erase startup work. Inclusive columns and overlapping register probes must not be added. [Exact power contexts](../tests/evidence/diagnostics/gen23/power-native-contexts.json).', ''])
++    notes.extend(['', 'These are actual retained incoming boundaries and direct lookup-to-formula edges. Both generations retain the same immutable format-exponent table. In the current worker, the two out-of-range call sites are mutually exclusive, with at most one dynamic formula invocation per lookup; the in-range path performs an indexed load. No frequency is inferred from inclusive instruction counts. The complete constructor is forced before main, outside these decode roots; its unobserved root calls do not erase startup work. Inclusive columns and overlapping register probes must not be added. [Exact power contexts](../tests/evidence/diagnostics/gen24/power-native-contexts.json).', ''])
+     notes.extend(['The four optimized extraction paths, compared at actual retained native boundaries:', '',
+         '| Generation | Stage | Native boundary | Entries | Self Ir | Incoming inclusive Ir | Direct pow calls | Direct pow inclusive Ir |',
+         '|---|---|---|---:|---:|---:|---:|---:|'])
+@@ -276,14 +283,14 @@
+         for row in generation['rows']:
+             powers = [child for child in row['direct_children'] if child['symbol'] == 'lean_nat_pow']
+             notes.append(f"| {generation['generation']} | {row['stage']} | `{row['symbol'].removeprefix(P)}` | {row['native_entries']:,} | {row['self_ir']:,} | {row['incoming_inclusive_ir_non_additive']:,} | {sum(child['calls'] for child in powers):,} | {sum(child['inclusive_ir_non_additive'] for child in powers):,} |")
+-    notes.extend(['', 'Both generations inline the identity lambda into identityCode; missing standalone rows do not erase the live extraction. Other small arithmetic can inline too. Native entry populations across these changed boundaries are not assumed equal. The current direct-power count is zero only for these selected caller boundaries, consistent with the checked shift/mask implementation; it is not a zero-work claim or a claim about all decoder powers. Incoming inclusive columns overlap stage totals and other helpers. [Exact old/new contexts and direct children](../tests/evidence/diagnostics/gen23/bit-extraction-contexts.json) bind both raw profile sets without copying them or predicting timing.', ''])
++    notes.extend(['', 'Both generations inline the identity lambda into identityCode; missing standalone rows do not erase the live extraction. Other small arithmetic can inline too. Native entry populations across these changed boundaries are not assumed equal. The current direct-power count is zero only for these selected caller boundaries, consistent with the checked shift/mask implementation; it is not a zero-work claim or a claim about all decoder powers. Incoming inclusive columns overlap stage totals and other helpers. [Exact old/new contexts and direct children](../tests/evidence/diagnostics/gen24/bit-extraction-contexts.json) bind both raw profile sets without copying them or predicting timing.', ''])
+     notes.extend(['The exact affine helper is compared at surviving native boundaries:', '',
+                   '| Generation | Stage | Boundary | Entries | Self Ir | Incoming inclusive Ir |',
+                   '|---|---|---|---:|---:|---:|'])
+     for generation in affine['generations']:
+         for row in generation['rows']:
+             notes.append(f"| {generation['generation']} | {row['stage']} | `{row['symbol'].removeprefix(P)}` | {row['native_entries']:,} | {row['self_ir']:,} | {row['incoming_inclusive_ir_non_additive']:,} |")
+-    notes.extend(['', 'The payloadValue entry populations are independently checked equal by stage across these two profiles. Inline integerScale/affineValue calls have no standalone native entry count. The current source and all-input proof establish normalization and preserved guards; actual direct children below show the observed arithmetic boundaries.', '',
++    notes.extend(['', 'The payloadValue entry populations are independently recounted by stage in both generations; semantic sharing changes these populations, so equality is reported as an observed boolean rather than required. Inline integerScale/affineValue calls have no standalone native entry count. The current source and all-input proof establish normalization and preserved guards; actual direct children below show the observed arithmetic boundaries.', '',
+                   '| Generation | Stage | Direct child of payloadValue | Calls | Inclusive Ir |',
+                   '|---|---|---|---:|---:|'])
+     for generation in affine['generations']:
+@@ -292,25 +299,31 @@
+                 continue
+             for child in row['direct_children']:
+                 notes.append(f"| {generation['generation']} | {row['stage']} | `{child['symbol'].removeprefix(P)}` | {child['calls']:,} | {child['inclusive_ir_non_additive']:,} |")
+-    notes.extend(['', 'These are overlapping incoming/direct-edge observations, not exclusive savings. Zero current direct Rat.mul calls concern only the listed payloadValue contexts: normalization still performs a numerator product, gcd and exact divisions, with small-value operations possibly inlined. Child calls do not count every nonunit input or logical operation. [Exact affine contexts](../tests/evidence/diagnostics/gen23/affine-native-contexts.json) retain both profile hashes and group reconciliation.', ''])
+-    notes.extend(['Semantic construction rows retain standard tableValues, the separate oracle-value commBValue calls and standard/oracle Float constructors where callable. The already shared standard values and labels are not counted as duplicated calls. Direct child contexts preserve who called payloadValue; all such inclusive costs overlap and must not be added as savings. Inlined list maps and field helpers may have no callable boundary.', ''])
++    notes.extend(['', 'These are overlapping incoming/direct-edge observations, not exclusive savings. Zero current direct Rat.mul calls concern only the listed payloadValue contexts: normalization still performs a numerator product, gcd and exact divisions, with small-value operations possibly inlined. Child calls do not count every nonunit input or logical operation. [Exact affine contexts](../tests/evidence/diagnostics/gen24/affine-native-contexts.json) retain both profile hashes and group reconciliation.', ''])
++    notes.extend(['Semantic construction shares the existing table values and labels, which were already CSE-shared before this change. The current oracle scalar map adjusts those values without a second layout lookup or payloadValue decode; public commBValue remains live elsewhere. One pure numeric-expression list feeds both views, preserving register-specific branches. These constructors build exact expressions; they do not introduce Float execution.', '',
++        '| Generation | Direct payloadValue caller | Semantic ancestor | Calls | Incoming inclusive Ir |',
++        '|---|---|---|---:|---:|'])
++    for generation in semantic['generations']:
++        for row in generation['payload_value_direct_callers']:
++            notes.append(f"| {generation['generation']} | `{row['direct_caller'].removeprefix(P)}` | {row['semantic_ancestor']} | {row['calls']:,} | {row['inclusive_ir_non_additive']:,} |")
++    notes.extend(['', 'The actual semantic caller comparison and current map direct-child contexts are retained in [semantic-caller-contexts.json](../tests/evidence/diagnostics/gen24/semantic-caller-contexts.json). Costs overlap parents, descendants and stage totals; they are not additive savings or predicted timing. Inlined helpers and identity-list branches have no independent call counter.', ''])
+     notes.extend(['Selected actual nested helpers for prioritization:', '',
+         '| Stage | Native helper | Entries | Self Ir | Incoming inclusive Ir |',
+         '|---|---|---:|---:|---:|'])
+     for row in priority['rows']:
+         notes.append(f"| {row['stage']} | `{row['symbol'].removeprefix(P)}` | {row['native_entries']:,} | {row['self_ir']:,} | {row['incoming_inclusive_ir_non_additive']:,} |")
+-    notes.extend(['', 'These rows aggregate only the three disjoint family profiles. Incoming inclusive observations overlap each other and stage totals, including recursive visits and descendants crossing a stage boundary. Direct native children and exact caller contexts are retained in [priority-helper-contexts.json](../tests/evidence/diagnostics/gen23/priority-helper-contexts.json). Rat multiplication rows do not count every logical affine operation; inline work remains in callers. These observations do not select an optimization or infer throughput.', ''])
++    notes.extend(['', 'These rows aggregate only the three disjoint family profiles. Incoming inclusive observations overlap each other and stage totals, including recursive visits and descendants crossing a stage boundary. Direct native children and exact caller contexts are retained in [priority-helper-contexts.json](../tests/evidence/diagnostics/gen24/priority-helper-contexts.json). Rat multiplication rows do not count every logical affine operation; inline work remains in callers. These observations do not select an optimization or infer throughput.', ''])
+     assert not notes_path.exists()
+     notes_path.write_text('\n'.join(notes) + '\n')
+-    run([sys.executable, 'review/diagnostics/write_cost_report.py', '--generation', '23',
++    run([sys.executable, 'review/diagnostics/write_cost_report.py', '--generation', '24',
+          '--analysis', str(E / 'analysis/analysis.json'), '--census', str(E / 'native/all.jsonl'),
+          '--native-df', str(E / 'native-df/summary.json'), '--perf', str(E / 'perf/analysis.json'),
+          '--build', str(E / 'driver/driver-build.json'), '--campaign', str(E / 'campaign.json'),
+-         '--benchmark', 'bench/runs/gen23/summary.json', '--previous-analysis',
+-         'tests/evidence/diagnostics/gen22/analysis/analysis.json', '--previous-generation', '22',
++         '--benchmark', 'bench/runs/gen24/summary.json', '--previous-analysis',
++         'tests/evidence/diagnostics/gen23/analysis/analysis.json', '--previous-generation', '23',
+          '--evidence-root', str(E), '--source-review', str(E / 'independent-review/source-review.json'),
+          '--benchmark-source-binding', str(E / 'benchmark-source-binding.json'),
+-         '--context-notes', str(notes_path), '--output', 'docs/GEN23-COST-BREAKDOWN.md'], 'report')
++         '--context-notes', str(notes_path), '--output', 'docs/GEN24-COST-BREAKDOWN.md'], 'report')
+     assert history() == count
+     for name, digest in campaign['protected_inputs'].items():
+         assert sha(name) == digest, name
+@@ -330,7 +343,7 @@
+         'historical_binding_method': 'committed Git inventory and diff; ignored transcripts/raw perf held by exact filesystem identity, not freshly content-rehashed',
+         'archive_files': archive['file_count'], 'archive_bytes': archive['stored_bytes'],
+         'exclusive_stage_ir': dict(stages), 'total_ir': sum(stages.values()),
+-        'report': 'docs/GEN23-COST-BREAKDOWN.md', 'report_sha256': sha('docs/GEN23-COST-BREAKDOWN.md'),
++        'report': 'docs/GEN24-COST-BREAKDOWN.md', 'report_sha256': sha('docs/GEN24-COST-BREAKDOWN.md'),
+         'analysis_sha256': sha(E / 'analysis/analysis.json'),
+         'archive_manifest_sha256': sha(E / 'archive-manifest.json'),
+         'helper_comparison_sha256': sha(E / 'helper-comparison.json'),
+@@ -344,6 +357,8 @@
+         'integer_affine_normalization_live_path_verified': True,
+         'raw_word_syndrome_live_path_verified': source['raw_word_syndrome_live_path_verified'],
+         'commb_validity_tables_live_path_verified': source['commb_validity_tables_live_path_verified'],
++        'commb_semantic_reuse_live_path_verified': source['commb_semantic_reuse_live_path_verified'],
++        'semantic_caller_contexts_sha256': sha(E / 'semantic-caller-contexts.json'),
+         'parsed_wire_word_checked_after_collection': campaign['live_crc_census']['parsed_wire_word_checked'],
+         'standalone_frame_syndrome_checked_after_collection': campaign['live_crc_census']['standalone_frame_syndrome_checked_after_collection'],
+         'affine_native_contexts_sha256': sha(E / 'affine-native-contexts.json'),
+--- tests/evidence/diagnostics/gen23/extract_constant_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_constant_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Recount live Comm-B guard contexts in retained gen22/gen23 profiles only."""
++"""Recount live Comm-B guard contexts in retained gen23/gen24 profiles only."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter
+@@ -9,7 +9,7 @@
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[4]
+-E = ROOT / 'tests/evidence/diagnostics/gen23'
++E = ROOT / 'tests/evidence/diagnostics/gen24'
+ SYMBOL = 'lp_lean1090_Lean1090_Impl_bdsWireValid'
+ 
+ 
+@@ -27,14 +27,14 @@
+     source = read(E / 'independent-review/source-review.json')
+     assert source['commb_payload_limit_live_path_verified']
+     parser = ROOT / 'review/diagnostics/analyze_callgrind.py'
+-    spec = importlib.util.spec_from_file_location('gen23_constant_parser', parser)
++    spec = importlib.util.spec_from_file_location('gen24_constant_parser', parser)
+     module = importlib.util.module_from_spec(spec)
+     sys.modules[spec.name] = module
+     spec.loader.exec_module(module)
+     rows, contexts, previous = [], [], {}
+     modes = ['adsb', 'commb', 'other'] + [kind + register for kind in ('candidate', 'score')
+              for register in ('40', '44', '45', '50', '60')]
+-    for generation in (22, 23):
++    for generation in (23, 24):
+         root = ROOT / f'tests/evidence/diagnostics/gen{generation}'
+         analysis = read(root / 'analysis/analysis.json')
+         for mode in modes:
+@@ -66,7 +66,7 @@
+             assert totals['self_ir'] == sum(row['self_events'].get('Ir', 0) for row in grouped)
+             assert totals['native_entries'] == sum(row['native_entries'] for row in grouped)
+             assert totals['inclusive_ir_non_additive'] == sum(row['incoming_inclusive_events_non_additive'].get('Ir', 0) for row in grouped)
+-            if generation == 22:
++            if generation == 23:
+                 previous[mode] = totals['native_entries']
+             else:
+                 assert totals['native_entries'] == previous[mode], mode
+--- tests/evidence/diagnostics/gen23/extract_pack_fields.py
++++ tests/evidence/diagnostics/gen24/extract_pack_fields.py
+@@ -5,7 +5,7 @@
+ from collections import Counter
+ import hashlib,importlib.util,json
+ from pathlib import Path
+-E=Path('tests/evidence/diagnostics/gen23')
++E=Path('tests/evidence/diagnostics/gen24')
+ def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def read(p): return json.loads(Path(p).read_text())
+ source=read(E/'independent-review/source-review.json')
+@@ -14,9 +14,9 @@
+ HISTORICAL_ANCHOR=Path('tests/evidence/diagnostics/gen21/independent-review/source-review.json')
+ SYMBOL=read(HISTORICAL_ANCHOR)['pack_fields_fold_anchor']
+ p=Path('review/diagnostics/analyze_callgrind.py')
+-spec=importlib.util.spec_from_file_location('gen23_pack_parser',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
++spec=importlib.util.spec_from_file_location('gen24_pack_parser',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+ generations=[]
+-for generation in (22,23):
++for generation in (23,24):
+  root=Path(f'tests/evidence/diagnostics/gen{generation}'); rows=[];combined={};total=Counter(entry_calls=0,self_ir=0,incoming_inclusive_ir=0)
+  for family in ('adsb','commb','other'):
+   path=root/'callgrind'/family/'callgrind.out.1.gz';profile=m.parse(path);contexts=[];children={};counts=Counter(entry_calls=0,self_ir=0,incoming_inclusive_ir=0)
+--- tests/evidence/diagnostics/gen23/extract_power_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_power_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Recount actual power lookup/formula contexts from existing gen22/gen23 profiles."""
++"""Recount actual power lookup/formula contexts from existing gen23/gen24 profiles."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter
+@@ -9,7 +9,7 @@
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[4]
+-E = ROOT / 'tests/evidence/diagnostics/gen23'
++E = ROOT / 'tests/evidence/diagnostics/gen24'
+ 
+ 
+ def read(path):
+@@ -29,14 +29,14 @@
+     anchors = {key: source['power_two_' + key + '_anchor'] for key in keys}
+     assert all(isinstance(symbol, str) and symbol for symbol in anchors.values())
+     parser = ROOT / 'review/diagnostics/analyze_callgrind.py'
+-    spec = importlib.util.spec_from_file_location('gen23_power_parser', parser)
++    spec = importlib.util.spec_from_file_location('gen24_power_parser', parser)
+     module = importlib.util.module_from_spec(spec)
+     sys.modules[spec.name] = module
+     spec.loader.exec_module(module)
+     rows, contexts = [], []
+     modes = ['adsb', 'commb', 'other'] + [kind + register for kind in ('candidate', 'score')
+              for register in ('40', '44', '45', '50', '60')]
+-    for generation in (22, 23):
++    for generation in (23, 24):
+         root = ROOT / f'tests/evidence/diagnostics/gen{generation}'
+         analysis = read(root / 'analysis/analysis.json')
+         for mode in modes:
+@@ -75,7 +75,7 @@
+                 assert totals['native_entries'] == sum(helper['native_entries'] for helper in grouped)
+                 assert totals['incoming_inclusive_ir_non_additive'] == sum(helper['incoming_inclusive_events_non_additive'].get('Ir', 0) for helper in grouped)
+                 row[label] = dict(totals)
+-            if generation == 23:
++            if generation == 24:
+                 assert row['direct_lookup_formula_calls'] <= row['lookup']['native_entries']
+                 for label in ('table_entry', 'table_initializer', 'module_initializer'):
+                     assert row[label]['native_entries'] == 0 and row[label]['self_ir'] == 0
+--- tests/evidence/diagnostics/gen23/extract_priority_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_priority_contexts.py
+@@ -8,7 +8,7 @@
+ import json
+ from pathlib import Path
+ 
+-E = Path('tests/evidence/diagnostics/gen23')
++E = Path('tests/evidence/diagnostics/gen24')
+ P = 'lp_lean1090_Lean1090_Impl_'
+ sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ read = lambda path: json.loads(Path(path).read_text())
+@@ -20,17 +20,18 @@
+     analysis = read(E / 'analysis/analysis.json')
+     source = read(E / 'independent-review/source-review.json')
+     parser = Path('review/diagnostics/analyze_callgrind.py')
+-    spec = importlib.util.spec_from_file_location('gen23_priority_parser', parser)
++    spec = importlib.util.spec_from_file_location('gen24_priority_parser', parser)
+     module = importlib.util.module_from_spec(spec)
+     sys.modules[spec.name] = module
+     spec.loader.exec_module(module)
+     selected = {P + name for name in (
+         'ScoreGate_choose', 'ScoreGate_commonDenominator', 'ScoreGate_scaledNumerator',
+         'ScoreGate_scaledTotals', 'bdsWireValid', 'payloadValue', 'affineValue',
+-        'decodeFrameWithWord', 'decodeFrame', 'frameSyndrome', 'frameParts', 'acasParts', 'surveillanceParts', 'Semantics_tableValues', 'Semantics_commB', 'Semantics_commBStandardFloats', 'oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60', 'Semantics_adsb', 'reportWithSyndrome', 'integerScale', 'Parity_syndrome', 'Parity_checksum', 'bytesValue', 'packFields', 'field')}
++        'decodeFrameWithWord', 'decodeFrame', 'frameSyndrome', 'frameParts', 'acasParts', 'surveillanceParts', 'Semantics_tableValues', 'Semantics_commB', 'Semantics_commBStandardFloats', 'Presentation_oracleCommBFloats', 'commBValue', 'findPayloadField', 'cbSelectedValid40', 'cbQNHValid40', 'cbRollValid50', 'cbMachValid60', 'cbVerticalValid60', 'Semantics_adsb', 'reportWithSyndrome', 'integerScale', 'Parity_syndrome', 'Parity_checksum', 'bytesValue', 'packFields', 'field')}
+     selected.update(source['integer_score_gate_anchors'].values())
+     selected.update((source['parity_fold_anchor'], source['pack_fields_fold_anchor'],
+                      'l_Rat_mul', 'l_Rat_add', 'l_Rat_div'))
++    selected.update(value for key, value in source.items() if key.startswith('commb_semantic_') and key.endswith('_anchor') and value)
+     selected.discard(None)
+     selected.update(row['symbol'] for profile in analysis['families'].values()
+                     for rows in profile['stage_helper_observations_non_additive'].values()
+--- tests/evidence/diagnostics/gen23/extract_bit_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_bit_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Compare actual bit-extraction boundaries in retained generation 22/23 profiles."""
++"""Compare actual bit-extraction boundaries in retained generation 23/24 profiles."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter, defaultdict, deque
+@@ -10,7 +10,7 @@
+ sys.path.insert(0, str(Path.cwd() / 'review/diagnostics'))
+ import analyze_callgrind as parser
+ 
+-BASE = Path('tests/evidence/diagnostics/gen23')
++BASE = Path('tests/evidence/diagnostics/gen24')
+ P = 'lp_lean1090_Lean1090_Impl_'
+ SELECTED = {P + name for name in ('Altitude_bit', 'Altitude_grayDecode',
+                                  'identityCode', 'identityCode___lam__0', 'payloadInteger')}
+@@ -91,7 +91,7 @@
+     out = BASE / 'bit-extraction-contexts.json'
+     assert not out.exists()
+     assert read(BASE / 'independent-review/source-review.json')['systematic_bit_extraction_verified']
+-    generations = [collect(generation) for generation in (22, 23)]
++    generations = [collect(generation) for generation in (23, 24)]
+     assert generations[1]['direct_power_totals']['calls'] == 0
+     result = {'status': 'passed', 'kind': 'actual_bit_extraction_boundary_and_direct_edge_comparison',
+               'generations': generations, 'selected_symbols': sorted(SELECTED),
+--- tests/evidence/diagnostics/gen23/extract_crc_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_crc_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Compare actual CRC loop boundaries in retained generation 22/23 profiles."""
++"""Compare actual CRC loop boundaries in retained generation 23/24 profiles."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter, defaultdict, deque
+@@ -10,9 +10,9 @@
+ sys.path.insert(0, str(Path.cwd() / 'review/diagnostics'))
+ import analyze_callgrind as parser
+ 
+-BASE = Path('tests/evidence/diagnostics/gen23')
++BASE = Path('tests/evidence/diagnostics/gen24')
+ P = 'lp_lean1090_Lean1090_Impl_'
+-SOURCES = {g: json.loads(Path(f'tests/evidence/diagnostics/gen{g}/independent-review/source-review.json').read_text()) for g in (22, 23)}
++SOURCES = {g: json.loads(Path(f'tests/evidence/diagnostics/gen{g}/independent-review/source-review.json').read_text()) for g in (23, 24)}
+ SELECTED = {P + name for name in ('decodeFrameWithWord', 'decodeFrame', 'frameSyndrome', 'Parity_checksum', 'packFields', 'Parity_syndrome', 'Parity_syndromeBytes', 'Parity_syndromeBits', 'Parity_step', 'Parity_byteStep', 'Parity_cachedByte')}
+ SELECTED.update(value for source in SOURCES.values() for key, value in source.items() if key.startswith('parity_') and key.endswith('_anchor') and value)
+ sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -90,11 +90,11 @@
+ def main():
+     out = BASE / 'crc-byte-contexts.json'
+     assert not out.exists()
+-    source = SOURCES[23]
++    source = SOURCES[24]
+     assert source['raw_word_syndrome_live_path_verified']
+     assert source['decode_frame_with_word_anchor'] == P + 'decodeFrameWithWord'
+     assert source['byte_crc_live_path_verified'] and source['word_crc_live_path_verified']
+-    generations = [collect(generation) for generation in (22, 23)]
++    generations = [collect(generation) for generation in (23, 24)]
+     analysis = read(BASE / 'analysis/analysis.json')
+     campaign = read(BASE / 'campaign.json')
+     census = {row['df']: row for row in campaign['live_crc_census']['per_df']}
+--- tests/evidence/diagnostics/gen23/extract_affine_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_affine_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Compare actual affine normalization boundaries in retained generation 22/23 profiles."""
++"""Compare actual affine normalization boundaries in retained generation 23/24 profiles."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter, defaultdict, deque
+@@ -10,7 +10,7 @@
+ sys.path.insert(0, str(Path.cwd() / 'review/diagnostics'))
+ import analyze_callgrind as parser
+ 
+-BASE = Path('tests/evidence/diagnostics/gen23')
++BASE = Path('tests/evidence/diagnostics/gen24')
+ P = 'lp_lean1090_Lean1090_Impl_'
+ SELECTED = {P + name for name in ('payloadValue', 'affineValue', 'integerScale')}
+ SELECTED.update(('l_Rat_mul', 'l_Rat_normalize'))
+@@ -92,14 +92,15 @@
+     source = read(BASE / 'independent-review/source-review.json')
+     assert source['integer_affine_normalization_live_path_verified']
+     assert source['payload_value_anchor'] == P + 'payloadValue'
+-    generations = [collect(generation) for generation in (22, 23)]
++    generations = [collect(generation) for generation in (23, 24)]
+     payload_rows = [[row for row in generation['rows'] if row['symbol'] == P + 'payloadValue'] for generation in generations]
+-    assert {row['stage']: row['native_entries'] for row in payload_rows[0]} == {row['stage']: row['native_entries'] for row in payload_rows[1]}
++    entry_populations = [{row['stage']: row['native_entries'] for row in rows} for rows in payload_rows]
+     assert all(child['calls'] == 0 for row in payload_rows[1] for child in row['direct_children'] if child['symbol'] == 'l_Rat_mul')
+     result = {'status': 'passed', 'kind': 'actual_affine_normalization_boundary_and_direct_edge_comparison',
+               'generations': generations, 'selected_symbols': sorted(SELECTED),
+               'extractor_sha256': sha(__file__), 'parser_sha256': sha('review/diagnostics/analyze_callgrind.py'),
+-              'same_payload_value_entries_by_stage': True,
++              'same_payload_value_entries_by_stage': entry_populations[0] == entry_populations[1],
++              'payload_value_entries_by_stage': {'gen23': entry_populations[0], 'gen24': entry_populations[1]},
+               'limits': [
+                   'Only the three disjoint full-decoder families are summed; candidate and score probes remain separate overlapping diagnostics.',
+                   'Stage ownership uses the unchanged exclusive attribution algorithm; selected groups reconcile all entry/self/inclusive measures to each generation helper analysis.',
+--- tests/evidence/diagnostics/gen23/cleanup_cache.py
++++ tests/evidence/diagnostics/gen24/cleanup_cache.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Remove only reviewed, hash-bound gen23 diagnostic cache duplicates.
++"""Remove only reviewed, hash-bound gen24 diagnostic cache duplicates.
+ 
+ Run after independent review and with all diagnostic producers stopped. Raw
+ perf.data and every unbound cache file remain. No other cache root is allowed.
+@@ -16,8 +16,8 @@
+ import stat
+ 
+ ROOT = Path.cwd().resolve()
+-E = ROOT / 'tests/evidence/diagnostics/gen23'
+-C = ROOT / '.cache/gen23-costs'
++E = ROOT / 'tests/evidence/diagnostics/gen24'
++C = ROOT / '.cache/gen24-costs'
+ 
+ 
+ def sha(path, compressed=False):
+@@ -95,12 +95,12 @@
+         selected.append({'source': str(source.relative_to(ROOT)), 'sha256': binding['sha256'],
+                          'bytes': binding['bytes'], 'identity': identity(source),
+                          'classification': 'explicitly_bound_rebuildable_diagnostic_artifact'})
+-    raw = C / 'perf-gen23/perf.data'
++    raw = C / 'perf-gen24/perf.data'
+     capture = json.loads((E / 'perf/capture.json').read_text())
+     assert sha(raw) == (capture['raw_data']['sha256'], capture['raw_data']['bytes'])
+     preserved = capture['preserved_binary']
+     worker_copy = ROOT / preserved['path']
+-    assert worker_copy == C / 'perf-gen23/lean1090-bench' and worker_copy not in seen
++    assert worker_copy == C / 'perf-gen24/lean1090-bench' and worker_copy not in seen
+     assert sha(worker_copy)[0] == preserved['sha256'] == capture['before_hashes']['.lake/build/bin/lean1090-bench']
+     assert sha(ROOT / '.lake/build/bin/lean1090-bench')[0] == preserved['sha256']
+     seen.add(worker_copy)
+--- tests/evidence/diagnostics/gen23/seal_perf.py
++++ tests/evidence/diagnostics/gen24/seal_perf.py
+@@ -5,13 +5,13 @@
+ from pathlib import Path
+ from datetime import datetime,timezone
+ import hashlib,json,re
+-R=Path.cwd();E=R/'tests/evidence/diagnostics/gen23';P=E/'perf'
++R=Path.cwd();E=R/'tests/evidence/diagnostics/gen24';P=E/'perf'
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def load(p):return json.loads(p.read_text())
+ def write(p,v):
+  assert not p.exists();p.write_text(json.dumps(v,indent=2)+'\n')
+-a=load(P/'analysis.json');c=load(P/'capture.json');done=load(R/'tests/evidence/diagnostics/gen23-cpr/isolated-perf-completion.json')
++a=load(P/'analysis.json');c=load(P/'capture.json');done=load(R/'tests/evidence/diagnostics/gen24-cpr/isolated-perf-completion.json')
+ assert done['status']=='passed' and done['all_jobs_stopped'] and done['sequential_modes']==['decode','cpr']
+ assert c['record_exit_code']==0 and c['all_input_hashes_unchanged'] and c['before_hashes']==c['after_hashes']
+ for name,value in c['before_hashes'].items():assert sha(R/name)==value,name
+@@ -26,20 +26,20 @@
+ assert len(lost)==2
+ assert a['total_samples']==a['decode_descendant_samples']+a['excluded_samples']
+ record={'status':'passed','reviewed_at_utc':datetime.now(timezone.utc).isoformat(),'capture_exit_code':0,
+- 'analysis_command':['python3','-B','tests/evidence/diagnostics/gen23/perf/analyze_perf_gen23.py'],'analysis_exit_code':0,
+- 'capture_helper_sha256':sha(R/'tests/evidence/diagnostics/gen23-cpr/run_isolated_perf.py'),'analysis_helper_sha256':sha(P/'analyze_perf_gen23.py'),
++ 'analysis_command':['python3','-B','tests/evidence/diagnostics/gen24/perf/analyze_perf_gen24.py'],'analysis_exit_code':0,
++ 'capture_helper_sha256':sha(R/'tests/evidence/diagnostics/gen24-cpr/run_isolated_perf.py'),'analysis_helper_sha256':sha(P/'analyze_perf_gen24.py'),
+  'captured_input_hash_count':len(c['before_hashes']),'all_input_hashes_still_match':True,
+- 'gen23_fresh_native_binding':{'linked_project_objects':22,'build_record':'bench/runs/gen23/binary-built.json','build_record_sha256':sha(R/'bench/runs/gen23/binary-built.json'),
+- 'fresh_native_record':'bench/runs/gen23/fresh-native-inputs.json','fresh_native_record_sha256':sha(R/'bench/runs/gen23/fresh-native-inputs.json'),
+- 'source_equivalence':'tests/evidence/diagnostics/gen23/benchmark-source-binding.json','source_equivalence_sha256':sha(R/'tests/evidence/diagnostics/gen23/benchmark-source-binding.json')},
++ 'gen24_fresh_native_binding':{'linked_project_objects':23,'build_record':'bench/runs/gen24/binary-built.json','build_record_sha256':sha(R/'bench/runs/gen24/binary-built.json'),
++ 'fresh_native_record':'bench/runs/gen24/fresh-native-inputs.json','fresh_native_record_sha256':sha(R/'bench/runs/gen24/fresh-native-inputs.json'),
++ 'source_equivalence':'tests/evidence/diagnostics/gen24/benchmark-source-binding.json','source_equivalence_sha256':sha(R/'tests/evidence/diagnostics/gen24/benchmark-source-binding.json')},
+  'samples':a['total_samples'],'included_decode_stacks':a['decode_descendant_samples'],'included_cpr_loop_stacks':None,
+  'excluded_samples':a['excluded_samples'],'lost_sample_report_lines':lost,'unknown_frame_stacks':a['all_samples_with_unknown_frame'],
+  'unknown_decode_leaf_samples':sum(json.loads(line)['leaf']=='[unknown]' for line in (P/'decode-samples.jsonl').read_text().splitlines()),'unknown_cpr_leaf_samples':None,'raw_data':raw,
+  'capture_sha256':sha(P/'capture.json'),'no_throughput_claim':True}
+ write(P/'completion.json',record)
+-(P/'README.md').write_text(f'''# Generation 23 decode actual-worker diagnostic sampling
++(P/'README.md').write_text(f'''# Generation 24 decode actual-worker diagnostic sampling
+ 
+-One actual frozen worker run was sampled on CPU 0 with cpu-clock:u at 199 Hz after both diagnostic builds. Decode and CPR captures ran sequentially with other native/profile jobs held. This is not a benchmark. All {record['captured_input_hash_count']} protected inputs and 22 fresh native sets remained unchanged. The explicit source binding relates timed 9b6868f to artifact 0ead24d; documentation commits have no measured speed attribution.
++One actual frozen worker run was sampled on CPU 0 with cpu-clock:u at 199 Hz after both diagnostic builds. Decode and CPR captures ran sequentially with other native/profile jobs held. This is not a benchmark. All {record['captured_input_hash_count']} protected inputs and 23 fresh native sets remained unchanged. The explicit source binding relates timed cc337104 to artifact d0f58661; documentation commits have no measured speed attribution.
+ 
+ All {record['samples']} recorded samples were parsed; {record['included_decode_stacks']} have a visible Impl.decode ancestor and {record['excluded_samples']} are excluded, not assumed to be preparation. Unknown frames appear in {record['unknown_frame_stacks']} stacks, with {record['unknown_decode_leaf_samples']} included unknown leaves. Both retained reports explicitly state zero lost samples. Conditional shares can be biased by inlining, tail calls and unwinding. Eager immutable table startup, including the complete power-of-two table, is outside the visible decode subset; scalar first-use constants may remain inside. No table-hit frequency or throughput effect is inferred from samples.
+ ''')
+--- tests/evidence/diagnostics/gen23/extract_ratio_contexts.py
++++ tests/evidence/diagnostics/gen24/extract_ratio_contexts.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Read existing gen22/gen23 Callgrind data; no decoder runs or timing estimates."""
++"""Read existing gen23/gen24 Callgrind data; no decoder runs or timing estimates."""
+ import sys
+ sys.dont_write_bytecode = True
+ from collections import Counter
+@@ -9,7 +9,7 @@
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[4]
+-E = ROOT / 'tests/evidence/diagnostics/gen23'
++E = ROOT / 'tests/evidence/diagnostics/gen24'
+ P = 'lp_lean1090_Lean1090_Impl_'
+ 
+ def sha(path):
+@@ -24,16 +24,16 @@
+     assert source['bds60_ratio_enclosure_live_path_verified']
+     assert source['ratio_enclosure_anchor'] == P + 'cbRatioOutside250800'
+     parser = ROOT / 'review/diagnostics/analyze_callgrind.py'
+-    spec = importlib.util.spec_from_file_location('gen23_ratio_profile_parser', parser)
++    spec = importlib.util.spec_from_file_location('gen24_ratio_profile_parser', parser)
+     module = importlib.util.module_from_spec(spec)
+     sys.modules[spec.name] = module
+     spec.loader.exec_module(module)
+     analysis = read(E / 'analysis/analysis.json')
+-    previous_analysis = read(ROOT / 'tests/evidence/diagnostics/gen22/analysis/analysis.json')
++    previous_analysis = read(ROOT / 'tests/evidence/diagnostics/gen23/analysis/analysis.json')
+     mode_names = ['adsb', 'commb', 'other'] + [kind + r for kind in ('candidate', 'score') for r in ('40','44','45','50','60')]
+     summaries = []
+     direct_rows = []
+-    for generation, analyses in [(22, previous_analysis), (23, analysis)]:
++    for generation, analyses in [(23, previous_analysis), (24, analysis)]:
+         root = ROOT / f'tests/evidence/diagnostics/gen{generation}'
+         for mode in mode_names:
+             path = root / 'callgrind' / mode / 'callgrind.out.1.gz'
+@@ -48,7 +48,7 @@
+                 inclusive = sum(node.edges.get(name,{}).get('Ir',0) for node in profile.nodes.values() for name in nodes)
+                 stats[label] = {'native_entries': entries, 'self_ir': own, 'incoming_inclusive_ir_non_additive': inclusive}
+                 anchor = info['native_anchor_counts_and_non_additive_inclusive_events'].get(symbol,{})
+-                if generation in (22,23) or label=='penalty':
++                if generation in (23,24) or label=='penalty':
+                     assert entries==anchor.get('native_entries',0)
+                     assert own==anchor.get('self_events',{}).get('Ir',0)
+                     assert inclusive==anchor.get('incoming_inclusive_events_non_additive',{}).get('Ir',0)
+@@ -67,7 +67,7 @@
+             assert fallback<=stats['ratio']['native_entries']<=stats['penalty']['native_entries']
+             if mode not in ('commb','candidate60','score60'):assert stats['ratio']['native_entries']==0 and fallback==0
+             summaries.append({'generation':generation,'profile':mode,**stats,'ratio_round_fallback_entries':fallback,'ratio_round_fallback_inclusive_ir_non_additive':fallback_ir,'ratio_shortcut_entries':stats['ratio']['native_entries']-fallback})
+-    result={'kind':'actual_ratio_and_penalty_native_context_observations','source_review_sha256':sha(E/'independent-review/source-review.json'),'parser_sha256':sha(parser),'analysis_sha256':sha(E/'analysis/analysis.json'),'previous_analysis_sha256':sha(ROOT/'tests/evidence/diagnostics/gen22/analysis/analysis.json'),'rows':summaries,'direct_contexts':direct_rows,'limits':['Each native entry count is from retained incoming call records; only positive-cost direct edges are attributed to observed fallback work.','The source/native review proves one conditional software-round site per ratio helper invocation. Subtraction of those observed calls from helper entries counts shortcut invocations, not input distributions outside the corpus.','Both generations form exact Rat division in cbPenalty before the unchanged integer enclosure and optional software rounding. Their inclusive costs overlap callers and are not additive stage partitions.','Families and standalone candidate/score probes are distinct overlapping contexts and cannot be added as workload totals.','No elapsed-time estimate or explanation of the measured throughput is inferred from these instruction counts.']}
++    result={'kind':'actual_ratio_and_penalty_native_context_observations','source_review_sha256':sha(E/'independent-review/source-review.json'),'parser_sha256':sha(parser),'analysis_sha256':sha(E/'analysis/analysis.json'),'previous_analysis_sha256':sha(ROOT/'tests/evidence/diagnostics/gen23/analysis/analysis.json'),'rows':summaries,'direct_contexts':direct_rows,'limits':['Each native entry count is from retained incoming call records; only positive-cost direct edges are attributed to observed fallback work.','The source/native review proves one conditional software-round site per ratio helper invocation. Subtraction of those observed calls from helper entries counts shortcut invocations, not input distributions outside the corpus.','Both generations form exact Rat division in cbPenalty before the unchanged integer enclosure and optional software rounding. Their inclusive costs overlap callers and are not additive stage partitions.','Families and standalone candidate/score probes are distinct overlapping contexts and cannot be added as workload totals.','No elapsed-time estimate or explanation of the measured throughput is inferred from these instruction counts.']}
+     target.write_text(json.dumps(result,indent=2)+'\n')
+     print(json.dumps({'status':'passed','rows':len(summaries),'direct_context_groups':len(direct_rows),'sha256':sha(target)}))
+ 
+--- tests/evidence/diagnostics/gen23/perf/analyze_perf_gen23.py
++++ tests/evidence/diagnostics/gen24/perf/analyze_perf_gen24.py
+@@ -3,7 +3,7 @@
+ from pathlib import Path
+ from collections import Counter
+ import json,re,hashlib
+-out=Path('tests/evidence/diagnostics/gen23/perf');text=(out/'script.txt').read_text();blocks=[x for x in text.split('\n\n') if x.strip()]
++out=Path('tests/evidence/diagnostics/gen24/perf');text=(out/'script.txt').read_text();blocks=[x for x in text.split('\n\n') if x.strip()]
+ decode='lp_lean1090_Lean1090_Impl_decode';pre='lp_lean1090_Lean1090_Impl_'
+ rootstages=Counter();detail=Counter();leaf=Counter();allleaf=Counter();nested=Counter();records=[];excluded=Counter();unknown=0;periodtotal=0;periodincluded=0
+ for number,block in enumerate(blocks):
+--- tests/evidence/diagnostics/gen23/extract_semantic_callers.py
++++ tests/evidence/diagnostics/gen24/extract_semantic_callers.py
+@@ -1,29 +1,79 @@
+-"""Compact readout of already retained semantic caller contexts; no native execution."""
++"""Compare retained semantic caller contexts and actual shared map boundaries."""
+ import sys
+-sys.dont_write_bytecode=True
+-import collections,hashlib,json,pathlib,re
+-E=pathlib.Path('tests/evidence/diagnostics/gen23');P='lp_lean1090_Lean1090_Impl_'
+-sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+-base=lambda s:re.split(r"'| \[clone ",s,maxsplit=1)[0]
+-a=json.loads((E/'analysis/analysis.json').read_text());p=json.loads((E/'priority-helper-contexts.json').read_text())
+-selected=[r for r in p['contexts'] if r['stage']=='semantic_oracle_values' and r['symbol']==P+'payloadValue']
+-groups={}
+-for r in selected:
+- for edge in r['incoming']:
+-  key=(base(edge['caller']),'Semantics_commB' if P+'Semantics_commB' in edge['caller'] else 'Semantics_adsb' if P+'Semantics_adsb' in edge['caller'] else 'other')
+-  groups.setdefault(key,collections.Counter()).update(calls=edge['calls'],inclusive_ir_non_additive=edge['inclusive_ir_non_additive'])
+-rows=[{'direct_caller':k[0],'semantic_ancestor':k[1],**v} for k,v in sorted(groups.items())]
+-whole=next(r for r in p['rows'] if r['stage']=='semantic_oracle_values' and r['symbol']==P+'payloadValue')
+-assert sum(r['calls'] for r in rows)==whole['native_entries']
+-assert sum(r['inclusive_ir_non_additive'] for r in rows)==whole['incoming_inclusive_ir_non_additive']
+-commb=next(r for r in p['rows'] if r['stage']=='semantic_oracle_values' and r['symbol']==P+'Semantics_commB')
+-floats=[]
+-for family,profile in a['families'].items():
+- for stage,helpers in profile['stage_helper_observations_non_additive'].items():
+-  for row in helpers:
+-   if 'oracleCommBFloats' in row['symbol'] or 'commBStandardFloats' in row['symbol']:
+-    floats.append({'family':family,'stage':stage,**row})
+-out={'status':'passed','kind':'retained_semantic_payload_callers_and_constructor_boundaries','bindings':{str(E/'analysis/analysis.json'):sha(E/'analysis/analysis.json'),str(E/'priority-helper-contexts.json'):sha(E/'priority-helper-contexts.json'),str(E/'independent-review/source-review.json'):sha(E/'independent-review/source-review.json'),'Impl/Semantics.lean':sha(pathlib.Path('Impl/Semantics.lean')),'Impl/Presentation.lean':sha(pathlib.Path('Impl/Presentation.lean')),str(pathlib.Path(__file__)):sha(pathlib.Path(__file__))},'payload_value_direct_callers':rows,'payload_value_total':{k:whole[k] for k in ('native_entries','self_ir','incoming_inclusive_ir_non_additive')},'semantic_commb':commb,'actual_float_constructor_helper_rows':floats,'contexts':selected,'limits':['Existing generated C shares standard tableValues and labels; the distinct oracle-value map remains a separate field lookup/decoding path. These observations do not claim duplicate standard value or label evaluation.','Actual Float-constructor symbol is Presentation_oracleCommBFloats. The extra unnamespaced oracleCommBFloats anchor is absent; the actual parent edges and complete helper records above are used instead. Standard Floats wrapper is inlined into its map loop.','These helpers construct exact numeric expressions, not newly introduced or separately executed hardware Float operations. The prior tested-only callback boundary is unchanged.','Rows retain exact native incoming edges. Ancestors and direct descendants overlap: do not add inclusive rows or claim all of an observed parent cost is removable. Only exclusive stage self totals are additive.','The full input equality and exception/correction semantics constrain any future reuse design. No optimization or timing prediction follows solely from this extraction.']}
+-target=E/'semantic-caller-contexts.json'
+-with target.open('x') as f:f.write(json.dumps(out,indent=2)+'\n')
+-print(json.dumps({'status':'passed','sha256':sha(target),'direct_caller_rows':rows,'float_constructor_groups':len(floats)},indent=2))
++sys.dont_write_bytecode = True
++from collections import Counter
++from pathlib import Path
++import hashlib, json, re
++E = Path('tests/evidence/diagnostics/gen24')
++P = 'lp_lean1090_Lean1090_Impl_'
++sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
++read = lambda p: json.loads(Path(p).read_text())
++base = lambda s: re.split(r"'| \[clone ", s, maxsplit=1)[0]
++
++
++def collect(generation):
++    root = Path(f'tests/evidence/diagnostics/gen{generation}')
++    analysis = read(root / 'analysis/analysis.json')
++    priority = read(root / 'priority-helper-contexts.json')
++    selected = [r for r in priority['contexts']
++                if r['stage'] == 'semantic_oracle_values' and r['symbol'] == P + 'payloadValue']
++    groups = {}
++    for context in selected:
++        for edge in context['incoming']:
++            ancestor = ('Semantics_commB' if P + 'Semantics_commB' in edge['caller'] else
++                        'Semantics_adsb' if P + 'Semantics_adsb' in edge['caller'] else 'other')
++            groups.setdefault((base(edge['caller']), ancestor), Counter()).update(
++                calls=edge['calls'], inclusive_ir_non_additive=edge['inclusive_ir_non_additive'])
++    rows = [{'direct_caller': k[0], 'semantic_ancestor': k[1], **v} for k, v in sorted(groups.items())]
++    whole = next(r for r in priority['rows'] if r['stage'] == 'semantic_oracle_values' and r['symbol'] == P + 'payloadValue')
++    assert sum(r['calls'] for r in rows) == whole['native_entries']
++    assert sum(r['inclusive_ir_non_additive'] for r in rows) == whole['incoming_inclusive_ir_non_additive']
++    floats = [{'family': family, 'stage': stage, **row}
++              for family, profile in analysis['families'].items()
++              for stage, helpers in profile['stage_helper_observations_non_additive'].items()
++              for row in helpers if 'oracleCommBFloats' in row['symbol'] or 'commBStandardFloats' in row['symbol']]
++    return {'generation': generation, 'payload_value_direct_callers': rows,
++            'payload_value_total': {k: whole[k] for k in ('native_entries', 'self_ir', 'incoming_inclusive_ir_non_additive')},
++            'semantic_commb': next(r for r in priority['rows'] if r['stage'] == 'semantic_oracle_values' and r['symbol'] == P + 'Semantics_commB'),
++            'actual_float_constructor_helper_rows': floats, 'contexts': selected,
++            'bindings': {str(root / name): sha(root / name) for name in (
++                'analysis/analysis.json', 'priority-helper-contexts.json', 'independent-review/source-review.json')}}
++
++
++def main():
++    target = E / 'semantic-caller-contexts.json'
++    assert not target.exists()
++    source = read(E / 'independent-review/source-review.json')
++    assert source['commb_semantic_reuse_live_path_verified']
++    generations = [collect(g) for g in (23, 24)]
++    priority = read(E / 'priority-helper-contexts.json')
++    anchors = {key: value for key, value in source.items()
++               if key.startswith('commb_semantic_') and key.endswith('_anchor') and value}
++    maps = [r for r in priority['rows'] if r['symbol'] in anchors.values()]
++    contexts = [r for r in priority['contexts'] if r['symbol'] in anchors.values()]
++    # The inspected changed map has no direct second scalar decode/layout/search.
++    oracle = source['commb_semantic_oracle_values_anchor']
++    forbidden = {P + n for n in ('payloadValue', 'commBLayout', 'findPayloadField')}
++    assert all(child['calls'] == 0 for row in maps if row['symbol'] == oracle
++               for child in row['direct_children'] if child['symbol'] in forbidden)
++    result = {'status': 'passed', 'kind': 'retained_semantic_payload_callers_and_constructor_boundaries',
++              'generations': generations, 'current_shared_map_anchors': anchors,
++              'current_shared_map_rows': maps, 'current_shared_map_contexts': contexts,
++              **{key: generations[-1][key] for key in ('payload_value_direct_callers', 'payload_value_total',
++                    'semantic_commb', 'actual_float_constructor_helper_rows', 'contexts')},
++              'bindings': {str(p): sha(p) for p in (Path(__file__), E / 'independent-review/source-review.json',
++                           Path('Impl/Semantics.lean'), Path('Impl/CommB.lean'), Path('Impl/Presentation.lean'))},
++              'limits': [
++                  'Complete incoming/direct-edge observations retain caller context; inclusive ancestors and descendants overlap and cannot be added as savings.',
++                  'Standard tableValues and labels were already shared in generated C. Current oracle scalars reuse table values; public commBValue remains live outside this semantic map.',
++                  'Presentation_oracleCommBFloats and standard replacement construct exact numeric expressions; no new Float execution or callback change is introduced.',
++                  'BDS30 empty and ordinary identity numeric-list branches inline. They have no standalone native counters; the BDS44 replacement map is independently callable.',
++                  'Each generation reconciles observed semantic payloadValue entries and inclusive edges to its own helper accounting; equal populations are not assumed.',
++                  'Source/native proof establishes the map structure, while profiles establish only observed corpus populations. No timing prediction follows.']}
++    target.write_text(json.dumps(result, indent=2) + '\n')
++    print(json.dumps({'status': 'passed', 'sha256': sha(target), 'generations': [
++        {'generation': g['generation'], 'callers': g['payload_value_direct_callers']} for g in generations]}))
++
++
++if __name__ == '__main__':
++    main()

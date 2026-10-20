@@ -1,0 +1,60 @@
+--- tests/evidence/diagnostics/gen23-cpr/independent-review/check_evidence.py
++++ tests/evidence/diagnostics/gen24-cpr/independent-review/check_evidence.py
+@@ -6,7 +6,7 @@
+ from collections import Counter
+ from datetime import datetime,timezone
+ import gzip,hashlib,json,re,subprocess
+-B=Path('tests/evidence/diagnostics/gen23-cpr');R=B/'independent-review'
++B=Path('tests/evidence/diagnostics/gen24-cpr');R=B/'independent-review'
+ def data(p):
+  p=Path(p);return gzip.decompress(p.read_bytes()) if p.suffix=='.gz' else p.read_bytes()
+ def read(p):return json.loads(data(p))
+@@ -24,12 +24,12 @@
+  stored+=p.stat().st_size;rawbytes+=len(raw)
+ assert len(m['files'])==m['file_count'] and stored==m['stored_bytes']
+ for p,r in m['omitted_binaries'].items():assert sha(p)==r['sha256'] and Path(p).stat().st_size==r['bytes']
+-source=read(B/'independent-review/source-review.json');assert sha(B/'independent-review/source-review.json')=='cb39fc1cadaefc2a1c194e8feb340c3d92447292ae623e9cf38bd4e230b574da'
++source=read(B/'independent-review/source-review.json');assert sha(B/'independent-review/source-review.json')=='57d6981e9077361b47645f838b85436da069b6805e99037aedecd708001a63c7'
+ for r in source['commands']:assert r['exit_code']==0 and sha(r['output'])==r['sha256']
+ for r in source['generated_C_excerpts'].values():
+  assert sha(r['path'])==r['sha256'] and sha(r['source'])==r['source_sha256']
+  assert Path(r['path']).read_text() in Path(r['source']).read_text()
+-for k in ['actual_frozen_preparation_and_routing_text_equal','output_capacity_and_empty_state_before_root','complete_outputs_and_state_retained','live_decode_then_immediate_streamStep','post_collection_consumer_and_batch_audit','byte_crc_live_path_verified','integer_affine_normalization_live_path_verified','raw_word_syndrome_live_path_verified','commb_validity_tables_live_path_verified']:assert source[k]
++for k in ['actual_frozen_preparation_and_routing_text_equal','output_capacity_and_empty_state_before_root','complete_outputs_and_state_retained','live_decode_then_immediate_streamStep','post_collection_consumer_and_batch_audit','byte_crc_live_path_verified','integer_affine_normalization_live_path_verified','raw_word_syndrome_live_path_verified','commb_validity_tables_live_path_verified','commb_semantic_reuse_live_path_verified']:assert source[k]
+ build=read(B/'retained/driver-final/driver-build.json');val=read(B/'retained/validation/summary.json');run=read(B/'retained/callgrind/run.json')
+ assert build['status']==val['status']==run['status']=='passed'
+ assert sha(B/'retained/driver-final/driver-build.json')==source['driver_build_manifest_sha256']==val['build_sha256']
+@@ -44,7 +44,7 @@
+ for command in build['commands']:
+  if command['label']=='driver-clang':
+   argv=command['argv'];assert '-O3' in argv and '-ffp-contract=off' in argv and not any(x.startswith(('-march=','-mcpu=','-mtune=')) for x in argv)
+-assert run['hashes']['binary']==build['artifacts']['.cache/gen23-cpr-costs/driver-final/cpr-costs']==source['driver_sha256']
++assert run['hashes']['binary']==build['artifacts']['.cache/gen24-cpr-costs/driver-final/cpr-costs']==source['driver_sha256']
+ assert run['hashes']['lock']==sha('spec.lock') and run['hashes']['corpus']==sha('vendor/rs1090/crates/rs1090/data/long_flight.csv')
+ assert run['prepared']['selected']==run['decoded']['retained']==172432 and run['prepared']['airports']==6903
+ assert run['prepared']['reference'] is None and run['prepared']['update_reference'] is False
+@@ -66,14 +66,14 @@
+ assert val['result']['final_state']==rows[-1] and len(rows[-1]['aircraft'])==29
+ actual=run['result'].copy();expected=val['result'].copy();assert actual.pop('batch_state_check') is False and expected.pop('batch_state_check') is True and actual==expected
+ assert val['complete_batch_StreamState_and_routed_positions_equal'] and val['final_state_projection_exact']
+-decode_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen23/native/all.jsonl').read_text().splitlines() if x]
++decode_rows=[json.loads(x) for x in Path('tests/evidence/diagnostics/gen24/native/all.jsonl').read_text().splitlines() if x]
+ assert val['result']['digest']==next(x['digest'] for x in decode_rows if x.get('phase')=='result')
+ # Perf: independently parse all raw retained stacks, periods and leaf counts.
+ cap=read(B/'perf/capture.json');comp=read(B/'perf/completion.json');perf=read(B/'perf/analysis.json')
+ assert comp['capture_exit_code']==comp['analysis_exit_code']==cap['record_exit_code']==0
+ assert cap['before_hashes']==cap['after_hashes']
+ for p,h in cap['before_hashes'].items():assert sha(p)==h,p
+-assert len(cap['before_hashes'])==comp['captured_input_hash_count']==293
++assert len(cap['before_hashes'])==comp['captured_input_hash_count']==295
+ assert cap['mode']=='cpr' and cap['stdin']=='run\nquit\n'
+ assert cap['affinity_requested']==[0]
+ assert cap['raw_data']==comp['raw_data']
+@@ -119,6 +119,6 @@
+ for row in ret['files']:
+  raw=data(row['retained']);assert sha(row['retained'])==row['compressed_sha256'] and len(raw)==row['raw_bytes'] and hashlib.sha256(raw).hexdigest()==row['raw_sha256']
+  assert sha(row['source'])==row['raw_sha256']
+-out={'status':'passed','recorded_utc':datetime.now(timezone.utc).isoformat(),'archive_manifest_sha256':sha(B/'archive-manifest.json'),'archive_files':len(m['files']),'archive_stored_bytes':stored,'archive_decoded_bytes':rawbytes,'omitted_bound_files':len(m['omitted_binaries']),'native_build_sha256':sha(B/'retained/driver-final/driver-build.json'),'source_review_sha256':sha(B/'independent-review/source-review.json'),'fresh_native_sets':22,'reused_objects':21,'input_hashes_checked':len(val['inputs_before']),'tracking_rows_exact':172432,'resolved_positions_exact':11347,'full_batch_state_equal':True,'input_rows_exact':172432,'airport_rows_exact':6903,'full_message_digest':val['result']['digest'],'profile_matches_native_audit':True,'perf_samples':len(blocks),'perf_included':len(included),'perf_excluded':len(blocks)-len(included),'perf_unknown_stacks':unknown,'perf_included_unknown_leaves':leaves['[unknown]'],'perf_lost_samples':0,'perf_stages':dict(stages),'perf_all_293_inputs_unchanged':True,'isolated_sequence_verified':True,'script_sha256':sha(__file__),'findings':[]}
++out={'status':'passed','recorded_utc':datetime.now(timezone.utc).isoformat(),'archive_manifest_sha256':sha(B/'archive-manifest.json'),'archive_files':len(m['files']),'archive_stored_bytes':stored,'archive_decoded_bytes':rawbytes,'omitted_bound_files':len(m['omitted_binaries']),'native_build_sha256':sha(B/'retained/driver-final/driver-build.json'),'source_review_sha256':sha(B/'independent-review/source-review.json'),'fresh_native_sets':22,'reused_objects':21,'input_hashes_checked':len(val['inputs_before']),'tracking_rows_exact':172432,'resolved_positions_exact':11347,'full_batch_state_equal':True,'input_rows_exact':172432,'airport_rows_exact':6903,'full_message_digest':val['result']['digest'],'profile_matches_native_audit':True,'perf_samples':len(blocks),'perf_included':len(included),'perf_excluded':len(blocks)-len(included),'perf_unknown_stacks':unknown,'perf_included_unknown_leaves':leaves['[unknown]'],'perf_lost_samples':0,'perf_stages':dict(stages),'perf_all_295_inputs_unchanged':True,'isolated_sequence_verified':True,'script_sha256':sha(__file__),'findings':[]}
+ assert not (R/'evidence-checks.json').exists()
+ (R/'evidence-checks.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

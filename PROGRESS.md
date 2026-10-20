@@ -39,13 +39,47 @@ One reviewer-only diff-header path assumption was corrected and retained,
 with no producer rerender or changed evidence. The reviewer independently
 recomputed the added overhead history from 480 raw rows and 20 medians,
 preserving generations 0–19 exactly. Producer completion: `40e5bae8b4de0a47bc49a34da199ecd710d5ef31c92c23429f6e879cee647e04`.
-Artifact commit/private push follows. Both fresh diagnostic preparations
-passed independent review on their first executions: 27 decode checks and
-77 CPR checks, with no build or profile executed. Receipts:
-`7078435b8ff207ec4e3c19b95dcb63907aa6f4c5a0c3c426cecde6161fc61a0e`
-and `fb0f066431fa4f7b85472d06409822e0d6eeb7943cfc24c0a83262ac1bd1ae6d`.
-Collect and review those diagnostics after publication before selecting the
-next optimization. No generation 25 change is selected.
+Generation 24 source and artifacts were pushed to private `main` as
+`d0f58661bba5e9903b9c939c83cb96ff3936f177`, under the user’s identity,
+with a clean tree at publication. Fresh diagnostics and both independent
+reviews passed: 5,805,983,682 decode instructions and 8,134,328,322 CPR
+instructions. All 172,432 tracking results, 11,347 positions and complete
+state agree. Review receipts:
+`da2acee306c4f02bb19007805c2ff385f95cdcf3e771aed677cd21845b4659f5`
+and `8d87a3b2ab3725c2431bedd945906178a805467231b44beacabc2e9f1197f97a`.
+Verified duplicate cleanup reclaimed 479,490,048 allocated bytes; unique
+perf captures and all retained evidence remain. The source/history hold is
+released. Generation 25 implemented an equal-denominator identity arm
+in the integer score gate. The unconditional equality proof and combined
+production build pass: 202 unchanged correctness inputs, 127 audited sources
+and 354 printed facts with permitted axioms. Two failed targeted proof builds
+are retained; the third targeted build and first combined build pass. Source/proof review and native review pass: all 19 prior theorem statements
+remain exact, the live equality branches are present in the linked worker,
+and 21 of 22 native sets are byte-identical to generation 24. The fresh campaign passed its whole-message comparison with seeds
+1,065,315,418 (messages) and 1,346,913,957 (Comm-B): 10,476,164 messages,
+9,542,528 exact matches and 933,636 documented D001 cases, with
+2,040,661 standard-view differences. All 101,244 direct cases match exactly.
+The full fixed gate passed on its first execution, from 00:06:39.041364
+to 00:22:10.069259 UTC on 2026-10-20, with all 202 inputs unchanged.
+Its 10,476,164 messages comprise 9,542,689 exact matches and 933,475
+documented D001 cases; all 101,244 direct cases match. All 1,011 unit
+checks, 23 contracts, 152 witness audits and mandatory strata pass. Fresh
+archive verification and independent replay passed on their first executions;
+cleanup reclaimed 5,359,431,680 allocated bytes of exact duplicate scratch.
+Fresh completion: `0cbef3e01ecc7cba4fca75f84314f86d3bf68dbb69c51ca302221cd2c078a513`.
+Fixed archival and cleanup passed on their first execution, retaining
+all seven components and 62 files. Combined fixed/fresh cleanup reclaimed
+11,092,762,624 allocated bytes, preserving all unique and historical evidence.
+Consolidated gate/archive/plan review passed on its first execution:
+`396e5663a1503d7e71acd7f33e0fe235c89b1d31575fb0c918f632ca80976c7f`.
+All 202 staged/current correctness inputs match the passing gate. Plan:
+`4038c39766b3d23b0e5d734f7f054fe4a99f3b6b11d61c7b3be0c5bf1c0bce56`.
+All agent jobs are stopped. Next: commit, fresh clean-commit build and isolated
+frozen ABAB measurement in both modes. Comm-B inference is the largest decode stage
+(39.72% of collected instructions); the shortcut preserves the original
+formula for every input. No performance benefit is claimed before timing.
+All frozen files, Float callbacks and trusted-primitive restrictions remain
+unchanged.
 
 **Previous measurement: generation 23 reached 2.410234595243× decode and
 1.835727795894× with CPR.** The CPR target remains unmet. Timed source:

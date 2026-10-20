@@ -1,0 +1,38 @@
+{
+_start:
+{
+lean_object* v___x_693_; uint8_t v___x_694_; 
+v___x_693_ = lean_unsigned_to_nat(128u);
+v___x_694_ = lean_nat_dec_le(v_width_691_, v___x_693_);
+if (v___x_694_ == 0)
+{
+lean_object* v___x_695_; 
+v___x_695_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBits(v_width_691_, v_word_692_);
+return v___x_695_;
+}
+else
+{
+lean_object* v___x_696_; lean_object* v___x_697_; lean_object* v___x_698_; uint8_t v___x_699_; 
+v___x_696_ = lean_unsigned_to_nat(8u);
+v___x_697_ = lean_nat_mod(v_width_691_, v___x_696_);
+v___x_698_ = lean_unsigned_to_nat(0u);
+v___x_699_ = lean_nat_dec_eq(v___x_697_, v___x_698_);
+lean_dec(v___x_697_);
+if (v___x_699_ == 0)
+{
+lean_object* v___x_700_; 
+v___x_700_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBits(v_width_691_, v_word_692_);
+return v___x_700_;
+}
+else
+{
+lean_object* v___x_701_; lean_object* v___x_702_; lean_object* v___x_703_; 
+v___x_701_ = lean_unsigned_to_nat(3u);
+v___x_702_ = lean_nat_shiftr(v_width_691_, v___x_701_);
+lean_dec(v_width_691_);
+v___x_703_ = lp_lean1090_Lean1090_Impl_Parity_syndromeBytes(v___x_702_, v_word_692_);
+return v___x_703_;
+}
+}
+}
+}

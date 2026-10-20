@@ -1,0 +1,27 @@
+{
+  "status": "prepared_not_executed",
+  "recorded_utc": "2026-10-20T00:09:07.510012+00:00",
+  "source": "tests/evidence/optimization/gen24/independent-review/check_benchmark_result.py",
+  "source_sha256": "bab40b433dbc6aa5df865ed80cd8e26a290759cb7f14d1d50de779eb5c1cb99d",
+  "reviewer": "tests/evidence/optimization/gen25/independent-review/check_benchmark_result.py",
+  "reviewer_sha256": "19895712892559bcfa394baaf9eade19767d9dee1f67906fab8f056b1ebaadfc",
+  "diff_sha256": "40c4047a841b683723655046a1a35642907e69cdefbcabb74d046eb287260dde",
+  "bindings": {
+    "tests/evidence/optimization/gen25/benchmark-preparation/plan-pending.json": "5237bbf0435e90934e847a728731d16a63f85f877dc716defec3ae53911965a9",
+    "tests/evidence/optimization/gen25/benchmark-preparation/results-before.csv": "235382e28e27fd987deda7eb6c10cc5e5d6b0acbac3d72c54e449b701a067b63",
+    "review/diagnostics/archive_generation_benchmark_target.py": "c180278ec4c561b48a03d4932dcd3c4576ce350da0673b93184a9403a50f2312",
+    "review/diagnostics/run_generation_benchmark.py": "c9fe786e86608a092ba9d3957b3cd9d15ea81e973d710639d03c9fd537d291ac"
+  },
+  "adaptations": [
+    "Generation/path 24 to 25 and CSV prior prefix 48 to 50 only. Expect exactly 52 total rows after two appended rows.",
+    "All 96 samples, 48 original files, 21 measured intervals per implementation/mode, exact medians, signed overheads, both 2/1 decisions, six clean checkpoints and all native/power/clock/report checks remain."
+  ],
+  "syntax_validation": "ast.parse only; no reviewer imports or execution.",
+  "future_source_commit": null,
+  "future_worker_sha256": null,
+  "future_command_template": "PYTHONDONTWRITEBYTECODE=1 python3 -B tests/evidence/optimization/gen25/independent-review/check_benchmark_result.py --source .cache/bench-runs/gen25-<actual-timed-commit-prefix> --plan tests/evidence/optimization/gen25/benchmark-preparation/plan.json",
+  "execution_guard": "Only after root release of completed timing and canonical archival; retain every numbered source/command/log attempt.",
+  "target_stop_condition": "Complete verified generation 25 artifacts then stop for user review if both exact targets pass.",
+  "no_measurement_or_producer_execution": true,
+  "no_speculative_results": true
+}

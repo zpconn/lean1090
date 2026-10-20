@@ -1,0 +1,236 @@
+--- tests/evidence/diagnostics/gen23/independent-review/check_source.py
++++ tests/evidence/diagnostics/gen24/independent-review/check_source.py
+@@ -6,7 +6,7 @@
+ from collections import deque
+ import hashlib, importlib.util, json, re, subprocess
+ 
+-E = Path('tests/evidence/diagnostics/gen23')
++E = Path('tests/evidence/diagnostics/gen24')
+ D = E / 'independent-review/source-inspection'
+ D.mkdir(parents=True,exist_ok=True)
+ P = 'lp_lean1090_Lean1090_Impl_'
+@@ -28,10 +28,10 @@
+         if depth==0: return text[start:end+1], text[:start].count('\n')+1
+     raise AssertionError(name)
+ 
+-build_path=Path('.cache/gen23-costs/driver/driver-build.json')
+-build=read(build_path); bench=read('bench/runs/gen23/summary.json')
+-native_path=Path('bench/runs/gen23/fresh-native-inputs.json'); native=read(native_path)
+-oldpath=Path('tests/evidence/diagnostics/gen22/independent-review/source-review.json'); old=read(oldpath)
++build_path=Path('.cache/gen24-costs/driver/driver-build.json')
++build=read(build_path); bench=read('bench/runs/gen24/summary.json')
++native_path=Path('bench/runs/gen24/fresh-native-inputs.json'); native=read(native_path)
++oldpath=Path('tests/evidence/diagnostics/gen23/independent-review/source-review.json'); old=read(oldpath)
+ assert build['status']=='passed' and len(native)==22
+ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==build['commit']
+ assert sha(WORKER)==bench['binary_sha256']
+@@ -56,20 +56,20 @@
+ sys.path.insert(0,str(Path('review/diagnostics').resolve()))
+ import bind_benchmark_history
+ binding_path=E/'benchmark-source-binding.json'
+-assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen23/summary.json'),None,
+-    Path('bench/runs/gen23/correctness-inputs.json'))==read(binding_path)
+-
+-old_native={r['source']:r for r in read('bench/runs/gen22/fresh-native-inputs.json')}
++assert bind_benchmark_history.inspect(build_path,Path('bench/runs/gen24/summary.json'),None,
++    Path('bench/runs/gen24/correctness-inputs.json'))==read(binding_path)
++
++old_native={r['source']:r for r in read('bench/runs/gen23/fresh-native-inputs.json')}
+ unchanged=[]
+ for row in native:
+-    if row['source'] in {'Impl/CommB.lean'}:continue
++    if row['source'] in {'Impl/CommB.lean','Impl/Semantics.lean'}:continue
+     before=old_native[row['source']]
+     assert row['source_sha256']==before['source_sha256'],row['source']
+     assert {p:r['sha256'] for p,r in row['artifacts'].items()}=={p:r['sha256'] for p,r in before['artifacts'].items()},row['source']
+     unchanged.append(row['source'])
+-assert len(unchanged)==21
++assert len(unchanged)==20
+ # CPRFloat source and native artifacts are unchanged since generation18.
+-oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen22/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
++oldfloat=subprocess.check_output(['git','cat-file','blob',read('bench/runs/gen23/summary.json')['commit']+':Impl/CPRFloat.lean'],text=True)
+ assert oldfloat==Path('Impl/CPRFloat.lean').read_text()
+ floatpath=Path('.lake/build/ir/Impl/CPRFloat.c');floatc=floatpath.read_text()
+ T=P+'CPR_Policy_toFloat';F=T+'Fallback';Z='_init_'+T+'___closed__1';FI='initialize_lean1090_Impl_CPRFloat'
+@@ -186,6 +186,21 @@
+ assert {P+'cbValid'+str(n) for n in [40,50,60]} <= validity_target_names
+ validity_targets=[(n,commb_path,commb_c) for n in sorted(validity_target_names)]
+ 
++# Current semantic targets selected from the pre-timing review, then freshly
++# inspected against the actual measured linked worker and its current C.
++semantic_path=Path('.lake/build/ir/Impl/Semantics.c');semantic_c=semantic_path.read_text()
++semantic_capture=read('tests/evidence/optimization/gen24/native-review/native-inputs.json')
++semantic_target_names={n for n,row in semantic_capture['generated_c_excerpts'].items()
++    if row['source'] in [str(semantic_path),str(commb_path),'.lake/build/ir/Impl/Presentation.c']}
++semantic_absent=set(semantic_capture['missing_requested_symbols'])
++semantic_targets=[]
++for n in sorted(semantic_target_names):
++    path=Path(semantic_capture['generated_c_excerpts'][n]['source'])
++    semantic_targets.append((n,path,path.read_text()))
++M='lp_lean1090_List_mapTR_loop___at___00Lean1090_Impl_'
++reportmap=M+'reportWithSyndrome_spec__0'
++semantic_target_names.add(reportmap);semantic_targets.append((reportmap,message_path,message))
++
+ anchors={old[k] for k in old if k.endswith('_anchor') and k!='parity_fold_anchor' and old[k] is not None}
+ anchors.update(old['integer_score_gate_anchors'].values())
+ anchors.update([bytefold,bitfold,P+'Parity_syndromeBytes',P+'Parity_syndromeBits'])
+@@ -193,6 +208,7 @@
+ anchors.update([P+'decodeFrameWithWord',P+'decodeFrame',P+'Parity_syndrome',P+'informationBits',P+'reportWithSyndrome',P+'Parity_checksum',P+'frameParts'])
+ anchors.update([bit,gray,grayfold,identity,integer,T,F,Z,FI,fold,P+'packFields',P+'decode',P+'frameSyndrome',S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init])
+ anchors.update(validity_target_names)
++anchors.update(semantic_target_names)
+ symbol_rows=[]
+ proc=subprocess.Popen(['nm','--defined-only',WORKER],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+ for line in proc.stdout:
+@@ -200,17 +216,17 @@
+ assert proc.wait()==0 and not proc.stderr.read()
+ present={line.split()[-1] for line in symbol_rows}
+ removed_main_boundaries={fold,P+'packFields',P+'frameSyndrome',P+'Parity_checksum',P+'frameParts',P+'decodeFrame'}
+-assert anchors-removed_main_boundaries-validity_target_names-{old['byte_word_fallback_anchor']}<=present,anchors-present
++assert anchors-removed_main_boundaries-validity_target_names-semantic_absent-{old['byte_word_fallback_anchor']}<=present,anchors-present
+ assert not (removed_main_boundaries & present),removed_main_boundaries & present
+ symbols=D/'selected-symbols-complete.txt';retain(symbols,''.join(symbol_rows).encode())
+ commands=[];excerpts={};assemblies={}
+-for name,path,text in [*validity_targets,*raw_targets,*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
++for name,path,text in [*semantic_targets,*validity_targets,*raw_targets,*parity_targets,*bit_targets,(fold,cpath,c),(P+'packFields',cpath,c),
+                        (P+'frameSyndrome',message_path,message),(P+'decode',message_path,message),
+                        *[(name,binarycpath,binaryc) for name in [S+'powerTwo',S+'powerTwoFormula',S+'powerTwoTable___lam__0',ctor,init]],
+                        *[(name,floatpath,floatc) for name in [T,F,Z,FI,P+'CPR_Policy_haversineFloat',P+'CPR_Policy_decodeLocalFloat',P+'CPR_Policy_decodeGlobalFloat']]]:
+     value,line=body(text,name);p=D/(name+'.generated-C.txt');retain(p,(value+'\n').encode())
+     excerpts[name]={'source':str(path),'source_sha256':sha(path),'first_body_line':line,'path':str(p),'sha256':sha(p)}
+-    if name in removed_main_boundaries or (name in validity_target_names and name not in present):continue  # Explicit current symbol absence is retained; C bodies still captured.
++    if name in removed_main_boundaries or name in semantic_absent or (name in validity_target_names and name not in present):continue  # Explicit current symbol absence is retained; C bodies still captured.
+     target=D/(name+'.assembly.txt');argv=['objdump','-d','--no-show-raw-insn','--disassemble='+name,WORKER]
+     r=subprocess.run(argv,capture_output=True);assert r.returncode==0 and not r.stderr
+     retain(target,r.stdout);assemblies[name]=r.stdout.decode()
+@@ -261,6 +277,71 @@
+ validity_context={'status':'passed','worker_sha256':sha(WORKER),'validity':validity_observations,'lookup_helpers':{P+n:None for n in validity_helpers},'table_entries':[4096,4096,1024,1024,1024],'total_boolean_entries':11264,'table_constructor_anchors':{n:'_init_'+P+n+'___closed__1' for n in validity_tables},'module_initializer_anchor':validity_init,'current_symbol_boundaries':{n:n if n in present else None for n in sorted(validity_target_names)},'limits':'Static indexed loads, callable boundaries and eager construction only. Helpers inline into cbValid40/50/60; no corpus hit rate, entry count, startup cost or allocation-free claim. Original numerical projection and score/penalty paths remain live.'}
+ save(E/'independent-review/validity-table-native-context.json',validity_context)
+ 
++
++semantic_checks=[]
++def check(ok,label):
++    assert ok,label
++    semantic_checks.append(label)
++def semantic_body(n):return body(Path(excerpts[n]['source']).read_text(),n)[0]
++def semantic_asm(n):
++    assert n in present and '<'+n+'>:' in assemblies[n]
++    return assemblies[n]
++def targets(t):return re.findall(r'(?:call|jmp)\s+[^<]*<([^>+]+)>',t)
++check(semantic_target_names-semantic_absent<=present,'All positive semantic callable boundaries are present')
++check(not semantic_absent & present,'Exactly disclosed inlined semantic wrappers remain absent')
++check(targets(assemblies[reportmap]).count(P+'Semantics_commB')==2 and body(message,reportmap)[0].count(P+'Semantics_commB(')==1,'Report map has one C call, two mutually exclusive native ownership branches')
++s=semantic_body(P+'Semantics_commB');a=semantic_asm(P+'Semantics_commB');calls=targets(a)
++for symbol in [M+'Semantics_tableValues_spec__0',P+'Presentation_oracleCommBFloats',M+'Semantics_commBOracleValues_spec__0',P+'Semantics_commBLabels',M+'Semantics_commBStandardFloatsFromOracle_spec__0']:
++ check(calls.count(symbol)==1,'One native call site in common Comm-B path '+symbol)
++check(P+'commBValue' not in calls and P+'Semantics_commBStandardFloats' not in calls,'Main semantic body uses sharing maps rather than old standalone scalar/numeric constructor')
++for source in ['v_values_1347_ = '+P+'Semantics_tableValues(', 'v_oracleFloats_1348_ = '+P+'Presentation_oracleCommBFloats(',P+'Semantics_commBOracleValues(v_register_1330_, v_word_1331_, v_values_1347_)',P+'Semantics_commBStandardFloatsFromOracle(v_register_1330_, v_word_1331_, v_oracleFloats_1348_)']:
++ check(source in s,'Generated C carries shared values: '+source)
++for record in ['v___x_1341_','v___x_1344_']:
++ for field,var in [(0,'v___y_1333_'),(1,'v___y_1333_'),(3,'v___y_1334_'),(4,'v___y_1334_'),(5,'v___y_1336_'),(6,'v___y_1335_')]:
++  check(f'lean_ctor_set({record}, {field}, {var});' in s,'Payload C field identity '+record+'/'+str(field))
++for reg,offset in [('r12','0x8'),('r12','0x10'),('r13','0x30'),('r15','0x38')]:
++ check(len(re.findall(r'mov\s+%'+reg+','+offset+r'\(%rax\)',a))==2,'Both actual record branches store '+reg+' at '+offset)
++check(re.search(r'mov\s+%r12,%rdx',a) and re.search(r'mov\s+%r15,%rsi',a) and re.search(r'mov\s+%r15,%r13',a),'Actual value-map arguments and identity numeric pointer sharing')
++check('$0x61,%r14' in a and '$0x89,%r14' in a and re.search(r'mov\s+\$0x1,%r13d',a) and 'lean_nat_big_eq' in calls,'Actual normal and big-Nat BDS30/44 branch guards with BDS30 empty list')
++check(P+'Semantics_adsb' in calls and '$0xb,%r14' in a and '$0xcb,%r14' in a,'Existing register 05/65 ADS-B dispatch stays live')
++# Ordered correction map: status none bypasses correction entirely.
++scalar=M+'Semantics_commBOracleValues_spec__0';sc=semantic_body(scalar);sca=semantic_asm(scalar);scalls=targets(sca)
++check('if (lean_obj_tag(v_snd_1176_) == 0)\n{\nv___y_1171_ = v_head_1165_;\ngoto v___jp_1170_;\n}' in sc,'Absent status returns original pair before adjustment')
++check(sc.index('if (lean_obj_tag(v_snd_1176_) == 0)')<sc.index('lean_unsigned_to_nat(16u)'),'None guard dominates all register corrections in generated C')
++check(not any(x in scalls for x in [P+'commBLayout',P+'commBValue',P+'payloadValue']) and not any('find_' in x for x in scalls),'Actual oracle map does not repeat layout search or payloadValue')
++for n in ['cbSelected','cbTemperature44','cbVertical60','cbWrapAngle','payloadBits']:
++ check(P+n in scalls,'Original correction helper remains live '+n)
++check('l_Rat_add' in scalls and 'l_Rat_mul' in scalls,'DTE exact original arithmetic remains live')
++for n in [16,64,68,80,96,47,36,511,41,49]:check('lean_unsigned_to_nat('+str(n)+'u)' in sc,'Original correction register/field/sentinel constant '+str(n))
++check('l_List_reverse___redArg' in scalls and 'v_a_1162_ = v_tail_1166_;' in sc and 'goto _start;' in sc,'Oracle correction map preserves list traversal and final order')
++table=M+'Semantics_tableValues_spec__0';check(targets(semantic_asm(table)).count(P+'payloadValue')==1,'One payloadValue call site in table decode map');semantic_body(table)
++public_calls=targets(semantic_asm(P+'commBValue'));semantic_body(P+'commBValue')
++check(P+'commBLayout' in public_calls and P+'payloadValue' in public_calls,'Public standalone commBValue remains a live full decode helper')
++# Pure NumericField expression sharing: only BDS44 constructs replacement temperature.
++standard=semantic_body(P+'Semantics_commBStandardFloatsFromOracle')
++check('return v_fields_1129_;' in standard and 'lean_unsigned_to_nat(48u)' in standard and 'lean_unsigned_to_nat(68u)' in standard,'C standard view preserves BDS30 empty/BDS44 map/identity branches')
++check(P+'Presentation_oracleCommBFloats' not in standard,'Derived standard view does not reconstruct the oracle list')
++num=M+'Semantics_commBStandardFloatsFromOracle_spec__0';ns=semantic_body(num);na=semantic_asm(num);ncalls=targets(na)
++check('lean_string_dec_eq(v_key_1101_' in ns and 'v___y_1096_ = v_head_1090_;' in ns,'Replacement map tests exact key and preserves unmatched original fields')
++cfile=Path(excerpts[num]['source']);constant=next(l for l in cfile.read_text().splitlines() if num+'___closed__0_value =' in l)
++check('.m_data = "temperature"' in constant,'Key comparison is exactly case-sensitive temperature')
++check('v_missing_1102_ = lean_ctor_get_uint8' in ns and 'sizeof(void*)*2, v_missing_1102_' in ns,'Replacement preserves missing-policy byte')
++check(P+'cbSigned' in ncalls and 'l_Rat_div' in ncalls and 'lean_unsigned_to_nat(24u)' in ns and 'lean_unsigned_to_nat(11u)' in ns,'BDS44 replacement computes exact signed field and original rational division')
++check('lean_alloc_ctor(0, 1, 1)' in ns and 'lean_alloc_ctor(1, 1, 0)' in ns and 'v___x_1108_ = 1;' in ns,'BDS44 constructs the pure binary64 literal expression under Some')
++for label,t in [('common semantics',calls),('scalar map',scalls),('numeric map',ncalls)]:
++ check(not any('toFloat' in x or 'Float_' in x or 'Numeric_eval' in x for x in t),'No moved Float evaluator/direct callback in '+label)
++for symbol in [P+'commBAdjustValue',P+'Semantics_commBOracleValues',P+'Semantics_commBStandardFloatsFromOracle']:
++ check(symbol in semantic_absent,'Wrapper inlined, positive map/control-flow evidence retained: '+symbol)
++
++semantic_context={'status':'passed','worker_sha256':sha(WORKER),'checks':semantic_checks,
++    'common_constructor':P+'Semantics_commB','scalar_map':scalar,'table_value_map':table,
++    'numeric_replacement_map':num,'scalar_direct_calls':sorted(set(scalls)),
++    'numeric_direct_calls':sorted(set(ncalls)),'constructor_direct_calls':sorted(set(calls)),
++    'inlined_wrappers':sorted(semantic_absent),'source_native_delta':['Impl/CommB.lean','Impl/Semantics.lean'],
++    'limit':'Positive shared pointer/map control flow; no invocation count, avoided-cost sum, hit-rate, allocation-free or timing claim. Public commBValue remains live elsewhere; Float evaluation boundary unchanged.'}
++semantic_context_path=E/'independent-review/semantic-sharing-native-context.json'
++save(semantic_context_path,semantic_context)
++
+ for symbol in [bit,gray,grayfold,identity,integer]:
+     assert not any('<'+x+'>' in assemblies[symbol] for x in ['lean_nat_pow','lean_nat_div','lean_nat_mod'])
+ for symbol in [bit,grayfold,identity]:
+@@ -328,9 +409,9 @@
+ assert '<l_Array_ofFn___redArg>' in assemblies[ctor]
+ assert assemblies[init].index('<'+S+'powerTwoTable>')<assemblies[init].index('<lean_mark_persistent>')<assemblies[init].index('<'+S+'maxFinite___closed__3_once>')
+ assert '<'+ctor+'>' in assemblies[init] and '<lean_obj_once_cold>' in assemblies[init]
+-implementation=Path('tests/evidence/optimization/gen23/native-review/review.json')
+-ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['commb_validity_tables_live_path_verified']
+-ni=read('tests/evidence/optimization/gen23/native-review/native-inputs.json')
++implementation=Path('tests/evidence/optimization/gen24/native-review/review.json')
++ir=read(implementation);assert ir['status']=='passed' and ir['findings']==[] and ir['commb_semantic_reuse_live_path_verified']
++ni=read('tests/evidence/optimization/gen24/native-review/native-inputs.json')
+ assert ni['worker_sha256']==sha(WORKER)==bench['binary_sha256']
+ for name,digest in ni['held_inputs'].items():assert sha(name)==digest,name
+ for name,digest in ir['bindings'].items():assert sha(name)==digest,name
+@@ -382,10 +463,10 @@
+     benchmark_source_binding_sha256=sha(binding_path),fresh_native_inputs=str(native_path),
+     fresh_native_inputs_sha256=sha(native_path),fresh_project_modules_verified=22,
+     source_C_object_trace_bindings=bindings,driver_build_manifest=str(build_path),
+-    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen23-costs/driver/decode-costs'),
++    driver_build_manifest_sha256=sha(build_path),driver_binary_sha256=sha('.cache/gen24-costs/driver/decode-costs'),
+     reused_production_objects_verified=21,unchanged_driver_input_hashes_verified=len(held),
+-    eager_table_initializers=old['eager_table_initializers']+validity_tables,
+-    live_generated_C={path:sha(path) for path in old['live_generated_C']},
++    eager_table_initializers=old['eager_table_initializers'],
++    live_generated_C={path:sha(path) for path in set(old['live_generated_C'])|{str(semantic_path)}},
+     pack_fields_shift_mask_verified=True,pack_fields_fold_anchor=None,
+     power_two_table_live_path_verified=True,power_two_lookup_anchor=S+'powerTwo',
+     power_two_formula_anchor=S+'powerTwoFormula',power_two_table_entry_anchor=S+'powerTwoTable___lam__0',
+@@ -394,7 +475,7 @@
+     symbol_inventory={'path':str(symbols),'sha256':sha(symbols),'filtered':True},
+     unchanged_native_modules=unchanged,
+     previous_source_review={'path':str(oldpath),'sha256':sha(oldpath),
+-        'basis':'All 21 sibling source/C/object/trace sets match generation 22 byte-for-byte. Only CommB changes; its five validity tables and current callable paths are inspected from current C and linked worker, while parser/arithmetic/CRC/conversion paths are rebound.'},
++        'basis':'All 20 sibling source/C/object/trace sets match generation 23 byte-for-byte. CommB and Semantics change; actual shared scalar/numeric-map control flow is inspected from current C and linked worker, while all previous validity/parser/arithmetic/CRC/conversion paths are rebound.'},
+     implementation_native_review={'path':str(implementation),'sha256':sha(implementation)},
+     byte_crc_live_path_verified=True,parity_fold_anchor=bytefold,parity_byte_fold_anchor=bytefold,parity_bit_fold_anchor=bitfold,
+     parity_byte_wrapper_anchor=P+'Parity_syndromeBytes',parity_bit_wrapper_anchor=P+'Parity_syndromeBits',
+@@ -403,6 +484,13 @@
+     dyadic_to_float_live_path_verified=True,dyadic_to_float_anchor=T,dyadic_to_float_fallback_anchor=F,
+     dyadic_to_float_at_most_one_fallback_per_entry=True,dyadic_to_float_zero_case_verified=True,
+     dyadic_to_float_control_flow={'path':str(E/'independent-review/tofloat-control-flow.json'),'sha256':sha(E/'independent-review/tofloat-control-flow.json')},
++    commb_semantic_reuse_live_path_verified=True,
++    commb_semantic_constructor_anchor=P+'Semantics_commB',
++    commb_semantic_table_values_anchor=table,
++    commb_semantic_oracle_values_anchor=scalar,
++    commb_semantic_numeric_replacement_anchor=num,
++    commb_semantic_oracle_numeric_anchor=P+'Presentation_oracleCommBFloats',
++    commb_semantic_reuse_context={'path':str(semantic_context_path),'sha256':sha(semantic_context_path)},
+     commb_validity_tables_live_path_verified=True,
+     commb_validity_anchors={k:v['anchor'] for k,v in validity_observations.items()},
+     commb_validity_lookup_anchors=validity_context['lookup_helpers'],
+@@ -422,7 +510,7 @@
+         'The prior complete initialization-chain disassembly is rebound to the same actual worker hash; no timing, exponent distribution or table hit rate is inferred.',
+         'The current bit/Gray/identity/signed-field bodies have no direct power/division calls; arbitrary-size Nat fallbacks and unchanged caller routing remain. Inlined identity-lambda work is not treated as zero work.',
+         'The current main calls the paired parser once and uses its returned full Nat word for CRC, with no reread or reconstruction. Public decodeFrame remains a projection in its object; standalone reconstruction definitions remain available but are absent from the timed linked symbols. Absence alone is not an inlining claim.',
+-        'Only CommB changed among the 22 linked sets; all 21 siblings, including Frame, Message, PayloadBits, Parity and CPRFloat, remain byte-identical to generation 22.',
++        'Only CommB and Semantics changed among the 22 linked sets; all 20 siblings, including Frame, Message, PayloadBits, Parity and CPRFloat, remain byte-identical to generation 23.',
+         'toFloat packs exact bits on accepted dyadics, delegates at most once to the unchanged fallback on rejection, and returns cached or lazily initialized positive zero on zero input.',
+         'payloadValue retains one exact numerator-product/gcd normalization site in the nonunit branch, with no Rat.mul call; unit scale and zero offset still bypass their identity operations.',
+         'smallDyadicBits is inlined. The wrapper retains decimal parsing and generic Nat/Int allocation; no allocation-free or measured fast-path-frequency claim is made.'],
